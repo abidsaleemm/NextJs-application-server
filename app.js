@@ -1,7 +1,4 @@
 const express = require('express');
-const rootReducer =require('./reducers');
-const store = createStore(rootReducer);
-const { dispatch } = store;
 const app = express();
 
 const port = process.env.PORT || 3000;

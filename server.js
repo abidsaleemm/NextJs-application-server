@@ -11,5 +11,5 @@
 //   console.log(`Example app listening on port ${port}!`)
 // })
 
-// require('babel-register');
+require('babel/register');
 require('./app');

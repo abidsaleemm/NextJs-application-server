@@ -7,11 +7,14 @@ const { dispatch } = store;
 
 // Express stuff
 const app = express();
-const port = process.env.PORT || 1337;
+// const port = process.env.PORT || 1337;
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

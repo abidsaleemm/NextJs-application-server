@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello World 2!')
+  res.send('Hello World 3!')
 })
 
 app.listen(port, () => {
@@ -136,30 +136,30 @@ app.listen(port, () => {
 // })
 
 // // Server here
-const io = require('socket.io')(8000);
-io.on('connection', socket => {
-  console.log('Connection ')
-  // socket.emit('aaa', { hello: 'world' });
-  socket.on('action', action => {
-    dispatch(action);
-    // console.log(data);
-    //
-  });
-
-  socket.on('disconnect', action => {
-    console.log('Disconnect')
-    // dispatch(action);
-    // console.log(data);
-    //
-  });
-
-  // socket.on('', data => {
-  //   console.log(data);
-  //   //
-  // });
-  // socket.on('action', data => {
-  //   console.log(data);
-  //   //
-  // });
-
-});
+// const io = require('socket.io')(8000);
+// io.on('connection', socket => {
+//   console.log('Connection ')
+//   // socket.emit('aaa', { hello: 'world' });
+//   socket.on('action', action => {
+//     // dispatch(action);
+//     console.log(action);
+//     //
+//   });
+//
+//   socket.on('disconnect', action => {
+//     console.log('Disconnect', action)
+//     // dispatch(action);
+//     // console.log(data);
+//     //
+//   });
+//
+//   // socket.on('', data => {
+//   //   console.log(data);
+//   //   //
+//   // });
+//   // socket.on('action', data => {
+//   //   console.log(data);
+//   //   //
+//   // });
+//
+// });

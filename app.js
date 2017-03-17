@@ -1,3 +1,16 @@
+var express = require('express')
+var app = express()
+
+const port = process.env.PORT || 3000;
+
+app.get('/', function (req, res) {
+  res.send('Hello World!')
+})
+
+app.listen(port, function () {
+  console.log(`Example app listening on port ${port}!`)
+})
+
 // #!/usr/bin/env node
 
 /**
@@ -99,28 +112,28 @@
 //   debug('Listening on ' + bind);
 // }
 
-import { createStore } from 'redux'
-import express from 'express';
-// import http from 'http';
-
-import rootReducer from './reducers';
-const store = createStore(rootReducer);
-const { dispatch } = store;
-
-// Express stuff
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-// const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-app.listen(port, () => {
-  // console.log(`Example app listening on port ${port}`);
-})
+// import { createStore } from 'redux'
+// import express from 'express';
+// // import http from 'http';
+//
+// import rootReducer from './reducers';
+// const store = createStore(rootReducer);
+// const { dispatch } = store;
+//
+// // Express stuff
+// const app = express();
+// const port = process.env.PORT || 3000;
+//
+// app.get('/', (req, res) => {
+//   res.send('Hello World!')
+// })
+//
+// // const port = normalizePort(process.env.PORT || '3000');
+// app.set('port', port);
+//
+// app.listen(port, () => {
+//   // console.log(`Example app listening on port ${port}`);
+// })
 
 // // Server here
 // const io = require('socket.io')(8000);

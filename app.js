@@ -7,40 +7,41 @@ const { dispatch } = store;
 
 // Express stuff
 const app = express();
+const port = process.env.port || 8080;
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(80, () => {
-  console.log('Example app listening on port 80!')
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 })
 
-// Server here
-const io = require('socket.io')(8000);
-io.on('connection', socket => {
-  console.log('Connection ')
-  // socket.emit('aaa', { hello: 'world' });
-  socket.on('action', action => {
-    dispatch(action);
-    // console.log(data);
-    //
-  });
-
-  socket.on('disconnect', action => {
-    console.log('Disconnect')
-    // dispatch(action);
-    // console.log(data);
-    //
-  });
-
-  // socket.on('', data => {
-  //   console.log(data);
-  //   //
-  // });
-  // socket.on('action', data => {
-  //   console.log(data);
-  //   //
-  // });
-
-});
+// // Server here
+// const io = require('socket.io')(8000);
+// io.on('connection', socket => {
+//   console.log('Connection ')
+//   // socket.emit('aaa', { hello: 'world' });
+//   socket.on('action', action => {
+//     dispatch(action);
+//     // console.log(data);
+//     //
+//   });
+//
+//   socket.on('disconnect', action => {
+//     console.log('Disconnect')
+//     // dispatch(action);
+//     // console.log(data);
+//     //
+//   });
+//
+//   // socket.on('', data => {
+//   //   console.log(data);
+//   //   //
+//   // });
+//   // socket.on('action', data => {
+//   //   console.log(data);
+//   //   //
+//   // });
+//
+// });

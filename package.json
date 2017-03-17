@@ -4,7 +4,7 @@
   "description": "",
   "author": "Warren Goble <warren@hack.expert>",
   "scripts": {
-    "start": "node ./node_modules/babel-cli/bin/babel-node.js ./server.js"
+    "start": "node -r babel-register ./server.js"
   },
   "dependencies": {
     "express": "^4.14.0",

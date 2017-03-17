@@ -142,7 +142,7 @@ io.on('connection', socket => {
   // socket.emit('aaa', { hello: 'world' });
   socket.on('action', action => {
     // dispatch(action);
-    console.log(action);
+    console.log('action', action);
     //
   });
 

@@ -10,3 +10,5 @@ pids
 .lock-wscript
 node_modules
 .DS_Store
+
+build

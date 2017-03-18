@@ -5,8 +5,9 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.set('port', port);
 
+// TODO server static
 app.get('/', (req, res) => {
-  res.send('Hello World from express!')
+  res.send('Hello World from express! 3')
 })
 
 app.listen(port, () => {

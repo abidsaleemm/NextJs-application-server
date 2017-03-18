@@ -7,7 +7,8 @@ pipelines:
           - git config git-ftp.user $FTP_USERNAME
           - git config git-ftp.password $FTP_PASSWORD
           - git config git-ftp.url $FTP_HOST$FTP_SITE_ROOT
-          - git ftp init
+          # - git ftp init
+          - git ftp catchup
           - git ftp push
           # - chmod +x ./deploy-to-azure.bash
           # - ./deploy-to-azure.bash

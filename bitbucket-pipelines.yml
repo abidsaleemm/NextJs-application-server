@@ -4,6 +4,10 @@ pipelines:
         script:  # Modify the commands below to build and test your repository.
           - apt-get update
           - apt-get -qq install git-ftp
-          - git ftp init --user $FTP_USERNAME --passwd $FTP_PASSWORD $FTP_HOST$FTP_SITE_ROOT
+          - git config git-ftp.user $FTP_USERNAME
+          - git config git-ftp.password $FTP_PASSWORD
+          - git config git-ftp.url $FTP_HOST$FTP_SITE_ROOT
+          - git ftp init
+          - git ftp push
           # - chmod +x ./deploy-to-azure.bash
           # - ./deploy-to-azure.bash

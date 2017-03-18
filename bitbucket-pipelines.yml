@@ -2,7 +2,7 @@ pipelines:
   default:
     - step:
         script:  # Modify the commands below to build and test your repository.
-          - apt-get install ncftp
+          - apt-get update
           - apt-get install filezilla
           - chmod +x ./deploy-to-azure.bash
           # - ./deploy-to-azure.bash

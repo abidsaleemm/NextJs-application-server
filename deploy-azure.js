@@ -1,8 +1,8 @@
 const args = process.argv
 
-const host = args[0];
-const username = args[1];
-const password = args[2];
+const host = args[2];
+const username = args[3];
+const password = args[4];
 
 const FTPS = require('ftps');
 const ftps = new FTPS({
@@ -22,4 +22,4 @@ const ftps = new FTPS({
   autoConfirm: true, // Optional, is used to auto confirm ssl questions on sftp or fish protocols, defaults to false
 });
 
-console.log('ftps connected', ftps.ls());
+console.log('ftps connected', ftps.raw('ls -l'), ftps.ls());

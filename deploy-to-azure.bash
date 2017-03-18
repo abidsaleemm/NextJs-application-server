@@ -18,6 +18,6 @@
 # 2) Upload all folders recursively (except hidden folders like .git):
 # ncftpput -v -u "$FTP_USERNAME" -p "$FTP_PASSWORD" -R $FTP_HOST $FTP_SITE_ROOT */
 
-filezilla ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/$FTP_SITE_ROOT
+filezilla ftps://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/$FTP_SITE_ROOT
 
 echo Finished uploading files to $FTP_HOST$FTP_SITE_ROOT.

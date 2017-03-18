@@ -5,4 +5,4 @@ pipelines:
           - apt-get update
           - apt-get -y install filezilla
           - chmod +x ./deploy-to-azure.bash
-          # - ./deploy-to-azure.bash
+          - ./deploy-to-azure.bash

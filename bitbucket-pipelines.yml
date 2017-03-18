@@ -5,6 +5,7 @@ pipelines:
           - apt-get update
           - apt-get install lftp
           - npm install ftps
+          - node deploy-azure.js $FTP_HOST $FTP_USERNAME $FTP_PASSWORD
           # - apt-get -qq install git-ftp
           # - git config git-ftp.user $FTP_USERNAME
           # - git config git-ftp.password $FTP_PASSWORD

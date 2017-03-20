@@ -1,46 +1,35 @@
-const express = require('express');
-// import express from 'express';
+import express from 'express';
+import { createStore } from 'redux';
+import dicomScanDirectory from './actions/dicomScanDirectory';
+import configureStore from './store/configureStore';
+
+// Set up express server
 const app = express();
+const store = configureStore();
+
+store.dispatch(dicomScanDirectory('../sample-data'));
+
+// setInterval(() => console.log(store.getState()), 1000);
 
 const port = process.env.PORT || 3000;
 app.set('port', port);
+app.use('/', express.static('./clientbundle'));
 
-// TODO server static
-app.get('/', (req, res) => {
-  res.send('Hello World from express! 3')
-})
+// Run server to listen on port 3000.
+const server = app.listen(port, () => {
+  console.log(`listening on *:${port}`);
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-})
+const io = require('socket.io').listen(server);
 
-// node -r babel-register
-
-// // Server here
-const io = require('socket.io')(8000);
+// Handle socket connections
 io.on('connection', socket => {
   console.log('Connection ')
-  // socket.emit('aaa', { hello: 'world' });
   socket.on('action', action => {
-    // dispatch(action);
     console.log('action', action);
-    //
   });
 
   socket.on('disconnect', action => {
     console.log('Disconnect', action)
-    // dispatch(action);
-    // console.log(data);
-    //
   });
-
-  // socket.on('', data => {
-  //   console.log(data);
-  //   //
-  // });
-  // socket.on('action', data => {
-  //   console.log(data);
-  //   //
-  // });
-
 });

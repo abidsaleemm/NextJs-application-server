@@ -20,8 +20,8 @@ const server = app.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
 
-// const io = require('socket.io').listen(server);
-const io = require('socket.io')(8000);
+const io = require('socket.io').listen(server);
+// const io = require('socket.io')(8000);
 
 // Handle socket connections
 io.on('connection', socket => {

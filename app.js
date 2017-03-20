@@ -20,16 +20,22 @@ const server = app.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
 
-const io = require('socket.io').listen(server);
+// const io = require('socket.io').listen(server);
+const io = require('socket.io')(8000);
 
 // Handle socket connections
 io.on('connection', socket => {
-  console.log('Connection ')
+  console.log('Connection ' + socket.id);
+
   socket.on('action', action => {
     console.log('action', action);
+
+    socket.emit('action', { type: 'message', data:'good day!' });
   });
 
-  socket.on('disconnect', action => {
-    console.log('Disconnect', action)
+  socket.on('event', function(data){ console.log('data',data) });
+
+  socket.on('disconnect', error => {
+    console.log('Disconnect ' + socket.id, error)
   });
 });

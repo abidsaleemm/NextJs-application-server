@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
 });
 
 // const logger = createLogger();
+
 const enhancer = compose(
   // applyMiddleware(thunk, logger)
   applyMiddleware(thunk),

@@ -22,7 +22,8 @@ export default (state = [], action) => {
     pixelSpacing,
     imageLocation,
     studyUID,
-    fullPath,
+    directory,
+    file,
   } = action;
 
   switch (type) {
@@ -49,7 +50,8 @@ export default (state = [], action) => {
             imageOrientation,
             pixelSpacing,
             imageLocation,
-            fullPath,
+            directory,
+            file,
           }
         ];
       }

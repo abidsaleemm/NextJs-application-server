@@ -3,6 +3,7 @@ import express from 'express';
 import { createStore } from 'redux';
 import dicomScanDirectory from './actions/dicomScanDirectory';
 import dicomReadImage from './helpers/dicomReadImage';
+import { readFile } from './helpers/dicomReadAzureFiles';
 import configureStore from './store/configureStore';
 
 import projectAdd from './actions/projectAdd';
@@ -61,22 +62,16 @@ const processActions = (
           }
 
           const project = projectGet(getState().projects)(studyUID);
-          // console.log('project', project);
 
-          // console.log('dicomImages', dicomImages)
           dicomImages
             .filter(v => v.studyUID === studyUID)
-            .forEach(({ fullPath }) => {
-              fs.readFile(fullPath, (err, data) => {
-                const actionData = dicomReadImage(data);
-
+            .forEach(({ directory, file }) => {
+              readFile(directory, file, (err, actionData) => {
                 socket.emit('action', {
                   type: 'DICOM_DATA',
                   ...actionData,
                 });
               });
-
-              // console.log('actionData', actionData)
             })
 
           const { discs, vertebra, segments } = project;

@@ -27,6 +27,10 @@ export default (data) => {
         seriesUID: dataSet.string('x0020000e'),
         seriesName: dataSet.string('x0008103e'),
         studyUID: dataSet.string('x0020000d'),
+        modality: dataSet.string('x00080060'),
+        studyName: dataSet.string('x00081030'),
+        studyDate: dataSet.string('x00080020'),
+        patientName: dataSet.string('x00100010'),
       };
 
       const pixelDataElement = dataSet.elements.x7fe00010;
@@ -57,7 +61,7 @@ export default (data) => {
   }
 }
 
-export function parseImagePosition(value = '') {
+function parseImagePosition(value = '') {
   const arrSplit = value.split('\\');
   return {
     x: parseFloat(arrSplit[0]),
@@ -66,7 +70,7 @@ export function parseImagePosition(value = '') {
   };
 }
 
-export function parseImageOrientation(value = '') {
+function parseImageOrientation(value = '') {
   const arrSplit = value.split('\\');
   return [
     {
@@ -82,7 +86,7 @@ export function parseImageOrientation(value = '') {
   ];
 }
 
-export function parsePixelSpacing(value = '') {
+function parsePixelSpacing(value = '') {
   const arrSplit = value.split('\\');
   return {
     x: parseFloat(arrSplit[0]),

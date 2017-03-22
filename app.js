@@ -97,8 +97,6 @@ const processActions = (
             discs,
           });
 
-
-
           // Send StudyUID
           socket.emit('action', {
             type: 'STUDY_SELECT',
@@ -107,21 +105,21 @@ const processActions = (
         },
       });
 
-// const io = require('socket.io').listen(server);
-//
-// // Handle socket connections
-// io.on('connection', socket => {
-//   console.log('Connection ' + socket.id);
-//
-//   socket.on('action', (action) => {
-//     action.type = action.type.replace(/^(server\/)/, '');
-//     console.log('action.type', action.type)
-//     processActions(store, action, socket);
-//
-//     // socket.emit('action', processActions(store, action));
-//   });
-//
-//   socket.on('disconnect', error => {
-//     console.log('Disconnect ' + socket.id, error)
-//   });
-// });
+const io = require('socket.io').listen(server);
+
+// Handle socket connections
+io.on('connection', socket => {
+  console.log('Connection ' + socket.id);
+
+  socket.on('action', (action) => {
+    action.type = action.type.replace(/^(server\/)/, '');
+    console.log('action.type', action.type)
+    processActions(store, action, socket);
+
+    // socket.emit('action', processActions(store, action));
+  });
+
+  socket.on('disconnect', error => {
+    console.log('Disconnect ' + socket.id, error)
+  });
+});

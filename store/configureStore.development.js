@@ -14,12 +14,12 @@ const rootReducer = combineReducers({
   ...reducers,
 });
 
-// const logger = createLogger();
+const logger = createLogger();
 
 const enhancer = compose(
-  // applyMiddleware(thunk, logger)
+  autoRehydrate(),
   applyMiddleware(thunk),
-  autoRehydrate()
+  // applyMiddleware(thunk, logger),
 );
 
 export default (initialState) => {

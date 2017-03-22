@@ -71,31 +71,32 @@ export default (path, callback) => {
               imageLocation: parseFloat(dataSet.string('x00201041'), 10),
               pixelSpacing: parsePixelSpacing(dataSet.string('x00280030')),
               pixelAspectRatio: parsePixelSpacing(dataSet.string('x00280034')),
+              instanceUID: dataSet.string('x00080018'),
               sliceThickness: parseFloat(dataSet.string('x00180050')),
               photometricInterpretation: dataSet.string('x00280004'),
               modality: dataSet.string('x00080060'),
             };
 
-            const pixelDataElement = dataSet.elements.x7fe00010;
-            const pixelData = [];
-            if (pixelDataElement) {
-              const dataPixels = new Uint8Array(
-                data.slice(pixelDataElement.dataOffset),
-                pixelDataElement.length
-              );
+            // const pixelDataElement = dataSet.elements.x7fe00010;
+            // const pixelData = [];
+            // if (pixelDataElement) {
+            //   const dataPixels = new Uint8Array(
+            //     data.slice(pixelDataElement.dataOffset),
+            //     pixelDataElement.length
+            //   );
+            //
+            //   // convert to standard array
+            //   const { rows, columns } = tags;
+            //   const size = rows * columns;
+            //
+            //   for (let i = 0, i2 = 0; i < size; i += 1, i2 += 2) {
+            //     pixelData.push(
+            //       (dataPixels[i2]) + (dataPixels[i2 + 1] * 256)
+            //     );
+            //   }
+            // }
 
-              // convert to standard array
-              const { rows, columns } = tags;
-              const size = rows * columns;
-
-              for (let i = 0, i2 = 0; i < size; i += 1, i2 += 2) {
-                pixelData.push(
-                  (dataPixels[i2]) + (dataPixels[i2 + 1] * 256)
-                );
-              }
-            }
-
-            callback(undefined, { ...tags, pixelData, fullPath });
+            callback(undefined, { ...tags, fullPath });
           } catch (e) {
             callback(e, undefined);
           }

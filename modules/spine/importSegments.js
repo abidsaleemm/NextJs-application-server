@@ -2,7 +2,7 @@ import fs from 'fs';
 
 export default () => {
   const spinePathName = 'SpinePath';
-  const filePath = `app/modules/spine/models/${spinePathName}.json`;
+  const filePath = `modules/spine/models/${spinePathName}.json`;
   const data = fs.readFileSync(filePath);
   let retObj = {};
   if (data) {
@@ -87,8 +87,9 @@ export default () => {
       .map(([key, value]) => recurseTree(value, key, node));
 
     const [childRight] = Object.entries(children)
-      .filter(([key]) => ke    "create-index": "create-index app/actions && create-index app/reducers && create-index app/modules/spine/actions && create-index app/modules/spine/reducers",
-    "lint": "eslint app *.js",
+      .filter(([key]) => key.search('.R') >= 0)
+      .map(([key, value]) => recurseTree(value, key, node));
+
     const [child] = Object.entries(children)
       .filter(([key]) => key.search('.R') === -1 && key.search('.L') === -1 )
       .map(([key, value]) => recurseTree(value, key, data));

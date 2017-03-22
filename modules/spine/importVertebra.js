@@ -8,7 +8,7 @@ export default (segments = []) =>
 
 // issue-65
 const importVertebra = (objectName) => {
-  const filePath = `app/modules/spine/models/${objectName}.json`;
+  const filePath = `modules/spine/models/${objectName}.json`;
   const data = fs.readFileSync(filePath);
   if (data) {
     const parsed = JSON.parse(data);

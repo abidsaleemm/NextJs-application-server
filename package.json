@@ -9,6 +9,7 @@
     "dev": "nodemon ./server.js"
   },
   "dependencies": {
+    "azure-storage": "^2.1.0",
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",

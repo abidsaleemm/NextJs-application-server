@@ -12,7 +12,9 @@ import projectGet from './selectors/projectGet';
 const app = express();
 const store = configureStore();
 
+console.log('Scaning dicom directory')
 store.dispatch(dicomScanDirectory('../sample-data'));
+console.log('Scaning dicom directory Done.')
 
 const { dispatch, getState } = store;
 

@@ -13,6 +13,8 @@ export const readFile = (directory, file, callback) => {
     file,
   );
 
+  console.log('readfile', directory, file);
+
   const buffers = [];
   stream.on('data', (buffer) => {
     buffers.push(buffer);
@@ -25,11 +27,12 @@ export const readFile = (directory, file, callback) => {
 };
 
 const directoryListing = (directory, callback) => {
+  console.log('list', directory)
   fileService.listFilesAndDirectoriesSegmented(
     'dicom',
     directory,
     null,
-    (error, result, response) => {
+    (error, result) => {
       if (result) {
         const {
           entries: {

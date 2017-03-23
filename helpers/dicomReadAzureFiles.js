@@ -7,12 +7,16 @@ const fileService = azure.createFileService(
   'https://multus.file.core.windows.net');
 
 export const readFile = (directory, file, callback) => {
-  const stream = fileService.createReadStream(
-    'dicom',
-    directory,
-    file,
-  );
-
+  let stream;
+  try {
+    stream = fileService.createReadStream(
+      'dicom',
+      directory,
+      file,
+    );
+  } catch(e) {
+    console.log('error', e);
+  }
   console.log('readfile', directory, file);
 
   const buffers = [];
@@ -24,33 +28,38 @@ export const readFile = (directory, file, callback) => {
     const tags = dicomReadImage(buffer);
     callback(undefined, { ...tags, directory, file });
   });
+
 };
 
 const directoryListing = (directory, callback) => {
   console.log('list', directory)
-  fileService.listFilesAndDirectoriesSegmented(
-    'dicom',
-    directory,
-    null,
-    (error, result) => {
-      if (result) {
-        const {
-          entries: {
-            files = [],
-            directories = [],
-          } = {},
-        } = result;
+  try {
+    fileService.listFilesAndDirectoriesSegmented(
+      'dicom',
+      directory,
+      null,
+      (error, result) => {
+        if (result) {
+          const {
+            entries: {
+              files = [],
+              directories = [],
+            } = {},
+          } = result;
 
-        files.forEach(({ name }) => {
-          readFile(directory, name, callback);
-        });
+          files.forEach(({ name }) => {
+            readFile(directory, name, callback);
+          });
 
-        directories.forEach(({ name }) => {
-          directoryListing(`${directory}/${name}`, callback);
-        });
+          directories.forEach(({ name }) => {
+            directoryListing(`${directory}/${name}`, callback);
+          });
+        }
       }
-    }
-  );
+    );
+  } catch(e) {
+    console.log('error', e);
+  }
 }
 
 export default (callback) => {

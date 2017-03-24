@@ -5,7 +5,11 @@ import {
   combineReducers,
 } from 'redux';
 import thunk from 'redux-thunk';
-import { persistStore, autoRehydrate } from 'redux-persist';
+import {
+  persistStore,
+  autoRehydrate,
+  createTransform,
+} from 'redux-persist';
 import { AsyncNodeStorage } from 'redux-persist-node-storage';
 import createLogger from 'redux-logger';
 import * as reducers from '../reducers';
@@ -24,7 +28,10 @@ const enhancer = compose(
 
 export default (initialState) => {
   const store = createStore(rootReducer, initialState, enhancer);
-  persistStore(store, { storage: new AsyncNodeStorage('../server-store') })
+
+  persistStore(store, {
+    storage: new AsyncNodeStorage('../server-store'),
+  })
 
   if (module.hot) {
     module.hot.accept('../reducers', () =>

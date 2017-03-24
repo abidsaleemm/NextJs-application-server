@@ -1,36 +1,14 @@
 import azure from 'azure-storage';
-import dicomReadImage from './dicomReadImage';
+import dicomReadAzure from './dicomReadAzure';
 
+// issue-1
+// TODO Might have to handle this under each function
 const fileService = azure.createFileService(
   'multus',
   'w9Qei6eOoqerSmw9msraYn6nNx45lr1++8EzvAnpKCib87pMGe4uhl/IszsJsTOY006XG68AFGER3nGmBjLElQ==',
   'https://multus.file.core.windows.net');
 
-export const readFile = (directory, file, callback) => {
-  let stream;
-  try {
-    stream = fileService.createReadStream(
-      'dicom',
-      directory,
-      file,
-    );
-  } catch(e) {
-    console.log('error', e);
-  }
-  console.log('readfile', directory, file);
-
-  const buffers = [];
-  stream.on('data', (buffer) => {
-    buffers.push(buffer);
-  });
-  stream.on('end', () => {
-    const buffer = Buffer.concat(buffers);
-    const tags = dicomReadImage(buffer);
-    callback(undefined, { ...tags, directory, file });
-  });
-
-};
-
+// TODO Clean up this recursion
 const directoryListing = (directory, callback) => {
   console.log('list', directory)
   try {
@@ -39,6 +17,10 @@ const directoryListing = (directory, callback) => {
       directory,
       null,
       (error, result) => {
+        if (error) {
+          console.log('error', error)
+        }
+
         if (result) {
           const {
             entries: {
@@ -48,7 +30,7 @@ const directoryListing = (directory, callback) => {
           } = result;
 
           files.forEach(({ name }) => {
-            readFile(directory, name, callback);
+            dicomReadAzure(directory, name, callback);
           });
 
           directories.forEach(({ name }) => {
@@ -62,6 +44,7 @@ const directoryListing = (directory, callback) => {
   }
 }
 
+// TODO Clean up this recursion
 export default (callback) => {
   directoryListing('', callback);
 }

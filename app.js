@@ -1,21 +1,21 @@
 import fs from 'fs';
 import express from 'express';
 import { createStore } from 'redux';
-import dicomScanDirectory from './actions/dicomScanDirectory';
-import dicomReadImage from './helpers/dicomReadImage';
-import { readFile } from './helpers/dicomReadAzureFiles';
+import dicomScan from './actions/dicomScan';
+import dicomReadRaw from './helpers/dicomReadRaw';
+import dicomReadFile from './helpers/dicomReadFile';
 import configureStore from './store/configureStore';
 
 import projectAdd from './actions/projectAdd';
+import projectUpdate from './actions/projectUpdate';
 import projectGet from './selectors/projectGet';
 
 // Set up express server
 const app = express();
 const store = configureStore();
 
-console.log('Scaning dicom directory')
-store.dispatch(dicomScanDirectory('../sample-data'));
-console.log('Scaning dicom directory Done.')
+console.log('Scaning dicom files')
+store.dispatch(dicomScan());
 
 const { dispatch, getState } = store;
 
@@ -42,11 +42,14 @@ const processActions = (
           const { dicomStudies = [] } = getState();
 
           // TODO Check if project created
-
           socket.emit('action', {
             type: 'STUDIES',
             studies: dicomStudies,
           });
+        },
+        projectState: () => {
+          const { payload } = action;
+          dispatch(projectUpdate(payload));
         },
         selectStudy: () => {
           const {
@@ -56,6 +59,7 @@ const processActions = (
           } = getState();
 
           const { studyUID } = action;
+
           if (projectGet(projects)(studyUID) === undefined) {
             console.log('Creating project', studyUID);
             dispatch(projectAdd(studyUID));
@@ -63,10 +67,12 @@ const processActions = (
 
           const project = projectGet(getState().projects)(studyUID);
 
+          // issue-2
+          // Create a sperate way
           dicomImages
             .filter(v => v.studyUID === studyUID)
             .forEach(({ directory, file }) => {
-              readFile(directory, file, (err, actionData) => {
+              dicomReadFile(directory, file, (err, actionData) => {
                 socket.emit('action', {
                   type: 'DICOM_DATA',
                   ...actionData,
@@ -74,28 +80,10 @@ const processActions = (
               });
             })
 
-          const { discs, vertebra, segments } = project;
-
-          // Send all init actions
+          // This will merge object on client
           socket.emit('action', {
-            type: 'SPINE_SEGMENTS',
-            segments,
-          });
-
-          socket.emit('action', {
-            type: 'SPINE_VERTEBRA',
-            vertebra,
-          });
-
-          socket.emit('action', {
-            type: 'SPINE_DISCS',
-            discs,
-          });
-
-          // Send StudyUID
-          socket.emit('action', {
-            type: 'STUDY_SELECT',
-            studyUID,
+            type: 'PROJECT_PAYLOAD',
+            project,
           });
         },
       });
@@ -110,8 +98,6 @@ io.on('connection', socket => {
     action.type = action.type.replace(/^(server\/)/, '');
     console.log('action.type', action.type)
     processActions(store, action, socket);
-
-    // socket.emit('action', processActions(store, action));
   });
 
   socket.on('disconnect', error => {

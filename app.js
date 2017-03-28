@@ -4,8 +4,11 @@ import { createStore } from 'redux';
 import dicomScan from './actions/dicomScan';
 import dicomReadRaw from './helpers/dicomReadRaw';
 import dicomReadFile from './helpers/dicomReadFile';
+import dicomVolume from './helpers/dicomVolume';
+
 import configureStore from './store/configureStore';
 
+// Actions
 import projectAdd from './actions/projectAdd';
 import projectUpdate from './actions/projectUpdate';
 import projectGet from './selectors/projectGet';
@@ -15,7 +18,9 @@ const app = express();
 const store = configureStore();
 
 console.log('Scaning dicom files')
+// TODO clean this up calls could overlap
 store.dispatch(dicomScan());
+// setInterval(() => store.dispatch(dicomScan()), 5000);
 
 const { dispatch, getState } = store;
 
@@ -51,9 +56,26 @@ const processActions = (
           const { payload } = action;
           dispatch(projectUpdate(payload));
         },
+        selectSeries: () => {
+          const { studyUID, seriesUID } = action;
+          const { dicomImages = [] } = getState();
+
+          const volumePromise =
+            dicomVolume(dicomImages, studyUID, seriesUID);
+
+          volumePromise.then(volume => {
+            console.log('Sending volume payload');
+            socket.emit('action', {
+              type: 'VOLUME_SET',
+              volume,
+            });
+          });
+
+        },
         selectStudy: () => {
           const {
             dicomStudies,
+            dicomSeries = [],
             dicomImages = [],
             projects,
           } = getState();
@@ -67,23 +89,38 @@ const processActions = (
 
           const project = projectGet(getState().projects)(studyUID);
 
-          // issue-2
-          // Create a sperate way
-          dicomImages
-            .filter(v => v.studyUID === studyUID)
-            .forEach(({ directory, file }) => {
-              dicomReadFile(directory, file, (err, actionData) => {
-                socket.emit('action', {
-                  type: 'DICOM_DATA',
-                  ...actionData,
-                });
-              });
-            })
+          let { selectedSeries = '' } = project;
+          const selectedDicomSeries = dicomSeries
+            .filter(v => v.studyUID === studyUID);
+
+          const { 0: {
+            seriesUID: firstSeries = '',
+          } = {} } = selectedDicomSeries;
+
+          selectedSeries = selectedSeries === '' ?
+            firstSeries : selectedSeries;
+
+          console.log('selectedSeries', selectedSeries)
+
+          const volumePromise =
+            dicomVolume(dicomImages, studyUID, selectedSeries);
+
+          volumePromise.then(volume => {
+            console.log('Sending volume payload');
+            socket.emit('action', {
+              type: 'VOLUME_SET',
+              volume,
+            });
+          });
 
           // This will merge object on client
           socket.emit('action', {
             type: 'PROJECT_PAYLOAD',
-            project,
+            project: {
+              ...project,
+              dicomSeries: dicomSeries
+                .filter(v => v.studyUID === studyUID),
+            },
           });
         },
       });

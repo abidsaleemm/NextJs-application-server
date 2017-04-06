@@ -1,7 +1,25 @@
-// if (process.env.NODE_ENV === 'production') {
-//   module.exports = require('./configureStore.production'); // eslint-disable-line global-require
-// } else {
-//   module.exports = require('./configureStore.development'); // eslint-disable-line global-require
-// }
+import {
+  createStore,
+  applyMiddleware,
+  compose,
+  combineReducers,
+} from 'redux';
+import thunk from 'redux-thunk';
+import persistProjects from './persistProjects';
+import * as reducers from '../reducers';
 
-module.exports = require('./configureStore.development');
+const rootReducer = combineReducers({
+  ...reducers,
+});
+
+const enhancer = compose(
+  persistProjects(),
+  applyMiddleware(thunk)
+);
+
+export default (adapter) =>
+  createStore(
+    rootReducer,
+    {},
+    enhancer
+  );

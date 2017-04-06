@@ -17,10 +17,10 @@ import projectGet from './selectors/projectGet';
 const app = express();
 const store = configureStore();
 
-console.log('Scaning dicom files')
-// TODO clean this up calls could overlap
+console.log('Scaning dicom files');
+
+// issue-3
 store.dispatch(dicomScan());
-// setInterval(() => store.dispatch(dicomScan()), 5000);
 
 const { dispatch, getState } = store;
 

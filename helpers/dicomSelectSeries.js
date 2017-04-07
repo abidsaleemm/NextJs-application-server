@@ -1,5 +1,3 @@
-// TODO finish this up
-
 import dicomVolume from './dicomVolume';
 
 export default (dicomImages, studyUID, seriesUID) => {

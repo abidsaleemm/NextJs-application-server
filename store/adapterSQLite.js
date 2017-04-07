@@ -1,8 +1,10 @@
 import sqlite3 from 'sqlite3';
 
+const databasePath = './localdb/multus.db';
+
 // issue-4
 // issue-6
-export default (databasePath = '') => ({
+export default () => ({
   getProjects: (callback = () => {}) => {
     try {
       const db = new sqlite3.Database(databasePath); // issue-5

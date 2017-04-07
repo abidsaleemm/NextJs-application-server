@@ -7,19 +7,20 @@ import {
 import thunk from 'redux-thunk';
 import persistProjects from './persistProjects';
 import * as reducers from '../reducers';
+import adapterSQLite from './adapterSQLite';
+import adapterAzureSQL from './adapterAzureSQL';
 
-const rootReducer = combineReducers({
-  ...reducers,
-});
+const adapter = process.env.NODE_ENV === 'local' ?
+  adapterSQLite('./localdb/multus.db') : adapterAzureSQL();
 
 const enhancer = compose(
-  persistProjects(),
+  persistProjects(adapter),
   applyMiddleware(thunk)
 );
 
 export default (adapter) =>
   createStore(
-    rootReducer,
+    combineReducers({ ...reducers }),
     {},
     enhancer
   );

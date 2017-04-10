@@ -33,6 +33,7 @@
     "socket.io": "^1.7.3",
     "tedious": "^2.0.0",
     "three": "^0.84.0",
+    "uuid": "^3.0.1",
     "walk": "^2.3.9"
   },
   "devDependencies": {

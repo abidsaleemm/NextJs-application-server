@@ -10,7 +10,6 @@ const fileService = azure.createFileService(
 
 // TODO Clean up this recursion
 const directoryListing = (directory, callback) => {
-  console.log('list', directory)
   try {
     fileService.listFilesAndDirectoriesSegmented(
       'dicom',

@@ -20,8 +20,6 @@ export default (directory, file, callback) => {
     console.log('error', e);
   }
 
-  console.log('readfile', directory, file);
-
   const buffers = [];
   stream.on('data', (buffer) => {
     buffers.push(buffer);

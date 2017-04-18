@@ -125,6 +125,7 @@ const processActions = (
         },
       });
 
+// TODO Move this to seperate file and cut up
 const io = require('socket.io').listen(server);
 
 // Handle socket connections

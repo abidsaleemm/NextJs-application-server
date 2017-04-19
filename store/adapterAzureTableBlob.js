@@ -2,6 +2,7 @@ import azure from 'azure-storage';
 import uuid from 'uuid';
 import zlib from 'zlib';
 import streamBuffers from 'stream-buffers';
+import leftPad from 'left-pad';
 
 // issue-1 remove these from source before REKEY
 process.env.AZURE_STORAGE_ACCOUNT = 'multus';
@@ -11,8 +12,8 @@ const tableSvc = azure.createTableService();
 const blobSvc = azure.createBlobService();
 
 // Helper Functions
-const lookupLast = (studyUID, callback) => {
-  tableSvc.retrieveEntity('projects', studyUID, 'index', (error, result, response) => {
+const lookupLast = (tableName, studyUID, callback) => {
+  tableSvc.retrieveEntity(tableName, studyUID, 'index', (error, result, response) => {
     if (error) {
       callback(error);
       return;
@@ -22,37 +23,35 @@ const lookupLast = (studyUID, callback) => {
   });
 }
 
-const insertSnapshotID = ({ id = 0, studyUID, data, etag }, callback) => {
+const insertSnapshotID = (tableName, id = 0, studyUID, data, etag, callback) => {
   const batch = new azure.TableBatch();
-
-  console.log('New id', id);
   const blobKey = uuid();
   const record = {
-    PartitionKey: { '_': studyUID },      
-    RowKey: { '_': id.toString() },
+    PartitionKey: { '_': studyUID },
+    RowKey: { '_': leftPad(id, 6, 0) },
     blobKey: { '_': blobKey },
     // md5, // issue-10 Handle Checksum
   };
 
-  batch.insertEntity(record, { echoContent: true });
+  batch.insertEntity(record);
   batch.insertOrMergeEntity({
     PartitionKey: { '_': studyUID },      
     RowKey: { '_': 'index' },
     index: { '_': id },
-    '.mlookupSnapshotBlobetadata': { etag },
-  }, { echoContent: true });
+    '.metadata': { etag },
+  });
 
-  tableSvc.executeBatch('projects', batch, (error, result, response) => {
-    if(error) {
+  tableSvc.executeBatch(tableName, batch, (error, result, response) => {
+    if (error) {
       callback(error);
       return;
     }
 
-    insertSnapshotBlob(blobKey, data, callback);
+    insertSnapshotBlob(tableName, blobKey, data, callback);
   });
 }
 
-const insertSnapshotBlob = (name, data, callback) => {
+const insertSnapshotBlob = (tableName, name, data, callback) => {
   const json = JSON.stringify(data);
 
   const metricStartZip = new Date();  
@@ -72,7 +71,7 @@ const insertSnapshotBlob = (name, data, callback) => {
     readStream.stop();
     
     const metricStartBlob = new Date();  
-    blobSvc.createBlockBlobFromStream('projects', name, readStream, length, (error, response) => {
+    blobSvc.createBlockBlobFromStream(tableName, name, readStream, length, (error, response) => {
       if (error) {
         callback(error);
         return;
@@ -85,10 +84,10 @@ const insertSnapshotBlob = (name, data, callback) => {
   });
 };
 
-const lookupSnapshotBlob = (name = '', callback) => {
+const lookupSnapshotBlob = (tableName, name = '', callback) => {
   const writeStream = new streamBuffers.WritableStreamBuffer();
 
-  blobSvc.getBlobToStream('projects', name, writeStream, (error, result, response) => {
+  blobSvc.getBlobToStream(tableName, name, writeStream, (error, result, response) => {
     if (error) {
       callback(error);
       return;
@@ -106,8 +105,8 @@ const lookupSnapshotBlob = (name = '', callback) => {
   });
 };
 
-const lookupProject = (studyUID, id = 0, callback) => {
-  tableSvc.retrieveEntity('projects', studyUID, id.toString(), (error, result, response) => {
+const lookupProject = (tableName, studyUID, id = 0, callback) => {
+  tableSvc.retrieveEntity(tableName, studyUID, leftPad(id, 6, 0), (error, result, response) => {
     if (error) {
       callback(error);
       return;
@@ -117,11 +116,11 @@ const lookupProject = (studyUID, id = 0, callback) => {
   });
 }
 
-const queryProjects = (callback) => {
+const queryProjects = (tableName, callback) => {
   const query = new azure.TableQuery()
     .where('RowKey eq ?', 'index');
 
-  tableSvc.queryEntities('projects', query, null, (error, result, response) => {
+  tableSvc.queryEntities(tableName, query, null, (error, result, response) => {
     if (error) {
       callback(error);
       return;
@@ -131,19 +130,35 @@ const queryProjects = (callback) => {
   });
 }
 
-export default () => {
+export default (tableName = 'projects') => {
+  // TODO Create table AND Blob container  if doesn't exist
+  tableSvc.createTableIfNotExists(tableName, (error, result, response) => {
+    if (error){
+      // TODO Handle error
+    }
+
+
+  });
+
+  blobSvc.createContainerIfNotExists(tableName, (error, result, response) => {
+    if (error){
+      // TODO Handle error
+    }
+
+  });
+
   return {
     getProjects: (callback = () => {}) => {
-      queryProjects((error, { entries = []}, response) => {
+      queryProjects(tableName, (error, { entries = []}, response) => {
         const retPromises = entries.map(({ PartitionKey: { '_': PartitionKey }, index: { '_': index } }) => 
           new Promise((resolve, reject) => {
-            lookupProject(PartitionKey, index, (error, { blobKey: { '_': blobKey = ''} = {} }) => {
+            lookupProject(tableName, PartitionKey, index, (error, { blobKey: { '_': blobKey = ''} = {} } = {}) => {
               if (error) {
                 reject(error);
               }
               
               // Get Blob
-              lookupSnapshotBlob(blobKey, (error, content) => {
+              lookupSnapshotBlob(tableName, blobKey, (error, content) => {
                 if (error) {
                   reject(error);
                 }
@@ -159,8 +174,8 @@ export default () => {
       });
     },
     setProject: (studyUID = null, data = {}, callback = () => {}) => {
-      lookupLast(studyUID, (error, { index: { '_': index = 0 } = {}, '.metadata': { etag } = {} } = {}, response) => {
-        insertSnapshotID({ id: index + 1, data, studyUID, etag },  (error) => {
+      lookupLast(tableName, studyUID, (error, { index: { '_': index = 0 } = {}, '.metadata': { etag } = {} } = {}, response) => {
+        insertSnapshotID(tableName, index + 1, studyUID, data, etag,  (error) => {
           console.log('Snapshot saved', error);
         });
       });

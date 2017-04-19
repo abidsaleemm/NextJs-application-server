@@ -49,7 +49,6 @@ export default (adapter) => (createStore) => (reducer, initialState) => {
 
     if (projects !== projectsPrev) {
       const diff = array.difference(projectsPrev, projects);
-      // console.log('diff', diff);
 
       diff.forEach(project => {
         const { studyUID } = project;

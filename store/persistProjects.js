@@ -1,10 +1,8 @@
 import { applyMiddleware, compose } from 'redux';
 import array from 'lodash/array';
-// import shallowDiff from 'shallow-diff';
 
 // const persistProjectsMiddleware = (adapter) => (store) => (next) => (action) => {
 //   const { projects: projectsPrev } = store.getState();
-
 //   const result = next(action);
 //   const { projects } = store.getState();
 
@@ -12,13 +10,11 @@ import array from 'lodash/array';
 //     const diff = array.difference(projectsPrev, projects);
 //     diff.forEach(project => {
 //       const { studyUID } = project;
-
 //       if (studyUID !== undefined) {
 //         adapter.setProject(studyUID, project);
 //       }
 //     })
 //   }
-
 //   return result;
 // };
 

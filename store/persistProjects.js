@@ -29,15 +29,11 @@ const mergeState = (merge = (i, p) =>
   };
 
 export default (adapter) => (createStore) => (reducer, initialState) => {
-  const enhancer = applyMiddleware(
-    // persistProjectsMiddleware(adapter)
-  );
-
   const persistReducer = compose(
     mergeState(),
   )(reducer);
 
-  const store = enhancer(createStore)(persistReducer, initialState);
+  const store = createStore(persistReducer, initialState);
 
   adapter.getProjects((err, projects = []) => {
     store.dispatch({

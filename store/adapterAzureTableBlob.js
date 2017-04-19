@@ -55,8 +55,8 @@ const insertSnapshotID = ({ id = 0, studyUID, data, etag }, callback) => {
 const insertSnapshotBlob = (name, data, callback) => {
   const json = JSON.stringify(data);
 
-  // console.log(c.toLocaleDateString()+ ' ' + c.toLocaleTimeString());
   const metricStartZip = new Date();  
+  
   // Zip contents
   zlib.gzip(json, (error, result) => {
     if (error) {

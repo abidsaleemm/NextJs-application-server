@@ -54,7 +54,9 @@ const insertSnapshotID = ({ id = 0, studyUID, data, etag }, callback) => {
 
 const insertSnapshotBlob = (name, data, callback) => {
   const json = JSON.stringify(data);
-  
+
+  // console.log(c.toLocaleDateString()+ ' ' + c.toLocaleTimeString());
+  const metricStartZip = new Date();  
   // Zip contents
   zlib.gzip(json, (error, result) => {
     if (error) {
@@ -62,18 +64,21 @@ const insertSnapshotBlob = (name, data, callback) => {
       return;
     }
 
+    console.log(`Zip Duration ${(((new Date()) - metricStartZip) / 1000)} secs`);
+
     const readStream = new streamBuffers.ReadableStreamBuffer();
     const length = result.length;
     readStream.put(result);
     readStream.stop();
     
+    const metricStartBlob = new Date();  
     blobSvc.createBlockBlobFromStream('projects', name, readStream, length, (error, response) => {
       if (error) {
         callback(error);
         return;
       }
           
-      console.log('Blob Saved', name);
+      console.log(`Blob Saved ${name} Duration ${(((new Date()) - metricStartBlob) / 1000)} sec`);
       callback(null);
     });
 

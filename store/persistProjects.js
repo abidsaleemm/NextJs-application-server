@@ -1,26 +1,26 @@
 import { applyMiddleware, compose } from 'redux';
 import array from 'lodash/array';
-// import adapterSQLite from './adapterSQLite'; // TODO use this as a default
+// import shallowDiff from 'shallow-diff';
 
-const persistProjectsMiddleware = (adapter) => (store) => (next) => (action) => {
-  const { projects: projectsPrev } = store.getState();
+// const persistProjectsMiddleware = (adapter) => (store) => (next) => (action) => {
+//   const { projects: projectsPrev } = store.getState();
 
-  const result = next(action);
-  const { projects } = store.getState();
+//   const result = next(action);
+//   const { projects } = store.getState();
 
-  if (projects !== projectsPrev) {
-    const diff = array.difference(projectsPrev, projects);
-    diff.forEach(project => {
-      const { studyUID } = project;
+//   if (projects !== projectsPrev) {
+//     const diff = array.difference(projectsPrev, projects);
+//     diff.forEach(project => {
+//       const { studyUID } = project;
 
-      if (studyUID !== undefined) {
-        adapter.setProject(studyUID, project);
-      }
-    })
-  }
+//       if (studyUID !== undefined) {
+//         adapter.setProject(studyUID, project);
+//       }
+//     })
+//   }
 
-  return result;
-};
+//   return result;
+// };
 
 // Higher order reducer
 const mergeState = (merge = (i, p) =>
@@ -34,7 +34,7 @@ const mergeState = (merge = (i, p) =>
 
 export default (adapter) => (createStore) => (reducer, initialState) => {
   const enhancer = applyMiddleware(
-    persistProjectsMiddleware(adapter)
+    // persistProjectsMiddleware(adapter)
   );
 
   const persistReducer = compose(
@@ -49,6 +49,27 @@ export default (adapter) => (createStore) => (reducer, initialState) => {
       payload: { projects },
     });
   });
+
+  // Use an interval to save the state
+  let projectsPrev = [];
+  const stateSyncInterval = setInterval(() => {
+    const { projects } = store.getState();
+
+    if (projects !== projectsPrev) {
+      const diff = array.difference(projectsPrev, projects);
+      // console.log('diff', diff);
+
+      diff.forEach(project => {
+        const { studyUID } = project;
+
+        if (studyUID !== undefined) {
+          adapter.setProject(studyUID, project);
+        }
+      })
+    }
+
+    projectsPrev = projects;
+  }, 5000);
 
   return store;
 };

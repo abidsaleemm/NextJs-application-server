@@ -23,7 +23,6 @@ console.log('Scaning dicom files');
 store.dispatch(dicomScan());
 
 const { dispatch, getState } = store;
-
 const port = process.env.PORT || 3000;
 app.set('port', port);
 app.use('/', express.static('./dist'));

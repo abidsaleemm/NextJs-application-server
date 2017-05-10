@@ -7,12 +7,6 @@ var azure = require('azure-storage');
 var zlib = require('zlib');
 var streamBuffers = require('stream-buffers');
 
-
-// configure app to use bodyParser()
-// this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 process.env.AZURE_STORAGE_ACCOUNT = 'multus';
 process.env.AZURE_STORAGE_ACCESS_KEY = 'w9Qei6eOoqerSmw9msraYn6nNx45lr1++8EzvAnpKCib87pMGe4uhl/IszsJsTOY006XG68AFGER3nGmBjLElQ==';
 
@@ -22,6 +16,94 @@ const blobSvc = azure.createBlobService();
 // routes.get('/test', function (req, res) {
 //   res.send('Test');
 // });
+
+routes.get('/getProjects/:tableName/:selectors*?', function(req, res) {
+    const tableName = req.params.tableName;
+    const selectorsInput = req.params.selectors;
+    var selectors = [];
+    if (selectorsInput != null) {
+        selectors = selectorsInput.split("+");
+    }
+    const query = new azure.TableQuery()
+        .where('RowKey eq ?', 'index')
+        .select(selectors);
+
+    tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
+        if (!error) {
+            res.send(result.entries);
+        }
+    });
+});
+
+routes.get('/getProject/:tableName/:projectid/:selectors*?', function(req, res) {
+    const tableName = req.params.tableName;
+    const projectQuery = req.params.projectid;
+    const selectorsInput = req.params.selectors;
+    var selectors = [];
+    if (selectorsInput != null) {
+        selectors = selectorsInput.split("+");
+    }
+    const query = new azure.TableQuery()
+        .where('PartitionKey eq ?', projectQuery)
+        .select(selectors);
+
+    tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
+        if (!error) {
+            //TODO: Add results.
+            res.send(result.entries);
+        }
+    });
+});
+
+routes.get('/getProjectSnapshot/:tableName/:projectid', function(req, res) {
+    var indexForBlob;
+    const tableName = req.params.tableName;
+    const projectQuery = req.params.projectid;
+    const query = new azure.TableQuery()
+        .where('PartitionKey eq ?', projectQuery)
+        .and('RowKey eq ?', 'index');
+    //.select(['blobKey', 'RowKey']);
+
+    tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
+        if (!error) {
+            indexForBlob = result.entries[0]['index']['_'];
+            const tempStr = indexForBlob.toString();
+            var numOfZeros = 6 - indexForBlob.toString().length;
+            var projectQuery2 = ('000000' + tempStr).substr(-6);
+
+            const query2 = new azure.TableQuery()
+                .where('RowKey eq ?', projectQuery2);
+
+            tableSvc.queryEntities(tableName, query2, null, function(error, result, response) {
+                if (!error) {
+                    const blobKey = result.entries[0]['blobKey']['_'];
+
+                    const writeStream = new streamBuffers.WritableStreamBuffer();
+
+                    blobSvc.getBlobToStream('projects', blobKey, writeStream, (error, result, response) => {
+                        if (error) {
+                            callback(error);
+                            return;
+                        }
+
+                        zlib.gunzip(writeStream.getContents(), (error, result) => {
+                            if (error) {
+                                callback(error);
+                                return;
+                            }
+                            
+                            const parsed = JSON.parse(result);
+                            const reverse = JSON.stringify(parsed)
+                            res.send(reverse);
+                        });
+                    });
+
+                }
+            });
+
+        }
+    });
+});
 
 // lists blobs in a container 
 routes.get('/getBlobList', function(req, res) {
@@ -57,84 +139,6 @@ routes.get('/getSnapshotBlob', function(req, res) {
             res.send(parsed);
             // callback(null, parsed);
         });
-    });
-});
-
-routes.get('/getProjects', function(req, res) {
-    const query = new azure.TableQuery()
-        .where('RowKey eq ?', 'index');
-
-    tableSvc.queryEntities('projects', query, null, function(error, result, response) {
-        if (!error) {
-            res.send(result.entries);
-        }
-    });
-});
-
-routes.get('/getProject/:projectid/:selectors*?', function(req, res) {
-    const projectQuery = req.params.projectid;
-    const selectorsInput = req.params.selectors;
-    var selectors = [];
-    if (selectorsInput != null) {
-        selectors = selectorsInput.split("+");
-    }
-    const query = new azure.TableQuery()
-        .where('PartitionKey eq ?', projectQuery)
-        .select(selectors);
-
-    tableSvc.queryEntities('projects', query, null, function(error, result, response) {
-        if (!error) {
-            res.send(result.entries);
-        }
-    });
-});
-
-routes.get('/getProjectSnapshot/:projectid', function(req, res) {
-    var indexForBlob;
-    const projectQuery = req.params.projectid;
-    const query = new azure.TableQuery()
-        .where('PartitionKey eq ?', projectQuery)
-        .and('RowKey eq ?', 'index');
-    //.select(['blobKey', 'RowKey']);
-
-    tableSvc.queryEntities('projects', query, null, function(error, result, response) {
-        if (!error) {
-            indexForBlob = result.entries[0]['index']['_'];
-            const tempStr = indexForBlob.toString();
-            var numOfZeros = 6 - indexForBlob.toString().length;
-            var projectQuery2 = ('000000' + tempStr).substr(-6);
-
-            const query2 = new azure.TableQuery()
-                .where('RowKey eq ?', projectQuery2);
-
-            tableSvc.queryEntities('projects', query2, null, function(error, result, response) {
-                if (!error) {
-                    const blobKey = result.entries[0]['blobKey']['_'];
-
-                    const writeStream = new streamBuffers.WritableStreamBuffer();
-
-                    blobSvc.getBlobToStream('projects', blobKey, writeStream, (error, result, response) => {
-                        if (error) {
-                            callback(error);
-                            return;
-                        }
-
-                        zlib.gunzip(writeStream.getContents(), (error, result) => {
-                            if (error) {
-                                callback(error);
-                                return;
-                            }
-                            
-                            const parsed = JSON.parse(result);
-                            const reverse = JSON.stringify(parsed)
-                            res.send(reverse);
-                        });
-                    });
-
-                }
-            });
-
-        }
     });
 });
 

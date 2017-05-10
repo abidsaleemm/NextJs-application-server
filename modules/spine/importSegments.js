@@ -24,23 +24,23 @@ export default () => {
     { x: 0.08 * 50, y: 0.10 * 50} : { x: 0.11 * 50, y: 0.15 * 50 };
     const padding = nerveRoot ? 0.12 * 50 : 0.12 * 50;
     const paddingTail = nerveRoot ? 0.2 * 50 : 0.26 * 50;
-    const offsetRoot = -0.14 * 50;
+    // const offsetRoot = -0.14 * 50;
     const angle = 0;
-    const vertebraRotation = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
-    const vertebraOffset = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
-    const vertebraScale = {
-      x: 1,
-      y: 1,
-      z: 1,
-    };
+    // const vertebraRotation = {
+    //   x: 0,
+    //   y: 0,
+    //   z: 0,
+    // };
+    // const vertebraOffset = {
+    //   x: 0,
+    //   y: 0,
+    //   z: 0,
+    // };
+    // const vertebraScale = {
+    //   x: 1,
+    //   y: 1,
+    //   z: 1,
+    // };
 
     const center = {
       x: tail.x,
@@ -70,11 +70,11 @@ export default () => {
     if (!nerveRoot) {
       node = {
         ...node,
-        offsetRoot,
+        // offsetRoot,
         padding,
-        vertebraRotation,
-        vertebraOffset,
-        vertebraScale,
+        // vertebraRotation,
+        // vertebraOffset,
+        // vertebraScale,
       };
     }
 

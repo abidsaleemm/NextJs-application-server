@@ -4,10 +4,10 @@ import sortVertexGroups from './sortVertexGroups';
 
 export default (segments = []) =>
   segments
-    .map(({ name }) => importVertebra(name))
+    .map(segment => importVertebra(segment))
 
 // issue-65
-const importVertebra = (objectName) => {
+const importVertebra = ({ name: objectName, center }) => {
   const filePath = `modules/spine/models/${objectName}.json`;
   const data = fs.readFileSync(filePath);
   if (data) {
@@ -105,11 +105,11 @@ const importVertebra = (objectName) => {
       faceUvs,
       vertices: vertices.map(([x, y, z]) => ({ x, y, z })),
       visible: true,
-      // vertexGroups,
       discVertexGroups,
-      // position: { x: 0, y: 0, z: 0 }, // TODO add these back in
-      // rotation: { x: 0, y: 0, z: 0 }, // TODO add matrix instead
       name: objectName,
+      position: center,
+      rotation: { x: 0, y: 0, z: 0 },
+      scale: { x: 1, y: 1, z: 1 },
     };
   }
 };

@@ -27,6 +27,9 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 app.use('/', express.static('./dist'));
 
+const routes = require('./routes');
+app.use('/', routes);
+
 // Run server to listen on port 3000.
 const server = app.listen(port, () => {
   console.log(`listening on *:${port}`);

@@ -24,13 +24,20 @@ routes.get('/getProjects/:tableName/:selectors*?', function(req, res) {
     if (selectorsInput != null) {
         selectors = selectorsInput.split("+");
     }
+    if (selectors.length != 0 && !(selectors.includes('PartitionKey'|| selectors.includes('RowKey') || selectors.includes('index') || selectors.includes('blobKey') || selectors.includes('Timestamp'))))
+    {
+        res.write("Error");
+        res.end();
+    }
     const query = new azure.TableQuery()
         .where('RowKey eq ?', 'index')
         .select(selectors);
 
     tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
         if (!error) {
-            res.send(result.entries);
+            const data = JSON.stringify(result.entries);
+            res.write(data);
+            res.end();
         }
     });
 });
@@ -39,18 +46,38 @@ routes.get('/getProject/:tableName/:projectid/:selectors*?', function(req, res) 
     const tableName = req.params.tableName;
     const projectQuery = req.params.projectid;
     const selectorsInput = req.params.selectors;
+    var moreResultsString = "test";
     var selectors = [];
     if (selectorsInput != null) {
         selectors = selectorsInput.split("+");
     }
+    if (selectors.length != 0 && !(selectors.includes('PartitionKey'|| selectors.includes('RowKey') || selectors.includes('index') || selectors.includes('blobKey') || selectors.includes('Timestamp'))))
+    {
+        res.write("Error");
+        res.end();
+    }
     const query = new azure.TableQuery()
         .where('PartitionKey eq ?', projectQuery)
-        .select(selectors);
+        .select(selectors)
 
     tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
         if (!error) {
-            //TODO: Add results.
-            res.send(result.entries);
+            const initialResult = JSON.stringify(result.entries);
+            res.write(initialResult);
+            const listAdditionalTable = (tableName, query, moreResults) => {
+                if (moreResults != null) {
+                    tableSvc.queryEntities(tableName, query, moreResults, function(error, result, response) {
+                        if (!error) {
+                            const additionalResult = JSON.stringify(result.entries);
+                            res.write(additionalResult);
+                            listAdditionalTable(tableName, query, result.continuationToken);
+                        }
+                    });
+                } else {
+                    res.end();
+                }
+            }
+            listAdditionalTable(tableName, query, result.continuationToken);
         }
     });
 });
@@ -66,6 +93,9 @@ routes.get('/getProjectSnapshot/:tableName/:projectid', function(req, res) {
 
     tableSvc.queryEntities(tableName, query, null, function(error, result, response) {
         if (!error) {
+            const projectSnap = JSON.stringify(result.entries);
+            res.write(projectSnap);
+            console.log("projeectsnap");
             indexForBlob = result.entries[0]['index']['_'];
             const tempStr = indexForBlob.toString();
             var numOfZeros = 6 - indexForBlob.toString().length;
@@ -91,10 +121,11 @@ routes.get('/getProjectSnapshot/:tableName/:projectid', function(req, res) {
                                 callback(error);
                                 return;
                             }
-                            
+
                             const parsed = JSON.parse(result);
-                            const reverse = JSON.stringify(parsed)
-                            res.send(reverse);
+                            const reverse = JSON.stringify(parsed);
+                            res.write(reverse);
+                            res.end();
                         });
                     });
 
@@ -112,34 +143,34 @@ routes.get('/getBlobList', function(req, res) {
     });
 });
 
-// list of blobs with a specific prefix
-routes.get('/getBlobListByPrefix', function(req, res) {
-    var prefix = '-';
-    blobSvc.listBlobsSegmentedWithPrefix('projects', '4b7ea6a3-a61b-4600-bf99-b2899647f44e', null, function(error, blobs, result) {
-        res.send({ title: 'List of Blobs', serverBlobs: blobs.entries });
-    });
-});
+// // list of blobs with a specific prefix
+// routes.get('/getBlobListByPrefix', function(req, res) {
+//     var prefix = '-';
+//     blobSvc.listBlobsSegmentedWithPrefix('projects', '4b7ea6a3-a61b-4600-bf99-b2899647f44e', null, function(error, blobs, result) {
+//         res.send({ title: 'List of Blobs', serverBlobs: blobs.entries });
+//     });
+// });
 
-routes.get('/getSnapshotBlob', function(req, res) {
-    const writeStream = new streamBuffers.WritableStreamBuffer();
+// routes.get('/getSnapshotBlob', function(req, res) {
+//     const writeStream = new streamBuffers.WritableStreamBuffer();
 
-    blobSvc.getBlobToStream('projects', '20d8f287-3e66-4b34-a730-2185bda84c8f', writeStream, (error, result, response) => {
-        if (error) {
-            callback(error);
-            return;
-        }
+//     blobSvc.getBlobToStream('projects', '20d8f287-3e66-4b34-a730-2185bda84c8f', writeStream, (error, result, response) => {
+//         if (error) {
+//             callback(error);
+//             return;
+//         }
 
-        zlib.gunzip(writeStream.getContents(), (error, result) => {
-            if (error) {
-                callback(error);
-                return;
-            }
+//         zlib.gunzip(writeStream.getContents(), (error, result) => {
+//             if (error) {
+//                 callback(error);
+//                 return;
+//             }
 
-            const parsed = JSON.parse(result);
-            res.send(parsed);
-            // callback(null, parsed);
-        });
-    });
-});
+//             const parsed = JSON.parse(result);
+//             res.send(parsed);
+//             // callback(null, parsed);
+//         });
+//     });
+// });
 
 module.exports = routes;

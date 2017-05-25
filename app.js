@@ -5,13 +5,14 @@ import dicomScan from './actions/dicomScan';
 import dicomReadRaw from './helpers/dicomReadRaw';
 import dicomReadFile from './helpers/dicomReadFile';
 import dicomVolume from './helpers/dicomVolume';
-
 import configureStore from './store/configureStore';
 
 // Actions
 import projectAdd from './actions/projectAdd';
 import projectUpdate from './actions/projectUpdate';
 import projectGet from './selectors/projectGet';
+
+import auth from './authentication'
 
 // Set up express server
 const app = express();
@@ -27,8 +28,8 @@ const port = process.env.PORT || 3000;
 app.set('port', port);
 app.use('/', express.static('./dist'));
 
-const routes = require('./routes');
-app.use('/', routes);
+// const routes = require('./routes');
+// app.use('/', routes);
 
 // Run server to listen on port 3000.
 const server = app.listen(port, () => {
@@ -126,6 +127,8 @@ const processActions = (
           });
         },
       });
+
+const runAuth = auth(app);
 
 // TODO Move this to seperate file and cut up
 const io = require('socket.io').listen(server);

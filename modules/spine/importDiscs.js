@@ -43,6 +43,7 @@ export default () => {
           top: { distance, offset },
           middle: { distance, offset },
           bottom: { distance, offset },
+          inner: { distance, offset },
         }),
       }]
     )

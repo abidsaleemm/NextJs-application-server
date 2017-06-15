@@ -11,6 +11,6 @@ pids
 node_modules
 .DS_Store
 
-projects/
+projectsLocal/
 .vscode
 dist

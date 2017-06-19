@@ -1,8 +1,8 @@
-import fs from 'fs';
-import low from 'lowdb';
-import uuid from 'uuid';
+import fs from "fs";
+import low from "lowdb";
+import uuid from "uuid";
 
-export const path = './projectsLocal';
+export const path = "./projectsLocal";
 
 // Add path if doesn't exist
 const checkExists = () => {
@@ -14,24 +14,26 @@ const checkExists = () => {
   if (fs.existsSync(snapshotDir) === false) {
     fs.mkdirSync(snapshotDir);
   }
-}
+};
 
 export const queryProjectList = async () => {
   checkExists();
-  const projects = fs.readdirSync(path)
-    .map(v => JSON.parse(fs.readFileSync(`${path}/${v}`)))
-  callback(null, projects)
+
+  const projects = fs
+    .readdirSync(path)
+    .map(v => JSON.parse(fs.readFileSync(`${path}/${v}`)));
+
+  // callback(null, projects)
 };
 
 export const queryProject = async ({ studyUID }) => {
+  checkExists();
+
   const db = low(`${path}/projects.json`);
 
-  db.defaults({ projects: [] })
-    .write();
+  db.defaults({ projects: [] }).write();
 
-  const project = db.get('projects')
-    .find({ studyUID: studyUID })
-    .value();
+  const project = db.get("projects").find({ studyUID: studyUID }).value();
 
   if (project !== undefined) {
     const { snapshot: snapShotUID } = project;
@@ -41,7 +43,7 @@ export const queryProject = async ({ studyUID }) => {
   }
 };
 
-export const createSnaphot = async ({ studyUID = '_', payload = {} }) => {
+export const createSnaphot = async ({ studyUID = "_", payload = {} }) => {
   checkExists(); // TODO Wrap this in high order function
 
   const snapShotUID = uuid();
@@ -52,23 +54,24 @@ export const createSnaphot = async ({ studyUID = '_', payload = {} }) => {
   );
 
   const db = low(`${path}/projects.json`);
-  const ret = db.get('projects')
-    .find({ studyUID: studyUID })
-    .value();
+  const ret = db.get("projects").find({ studyUID: studyUID }).value();
 
-  if (ret === undefined) { // create
-    db.get('projects')
+  if (ret === undefined) {
+    // create
+    db
+      .get("projects")
       .push({ studyUID, snapshot: snapShotUID, snapshots: [snapShotUID] })
       .write();
-  } else { // update
-    const value = db.get('projects')
+  } else {
+    // update
+    const value = db
+      .get("projects")
       .find({ studyUID })
       .assign({ snapshot: snapShotUID })
       .write()
       .value();
 
-    console.log('value', value)
+    console.log("value", value);
     // add snapshot
-
   }
 };

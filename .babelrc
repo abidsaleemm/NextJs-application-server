@@ -1,4 +1,33 @@
 {
-  "presets": ["es2015", "stage-0", "stage-3"],
-  "plugins": []
+  "presets": [
+    "next/babel",
+    "es2015",
+    "stage-0",
+    "stage-3",
+    "react"
+  ],
+  "plugins": [
+    "transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": [
+          "."
+        ],
+        "alias": {
+          "styles": "./styles"
+        },
+        "cwd": "babelrc"
+      }
+    ],
+    [
+      "wrap-in-js",
+      {
+        "extensions": [
+          "css$",
+          "scss$"
+        ]
+      }
+    ]
+  ]
 }

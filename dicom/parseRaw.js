@@ -1,4 +1,3 @@
-import fs from 'fs';
 import dicomParser from 'dicom-parser';
 
 export default (data) => {

@@ -11,7 +11,7 @@ RUN npm install
 # Bundle app source
 COPY . /usr/src/app
 
-EXPOSE 8080
+EXPOSE 3000
 
 ENV APPSETTING_CONTAINER dicom0001
 ENV APPSETTING_STORAGE2 nhf

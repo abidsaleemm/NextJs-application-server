@@ -5,7 +5,7 @@ import auth from './auth';
 
 import { queryStudies } from './dicom';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 const ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {

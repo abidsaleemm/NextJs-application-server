@@ -8,6 +8,8 @@ TODO Server application:
 
 - Node > 7 & NPM
 - Express
+- Nextjs
+- React
 - PassportJS
 - Websockets (Socket.io)
 - Azure AD
@@ -17,7 +19,7 @@ TODO Server application:
 
 ### Getting started
 
-```bash
+```sh
 git clone git@bitbucket.org:interbizconsulting/application-server.git
 cd application-server
 npm install
@@ -33,7 +35,18 @@ TODO add additional run commands.
 
 # Azure Deployment
 
-TODO This is probably going to be handled through DockerHub CI.
+Login using the following commands.  NOTE: You might have to sudo.
+
+```sh
+docker login -u $DOCKER_USER -p $DOCKER_PASS
+```
+
+Building and pushing to Docker Hub.
+
+```sh
+docker build -t hackexpert/multus .
+docker push hackexpert/multus
+```
 
 # Kudu advanded tools
 
@@ -50,6 +63,6 @@ NOTE:  This has been problematic and might not work.  If this is the case usuall
 Mounts a directory.
 
 ```bash
-curlftpfs -d -v  -o user=multus:{PASSWORD},ssl waws-prod-bay-063.ftp.azurewebsites.windows.net {MOUNT_POINT}
+curlftpfs -d -v  -o user=multus:$PASSWORD,ssl waws-prod-bay-063.ftp.azurewebsites.windows.net $MOUNT_POINT
 ```
 

@@ -6,5 +6,5 @@ pipelines:
           - docker build -t hackexpert/multus:$BITBUCKET_COMMIT .
           - docker push hackexpert/multus:$BITBUCKET_COMMIT
 
-option:
+options:
   docker: true

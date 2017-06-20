@@ -4,7 +4,7 @@
   "description": "",
   "author": "Warren Goble <warren@hack.expert>",
   "scripts": {
-    "start": "node -r babel-register ./loader.js",
+    "start": "node ./loader.js",
     "dev": "cross-env NODE_ENV=dev APPSETTING_CONTAINER=dicom0001 APPSETTING_STORAGE2=nhf APPSETTING_STORAGE2_KEY=4l5r4ZIOvbjQJ2/QBzCk/51RasPIkmvBhbnBMrp3sCCBamPK0pTIDuS3Hna6Hpp8P6J4kfPmjbuR9EmyQ5ujew== APPSETTING_STORAGE=multus APPSETTING_STORAGE_KEY=w9Qei6eOoqerSmw9msraYn6nNx45lr1++8EzvAnpKCib87pMGe4uhl/IszsJsTOY006XG68AFGER3nGmBjLElQ== node ./loader.js"
   },
   "dependencies": {

@@ -1,0 +1,11 @@
+pipelines:
+  default:
+    - step:
+        script:
+          - apt-get update
+          - npm install
+          - npm run build
+          - mkdir deploy
+          - apt-get install -y curlftpfs
+          # - npm install -g git-directory-deploy
+          # - git-directory-deploy --directory dist --username 'Bitbucket Deploy' --email 'warren@hack.expert' --repo git@bitbucket.org:interbizconsulting/application-server.git --branch production

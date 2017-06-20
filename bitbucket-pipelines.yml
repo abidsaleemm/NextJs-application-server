@@ -2,13 +2,9 @@ pipelines:
   default:
     - step:
         script:
-          - apt-get update
-          - npm install
-          - apt-get install -y lftp
-          # - mkdir deploy
-          # - apt-get install -y curlftpfs
-          # - curlftpfs -d -v  -o user=multus:$PASSWORD,ssl waws-prod-bay-063.ftp.azurewebsites.windows.net ./deploy
-          # - cd deploy
-          # - ls
-          # - npm install -g git-directory-deploy
-          # - git-directory-deploy --directory dist --username 'Bitbucket Deploy' --email 'warren@hack.expert' --repo git@bitbucket.org:interbizconsulting/application-server.git --branch production
+          - docker login -u $DOCKER_USER -p $DOCKER_PASS
+          - docker build -t hackexpert/multus:$BITBUCKET_COMMIT .
+          - docker push hackexpert/multus:$BITBUCKET_COMMIT
+
+option:
+  docker: true

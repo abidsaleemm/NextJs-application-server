@@ -4,7 +4,7 @@ pipelines:
         script:
           - apt-get update
           - npm install
-          - npm run build
+          # - npm run build
           - mkdir deploy
           - apt-get install -y curlftpfs
           # - npm install -g git-directory-deploy

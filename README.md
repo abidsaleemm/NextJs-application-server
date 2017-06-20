@@ -45,11 +45,11 @@ TODO Add Azure portal screenshot
 
 NOTE:  This has been problematic and might not work.  If this is the case usually FTPS is still available (see below).
 
-# Accesing logs and home directory via FTPS
+# Accessing logs and home directory via FTPS
 
 Mounts a directory.
 
 ```bash
-curlftpfs -d -v  -o user=multus:{PASSWORD},ssl waws-prod-bay-063.ftp.azurewebsites.windows.net ~/multusapp
+curlftpfs -d -v  -o user=multus:{PASSWORD},ssl waws-prod-bay-063.ftp.azurewebsites.windows.net {MOUNT_POINT}
 ```
 

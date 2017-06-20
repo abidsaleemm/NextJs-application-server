@@ -25,7 +25,7 @@ npm install
 
 # Testing locally
 
-```
+```bash
 npm run dev
 ```
 
@@ -49,7 +49,7 @@ NOTE:  This has been problematic and might not work.  If this is the case usuall
 
 Mounts a directory.
 
-```
+```bash
 curlftpfs -d -v  -o user=multus:{PASSWORD},ssl waws-prod-bay-063.ftp.azurewebsites.windows.net ~/multusapp
 ```
 

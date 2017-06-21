@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import io from "socket.io-client";
 import { Table, Column, Cell } from "fixed-data-table";
 import Router from 'next/router';
 
@@ -7,44 +6,37 @@ import styleSheet from "styles/fixed-data-table.css";
 import styleList from 'styles/projectList.scss';
 
 export default class extends Component {
-  static getInitialProps = ({ req }) => ({ 
-    projects: [],
-  });
-
   constructor(props) {
     super(props);
-    // TODO server/socket should be passed down
-    this.socket = io("http://localhost:3000"); // TODO setup for dev and prod and include
-    this.state = { ...props };
+    this.state = {
+      width: 500,
+      height: 100,
+    };
   }
 
   componentDidMount() {
-    const { socket } = this;
-
-    // Handle State changes here
-    socket.emit("queryStudies", {});
-    socket.on("queryStudies", studies => this.setState({ projects: studies }));
     window.addEventListener('resize', () => {
-      this.setState({ 
+      this.setState({
         width: parseInt(window.innerWidth),
         height: parseInt(window.innerHeight),
       });
     })
 
-    // Add event listeners for resize
-    // Set initial window size
-    this.setState({ 
-        width: parseInt(window.innerWidth),
-        height: parseInt(window.innerHeight),
-      });
+    this.setState({
+      width: parseInt(window.innerWidth),
+      height: parseInt(window.innerHeight),
+    });
+  }
+
+  componentWillUnmount() {
+    // TODO unmount event listener
   }
 
   render() {
-    const { state: { 
-      projects = [],
-      width = 500,
-      height = 100,
-    } } = this;
+    const {
+      state: { width = 500, height = 100 },
+      props: { projects = [] },
+    } = this;
 
     return (
       <div>
@@ -112,20 +104,3 @@ export default class extends Component {
     );
   }
 }
-
-/*
-<style dangerouslySetInnerHTML={{ __html: styleSheet }} />
-        <ReactTable
-          data={projects}
-          columns={columns}
-          defaultPageSize={20}
-          getTrProps={(state, { row: { studyUID = '' } = {} } = {}, column, instance) => {
-            return {
-              onClick: e => {
-                console.log('Study selected!', studyUID)
-              }
-            }
-          }}
-        />
-
-        */

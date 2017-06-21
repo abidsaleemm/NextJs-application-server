@@ -5,6 +5,15 @@ export default class extends Component {
 //   static getInitialProps = ({ req }) => ({ 
 //     projects: [],
 //   });
+  static async getInitialProps ({ query, res }) {
+    const post = posts.find(post => post.slug === query.slug)
+
+    if (!post && res) {
+      res.statusCode = 404
+    }
+
+    return { post }
+}
 
   constructor(props) {
     super(props);
@@ -23,7 +32,7 @@ export default class extends Component {
 
     return (
       <div>
-        Project Detail splah page 
+        Project Detail splash page 
       </div>
     );
   }

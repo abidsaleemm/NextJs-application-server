@@ -7,7 +7,7 @@ export default (url) => (
             <form action="/auth/local" method="post">
                 <input name="username" id="username" type="text" placeholder="Your username" />
                 <input name="password" id="password" type="password" placeholder="Your password" />
-                <input type="submit" value="Login"/>
+                <input type="submit"/>
             </form>
         </div>
     </div >

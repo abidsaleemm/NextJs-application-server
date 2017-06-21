@@ -8,18 +8,6 @@ import {
   createProject,
 } from '../projects';
 
-export const studies = ({ socket, action }) => { // TODO Change to queryStudies
-  queryStudies().then(studies => {
-    console.log('dicomStudies', studies);
-
-    // TODO Check if project created
-    socket.emit('action', {
-      studies,
-      type: 'STUDIES',
-    });
-  }, reason => console.log(reason));
-};
-
 export const projectState = ({ socket, action }) => {
   const { payload = {} } = action;
   const { studyUID } = payload;
@@ -27,7 +15,6 @@ export const projectState = ({ socket, action }) => {
   console.log('saving snapshot', studyUID);
 
   createSnaphot({ studyUID, payload });
-  // dispatch(projectUpdate(payload));
 }
 
 export const selectSeries = ({ socket, action }) => {
@@ -56,10 +43,7 @@ export const selectStudy = ({ socket, action }) => {
     const project = values === undefined ?
       createProject({ studyUID }) : values;
 
-    // console.log('payload', project);
-
     const dicomSeries = [];
-
     console.log('dicomSeries', dicomSeries);
 
     socket.emit('action', {
@@ -69,54 +53,5 @@ export const selectStudy = ({ socket, action }) => {
         dicomSeries,
       },
     });
-
-    // selectedSeries = selectedSeries === '' ?
-  //   firstSeries : selectedSeries;
-
-    // if (values === undefined) {
-    // }
-
-    // createProject
-
   });
-
-  // // get Project
-  // if (projectGet(projects)(studyUID) === undefined) {
-  //   console.log('Creating project', studyUID);
-  //   dispatch(projectAdd(studyUID));
-  // }
-
-  // const project = projectGet(getState().projects)(studyUID);
-
-  // let { selectedSeries = '' } = project;
-  // const selectedDicomSeries = dicomSeries
-  //   .filter(v => v.studyUID === studyUID);
-
-  // const { 0: { seriesUID: firstSeries = '' } = {} } = selectedDicomSeries;
-
-  // selectedSeries = selectedSeries === '' ?
-  //   firstSeries : selectedSeries;
-
-  // console.log('selectedSeries', selectedSeries)
-
-  // const volumePromise =
-  //   dicomVolume(dicomImages, studyUID, selectedSeries);
-
-  // volumePromise.then(volume => {
-  //   console.log('Sending volume payload');
-  //   socket.emit('action', {
-  //     type: 'VOLUME_SET',
-  //     volume,
-  //   });
-  // });
-
-  // // This will merge object on client
-  // socket.emit('action', {
-  //   type: 'PROJECT_PAYLOAD',
-  //   project: {
-  //     ...project,
-  //     dicomSeries: dicomSeries
-  //       .filter(v => v.studyUID === studyUID),
-  //   },
-  // });
 }

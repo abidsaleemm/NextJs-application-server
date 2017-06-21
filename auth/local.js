@@ -19,7 +19,7 @@ export default server => {
       // lookup user
       console.log("looking up user", username, password);
 
-      // TODO do functional lookup
+      // TODO do functional lookup. Hardcoded for now.
       if (username === 'test' && password === 'test') {
         console.log('User found logging in')
         return done(null, users[0]);
@@ -59,6 +59,7 @@ export default server => {
   );
 
   server.get("/auth/logout", (req, res) => {
+    // res.clearCookie('connect.sid'); // TODO do we need this?
     req.session.destroy(function(err) {
       res.redirect("/");
     });

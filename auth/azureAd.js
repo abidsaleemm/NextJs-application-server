@@ -4,6 +4,8 @@ import AzureAdOAuth2Strategy from 'passport-azure-ad-oauth2';
 
 // TODO put users here?
 export default app => {
+  console.log('Settings up passport');
+
   passport.use(
     new AzureAdOAuth2Strategy(
       {
@@ -21,7 +23,7 @@ export default app => {
 
         console.log('waadProfile', waadProfile);
 
-        // Hanlde users here
+        // Handle users here
         // User.findOrCreate({ id: waadProfile.upn }, (err, user) => {
         //   done(err, user);
         // });

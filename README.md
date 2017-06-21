@@ -6,16 +6,17 @@ TODO Server application:
 
 ### Requirements:
 
-- Node > 7 & NPM
-- Express
-- Nextjs
-- React
-- PassportJS
-- Websockets (Socket.io)
+- Node > 7 - https://nodejs.org
+- NPM - https://www.npmjs.com/
+- Express - https://expressjs.com/
+- Nextjs - https://zeit.co/blog/next2
+- React - https://facebook.github.io/react/
+- PassportJS - http://passportjs.org/
+- Websockets (Socket.io) - https://socket.io/
 - Azure AD
-- Azure Table Storage
-- Azure Blob Storage
-- lodb - (Used for local testing and debugging)
+- Azure Table Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-table-storage
+- Azure Blob Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-blob-storage
+- lowdb - (Used for local testing and debugging) - https://github.com/typicode/lowdb
 
 ### Getting started
 

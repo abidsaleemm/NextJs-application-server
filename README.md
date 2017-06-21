@@ -35,6 +35,9 @@ TODO add additional run commands.
 
 # Azure Deployment
 
+Auto deployment is handled using a Docker image and Bitbucket pipelines.  All you have to do is push code and the app will auto deploy.
+
+## Manual Deployment
 Login using the following commands.  NOTE: You might have to sudo.
 
 ```sh

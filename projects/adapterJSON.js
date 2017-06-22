@@ -26,7 +26,7 @@ export const queryProjectList = async () => {
   // callback(null, projects)
 };
 
-export const queryProject = async ({ studyUID }) => {
+export const queryProject = async ({ studyUID = '' }) => {
   checkExists();
 
   const db = low(`${path}/projects.json`);
@@ -40,6 +40,8 @@ export const queryProject = async ({ studyUID }) => {
 
     const data = fs.readFileSync(`${path}/snapshots/${snapShotUID}.json`);
     return JSON.parse(data);
+  } else {
+    return undefined; // TODO If undefined create a new one and then try again
   }
 };
 

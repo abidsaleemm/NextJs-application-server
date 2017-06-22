@@ -1,14 +1,16 @@
 import express from "express";
 import next from "next";
 import cookieParser from "cookie-parser";
-// import cookieParserSocket from 'socket.io-cookie-parser';
 import bodyParser from "body-parser";
-// import methodOverride from "method-override";
 import expressSession from "express-session";
 // import passportSocketIo from "passport.socketio";
 
 import * as socketActions from "./socketActions";
 import auth from "./auth";
+
+// Data methods
+import { queryStudies } from './dicom';
+import { queryProject, createSnaphot, createProject } from './projects';
 
 const FileStore = require("session-file-store")(expressSession); // TODO Use import instead
 const port = process.env.PORT || 3000;
@@ -20,13 +22,13 @@ const handle = app.getRequestHandler();
 const sessionStore = new FileStore({ path: "./sessiondb" });
 
 const sessionMiddleWare = expressSession({
-  // name: 'my.connect.sid',
   key: "express.sid",
   secret: "session_secret",
   resave: true,
   saveUninitialized: false,
   store: sessionStore,
 });
+
 
 app.prepare().then(() => {
   const server = express();
@@ -39,16 +41,42 @@ app.prepare().then(() => {
 
   const passport = auth(server); // TODO handle as a promise
 
-  // Global page handler
-  server.get("*", async (req, res) => {
+  // projects handler
+  server.get("/projects", async (req, res) => {
     if (req.isAuthenticated()) {
-      console.log("user", req.user);
-      return handle(req, res);
-    } else {
-      return app.render(req, res, "/login", req.query);
-    }
+      const projects = await queryStudies();
+      return app.render(req, res, "/projects", { ...req.query, projects });
+    } 
+    
+    return res.redirect('/');
   });
 
+  // projectDetail handler
+  server.get("/project/:projectid", async (req, res) => {
+    const { projectid: studyUID = '' } = req.params;
+    let project = await queryProject(studyUID);
+
+    if (project === undefined) {
+      // Create new project
+      project = createProject({ studyUID }); // TODO Add function to create default from existing
+      await createSnaphot({ studyUID, payload: project });
+    }
+
+    if (req.isAuthenticated()) {
+      const projectDetails = {};
+
+      return app.render(req, res, "/projectDetail", { 
+        ...req.query,
+        projectDetails,
+      });
+    }
+    
+    return res.redirect('/');
+  });
+
+  server.get("*", (req, res) => {
+      return handle(req, res);
+  });
 
   const serverHttp = server.listen(port, () => {
     console.log(`listening on *:${port}`);
@@ -65,7 +93,7 @@ const socketSetup = (server, passport) => {
   // });
 
   // io.use((socket, next) => {
-    // sessionMiddleWare(socket.request, {}, next);
+  // sessionMiddleWare(socket.request, {}, next);
   // });
 
   // io.use(cookieParserSocket());
@@ -97,14 +125,14 @@ const socketSetup = (server, passport) => {
   io.on("connection", socket => {
     console.log("Connection " + socket.id);
     // console.log("user socketio", socket.handshake);
-    
+
     // This is used for the frontend of the application
     socket.on("action", ({ type, ...action }) => {
       const parseType = type.replace(/^(server\/)/, ""); // TODO Do we really need this. Can just leave in and rename functions?
       console.log("action.type", parseType);
 
       // TODO check security token here
-      const { [parseType]: socketAction = () => {} } = socketActions;
+      const { [parseType]: socketAction = () => { } } = socketActions;
       socketAction({ socket, action });
     });
 

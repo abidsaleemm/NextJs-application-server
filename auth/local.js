@@ -35,7 +35,6 @@ export default server => {
 
   passport.deserializeUser((id, done) => {
     done(null, users[0]);
-
     // User.findById(id, function(err, user) {
     //   if (err) return done(err);
     //   done(null, user);
@@ -54,7 +53,7 @@ export default server => {
     "/auth/local",
     passport.authenticate("local", {
       failureRedirect: "/",
-      successRedirect: "/"
+      successRedirect: "/projects",
     })
   );
 

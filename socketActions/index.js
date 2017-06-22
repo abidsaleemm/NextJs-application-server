@@ -1,6 +1,6 @@
-import {
-  queryStudies
-} from '../dicom';
+// import {
+//   queryStudies
+// } from '../dicom';
 
 import {
   queryProject,

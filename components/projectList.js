@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { Table, Column, Cell } from "fixed-data-table";
-import Router from 'next/router';
 
 import styleSheet from "styles/fixed-data-table.css";
 import styleList from 'styles/projectList.scss';
@@ -46,7 +45,8 @@ export default class extends Component {
           onRowClick={(event, index) => {
             const { [index]: { studyUID = 'NA' } = {} } = projects;
             console.log('onRowClick', studyUID)
-            Router.push('/projectDetail')
+            
+            window.location = `/project/${studyUID}`;
           }}
           rowHeight={50}
           rowsCount={projects.length}
@@ -90,6 +90,15 @@ export default class extends Component {
             width={200}
           />
           <Column
+            header={<Cell>Location</Cell>}
+            cell={({ rowIndex, ...props }) =>
+              <Cell {...props}>
+                {projects[rowIndex].modality}
+              </Cell>}
+            flexGrow={2}
+            width={200}
+          />
+          <Column
             header={<Cell>Status</Cell>}
             cell={({ rowIndex, ...props }) =>
               <Cell {...props}>
@@ -99,7 +108,6 @@ export default class extends Component {
             width={200}
           />
         </Table>
-
       </div>
     );
   }

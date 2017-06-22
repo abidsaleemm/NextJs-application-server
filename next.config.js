@@ -33,9 +33,10 @@ module.exports = {
         ]
       }
     );
-    // config.node = {
-    //   fs: "empty"
-    // };
+
+    // config.externals = config.externals || {}
+    // config.externals.fs = 'fs';
+
     return config;
   }
 };

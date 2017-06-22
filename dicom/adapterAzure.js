@@ -52,14 +52,23 @@ const queryTableAll = async ({
     return await queryTable({ query, tableName });
 }
 
-export const queryStudies = async () => {
+export const queryStudies = async () => { // TODO Add filter flag? archive?
     const values = await queryTableAll({
         tableName: `${process.env.APPSETTING_CONTAINER}Studies`, // TODO is this good practice to use ENV cars mixed in?
         select: ['studyName', 'studyUID', 'patientName']
     });
 
     return values;
-}
+};
+
+export const queryStudyByUID = async (studyUID) => {
+    // return await ({})
+    const query = new azure.TableQuery()
+        .select(['studyName', 'studyUID', 'patientName']);
+        // .
+
+    return await queryTable({ query, tableName });
+};
 
 export const querySeries = async () => {
     const values = await queryTableAll({
@@ -69,7 +78,7 @@ export const querySeries = async () => {
 
     console.log('series', values);
     return values;
-}
+};
 
 // TODO This is a hack for now and will need to be updated once blob storage is working with indexer
 export const readFile = async ({ path }) => {

@@ -1,4 +1,4 @@
-FROM node:boron
+FROM node
 
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/files

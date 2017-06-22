@@ -10,8 +10,6 @@ import expressSession from "express-session";
 import * as socketActions from "./socketActions";
 import auth from "./auth";
 
-// import { queryStudies } from "./dicom";
-
 const FileStore = require("session-file-store")(expressSession); // TODO Use import instead
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -26,7 +24,7 @@ const sessionMiddleWare = expressSession({
   key: "express.sid",
   secret: "session_secret",
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: sessionStore,
 });
 

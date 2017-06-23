@@ -13,6 +13,7 @@ COPY . /usr/src/app
 
 EXPOSE 3000
 
+# TODO Should these be set on the VM instead and not here?
 ENV APPSETTING_CONTAINER dicom0001
 ENV APPSETTING_STORAGE2 nhf
 ENV APPSETTING_STORAGE2_KEY 4l5r4ZIOvbjQJ2/QBzCk/51RasPIkmvBhbnBMrp3sCCBamPK0pTIDuS3Hna6Hpp8P6J4kfPmjbuR9EmyQ5ujew==

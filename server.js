@@ -58,6 +58,7 @@ app.prepare().then(() => {
   // projectDetail handler
   server.get("/project/:projectid", async (req, res) => {
     const { projectid: studyUID = '' } = req.params;
+    console.log('studyUID', studyUID)
     const study = await queryStudyByUID({ studyUID });
     let project = await queryProject({ studyUID });
 
@@ -78,7 +79,7 @@ app.prepare().then(() => {
       });
     }
     
-    return res.redirect('/');
+    res.redirect('/');
   });
 
   server.get("*", (req, res) => {

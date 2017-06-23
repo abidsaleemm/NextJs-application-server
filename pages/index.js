@@ -1,10 +1,17 @@
 import React from 'react';
-// import { Button } from 'reactstrap';
 import {
-    Card, CardImg, CardText, CardBlock,
-    CardTitle, CardSubtitle, Button, CardLink
+    Card,
+    CardText,
+    CardBlock,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    CardLink,
+    Form,
+    FormGroup,
+    Label,
+    Input,
 } from 'reactstrap';
-import { Form, FormGroup, Label, Input } from 'reactstrap';
 
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
 
@@ -42,22 +49,10 @@ export default (url) => (
                 </Form>
 
                 <CardBlock>
-                    <CardLink href="#">Request New Password</CardLink>
+                    <CardLink href="#">Contact</CardLink>
                 </CardBlock>
 
             </Card>
         </div >
     </div>
-)
-
-/*
-Invalid Password
-
-<div>
-            <form action="/auth/local" method="post">
-                <input name="username" id="username" type="text" placeholder="Your username" />
-                <input name="password" id="password" type="password" placeholder="Your password" />
-                <button type='submit'>Login</button>
-            </form>
-        </div>
-        */
+);

@@ -9,7 +9,11 @@ import * as socketActions from "./socketActions";
 import auth from "./auth";
 
 // Data methods
-import { queryStudies } from './dicom';
+import { 
+  queryStudies,
+  queryStudyByUID,
+} from './dicom';
+
 import { queryProject, createSnaphot, createProject } from './projects';
 
 const FileStore = require("session-file-store")(expressSession); // TODO Use import instead
@@ -54,20 +58,23 @@ app.prepare().then(() => {
   // projectDetail handler
   server.get("/project/:projectid", async (req, res) => {
     const { projectid: studyUID = '' } = req.params;
-    let project = await queryProject(studyUID);
+    const study = await queryStudyByUID({ studyUID });
+    let project = await queryProject({ studyUID });
 
     if (project === undefined) {
-      // Create new project
+      console.log('Creating new project');
       project = createProject({ studyUID }); // TODO Add function to create default from existing
-      await createSnaphot({ studyUID, payload: project });
     }
+
+    // Merge project and study table
+    project = { ...project, ...study };
 
     if (req.isAuthenticated()) {
       const projectDetails = {};
 
       return app.render(req, res, "/projectDetail", { 
         ...req.query,
-        projectDetails,
+        projectDetail: project,
       });
     }
     

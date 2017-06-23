@@ -61,13 +61,15 @@ export const queryStudies = async () => { // TODO Add filter flag? archive?
     return values;
 };
 
-export const queryStudyByUID = async (studyUID) => {
-    // return await ({})
+export const queryStudyByUID = async ({ studyUID, select = [] }) => {
+    const tableName = `${process.env.APPSETTING_CONTAINER}Studies`; // TODO create const in upper scope for the three types of tables
     const query = new azure.TableQuery()
-        .select(['studyName', 'studyUID', 'patientName']);
-        // .
+        // .select(['studyName', 'studyUID', 'patientName'])
+        .select(select)
+        .where('RowKey eq ?', studyUID);
 
-    return await queryTable({ query, tableName });
+    const { 0: ret } = await queryTable({ query, tableName });
+    return ret;
 };
 
 export const querySeries = async () => {

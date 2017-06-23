@@ -1,4 +1,5 @@
 import React from 'react';
+import { Nav, NavItem, NavLink } from 'reactstrap';
 
 const styles = {
   constainer: {
@@ -16,8 +17,15 @@ const styles = {
 }
 
 export default () => (
-  <div style={styles.constainer}>
-    <div style={styles.item}><a href="/projects">Projects</a></div>
-    <div style={styles.item}><a href="/auth/logout">Logout</a></div>
-  </div>
+  <Nav>
+          <NavLink href="/auth/logout">Logout</NavLink> 
+          <NavLink href="/projects">Projects</NavLink> 
+        </Nav>
 )
+
+/*
+<div style={styles.constainer}>
+    <div style={styles.item}><a href="/auth/logout">Logout</a></div>
+    <div style={styles.item}><a href="/projects">Projects</a></div>
+  </div>
+  */

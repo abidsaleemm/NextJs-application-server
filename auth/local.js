@@ -1,11 +1,37 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 
+// TODO hard coded table for beta test
+// NOTE: This is not secure.  This should only be used for dev.
+// Production should user Auth0 or Azure AD
+// This can probably be moved to separate folder
 const users = [
   {
-    username: "test-user",
-    password: "test-password",
-    id: 1
+    name: "Warren Goble",
+    username: "warren@hack.expert",
+    password: "test",
+    id: 1, // TODO update to 
+    admin: true,
+  },
+  {
+    name: "Sandeep Shah",
+    username: "hisandeepshah@gmail.com",
+    password: "test",
+    id: 2,
+    admin: true,
+  },
+  {
+    name: "Warren Goble",
+    username: "warrengoble@gmail.com",
+    password: "test",
+    id: 3,
+  },
+  {
+    name: "NHF",
+    username: "user@nhf.com",
+    password: "test",
+    id: 4,
+    client: true,
   }
 ];
 
@@ -16,13 +42,12 @@ export default server => {
 
   passport.use(
     new Strategy((username, password, done) => {
-      // lookup user
-      console.log("looking up user", username, password);
+      const user = users.find(user => 
+        user.username === username && user.password === password);
 
-      // TODO do functional lookup. Hardcoded for now.
-      if (username === 'test' && password === 'test') {
+      if (user !== undefined) {
         console.log('User found logging in')
-        return done(null, users[0]);
+        return done(null, user);
       }
 
       return done(null, false);
@@ -34,20 +59,15 @@ export default server => {
   });
 
   passport.deserializeUser((id, done) => {
-    done(null, users[0]);
-    // User.findById(id, function(err, user) {
-    //   if (err) return done(err);
-    //   done(null, user);
-    // });
+    const user = users.find(user => user.id === id);
+
+    if (user === undefined) {
+      done(err);
+      return;
+    }
+
+    done(null, user);
   });
-
-  //   passport.serializeUser((user, done) => {
-  //     done(null, user);
-  //   });
-
-  //   passport.deserializeUser((user, done) => {
-  //     done(null, user);
-  //   });
 
   server.post(
     "/auth/local",

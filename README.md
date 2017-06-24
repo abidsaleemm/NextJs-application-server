@@ -28,21 +28,70 @@ npm install
 
 # Testing locally
 
+Local test server can be ran for testing. Note: This does not uses SSL and is insecure.
+
 ```bash
 npm run dev
 ```
 
 TODO add additional run commands.
 
-# Azure Deployment
+# VM Setup
 
+Debian 9 (Strech)
+
+In some cases the VM will have to be re-provisioned.  At the moment this has to be done manually and then the following tasks have to be performed.  TODO In the future a script will handle this.
+
+## Install Docker and Docker-Compose
+
+```
+# Install Docker
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+
+# Install docker-compose
+sudo bash -c "curl -L https://github.com/docker/compose/releases/download/1.14.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
+sudo chmod +x /usr/local/bin/docker-compose
+```
+
+Note: Some systems will already have a version 3 available via package manager.
+
+## Setup Docker login
+
+This allows the docker watcher to auto pull if there is a updated image.
+
+```
+docker login -u $DOCKER_USER -p $DOCKER_PASS
+```
+
+## Manually copy Docker Compose file to root 
+
+NOTE: Using the pipelines will hande this automatically.
+
+```
+scp docker-compose.yml adminuser@multus.westus.cloudapp.azure.com:~/
+```
+
+NOTE: If a redeployment occurred you might have to remove entry from ssh known_hosts file.
+
+## SSH in or start docker compose remotely
+
+TODO
+
+# App deployment using Pipelines
+
+TODO
 Auto deployment is handled using a Docker image and Bitbucket pipelines.  All you have to do is push code and the app will auto deploy.
 
-## Manual Deployment
-Login using the following commands.  NOTE: You might have to sudo.
+## Manual image deployment locally
+
+Login using the following commands if not already.  NOTE: You might have to sudo.
 
 ```sh
-docker login -u $DOCKER_USER -p $DOCKER_PASS
+docker login -u $DOCKER_USER -p "$DOCKER_PASS"
 ```
 
 Building and pushing to Docker Hub.
@@ -52,21 +101,29 @@ docker build -t hackexpert/multus .
 docker push hackexpert/multus
 ```
 
-# Kudu advanded tools
+# SSL
 
-Provides terminal access to the server through web portal interface.  A shell can be used for debugging and viewing logs.
+## Certbot setup
 
-https://multus.scm.azurewebsites.net/
+SSL certificates have to be set up to handle 
+```
+# Installation
+wget https://dl.eff.org/certbot-auto
+chmod a+x certbot-auto 
 
-TODO Add Azure portal screenshot
+# Run and walk through setup
+./certbot-auto certonly --standalone -d multus.westus.cloudapp.azure.com
+```
+Location of saved cert files
 
-NOTE:  This has been problematic and might not work.  If this is the case usually FTPS is still available (see below).
-
-# Accessing logs and home directory via FTPS
-
-Mounts a directory.
-
-```bash
-curlftpfs -d -v  -o user=multus:$PASSWORD,ssl waws-prod-bay-063.ftp.azurewebsites.windows.net $MOUNT_POINT
+```
+/etc/letsencrypt/live/multus.westus.cloudapp.azure.com/
 ```
 
+IMPORTANT NOTE: The /etc/letsencrypt/ directory needs to be backed up on the VM.
+
+# Important commands
+
+```bash
+docker run -it -v /etc/letsencrypt/live/multus.hack.expert:/usr/certs hackexpert/multus
+```

@@ -122,8 +122,18 @@ Location of saved cert files
 
 IMPORTANT NOTE: The /etc/letsencrypt/ directory needs to be backed up on the VM.
 
+## Setup volume mount
+
+Certbot recommends not to move or use the SSL files from a different location than the default.  In that case we leave them on the VM and mount them to the docker container.
+
 # Important commands
 
 ```bash
 docker run -it -v /etc/letsencrypt/live/multus.hack.expert:/usr/certs hackexpert/multus
+```
+
+# Copy docker-compose file
+
+```bash
+scp docker-compose.yml adminuser@multus.westus.cloudapp.azure.com:~/
 ```

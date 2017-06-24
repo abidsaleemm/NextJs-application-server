@@ -90,8 +90,8 @@ app.prepare().then(() => {
 
   if (process.env.NODE_ENV !== 'dev') {
     const options = {
-      key: fs.readFileSync('/usr/certs/privkey.pem'),
-      cert: fs.readFileSync('/usr/certs/fullchain.pem')
+      key: fs.readFileSync('certs/privkey1.pem'),
+      cert: fs.readFileSync('certs/fullchain1.pem')
     };
 
     const serverHttp = https.createServer(options, server).listen(port, () => {

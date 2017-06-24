@@ -1,6 +1,8 @@
 version: '3'
 services:
   multus-server:
-    image: hackexpert/multus: 
+    image: hackexpert/multus
     ports:
       - "443:3000"
+    volumes:
+      - "./certs:/usr/src/certs"

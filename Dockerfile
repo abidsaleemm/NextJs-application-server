@@ -1,16 +1,17 @@
 FROM node
 
-RUN mkdir -p /usr/certs
-RUN mkdir -p /usr/src/app
-RUN mkdir -p /usr/src/app/files
+RUN mkdir -p /usr/src
+RUN mkdir -p /usr/src/certs
+RUN mkdir -p /usr/src/
+# RUN mkdir -p /usr/src/app/files
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src
 
-COPY package.json /usr/src/app/
+COPY package.json /usr/src/
 RUN npm install
 
 # Bundle app source
-COPY . /usr/src/app
+COPY . /usr/src/
 
 EXPOSE 3000
 

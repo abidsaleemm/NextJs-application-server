@@ -42,7 +42,7 @@ export default class extends React.Component {
               share,
               client = 'NHF',
         }) => (
-                <tr onClick={() => window.location = `/project/${studyUID}`}>
+                <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
                   <td>{status}</td>
                   <td>{patientName}</td>
                   <td>{studyName}</td>

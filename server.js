@@ -3,13 +3,15 @@ import next from "next";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
+import https from 'https';
+
 // import passportSocketIo from "passport.socketio";
 
 import * as socketActions from "./socketActions";
 import auth from "./auth";
 
 // Data methods
-import { 
+import {
   queryStudies,
   queryStudyByUID,
 } from './dicom';
@@ -50,13 +52,13 @@ app.prepare().then(() => {
     if (req.isAuthenticated()) {
       const projects = await queryStudies();
       return app.render(req, res, "/projects", { ...req.query, projects });
-    } 
-    
+    }
+
     return res.redirect('/');
   });
 
   // projectDetail handler
-  server.get("/project/:projectid", async (req, res) => {
+  server.get("/projectDetail/:projectid", async (req, res) => {
     const { projectid: studyUID = '' } = req.params;
     console.log('studyUID', studyUID)
     const study = await queryStudyByUID({ studyUID });
@@ -73,23 +75,35 @@ app.prepare().then(() => {
     if (req.isAuthenticated()) {
       const projectDetails = {};
 
-      return app.render(req, res, "/projectDetail", { 
+      return app.render(req, res, "/projectDetail", {
         ...req.query,
         projectDetail: project,
       });
     }
-    
+
     res.redirect('/');
   });
 
   server.get("*", (req, res) => {
-      return handle(req, res);
+    return handle(req, res);
   });
 
-  const serverHttp = server.listen(port, () => {
-    console.log(`listening on *:${port}`);
-    const io = socketSetup(serverHttp, passport);
-  });
+  if (process.env.NODE_ENV !== 'dev') {
+    const options = {
+      key: fs.readFileSync('/usr/certs/privkey.pem'),
+      cert: fs.readFileSync('/usr/certs/fullchain.pem')
+    };
+
+    const serverHttp = https.createServer(options, server).listen(port, () => {
+      console.log(`SSL listening on *:${port}`);
+      const io = socketSetup(serverHttp, passport);
+    });
+  } else {
+    const serverHttp = server.listen(port, () => {
+      console.log(`Listening on *:${port}`);
+      const io = socketSetup(serverHttp, passport);
+    });
+  }
 });
 
 // TODO Move this to seperate file and cut up?

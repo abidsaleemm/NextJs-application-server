@@ -76,6 +76,7 @@ export default server => {
       }
 
       if (!user) {
+        // TODO Create a reusable function for this
         req.session.sessionFlash = {
           error: 'Invalid username / password',
         };
@@ -94,7 +95,7 @@ export default server => {
   });
 
   server.get("/auth/logout", (req, res) => {
-    // res.clearCookie('connect.sid'); // TODO do we need this?
+    res.clearCookie('express.sid'); // TODO do we need this?
     req.session.destroy(function (err) {
       res.redirect("/");
     });

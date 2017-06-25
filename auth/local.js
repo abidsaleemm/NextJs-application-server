@@ -42,7 +42,7 @@ export default server => {
 
   passport.use(
     new Strategy((username, password, done) => {
-      const user = users.find(user => 
+      const user = users.find(user =>
         user.username === username && user.password === password);
 
       if (user !== undefined) {
@@ -69,17 +69,33 @@ export default server => {
     done(null, user);
   });
 
-  server.post(
-    "/auth/local",
-    passport.authenticate("local", {
-      failureRedirect: "/",
-      successRedirect: "/projects",
-    })
-  );
+  server.post("/auth/local", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+      if (err) {
+        return next(err)
+      }
+
+      if (!user) {
+        req.session.sessionFlash = {
+          error: 'Invalid username / password',
+        };
+
+        return res.redirect("/")
+      }
+
+      req.login(user, loginErr => {
+        if (loginErr) {
+          return next(loginErr);
+        }
+
+        return res.redirect("/projects");
+      });
+    })(req, res, next);
+  });
 
   server.get("/auth/logout", (req, res) => {
     // res.clearCookie('connect.sid'); // TODO do we need this?
-    req.session.destroy(function(err) {
+    req.session.destroy(function (err) {
       res.redirect("/");
     });
   });

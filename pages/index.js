@@ -22,37 +22,51 @@ const style = {
     height: '100vh',
 };
 
-export default (url) => (
-    <div style={style}>
-        <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
-        <div style={{ width: '300px', }}>
-            <Card>
-                <CardBlock>
-                    <CardTitle>Multus Login</CardTitle>
-                    <CardSubtitle color="red">
-                        <small style={{ color: "red" }}></small>
-                    </CardSubtitle>
-                </CardBlock>
+export default class extends React.Component {
+    static getInitialProps({ req: { session } }) {
+        let props = {};
+        if (session.sessionFlash !== undefined) {
+            props = { ...session.sessionFlash };
+            session.sessionFlash = {}
+        }
+        return props;
+    };
 
-                <Form action="/auth/local" method="post">
-                    <FormGroup>
-                        <Label for="exampleEmail" hidden>Email</Label>
-                        <Input type="email" name="username" id="username" placeholder="Email" />
-                    </FormGroup>
-                    {' '}
-                    <FormGroup>
-                        <Label for="examplePassword" hidden>Password</Label>
-                        <Input type="password" name="password" id="password" placeholder="Password" />
-                    </FormGroup>
-                    {' '}
-                    <Button>Submit</Button>
-                </Form>
+    render() {
+        const { props: { error = '' } = {} } = this;
+        return (
+            <div style={style}>
+                <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
+                <div style={{ width: '300px', }}>
+                    <Card>
+                        <CardBlock>
+                            <CardTitle>Multus Login</CardTitle>
+                            <CardSubtitle color="red">
+                                <small style={{ color: "red" }}>{ error }</small>
+                            </CardSubtitle>
+                        </CardBlock>
 
-                <CardBlock>
-                    <CardLink href="#">Contact</CardLink>
-                </CardBlock>
+                        <Form action="/auth/local" method="post">
+                            <FormGroup>
+                                <Label for="exampleEmail" hidden>Email</Label>
+                                <Input type="email" name="username" id="username" placeholder="Email" />
+                            </FormGroup>
+                            {' '}
+                            <FormGroup>
+                                <Label for="examplePassword" hidden>Password</Label>
+                                <Input type="password" name="password" id="password" placeholder="Password" />
+                            </FormGroup>
+                            {' '}
+                            <Button>Submit</Button>
+                        </Form>
 
-            </Card>
-        </div >
-    </div>
-);
+                        <CardBlock>
+                            <CardLink href="#">Contact</CardLink>
+                        </CardBlock>
+
+                    </Card>
+                </div >
+            </div>
+        );
+    }
+}

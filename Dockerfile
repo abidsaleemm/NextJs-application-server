@@ -2,8 +2,6 @@ FROM node
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs
-RUN mkdir -p /usr/src/
-# RUN mkdir -p /usr/src/app/files
 
 WORKDIR /usr/src
 
@@ -23,5 +21,3 @@ ENV APPSETTING_STORAGE multus
 ENV APPSETTING_STORAGE_KEY w9Qei6eOoqerSmw9msraYn6nNx45lr1++8EzvAnpKCib87pMGe4uhl/IszsJsTOY006XG68AFGER3nGmBjLElQ==
 
 CMD [ "npm", "start" ]
-
-# /etc/letsencrypt/live/multus.hack.expert

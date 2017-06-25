@@ -3,6 +3,7 @@ import next from "next";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
+import flash from 'express-flash';
 import https from 'https';
 
 // import passportSocketIo from "passport.socketio";
@@ -30,7 +31,7 @@ const sessionStore = new FileStore({ path: "./sessiondb" });
 const sessionMiddleWare = expressSession({
   key: "express.sid",
   secret: "session_secret",
-  resave: true,
+  resave: false, // TODO Might break when using iframe
   saveUninitialized: false,
   store: sessionStore,
 });
@@ -39,7 +40,6 @@ const sessionMiddleWare = expressSession({
 app.prepare().then(() => {
   const server = express();
 
-  // Setup Middleware
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
@@ -54,6 +54,7 @@ app.prepare().then(() => {
       return app.render(req, res, "/projects", { ...req.query, projects });
     }
 
+    console.log('/projects not auth')
     return res.redirect('/');
   });
 
@@ -81,7 +82,8 @@ app.prepare().then(() => {
       });
     }
 
-    res.redirect('/');
+    console.log('/projects not auth')
+    return res.redirect('/');
   });
 
   server.get("*", (req, res) => {

@@ -128,8 +128,14 @@ Certbot recommends not to move or use the SSL files from a different location th
 
 # Important commands
 
+Run as regular Docker container. Not using docker-s
 ```bash
 docker run -it -v /etc/letsencrypt/live/multus.hack.expert:/usr/certs hackexpert/multus
+```
+
+Add user to docker group.  Don't need to sudo.
+```bash
+usermod -a -G docker user1
 ```
 
 # Copy docker-compose file

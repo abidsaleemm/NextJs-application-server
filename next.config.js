@@ -34,9 +34,6 @@ module.exports = {
       }
     );
 
-    // config.externals = config.externals || {}
-    // config.externals.fs = 'fs';
-
     return config;
   }
 };

@@ -3,3 +3,4 @@ docker-compose.yml
 Dockerfile
 README.node_modules
 .git
+deploy.bash

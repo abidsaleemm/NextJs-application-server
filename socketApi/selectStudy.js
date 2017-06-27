@@ -1,27 +1,34 @@
 import {
   queryProject,
-  createSnaphot, // TODO should we create an initial snapshot?
+  createSnapshot, // TODO should we create an initial snapshot?
   createProject,
 } from '../projects';
 
-export const selectStudy = ({ socket, action }) => {
+import { querySeries } from '../dicom';
+
+export default async ({ socket, action }) => {
   const { studyUID } = action;
+  console.log('studyUID', studyUID);
 
-  queryProject({ studyUID }).then(values => {
-    console.log('values1', values);
+  let project = await queryProject({ studyUID })
 
-    const project = values === undefined ?
-      createProject({ studyUID }) : values;
+  // TODO This is reusable seperate
+  if (project === undefined) {
+    console.log('Existing project not found. Creating new');
+    project = createProject({ studyUID });
 
-    const dicomSeries = [];
-    console.log('dicomSeries', dicomSeries);
+    createSnapshot({ studyUID, payload: project })
+  }
 
-    socket.emit('action', {
-      type: 'PROJECT_PAYLOAD',
-      project: {
-        ...project,
-        dicomSeries,
-      },
-    });
+  const dicomSeries = [];
+  // const dicomSeries = await querySeries({ studyUID });
+  console.log('dicomSeries', dicomSeries);
+
+  socket.emit('action', {
+    type: 'PROJECT_PAYLOAD',
+    project: {
+      ...project,
+      dicomSeries,
+    },
   });
 }

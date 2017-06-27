@@ -20,8 +20,8 @@ const sessionStore = new FileStore({ path: "./sessiondb" });
 const sessionMiddleWare = expressSession({
   key: "express.sid",
   secret: "session_secret",
-  resave: false, // TODO Set to True Might break when using iframe
-  saveUninitialized: true,
+  resave: true, // TODO Set to True Might break when using iframe
+  saveUninitialized: false,
   store: sessionStore,
 });
 
@@ -53,7 +53,7 @@ app.prepare().then(() => {
   } else {
     const serverHttp = server.listen(port, () => {
       console.log(`Listening on *:${port}`);
-      const io = socketApi({ server: serverHttp, passport });
+      const io = socketApi({ server: serverHttp, passport, sessionMiddleWare });
     });
   }
 });

@@ -1,4 +1,4 @@
-import * as adapterJSON from './adapterJSON.js';
+import * as adapterJSON from './adapterJSON';
 import createProject from './createProject';
 
 module.exports = {

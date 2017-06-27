@@ -33,9 +33,21 @@ TODO Add more description
 
 ## Project storage format
 
-TODO 
+### Local (used for testing without internet)
+
+TODO
+
+### Azure Storage 
+
+TODO
 
 ## DICOM storage format
+
+### Local (used for testing without internet)
+
+Local DICOM storage contains no database, but instead just scans all the DICOM files inside a set directory every single time there is a query.  This is only recommended with a high speed SSD drive and is very inefficient and only recommended for testing purposes.
+
+### Azure
 
 Three tables contain the DICOM lookup information stored using Azure Table Storage. 
 

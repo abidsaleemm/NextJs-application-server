@@ -2,16 +2,24 @@ import React, { Component, PropTypes } from "react";
 import Nav from '../components/nav'; // TODO wrap in HOC
 import {
   Table,
-  Button, ButtonGroup
+  Button, 
+  ButtonGroup,
+  ButtonDropdown, 
+  DropdownToggle, 
+  DropdownMenu, 
+  DropdownItem,
+  Card, 
+  CardImg, 
+  CardText, 
+  CardBlock, 
+  CardLink,
+  CardTitle, 
+  CardSubtitle,
 } from 'reactstrap';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-
 import Iframe from 'react-iframe';
-
-import {
-  Card, CardImg, CardText, CardBlock, CardLink,
-  CardTitle, CardSubtitle
-} from 'reactstrap';
+import getStatusName from './helpers/getStatusName';
+import getClientList from './helpers/getClientList';
+import getClientNameById from './helpers/getClientNameById';
 
 // TODO Wrap this in a HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
@@ -33,11 +41,14 @@ export default class extends Component {
 
   constructor(props) {
     super(props);
+    const { status = 0, client = 0 } = props;
+
     this.state = {
       height: 200,
       openStatus: false,
       openClient: false,
-      status: props.status,
+      status,
+      client,
     }
   }
 
@@ -70,10 +81,33 @@ export default class extends Component {
     });
   }
 
-  setStatus = (status) => {
-    // fetch()
-    console.log('status', status)
-    this.setState({ status });
+  // TODO Move to helper directory?
+  setStatus = async (status = 0) => {
+    const { 
+      props: { projectDetail: { studyUID = '' } = {} } = {} 
+    } = this;
+
+    const { status: retStatus } = await fetch(
+      `/api/setProjectStatus/${studyUID}/${status}`,
+      { credentials: 'same-origin' }
+    ).then(res => res.json());
+
+    this.setState({ status: retStatus });
+  }
+
+  // TODO Move to helper directory?
+  setClient = async (client = 0) => {
+    const { 
+      props: { projectDetail: { studyUID = '' } = {} } = {} 
+    } = this;
+
+    const { client: retClient } = await fetch(
+      `/api/setProjectClient/${studyUID}/${client}`,
+      { credentials: 'same-origin' }
+    ).then(res => res.json());
+
+    console.log('retClient', retClient)
+    this.setState({ client: retClient });
   }
 
   render() {
@@ -86,20 +120,24 @@ export default class extends Component {
       studyDate,
       modality,
       location,
-      client = 'NHF', // Set this with API
+      // client = 0, // Set this with API
     } = {},
       },
       state: {
         height,
         openStatus,
         openClient,
-        status = 'Uploaded',
+        status = 0,
+        client = 0,
       } = {},
       toggleStatus,
       toggleClient,
       setStatus,
     } = this;
 
+
+    const clients = getClientList();
+    
     return (
       <div>
         <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
@@ -124,14 +162,14 @@ export default class extends Component {
                         toggle={toggleStatus}
                       >
                         <DropdownToggle caret>
-                          { status }
+                          { getStatusName(status) }
                         </DropdownToggle>
                         <DropdownMenu >
-                          <DropdownItem onClick={() => this.setStatus('Uploaded')}>Uploaded</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus('Segmentation')}>Segmentation</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus('Injuries')}>Injuries</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus('Review')}>Review</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus('Done')}>Done</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(0)}>{ getStatusName(0) }</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(1)}>{ getStatusName(1) }</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(2)}>{ getStatusName(2) }</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(3)}>{ getStatusName(3) }</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(4)}>{ getStatusName(4) }</DropdownItem>
                         </DropdownMenu>
                       </ButtonDropdown>
                     </td>
@@ -160,11 +198,16 @@ export default class extends Component {
                         toggle={toggleClient}
                       >
                         <DropdownToggle caret>
-                          NHF
+                          { getClientNameById(client) }
                         </DropdownToggle>
                         <DropdownMenu >
-                          <DropdownItem>None</DropdownItem>
-                          <DropdownItem>NHF</DropdownItem>
+                          <DropdownItem onClick={() => this.setClient(0)}>None</DropdownItem>
+                          { clients.map(({ id, name}) => (
+                            <DropdownItem 
+                              key={`${name}-${id}`} onClick={() => 
+                                this.setClient(id)}
+                            >{name}</DropdownItem>
+                          ))}
                         </DropdownMenu>
                       </ButtonDropdown>
                     </td>
@@ -178,11 +221,15 @@ export default class extends Component {
             </Card>
           </div>
           <div style={{ width: '100%' }}>
-            <Iframe url={`http://localhost:8081/?p=${studyUID}`}
+            <Iframe url={`/client/?p=${studyUID}`}
               width="100%"
               height={`${height}px`}
               display="initial"
-              position="relative" />
+              position="relative"
+              marginheight={0}
+              frameborder={0}
+              marginwidth={0}
+            />
           </div>
         </div>
       </div>

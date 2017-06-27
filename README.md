@@ -16,6 +16,29 @@ TODO Add more description
 - Azure Blob Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-blob-storage
 - lowdb - (Used for local testing and debugging) - https://github.com/typicode/lowdb
 
+## Directory structure
+
+```
+.                
+├─ auth         - PassportJS can user based function.
+├─ components   - React components are declared here.
+├─ dicom        - Functions for querying and reading DICOM files from storage.
+├─ modules      - Module specific for creating initial state data. (Spine, Shoulder, Knee)
+├─ pages        - React pages for NextJS.
+├─ projects     - Functions for querying, saving and reading projects from storage.
+├─ routes       - Express routing functions.
+├─ socketApi    - Socket.io function for client API.
+└─ styles       - SCSS style sheets for front-end components. Global sheets also.
+```
+
+# Project storage format
+
+TODO 
+
+## DICOM storage format
+
+TODO 
+
 ## Getting started
 
 ```sh

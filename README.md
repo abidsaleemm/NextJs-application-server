@@ -82,8 +82,8 @@ docker login -u $DOCKER_USER -p "$DOCKER_PASS"
 Building and pushing to Docker Hub.
 
 ```sh
-docker build -t hackexpert/multus .
-docker push hackexpert/multus
+docker build -t hackexpert/application-server .
+docker push hackexpert/application-server
 ```
 
 ## Test Docker locally.

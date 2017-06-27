@@ -20,7 +20,7 @@ TODO Add more description
 
 ```
 .                
-├─ auth         - PassportJS can user based function.
+├─ auth         - PassportJS strategy functions and user based functions.
 ├─ components   - React components are declared here.
 ├─ dicom        - Functions for querying and reading DICOM files from storage.
 ├─ modules      - Module specific for creating initial state data. (Spine, Shoulder, Knee)
@@ -31,13 +31,21 @@ TODO Add more description
 └─ styles       - SCSS style sheets for front-end components. Global sheets also.
 ```
 
-# Project storage format
+## Project storage format
 
 TODO 
 
 ## DICOM storage format
 
-TODO 
+Three tables contain the DICOM lookup information stored using Azure Table Storage. 
+
+```
+{CONTAINER_NAME}Studies
+{CONTAINER_NAME}Series
+{CONTAINER_NAME}Images
+```
+
+TODO Add additional information regarding PartitionKey and Rowkey.
 
 ## Getting started
 

@@ -10,7 +10,7 @@
   "dependencies": {
     "autoprefixer": "^7.1.1",
     "azure-graph": "^2.1.0-preview",
-    "azure-storage": "^2.1.0",
+    "azure-storage": "^2.2.0",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "babel-polyfill": "^6.23.0",
@@ -24,11 +24,12 @@
     "express": "4.x",
     "express-session": "^1.15.3",
     "glob": "^7.1.2",
+    "http-proxy-middleware": "^0.17.4",
     "lowdb": "^0.16.2",
     "next": "^2.4.4",
     "normalize.css": "^7.0.0",
     "passport": "^0.3.2",
-    "passport-azure-ad": "^3.0.6",
+    "passport-azure-ad": "^3.0.7",
     "passport-azure-ad-oauth2": "0.0.4",
     "passport-local": "^1.0.0",
     "postcss-easy-import": "^2.1.0",
@@ -41,14 +42,14 @@
     "react-iframe": "^1.0.7",
     "react-redux": "^5.0.5",
     "reactstrap": "^4.6.2",
-    "redux": "^3.7.0",
+    "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
     "sass-loader": "^6.0.6",
     "session-file-store": "^1.0.0",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "three": "^0.86.0",
-    "uuid": "^3.0.1"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-plugin-css-modules-transform": "^1.2.7",
@@ -56,7 +57,7 @@
     "cross-env": "^5.0.1",
     "node-sass": "^4.5.3",
     "nodemon": "^1.11.0",
-    "postcss": "^6.0.2",
+    "postcss": "^6.0.3",
     "postcss-cssnext": "^2.11.0"
   },
   "engines": {

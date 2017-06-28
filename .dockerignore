@@ -1,6 +1,9 @@
 node_modules
 docker-compose.yml
 Dockerfile
-README.node_modules
+README.md
 .git
 deploy.bash
+projectsLocal
+sessiondb
+bitbucket-pipelines.yml

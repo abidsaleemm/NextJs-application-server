@@ -12,16 +12,13 @@ export default ({ server, app }) =>
             const projectsList = await queryProjectList();
             const projects = studies.map(study => {
                 // Lookup if there is a project
-                const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
-                const { client, status } = project;
+                const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID);
 
-                console.log('project', project);
-
-                return project !== undefined ? 
+                return project ? 
                     { 
                         ...study, 
-                        status: getStatusName(status) || 'Uploaded', 
-                        client: getClientNameById(client) 
+                        status: getStatusName(project.status || 0), 
+                        client: getClientNameById(project.client) 
                     } :
                     { ...study, status: '' };
             });

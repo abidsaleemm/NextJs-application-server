@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo docker build . -t hackexpert/application-server
-sudo docker push hackexpert/application-server
+docker build . -t hackexpert/application-server
+docker push hackexpert/application-server

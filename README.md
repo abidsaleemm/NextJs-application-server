@@ -27,7 +27,7 @@ TODO Add more description
 ├─ pages        - React pages for NextJS.
 ├─ projects     - Functions for querying, saving and reading projects from storage.
 ├─ routes       - Express routing functions.
-├─ socketApi    - Socket.io function for client API.
+├─ socketApi    - Socket.io functions for client API.
 └─ styles       - SCSS style sheets for front-end components. Global sheets also.
 ```
 
@@ -98,7 +98,8 @@ docker build -t hackexpert/application-server .
 docker push hackexpert/application-server
 ```
 
-## Test Docker locally.
+Test Docker locally.
+
 ```bash
 docker run -it -v /etc/letsencrypt/live/multus.hack.expert:/usr/certs hackexpert/application-server
 ```

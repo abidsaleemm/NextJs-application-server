@@ -1,4 +1,4 @@
-import users from '../../auth/users';
+import users from '../auth/users';
 
 export default () => users()
     .filter(({ client }) => client !== undefined)

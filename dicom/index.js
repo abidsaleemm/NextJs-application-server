@@ -1,5 +1,5 @@
 
-import * as adapterAzure from './adapterAzure.js';
-export { default as parseRaw } from './parseRaw.js';
+import * as adapterAzure from './adapterAzure';
+export { default as parseRaw } from './parseRaw';
 
 module.exports = adapterAzure;

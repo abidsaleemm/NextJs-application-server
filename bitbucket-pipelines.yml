@@ -3,8 +3,8 @@ pipelines:
     - step:
         script:
           - docker login -u $DOCKER_USER -p $DOCKER_PASS
-          - docker build -t hackexpert/multus .
-          - docker push hackexpert/multus
+          - chmod +x deploy.bash
+          - ./deploy.bash
 
 options:
   docker: true

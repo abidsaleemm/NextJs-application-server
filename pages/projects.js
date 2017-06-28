@@ -39,8 +39,8 @@ export default class extends React.Component {
               studyDate,
               modality,
               activity,
-              share,
-              client = 'NHF',
+              location,
+              client,
         }) => (
                 <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
                   <td>{status}</td>
@@ -49,7 +49,7 @@ export default class extends React.Component {
                   <td>{studyDate}</td>
                   <td>{modality}</td>
                   <td>{activity}</td>
-                  <td>{share}</td>
+                  <td>{location}</td>
                   <td>{client}</td>
                 </tr>
               ))}

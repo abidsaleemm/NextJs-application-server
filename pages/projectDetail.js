@@ -17,9 +17,11 @@ import {
   CardSubtitle,
 } from 'reactstrap';
 import Iframe from 'react-iframe';
-import getStatusName from './helpers/getStatusName';
-import getClientList from './helpers/getClientList';
-import getClientNameById from './helpers/getClientNameById';
+
+// TODO Handle this some place else
+import getStatusName from '../helpers/getStatusName';
+import getClientList from '../helpers/getClientList';
+import getClientNameById from '../helpers/getClientNameById';
 
 // TODO Wrap this in a HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
@@ -162,7 +164,7 @@ export default class extends Component {
                         toggle={toggleStatus}
                       >
                         <DropdownToggle caret>
-                          { getStatusName(status) }
+                          { getStatusName(status) || 'Uploaded' }
                         </DropdownToggle>
                         <DropdownMenu >
                           <DropdownItem onClick={() => this.setStatus(0)}>{ getStatusName(0) }</DropdownItem>
@@ -198,7 +200,7 @@ export default class extends Component {
                         toggle={toggleClient}
                       >
                         <DropdownToggle caret>
-                          { getClientNameById(client) }
+                          { getClientNameById(client) || 'None' }
                         </DropdownToggle>
                         <DropdownMenu >
                           <DropdownItem onClick={() => this.setClient(0)}>None</DropdownItem>

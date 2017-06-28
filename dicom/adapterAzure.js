@@ -55,7 +55,7 @@ const queryTableAll = async ({
 export const queryStudies = async () => { // TODO Add filter flag? archive?
     const values = await queryTableAll({
         tableName: `${process.env.APPSETTING_CONTAINER}Studies`, // TODO is this good practice to use ENV cars mixed in?
-        select: ['studyName', 'studyUID', 'patientName']
+        // select: ['studyName', 'studyUID', 'patientName']
     });
 
     return values;
@@ -91,8 +91,6 @@ export const readFile = async ({ path }) => {
     const file = path.substring(index + 1);
     const directory = path.substring(0, indexLast);
     const share = path.substring(0, indexFirst);
-
-    console.log('share', share, diretcory, file);
 
     const stream = fileService.createReadStream(
         share,

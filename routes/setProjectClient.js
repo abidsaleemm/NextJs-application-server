@@ -8,7 +8,7 @@ export default ({ server, app }) =>
             client = 0,
         } = req.params;
 
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) { // TODO add to middleware
             console.log('setProjectClient', studyUID, client);
             setProjectClient({ studyUID, client });
 

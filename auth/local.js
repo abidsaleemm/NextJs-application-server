@@ -21,12 +21,10 @@ export default server => {
   );
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user);
   });
 
-  passport.deserializeUser((id, done) => {
-    const user = users().find(user => user.id === id);
-
+  passport.deserializeUser((user, done) => {
     if (user === undefined) {
       done(err);
       return;

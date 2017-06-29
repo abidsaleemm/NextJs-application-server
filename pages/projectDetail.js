@@ -108,7 +108,6 @@ export default class extends Component {
       { credentials: 'same-origin' }
     ).then(res => res.json());
 
-    console.log('retClient', retClient)
     this.setState({ client: retClient });
   }
 

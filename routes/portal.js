@@ -1,16 +1,31 @@
-// import { queryStudyByUID } from '../dicom';
-import { queryProjects } from '../projects';
+import { queryStudies } from '../dicom';
+import { queryProjectList } from '../projects';
 
 export default ({ server, app }) =>
     server.get("/portal", async (req, res) => {
         if (req.isAuthenticated()) {
-            const projects = await queryProjects; // TODO add customer/user query
-            // TODO query DICOM studies?
-            return app.render(req, res, "/portal", { ...req.query, projects });
+            // TODO This should be integrated in as middleware
+            // Check if Client
+            const { user: { client = false, id } } = req;
+            if (client === true) {
+                const studies = await queryStudies();
+                let projects = await queryProjectList();
+                projects = projects
+                    .filter(v => v.client == id) // TODO fix typing?
+                    .map(v => {
+                        // Find matching Study
+                        const study = studies.find(({ studyUID }) => v.studyUID === studyUID);
+                        return { ...v, ...study }; 
+                    });
+                
+                return app.render(req, res, "/portal", { ...req.query, projects });
+            }
+
+            return res.redirect('/projects');
         }
 
         // TODO create this as a reusable function
         // Also user the Flash to send an error message
-        console.log('/portal not auth') 
+        console.log('/portal not auth');
         return res.redirect('/');
     });

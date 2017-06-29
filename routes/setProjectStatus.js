@@ -8,7 +8,7 @@ export default ({ server, app }) =>
             status = 0,
         } = req.params;
 
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) { // TODO add to middleware
             console.log('setProjectStatus', studyUID,  status);
             setProjectStatus({ studyUID, status }); // TODO Handle error
             

@@ -1,10 +1,12 @@
 import React from "react";
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 
 import Nav from '../components/nav'; // TODO use HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-// TODO Create invoice link
+import getStatusName from '../helpers/getStatusName';
+
+// TODO Create invoice
 // TODO create video preview and download link
 
 export default class extends React.Component {
@@ -28,8 +30,10 @@ export default class extends React.Component {
               <th>Study Name</th>
               <th>Study Date</th>
               <th>Modality</th>
-              <th>Activity</th>
               <th>Location</th>
+              <th>Download</th>
+              <th>Preview</th>
+              <th>Invoice</th>
             </tr>
           </thead>
           <tbody>
@@ -41,17 +45,18 @@ export default class extends React.Component {
               studyDate,
               modality,
               activity,
-              share,
-              client = 'NHF',
+              location,
         }) => (
                 <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
-                  <td>{status}</td>
+                  <td>{ getStatusName(status) }</td>
                   <td>{patientName}</td>
                   <td>{studyName}</td>
                   <td>{studyDate}</td>
                   <td>{modality}</td>
-                  <td>{activity}</td>
-                  <td>{share}</td>
+                  <td>{location}</td>
+                  <td><Button>Download</Button></td>
+                  <td><Button>Preview</Button></td>
+                  <td><Button>Invoice</Button></td>
                 </tr>
               ))}
           </tbody>

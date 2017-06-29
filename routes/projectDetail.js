@@ -1,27 +1,35 @@
 import { queryStudyByUID } from '../dicom';
-import { 
-    queryProject, 
-    createProject, 
+import {
+    queryProject,
+    createProject,
     createSnapshot,
 } from '../projects';
 
 export default ({ server, app }) =>
     server.get("/projectDetail/:projectid", async (req, res) => {
-        const { projectid: studyUID = '' } = req.params;
-        const study = await queryStudyByUID({ studyUID });
-        let project = await queryProject({ studyUID });
+        if (req.isAuthenticated()) { // TODO Middleware?
+            // TODO This should be integrated in as middleware
+            // Check if Client
+            const { user: { client = false } } = req;
+            if (client === true) {
+                // No access redirect to portal
+                return res.redirect('/portal');
+            }
 
-        if (project === undefined) {
-            console.log('Creating new project');
-            project = createProject({ studyUID }); // TODO Add function to create default from existing
+            const { projectid: studyUID = '' } = req.params;
+            const study = await queryStudyByUID({ studyUID });
+            let project = await queryProject({ studyUID });
 
-            createSnapshot({ studyUID, payload: project });
-        }
+            if (project === undefined) {
+                console.log('Creating new project');
+                project = createProject({ studyUID }); // TODO Add function to create default from existing
 
-        // Merge project and study table
-        project = { ...project, ...study };
+                createSnapshot({ studyUID, payload: project });
+            }
 
-        if (req.isAuthenticated()) {
+            // Merge project and study table
+            project = { ...project, ...study };
+
             const projectDetails = {};
 
             return app.render(req, res, "/projectDetail", {

@@ -20,7 +20,7 @@ const sessionStore = new FileStore({ path: "./sessiondb" });
 const sessionMiddleWare = expressSession({
   key: "express.sid",
   secret: "session_secret",
-  resave: true, // TODO Set to True Might break when using iframe
+  resave: true,
   saveUninitialized: false,
   store: sessionStore,
 });
@@ -41,6 +41,7 @@ app.prepare().then(() => {
   });
 
   if (process.env.NODE_ENV !== 'dev') {
+    // If none dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'),
       cert: fs.readFileSync('certs/fullchain1.pem')

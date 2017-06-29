@@ -1,5 +1,5 @@
 import {
-  queryProject,
+  queryProjectSnapshot,
   createSnapshot, // TODO should we create an initial snapshot?
   createProject,
 } from '../projects';
@@ -10,14 +10,15 @@ export default async ({ socket, action }) => {
   const { studyUID } = action;
   console.log('studyUID', studyUID);
 
-  let project = await queryProject({ studyUID })
+  let project = await queryProjectSnapshot({ studyUID })
 
+  console.log('project', project);
   // TODO This is reusable seperate
   if (project === undefined) {
-    console.log('Existing project not found. Creating new');
-    project = createProject({ studyUID });
-
-    createSnapshot({ studyUID, payload: project })
+    console.log('Socket API Project not found');
+    // project = createProject({ studyUID });
+    // createSnapshot({ studyUID, payload: project })
+    return;
   }
 
   const dicomSeries = [];

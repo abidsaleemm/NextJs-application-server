@@ -4,11 +4,14 @@ import selectSeries from './selectSeries';
 import selectStudy from './selectStudy';
 import { queryProject } from '../projects';
 
+// TODO Clean this up somehow
 const socketActions = {
   projectState,
   selectSeries,
   selectStudy
-}
+};
+
+// TODO Handle internal state changes
 
 export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   const io = socketio.listen(server);
@@ -34,7 +37,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       const parseType = type.replace(/^(server\/)/, ""); // TODO Do we really need this. Can just leave in and rename functions?
       console.log("action.type", parseType);
 
-      // TODO additional security check here for user
+      // TODO additional security check here for user at some point
       const { [parseType]: socketAction = () => { } } = socketActions;
       await socketAction({ socket, action });
     });

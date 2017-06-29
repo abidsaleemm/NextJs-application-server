@@ -8,6 +8,7 @@ export default  async () => {
   if (path === undefined) return;
 
   const db = low(`${path}/projects.json`);
+  db.defaults({ projects: [] }).write();
   const projects = db.get("projects").value();
 
   return projects;

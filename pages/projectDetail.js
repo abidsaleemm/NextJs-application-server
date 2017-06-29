@@ -2,18 +2,18 @@ import React, { Component, PropTypes } from "react";
 import Nav from '../components/nav'; // TODO wrap in HOC
 import {
   Table,
-  Button, 
+  Button,
   ButtonGroup,
-  ButtonDropdown, 
-  DropdownToggle, 
-  DropdownMenu, 
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
   DropdownItem,
-  Card, 
-  CardImg, 
-  CardText, 
-  CardBlock, 
+  Card,
+  CardImg,
+  CardText,
+  CardBlock,
   CardLink,
-  CardTitle, 
+  CardTitle,
   CardSubtitle,
 } from 'reactstrap';
 import Iframe from 'react-iframe';
@@ -38,7 +38,7 @@ const styles = {
 export default class extends Component {
   static getInitialProps({ req, query }) {
     const { projectDetail } = query;
-    return { projectDetail };
+    return { ...projectDetail };
   };
 
   constructor(props) {
@@ -85,8 +85,8 @@ export default class extends Component {
 
   // TODO Move to helper directory?
   setStatus = async (status = 0) => {
-    const { 
-      props: { projectDetail: { studyUID = '' } = {} } = {} 
+    const {
+      props: { studyUID = '' } = {}
     } = this;
 
     const { status: retStatus } = await fetch(
@@ -99,8 +99,8 @@ export default class extends Component {
 
   // TODO Move to helper directory?
   setClient = async (client = 0) => {
-    const { 
-      props: { projectDetail: { studyUID = '' } = {} } = {} 
+    const {
+      props: { studyUID = '' } = {}
     } = this;
 
     const { client: retClient } = await fetch(
@@ -115,16 +115,13 @@ export default class extends Component {
   render() {
     const {
       props: {
-        projectDetail: {
-          studyUID,
+      studyUID,
       studyName,
       patientName,
       studyDate,
       modality,
       location,
-      // client = 0, // Set this with API
-    } = {},
-      },
+    },
       state: {
         height,
         openStatus,
@@ -139,7 +136,7 @@ export default class extends Component {
 
 
     const clients = getClientList();
-    
+
     return (
       <div>
         <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
@@ -164,14 +161,14 @@ export default class extends Component {
                         toggle={toggleStatus}
                       >
                         <DropdownToggle caret>
-                          { getStatusName(status) || 'Uploaded' }
+                          { getStatusName(status) }
                         </DropdownToggle>
                         <DropdownMenu >
-                          <DropdownItem onClick={() => this.setStatus(0)}>{ getStatusName(0) }</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus(1)}>{ getStatusName(1) }</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus(2)}>{ getStatusName(2) }</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus(3)}>{ getStatusName(3) }</DropdownItem>
-                          <DropdownItem onClick={() => this.setStatus(4)}>{ getStatusName(4) }</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(0)}>{getStatusName(0)}</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(1)}>{getStatusName(1)}</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(2)}>{getStatusName(2)}</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(3)}>{getStatusName(3)}</DropdownItem>
+                          <DropdownItem onClick={() => this.setStatus(4)}>{getStatusName(4)}</DropdownItem>
                         </DropdownMenu>
                       </ButtonDropdown>
                     </td>
@@ -204,9 +201,9 @@ export default class extends Component {
                         </DropdownToggle>
                         <DropdownMenu >
                           <DropdownItem onClick={() => this.setClient(0)}>None</DropdownItem>
-                          { clients.map(({ id, name}) => (
-                            <DropdownItem 
-                              key={`${name}-${id}`} onClick={() => 
+                          {clients.map(({ id, name }) => (
+                            <DropdownItem
+                              key={`${name}-${id}`} onClick={() =>
                                 this.setClient(id)}
                             >{name}</DropdownItem>
                           ))}

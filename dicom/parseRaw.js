@@ -1,4 +1,4 @@
-import dicomParser from 'dicom-parser';
+import dicomParser from 'dicom-parser/build/built';
 
 export default (data) => {
   try {
@@ -53,6 +53,7 @@ export default (data) => {
 
     return { ...tags };
   } catch (e) {
+    // console.log('DICOM error', data)
     return {};
   }
 }

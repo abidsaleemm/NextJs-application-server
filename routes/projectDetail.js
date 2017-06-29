@@ -1,16 +1,21 @@
 import { queryStudyByUID } from '../dicom';
-import { queryProject, createProject } from '../projects';
+import { 
+    queryProject, 
+    createProject, 
+    createSnapshot,
+} from '../projects';
 
 export default ({ server, app }) =>
     server.get("/projectDetail/:projectid", async (req, res) => {
         const { projectid: studyUID = '' } = req.params;
-        console.log('studyUID', studyUID)
         const study = await queryStudyByUID({ studyUID });
         let project = await queryProject({ studyUID });
 
         if (project === undefined) {
             console.log('Creating new project');
             project = createProject({ studyUID }); // TODO Add function to create default from existing
+
+            createSnapshot({ studyUID, payload: project });
         }
 
         // Merge project and study table

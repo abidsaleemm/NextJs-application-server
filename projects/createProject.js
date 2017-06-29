@@ -3,6 +3,8 @@ import importSegments from '../modules/spine/importSegments';
 import importVertebra from '../modules/spine/importVertebra';
 
 // TODO Clean this up with other modules
+// This acts as the default project
+
 export default ({ studyUID }) => {
   const segments = importSegments();
   const vertebra = importVertebra(segments);

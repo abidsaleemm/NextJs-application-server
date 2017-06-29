@@ -43,7 +43,7 @@ app.prepare().then(() => {
   if (process.env.NODE_ENV !== 'dev') {
     // If none dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync('certs/privkey1.pem'),
+      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number
       cert: fs.readFileSync('certs/fullchain1.pem')
     };
 
@@ -52,6 +52,7 @@ app.prepare().then(() => {
       const io = socketApi({ server: serverHttp, passport });
     });
   } else {
+    // Used for local development
     const serverHttp = server.listen(port, () => {
       console.log(`Listening on *:${port}`);
       const io = socketApi({ server: serverHttp, passport, sessionMiddleWare });

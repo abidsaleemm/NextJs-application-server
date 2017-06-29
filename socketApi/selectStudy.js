@@ -12,7 +12,7 @@ export default async ({ socket, action }) => {
 
   let project = await queryProjectSnapshot({ studyUID })
 
-  console.log('project', project);
+  // console.log('project', project);
   // TODO This is reusable seperate
   if (project === undefined) {
     console.log('Socket API Project not found');

@@ -17,5 +17,5 @@ export default ({ server, app }) =>
         }
 
         console.log('/api/setProjectStatus not auth');
-        res.sendStatus(403);
+        return res.sendStatus(403);
     });

@@ -6,6 +6,7 @@ import expressSession from "express-session";
 import https from 'https';
 
 import auth from "./auth";
+import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
 
@@ -35,6 +36,7 @@ app.prepare().then(() => {
 
   const passport = auth(server);
   routes({ server, app });
+  api({ server, app });
 
   server.get("*", (req, res) => {
     return handle(req, res);

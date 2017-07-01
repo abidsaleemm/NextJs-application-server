@@ -36,23 +36,29 @@ TODO Add more description
 TODO Add description
 
 Adapter functions
-    - getProject
-    - getProjectList
-    - getProjectSnapshot
-    - setProjectSnapshot
-    - setProject 
+- getProject({ studyUID })
+- getProjectList()
+- getProjectSnapshot({ studyUID })
+- setProjectSnapshot{ studyUID, payload })
+- setProject({ studyUID, props })
 
 ### Local (used for testing without internet)
 
-TODO
+TODO Add description
 
 ### Azure Storage 
 
-TODO
+TODO Add description
 
 ## DICOM storage format
 
 TODO Add description
+
+Adapter functions
+- getImage({ instanceUID })
+- getSeries({ studyUID })
+- getStudies()
+- getStudy({ studyUID })
 
 ### Local (used for testing without internet)
 

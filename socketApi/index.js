@@ -4,7 +4,7 @@ import selectSeries from './selectSeries';
 import selectStudy from './selectStudy';
 import { queryProject } from '../projects';
 
-// TODO Clean this up somehow
+// TODO Works but clean this up somehow
 const socketActions = {
   projectState,
   selectSeries,
@@ -12,11 +12,10 @@ const socketActions = {
 };
 
 // TODO Handle internal state changes
-
 export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   const io = socketio.listen(server);
 
-  // This is used to cache state and merge
+  // Pass down session from passportjs
   io.use((socket, next) => sessionMiddleWare(socket.request, {}, next));
 
   // Handle socket connections
@@ -26,7 +25,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
     const { request: { session: { passport: { user } = {} } = {} } = {} } = socket;
     console.log('Socket user', user);
 
-    // This validates parent window session
+    // This validates user session
     // TODO Might be a more clean way to handle this
     if (user === undefined) {
       return;
@@ -39,6 +38,8 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
 
       // TODO additional security check here for user at some point
       const { [parseType]: socketAction = () => { } } = socketActions;
+
+      // TODO Handle with a return value instead
       await socketAction({ socket, action });
     });
 

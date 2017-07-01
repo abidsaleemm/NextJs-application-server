@@ -5,9 +5,9 @@ import parseRaw from '../parseRaw';
 
 // TODO Might want to not cache pixeldata
 // Caching entire file buffer
-export const series = {};
-export const studies = {};
-export const images = {};
+export let series = {};
+export let studies = {};
+export let images = {};
 export const path = '../backup/test';
 
 // Export API calls
@@ -56,7 +56,9 @@ export { default as readFile } from './readFile';
                 }
 
                 // Merge
-                studies[studyUID] = {
+                studies = { 
+                    ...studies,
+                    [studyUID]: {
                     studyUID,
                     studyName,
                     studyDate,
@@ -64,9 +66,22 @@ export { default as readFile } from './readFile';
                     patientID,
                     modality,
                     location,
+                    }
                 };
-                series[seriesUID] = { studyUID, seriesName, seriesUID, patientID };
-                images[instanceUID] = {
+
+                series = {
+                    ...series,
+                    [seriesUID]: {
+                        studyUID,
+                        seriesName,
+                        seriesUID, 
+                        patientID, 
+                    },
+                };
+
+                images = {
+                    ...images,
+                    [instanceUID]: {
                     path: newPath,
                     checksum,
                     imageNumber,
@@ -75,6 +90,7 @@ export { default as readFile } from './readFile';
                     instanceUID,
                     patientID,
                     location,
+                    }
                 };
 
                 next();

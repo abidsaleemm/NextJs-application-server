@@ -35,8 +35,7 @@ app.prepare().then(() => {
   server.use(sessionMiddleWare);
 
   const passport = auth(server);
-  routes({ server, app });
-  api({ server, app });
+  routes({ server, app }); // Setup routes
 
   server.get("*", (req, res) => {
     return handle(req, res);

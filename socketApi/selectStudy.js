@@ -21,8 +21,8 @@ export default async ({ socket, action }) => {
     return;
   }
 
-  const dicomSeries = [];
-  // const dicomSeries = await querySeries({ studyUID });
+  // const dicomSeries = [];
+  const dicomSeries = await querySeries({ studyUID });
   console.log('dicomSeries', dicomSeries);
 
   socket.emit('action', {

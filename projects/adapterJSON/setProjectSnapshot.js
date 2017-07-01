@@ -1,7 +1,7 @@
 import fs from "fs";
 import low from "lowdb";
 import uuid from "uuid";
-import queryProjectSnapshot from './queryProjectSnapshot';
+import getProjectSnapshot from './getProjectSnapshot';
 import { checkExists, path } from './index';
 
 export default async ({ studyUID = "_", payload = {} }) => {
@@ -11,7 +11,7 @@ export default async ({ studyUID = "_", payload = {} }) => {
   const snapShotUID = uuid();
 
   // Query last snapshot and merge
-  const lastSnapshot = await queryProjectSnapshot({ studyUID });
+  const lastSnapshot = await getProjectSnapshot({ studyUID });
 
   const mergedPayload = {
     ...lastSnapshot,
@@ -24,6 +24,8 @@ export default async ({ studyUID = "_", payload = {} }) => {
   );
 
   const db = low(`${path}/projects.json`);
+  db.defaults({ projects: [] }).write();
+
   const ret = db.get("projects").find({ studyUID: studyUID }).value();
 
   if (ret === undefined) {

@@ -1,9 +1,8 @@
-export { default as createSnapshot } from './createSnapshot';
-export { default as queryProject } from './queryProject';
-export { default as queryProjectSnapshot } from './queryProjectSnapshot';
-export { default as queryProjectList } from './queryProjectList';
-export { default as setProjectClient } from './setProjectClient';
-export { default as setProjectStatus } from './setProjectStatus';
+export { default as getProject } from './getProject';
+export { default as getProjectSnapshot } from './getProjectSnapshot';
+export { default as getProjectList } from './getProjectList';
+export { default as setProjectSnapshot } from './setProjectSnapshot';
+export { default as setProject } from './setProject';
 
 export const path = "./projectsLocal";
 

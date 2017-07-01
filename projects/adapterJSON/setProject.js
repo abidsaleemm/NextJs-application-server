@@ -3,7 +3,7 @@ import low from "lowdb";
 
 import { checkExists, path } from './index';
 
-export default async ({ studyUID = '', status = 0 }) => {
+export default async ({ studyUID = '', props = {} }) => {
     checkExists();
     if (path === undefined) return;
 
@@ -13,6 +13,7 @@ export default async ({ studyUID = '', status = 0 }) => {
     db
         .get("projects")
         .find({ studyUID })
-        .assign({ status })
+        .assign(props)
         .write()
 };
+

@@ -1,5 +1,5 @@
 import { queryStudies } from '../dicom';
-import { queryProjectList } from '../projects';
+import { getProjectList } from '../projects';
 
 export default ({ server, app }) =>
     server.get("/portal", async (req, res) => {
@@ -9,7 +9,7 @@ export default ({ server, app }) =>
             const { user: { client = false, id } } = req;
             if (client === true) {
                 const studies = await queryStudies();
-                let projects = await queryProjectList();
+                let projects = await getProjectList();
                 projects = projects
                     .filter(v => v.client == id) // TODO fix typing?
                     .map(v => {

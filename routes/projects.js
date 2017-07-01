@@ -1,5 +1,5 @@
 import { queryStudies } from '../dicom';
-import { queryProjectList } from '../projects';
+import { getProjectList } from '../projects';
 import getStatusName from '../helpers/getStatusName';
 import getClientNameById from '../helpers/getClientNameById';
 
@@ -18,7 +18,7 @@ export default ({ server, app }) =>
             // Building query for data
             // TODO Is there a better place for this?
             const studies = await queryStudies();
-            const projectsList = await queryProjectList();
+            const projectsList = await getProjectList();
             const projects = studies.map(study => {
                 // Lookup if there is a project
                 const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID);

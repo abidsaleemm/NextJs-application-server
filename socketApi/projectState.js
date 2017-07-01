@@ -1,4 +1,4 @@
-import { createSnapshot } from '../projects';
+import { setProjectSnapshot } from '../projects';
 
 export default async ({ socket, action }) => {
   const { payload = {} } = action;
@@ -6,5 +6,5 @@ export default async ({ socket, action }) => {
 
   console.log('saving snapshot', studyUID);
 
-  createSnapshot({ studyUID, payload });
+  setProjectSnapshot({ studyUID, payload });
 }

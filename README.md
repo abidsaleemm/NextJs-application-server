@@ -33,6 +33,15 @@ TODO Add more description
 
 ## Project storage format
 
+TODO Add description
+
+Adapter functions
+    - getProject
+    - getProjectList
+    - getProjectSnapshot
+    - setProjectSnapshot
+    - setProject 
+
 ### Local (used for testing without internet)
 
 TODO
@@ -42,6 +51,8 @@ TODO
 TODO
 
 ## DICOM storage format
+
+TODO Add description
 
 ### Local (used for testing without internet)
 

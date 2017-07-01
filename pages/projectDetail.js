@@ -18,10 +18,10 @@ import {
 } from 'reactstrap';
 import Iframe from 'react-iframe';
 
-// TODO Handle this some place else
 import getStatusName from '../helpers/getStatusName';
 import getClientList from '../helpers/getClientList';
 import getClientNameById from '../helpers/getClientNameById';
+import fetchApi from '../helpers/fetchApi';
 
 // TODO Wrap this in a HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
@@ -46,7 +46,7 @@ export default class extends Component {
     const { status = 0, client = 0 } = props;
 
     this.state = {
-      height: 200,
+      height: 800,
       openStatus: false,
       openClient: false,
       status,
@@ -71,44 +71,16 @@ export default class extends Component {
     }
   }
 
-  toggleStatus = () => {
-    this.setState({
-      openStatus: !this.state.openStatus
-    });
-  }
-
-  toggleClient = () => {
-    this.setState({
-      openClient: !this.state.openClient
-    });
-  }
-
-  // TODO Move to helper directory?
+  // TODO Move fetch actions to helper directory?
   setStatus = async (status = 0) => {
-    const {
-      props: { studyUID = '' } = {}
-    } = this;
-
-    const { status: retStatus } = await fetch(
-      `/api/setProjectStatus/${studyUID}/${status}`,
-      { credentials: 'same-origin' }
-    ).then(res => res.json());
-
-    this.setState({ status: retStatus });
+    const { props: { studyUID = '' } = {} } = this;
+    this.setState(await fetchApi('setProject', { studyUID, status }));
   }
 
-  // TODO Move to helper directory?
+  // TODO Move fetch actions to helper directory?
   setClient = async (client = 0) => {
-    const {
-      props: { studyUID = '' } = {}
-    } = this;
-
-    const { client: retClient } = await fetch(
-      `/api/setProjectClient/${studyUID}/${client}`,
-      { credentials: 'same-origin' }
-    ).then(res => res.json());
-
-    this.setState({ client: retClient });
+    const { props: { studyUID = '' } = {} } = this;
+    this.setState(await fetchApi('setProject', { studyUID, client }));
   }
 
   render() {
@@ -128,11 +100,8 @@ export default class extends Component {
         status = 0,
         client = 0,
       } = {},
-      toggleStatus,
-      toggleClient,
       setStatus,
     } = this;
-
 
     const clients = getClientList();
 
@@ -157,10 +126,14 @@ export default class extends Component {
                     <td>
                       <ButtonDropdown
                         isOpen={openStatus}
-                        toggle={toggleStatus}
+                        toggle={() => {
+                          this.setState({
+                            openStatus: !this.state.openStatus
+                          });
+                        }}
                       >
                         <DropdownToggle caret>
-                          { getStatusName(status) }
+                          {getStatusName(status)}
                         </DropdownToggle>
                         <DropdownMenu >
                           <DropdownItem onClick={() => this.setStatus(0)}>{getStatusName(0)}</DropdownItem>
@@ -193,10 +166,14 @@ export default class extends Component {
                     <td>
                       <ButtonDropdown
                         isOpen={openClient}
-                        toggle={toggleClient}
+                        toggle={() => {
+                          this.setState({
+                            openClient: !this.state.openClient
+                          });
+                        }}
                       >
                         <DropdownToggle caret>
-                          { getClientNameById(client) || 'None' }
+                          {getClientNameById(client) || 'None'}
                         </DropdownToggle>
                         <DropdownMenu >
                           <DropdownItem onClick={() => this.setClient(0)}>None</DropdownItem>

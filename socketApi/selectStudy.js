@@ -1,7 +1,7 @@
 import {
-  queryProjectSnapshot,
-  createSnapshot, // TODO should we create an initial snapshot?
-  createProject,
+  getProjectSnapshot,
+  // createSnapshot, // TODO should we create an initial snapshot?
+  // createProject,
 } from '../projects';
 
 import { querySeries } from '../dicom';
@@ -10,7 +10,7 @@ export default async ({ socket, action }) => {
   const { studyUID } = action;
   console.log('studyUID', studyUID);
 
-  let project = await queryProjectSnapshot({ studyUID })
+  let project = await getProjectSnapshot({ studyUID })
 
   // console.log('project', project);
   // TODO This is reusable seperate

@@ -1,23 +1,11 @@
-// import {
-//   queryImages
-// } from '../dicom';
+import { getImages } from '../dicom';
 
 export default async ({ socket, action }) => {
-  // const { studyUID, seriesUID } = action;
-  // // const { dicomImages = [] } = getState();
-  // const dicomImages = [];
+  const { studyUID, seriesUID } = action;
+  const volume = await getImages({ seriesUID });
 
-  // TODO query images
-  
-  // const images = await queryImages()
-  const volumePromise =
-    dicomVolume(dicomImages, studyUID, seriesUID);
-
-  volumePromise.then(volume => {
-    console.log('Sending volume payload');
-    socket.emit('action', {
-      type: 'VOLUME_SET',
-      volume,
-    });
+  socket.emit('action', {
+    type: 'VOLUME_SET',
+    volume,
   });
 };

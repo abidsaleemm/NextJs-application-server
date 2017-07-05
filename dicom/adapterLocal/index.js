@@ -2,18 +2,16 @@ import walk from 'walk';
 import fs from 'fs';
 import parseRaw from '../parseRaw';
 
-// TODO Might want to not cache pixeldata
-// Caching entire file buffer
 export let series = {};
 export let studies = {};
 export let images = {};
-export const path = '../backup/test'; // Modify this to point to your local DICOM files
+export const path = '../backup/test'; // TODO Make this an env var or arg. Modify this to point to your local DICOM files
 
 // Export API calls
 export { default as getStudies } from './getStudies';
 export { default as getStudy } from './getStudy';
 export { default as getSeries } from './getSeries';
-export { default as getImage } from './getImage';
+export { default as getImages } from './getImages';
 
 ((directory = path) =>
     new Promise((resolve, reject) => {

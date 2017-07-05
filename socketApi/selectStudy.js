@@ -1,31 +1,18 @@
-import {
-  getProjectSnapshot,
-  // createSnapshot, // TODO should we create an initial snapshot?
-  // createProject,
-} from '../projects';
-
-import { 
-  getSeries,
-} from '../dicom';
+import { getProjectSnapshot } from '../projects';
+import { getSeries, getImages } from '../dicom';
 
 export default async ({ socket, action }) => {
   const { studyUID } = action;
-  console.log('studyUID', studyUID);
+  console.log('studyUID', studyUID); // TODO Used for debugging / logging
 
-  let project = await getProjectSnapshot({ studyUID })
+  const project = await getProjectSnapshot({ studyUID })
 
-  // console.log('project', project);
-  // TODO This is reusable seperate
   if (project === undefined) {
     console.log('Socket API Project not found');
-    // project = createProject({ studyUID });
-    // createSnapshot({ studyUID, payload: project })
-    return;
+    return; // TODO Handle bailout better? Error handle?
   }
 
-  // const dicomSeries = [];
   const dicomSeries = await getSeries({ studyUID });
-  console.log('dicomSeries', dicomSeries);
 
   socket.emit('action', {
     type: 'PROJECT_PAYLOAD',
@@ -34,4 +21,15 @@ export default async ({ socket, action }) => {
       dicomSeries,
     },
   });
+
+  if (dicomSeries.length > 0) {
+    const { 0: { seriesUID: firstSeriesUID } } = dicomSeries;
+    const { seriesUID = firstSeriesUID } = project;
+    const volume = await getImages({ seriesUID });
+
+    socket.emit('action', {
+      type: 'VOLUME_SET',
+      volume,
+    });
+  }
 }

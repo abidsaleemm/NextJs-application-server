@@ -1,5 +1,5 @@
 #!/bin/bash
 
 # TODO Remove sudo?
-sudo docker build . -t hackexpert/application-server
-sudo docker push hackexpert/application-server
+sudo docker build . -t multus/application-server
+sudo docker push multus/application-server

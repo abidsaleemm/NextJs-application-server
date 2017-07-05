@@ -19,21 +19,24 @@ TODO Add more description
 ## Directory structure
 
 ```
-.                
+. 
+├─ api          - API based functions here.               
 ├─ auth         - PassportJS strategy functions and user based functions.
-├─ components   - React components are declared here.
+├─ components   - Reusable React components are declared here.
 ├─ dicom        - Functions for querying and reading DICOM files from storage.
 ├─ modules      - Module specific for creating initial state data. (Spine, Shoulder, Knee)
 ├─ pages        - React pages for NextJS.
 ├─ projects     - Functions for querying, saving and reading projects from storage.
-├─ routes       - Express routing functions.
+├─ routes       - Express routing handling functions.
 ├─ socketApi    - Socket.io functions for client API.
 └─ styles       - SCSS style sheets for front-end components. Global sheets also.
 ```
 
-## Project storage format
+## Project storage
 
 TODO Add description
+
+Snapshots contain an application state payload.
 
 Adapter functions
 - getProject({ studyUID })
@@ -50,7 +53,7 @@ TODO Add description
 
 TODO Add description
 
-## DICOM storage format
+## DICOM storage
 
 TODO Add description
 
@@ -62,7 +65,7 @@ Adapter functions
 
 ### Local (used for testing without internet)
 
-Local DICOM storage contains no database, but instead just scans all the DICOM files inside a set directory every single time there is a query.  This is only recommended with a high speed SSD drive and is very inefficient and only recommended for testing purposes.
+Local DICOM storage contains no database, but instead just scans all the DICOM files inside a set directory on startup.  This is only recommended with a high speed SSD drive and is very inefficient and only recommended for testing purposes.
 
 ### Azure
 
@@ -83,6 +86,10 @@ git clone git@bitbucket.org:interbizconsulting/application-server.git
 cd application-server
 npm install
 ```
+
+## Running
+
+TODO
 
 ## Testing locally
 
@@ -111,8 +118,8 @@ docker login -u $DOCKER_USER -p "$DOCKER_PASS"
 Building and pushing to Docker Hub.
 
 ```sh
-docker build -t hackexpert/application-server .
-docker push hackexpert/application-server
+docker build -t multus/application-server .
+docker push multus/application-server
 ```
 
 Test Docker locally.

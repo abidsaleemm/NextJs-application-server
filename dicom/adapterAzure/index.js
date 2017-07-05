@@ -10,7 +10,7 @@ export const tableService = azure.createTableService(
     process.env.APPSETTING_STORAGE_KEY
 );
 
-export { default as querySeries } from './querySeries';
-export { default as queryStudies } from './queryStudies';
-export { default as queryStudyByUID } from './queryStudyByUID'; 
-export { default as readFile } from './readFile';
+export { default as getSeries } from './getSeries';
+export { default as getStudies } from './getStudies';
+export { default as getStudy } from './getStudy'; 
+export { default as getImage } from './getImage';

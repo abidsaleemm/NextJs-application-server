@@ -1,4 +1,4 @@
-import { queryStudies } from '../dicom';
+import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 import getStatusName from '../helpers/getStatusName';
 import getClientNameById from '../helpers/getClientNameById';
@@ -10,14 +10,12 @@ export default ({ server, app }) =>
             // Check if Client
             const { user: { client = false } } = req;
             if (client === true) {
-                return res.redirect('/portal');
                 // No access redirect to portal
-                // return app.render(req, res, "/portal", { ...req.query });
+                return res.redirect('/portal');
             }
 
             // Building query for data
-            // TODO Is there a better place for this?
-            const studies = await queryStudies();
+            const studies = await getStudies();
             const projectsList = await getProjectList();
             const projects = studies.map(study => {
                 // Lookup if there is a project

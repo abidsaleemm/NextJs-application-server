@@ -4,7 +4,9 @@ import {
   // createProject,
 } from '../projects';
 
-import { querySeries } from '../dicom';
+import { 
+  getSeries,
+} from '../dicom';
 
 export default async ({ socket, action }) => {
   const { studyUID } = action;
@@ -22,7 +24,7 @@ export default async ({ socket, action }) => {
   }
 
   // const dicomSeries = [];
-  const dicomSeries = await querySeries({ studyUID });
+  const dicomSeries = await getSeries({ studyUID });
   console.log('dicomSeries', dicomSeries);
 
   socket.emit('action', {

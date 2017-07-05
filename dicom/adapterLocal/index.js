@@ -1,6 +1,5 @@
 import walk from 'walk';
 import fs from 'fs';
-
 import parseRaw from '../parseRaw';
 
 // TODO Might want to not cache pixeldata
@@ -8,13 +7,13 @@ import parseRaw from '../parseRaw';
 export let series = {};
 export let studies = {};
 export let images = {};
-export const path = '../backup/test';
+export const path = '../backup/test'; // Modify this to point to your local DICOM files
 
 // Export API calls
-export { default as queryStudies } from './queryStudies';
-export { default as queryStudyByUID } from './queryStudyByUID';
-export { default as querySeries } from './querySeries';
-export { default as readFile } from './readFile';
+export { default as getStudies } from './getStudies';
+export { default as getStudy } from './getStudy';
+export { default as getSeries } from './getSeries';
+export { default as getImage } from './getImage';
 
 ((directory = path) =>
     new Promise((resolve, reject) => {

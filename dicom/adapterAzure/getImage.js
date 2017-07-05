@@ -1,6 +1,6 @@
 import fileService from './';
 
-export default async ({ path }) => { // TODO instead of path change this to InstanceUID
+export default async ({ instanceUID, path }) => { // TODO instead of path change this to InstanceUID
     // Make directory and filename from full path
     const indexLast = path.lastIndexOf("/");
     const indexFirst = path.indexOf("/");

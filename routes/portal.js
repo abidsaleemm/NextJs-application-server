@@ -1,4 +1,4 @@
-import { queryStudies } from '../dicom';
+import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 
 export default ({ server, app }) =>
@@ -8,7 +8,7 @@ export default ({ server, app }) =>
             // Check if Client
             const { user: { client = false, id } } = req;
             if (client === true) {
-                const studies = await queryStudies();
+                const studies = await getStudies();
                 let projects = await getProjectList();
                 projects = projects
                     .filter(v => v.client == id) // TODO fix typing?

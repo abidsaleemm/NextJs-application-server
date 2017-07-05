@@ -1,4 +1,4 @@
-import { queryStudyByUID } from '../dicom';
+import { getStudy } from '../dicom';
 import {
     createProject,
     getProject,
@@ -17,7 +17,7 @@ export default ({ server, app }) =>
             }
 
             const { projectid: studyUID = '' } = req.params;
-            const study = await queryStudyByUID({ studyUID });
+            const study = await getStudy({ studyUID });
             let project = await getProject({ studyUID });
 
             if (project === undefined) {

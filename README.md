@@ -93,9 +93,9 @@ The following npm commands can be ran to test the app locally.  You can specify 
 
 ```
 npm run azure-azure # Using azure based adapters for projects and dicom
-npm local-azure     # Projects: azure DICOM: local
-npm azure-local     # Projects: local DICOM: azure
-npm local-local     # Projects: local DICOM: local
+npm run local-azure     # Projects: azure DICOM: local
+npm run azure-local     # Projects: local DICOM: azure
+npm run local-local     # Projects: local DICOM: local
 ```
 
 ## Deployment script

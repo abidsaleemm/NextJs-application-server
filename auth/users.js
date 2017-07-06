@@ -2,27 +2,27 @@ export default () => [
   {
     name: "Warren Goble",
     username: "warren@hack.expert",
-    password: "test",
+    password: "test91a",
     id: 1, // TODO update to 
     admin: true,
   },
   {
     name: "Sandeep Shah",
     username: "hisandeepshah@gmail.com",
-    password: "test",
+    password: "test91a",
     id: 2,
     admin: true,
   },
   {
     name: "Warren Goble",
     username: "warrengoble@gmail.com",
-    password: "test",
+    password: "test91a",
     id: 3,
   },
   {
     name: "NHF",
     username: "user@nhf.com",
-    password: "test",
+    password: "test91a",
     id: 4,
     client: true,
   }

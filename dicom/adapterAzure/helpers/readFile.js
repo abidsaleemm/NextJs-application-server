@@ -1,12 +1,11 @@
-import fileService from './';
+import { fileService } from '../';
 
-export default async ({ instanceUID, path }) => { // TODO instead of path change this to InstanceUID
-    // Make directory and filename from full path
+export default ({ path = '' }) => new Promise((resolve, reject) => {
     const indexLast = path.lastIndexOf("/");
     const indexFirst = path.indexOf("/");
 
-    const file = path.substring(index + 1);
-    const directory = path.substring(0, indexLast);
+    const file = path.substring(indexLast + 1);
+    const directory = path.substring(indexFirst + 1, indexLast);
     const share = path.substring(0, indexFirst);
 
     const stream = fileService.createReadStream(
@@ -22,10 +21,11 @@ export default async ({ instanceUID, path }) => { // TODO instead of path change
 
     stream.on('end', () => {
         const buffer = Buffer.concat(buffers);
-        return buffer;
+        resolve(buffer);
     });
 
     stream.on('error', ({ name, message, statusCode }) => {
         console.log('error', name, message, statusCode);
+        reject({ name, message, statusCode });
     });
-}
+});

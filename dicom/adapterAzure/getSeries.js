@@ -1,11 +1,9 @@
-import queryTableAll from './helpers/queryTableAll';
+import azure from "azure-storage";
+import queryTable from './helpers/queryTable';
 
-export default async ({ studyUID }) => {
-    const values = await queryTableAll({
-        tableName: `${process.env.APPSETTING_CONTAINER}Series`,
-        select: ['seriesName', 'seriesUID']
-    });
-
-    console.log('series', values);
-    return values;
-};
+export default async ({ studyUID }) => await queryTable({
+    query: new azure.TableQuery()
+        .select(['seriesName', 'seriesUID'])
+        .where('studyUID eq ?', studyUID),
+    tableName: `${process.env.APPSETTING_CONTAINER}Series`,
+});

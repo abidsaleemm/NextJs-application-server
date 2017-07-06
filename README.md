@@ -39,11 +39,11 @@ TODO Add description
 Snapshots contain an application state payload.
 
 Adapter functions
-- getProject({ studyUID })
-- getProjectList()
-- getProjectSnapshot({ studyUID })
-- setProjectSnapshot{ studyUID, payload })
-- setProject({ studyUID, props })
+1. getProject({ studyUID })
+2. getProjectList()
+3. getProjectSnapshot({ studyUID })
+4. setProjectSnapshot({ studyUID, payload })
+5. setProject({ studyUID, props })
 
 ### Local (used for testing without internet)
 
@@ -55,13 +55,13 @@ TODO Add description
 
 ## DICOM storage
 
-TODO Add description
+TODO Add description.  Add return object structure.
 
 Adapter functions
-- getImage({ instanceUID })
-- getSeries({ studyUID })
-- getStudies()
-- getStudy({ studyUID })
+1. getImages({ seriesUID })
+2. getSeries({ studyUID })
+3. getStudies()
+4. getStudy({ studyUID })
 
 ### Local (used for testing without internet)
 
@@ -87,16 +87,15 @@ cd application-server
 npm install
 ```
 
-## Running
-
-TODO
-
 ## Testing locally
 
-Local test server can be ran for testing. Note: This does not uses SSL and is insecure.
+The following npm commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
 
-```bash
-npm run dev
+```
+npm run azure-azure # Using azure based adapters for projects and dicom
+npm local-azure     # Projects: azure DICOM: local
+npm azure-local     # Projects: local DICOM: azure
+npm local-local     # Projects: local DICOM: local
 ```
 
 ## Deployment script

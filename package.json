@@ -5,11 +5,11 @@
   "author": "Warren Goble <warren@hack.expert>",
   "scripts": {
     "start": "node ./loader.js",
-    "azure-azure": "node ./loader.js",
+    "azure-azure": "npm run dev",
     "local-azure": "cross-env LOCAL_DICOM=true npm run dev",
     "azure-local": "cross-env LOCAL_PROJECTS=true npm run dev",
     "local-local": "cross-env LOCAL_DICOM=true LOCAL_PROJECTS=true npm run dev",
-    "dev": "cross-env NODE_ENV=dev APPSETTING_CONTAINER=dicom0001 APPSETTING_STORAGE2=nhf APPSETTING_STORAGE2_KEY=4l5r4ZIOvbjQJ2/QBzCk/51RasPIkmvBhbnBMrp3sCCBamPK0pTIDuS3Hna6Hpp8P6J4kfPmjbuR9EmyQ5ujew== APPSETTING_STORAGE=multus APPSETTING_STORAGE_KEY=w9Qei6eOoqerSmw9msraYn6nNx45lr1++8EzvAnpKCib87pMGe4uhl/IszsJsTOY006XG68AFGER3nGmBjLElQ== node ./loader.js"
+    "dev": "cross-env NODE_ENV=dev APPSETTING_CONTAINER=dicom0001 APPSETTING_STORAGE2=nhf APPSETTING_STORAGE2_KEY=buhCol1dp0/mHtB4+88ZlHpSlYP+UhckhArfIuyEZFVQ7G9VG5f4/wqcSkfy5vedt884NygQWAMWtzoTj5Ccyg== APPSETTING_STORAGE=multus APPSETTING_STORAGE_KEY=GPdnTMIppeIIbaEumyc3oNQeePLs54woaMX1czJbVaMbnjYiRxXwrFXWYYRdr4JIdlf+boN8xGemUozKRhcS1w== node ./loader.js"
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",

@@ -29,11 +29,12 @@ export default async ({ studyUID = "_", payload = {} }) => {
   const ret = db.get("projects").find({ studyUID: studyUID }).value();
 
   if (ret === undefined) {
-    // create
-    db
-      .get("projects")
-      .push({ studyUID, status: 0, client: 0, snapshot: snapShotUID, snapshots: [snapShotUID] })
-      .write();
+    // TODO do nothing should be created via route entry or use setProject with default props?
+    // // create
+    // db
+    //   .get("projects")
+    //   .push({ studyUID, status: 0, client: 0, snapshot: snapShotUID, snapshots: [snapShotUID] })
+    //   .write();
   } else {
     // update
     db

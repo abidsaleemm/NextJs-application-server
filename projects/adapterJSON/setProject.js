@@ -10,6 +10,12 @@ export default async ({ studyUID = '', props = {} }) => {
     const db = low(`${path}/projects.json`);
     db.defaults({ projects: [] }).write();
 
+    // TODO automatically create if doesn't exist
+    // db
+    //   .get("projects")
+    //   .push({ studyUID, status: 0, client: 0, snapshot: snapShotUID, snapshots: [snapShotUID] })
+    //   .write();
+    
     db
         .get("projects")
         .find({ studyUID })

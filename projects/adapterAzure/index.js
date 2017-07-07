@@ -44,9 +44,3 @@ export const createContainer = () => new Promise((resolve, reject) =>
 
         resolve(result);
     }));
-
-// TODO set up default function to handle
-// TODO wrap functions so pre processing can be done such as Blob and Table creation
-// export default {
-//     getProjectList,
-// };

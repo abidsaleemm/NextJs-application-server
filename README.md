@@ -38,20 +38,18 @@ Access keys to storage accounts need to be set as environment vars.
 
 *Note:  These do not apply if you are locally testing. This is required for Azure testing.*
 
-Below is an example bash commands to set the environment variables.
+Below is an example .env file.
 
 ```bash
-#!/bin/bash
-
 # Required
-export STORAGE=multus
-export STORAGE_KEY=$KEY
-export STORAGE2=nhf        # Used to grab DICOM files from NHF file storage account for now.  
-export STORAGE2_KEY=$KEY   # Used to grab DICOM files from NHF file storage account for now.  
+STORAGE=multus
+STORAGE_KEY=$KEY
+STORAGE2=nhf        # Used to grab DICOM files from NHF file storage account for now.  
+STORAGE2_KEY=$KEY   # Used to grab DICOM files from NHF file storage account for now.  
 
 # Optional
-export DICOM_CONTAINER=$DICOM_PREFIX_NAME
-export PROJECT_TABLE=projects
+DICOM_CONTAINER=dicom   # default 'dicom'
+PROJECT_TABLE=projects  # default 'projects'
 ```
 
 ## Project storage

@@ -1,17 +1,16 @@
 import azure from "azure-storage";
 
-export { default as createSnapshot } from './createSnapshot';
-export { default as queryProject } from './queryProject';
-export { default as queryProjectList } from './queryProjectList'; 
-export { default as queryProjectSnapshot } from './queryProjectSnapshot';
-export { default as setProjectClient } from './setProjectClient';
-export { default as setProjectStatus } from './setProjectStatus';
+export { default as getProject } from './getProject';
+export { default as getProjectList } from './getProjectList';
+export { default as getProjectSnapshot } from './getProjectSnapshot';
+export { default as setProject } from './setProject';
+export { default as setProjectSnapshot } from './setProjectSnapshot';
 
-export const tableName = 'projects';
+export const tableName = 'projects'; // TODO Make this some type of arg.
 
 export const blobService = azure.createBlobService(
-    process.env.APPSETTING_STORAGE2,
-    process.env.APPSETTING_STORAGE2_KEY
+    process.env.APPSETTING_STORAGE,
+    process.env.APPSETTING_STORAGE_KEY
 );
 
 export const tableService = azure.createTableService(
@@ -19,4 +18,35 @@ export const tableService = azure.createTableService(
     process.env.APPSETTING_STORAGE_KEY
 );
 
+// TODO Should be moved to helpers?
+export const createTable = () => new Promise((resolve, reject) =>
+    tableService.createTableIfNotExists(
+        tableName,
+        (error, result, response) => {
+            if (error) {
+                console.log('error', error)
+                reject(error);
+                return;
+            }
+
+            resolve(result);
+        }));
+
+// TODO Should be moved to helpers?
+export const createContainer = () => new Promise((resolve, reject) =>
+    blobService.createContainerIfNotExists(tableName, (error, result, response) => {
+        if (error) {
+            // Container exists and is private
+            console.log('error', error)
+            reject(error);
+            return;
+        }
+
+        resolve(result);
+    }));
+
+// TODO set up default function to handle
 // TODO wrap functions so pre processing can be done such as Blob and Table creation
+// export default {
+//     getProjectList,
+// };

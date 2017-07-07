@@ -25,5 +25,18 @@ export default () => [
     password: "test91a",
     id: 4,
     client: true,
-  }
+  },
+  {
+    name: "Test User",
+    username: "user@test.com",
+    password: "test91a",
+    id: 5,
+  },
+  {
+    name: "Test Client",
+    username: "client@test.com",
+    password: "test91a",
+    id: 6,
+    client: true,
+  },
 ];

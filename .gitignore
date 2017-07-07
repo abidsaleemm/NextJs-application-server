@@ -19,4 +19,4 @@ dist
 sessiondb
 certs
 
-env.bash
+.env

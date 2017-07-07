@@ -50,7 +50,7 @@ app.prepare().then(() => {
 
     const serverHttp = https.createServer(options, server).listen(port, () => {
       console.log(`SSL listening on *:${port}`);
-      const io = socketApi({ server: serverHttp, passport });
+      const io = socketApi({ server: serverHttp, passport, sessionMiddleWare });
     });
   } else {
     // Used for local development

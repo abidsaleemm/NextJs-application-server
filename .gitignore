@@ -18,3 +18,5 @@ dist
 .next
 sessiondb
 certs
+
+env.bash

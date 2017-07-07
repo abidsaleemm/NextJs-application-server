@@ -28,8 +28,8 @@ export default async ({ studyUID = "_", payload = {} }) => {
             });
     }));
 
+    // If An existing payload exists retrieve last and merge with new changes
     let payloadMerged = payload;
-
     if (exists === true) {
         // If blob already exist create snapshot and write new blob
         await (new Promise((resolve, reject) =>

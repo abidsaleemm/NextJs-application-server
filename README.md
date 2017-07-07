@@ -39,9 +39,14 @@ Live site can be accessed at:
 
 https://multus.hack.expert
 
-Test login:
+Test user:
 
-user: test@test.com
+user: user@test.com
+pass: test91a
+
+Test client:
+
+user: client@test.com
 pass: test91a
 
 ## Environment variables / Access keys

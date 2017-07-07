@@ -13,6 +13,7 @@ export { default as getStudy } from './getStudy';
 export { default as getSeries } from './getSeries';
 export { default as getImages } from './getImages';
 
+// TODO Remove self invoking function create as default
 ((directory = path) =>
     new Promise((resolve, reject) => {
         const walker = walk.walk(directory, {});

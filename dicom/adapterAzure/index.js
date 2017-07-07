@@ -1,14 +1,16 @@
 import azure from "azure-storage";
 
 export const fileService = azure.createFileService(
-    process.env.APPSETTING_STORAGE2,
-    process.env.APPSETTING_STORAGE2_KEY
+    process.env.STORAGE2,
+    process.env.STORAGE2_KEY
 );
 
 export const tableService = azure.createTableService(
-    process.env.APPSETTING_STORAGE,
-    process.env.APPSETTING_STORAGE_KEY
+    process.env.STORAGE,
+    process.env.STORAGE_KEY
 );
+
+export const tablePrefix = process.env.DICOM_CONTAINER || 'dicom';
 
 export { default as getSeries } from './getSeries';
 export { default as getStudies } from './getStudies';

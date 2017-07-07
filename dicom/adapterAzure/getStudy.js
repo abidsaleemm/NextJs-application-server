@@ -1,8 +1,9 @@
 import azure from "azure-storage";
 import queryTable from './helpers/queryTable';
+import { tablePrefix } from './';
 
 export default async ({ studyUID }) => {
-    const tableName = `${process.env.APPSETTING_CONTAINER}Studies`; // TODO create const in upper scope for the three types of tables
+    const tableName = `${tablePrefix}Studies`; // TODO create const in upper scope for the three types of tables
     const query = new azure.TableQuery()
         .select([])
         .where('RowKey eq ?', studyUID);

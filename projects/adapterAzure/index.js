@@ -6,16 +6,16 @@ export { default as getProjectSnapshot } from './getProjectSnapshot';
 export { default as setProject } from './setProject';
 export { default as setProjectSnapshot } from './setProjectSnapshot';
 
-export const tableName = 'projects'; // TODO Make this some type of arg.
+export const tableName = process.env.PROJECT_TABLE || 'projects';
 
 export const blobService = azure.createBlobService(
-    process.env.APPSETTING_STORAGE,
-    process.env.APPSETTING_STORAGE_KEY
+    process.env.STORAGE,
+    process.env.STORAGE_KEY
 );
 
 export const tableService = azure.createTableService(
-    process.env.APPSETTING_STORAGE,
-    process.env.APPSETTING_STORAGE_KEY
+    process.env.STORAGE,
+    process.env.STORAGE_KEY
 );
 
 // TODO Should be moved to helpers?

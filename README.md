@@ -24,12 +24,34 @@ TODO Add more description
 ├─ auth         - PassportJS strategy functions and user based functions.
 ├─ components   - Reusable React components are declared here.
 ├─ dicom        - Functions for querying and reading DICOM files from storage.
-├─ modules      - Module specific for creating initial state data. (Spine, Shoulder, Knee)
+├─ modules      - Module specific for creating initial state data for client frontend. (Spine, Shoulder, Knee)
 ├─ pages        - React pages for NextJS.
 ├─ projects     - Functions for querying, saving and reading projects from storage.
 ├─ routes       - Express routing handling functions.
 ├─ socketApi    - Socket.io functions for client API.
 └─ styles       - SCSS style sheets for front-end components. Global sheets also.
+```
+
+## Environment variables / Access keys
+
+Access keys to storage accounts need to be set as environment vars.
+
+*Note:  These do not apply if you are locally testing. This is required for Azure testing.*
+
+Below is an example bash commands to set the environment variables.
+
+```bash
+#!/bin/bash
+
+# Required
+export STORAGE=multus
+export STORAGE_KEY=$KEY
+export STORAGE2=nhf        # Used to grab DICOM files from NHF file storage account for now.  
+export STORAGE2_KEY=$KEY   # Used to grab DICOM files from NHF file storage account for now.  
+
+# Optional
+export DICOM_CONTAINER=$DICOM_PREFIX_NAME
+export PROJECT_TABLE=projects
 ```
 
 ## Project storage
@@ -39,11 +61,11 @@ TODO Add description
 Snapshots contain an application state payload.
 
 Adapter functions
-1. getProject({ studyUID })
-2. getProjectList()
-3. getProjectSnapshot({ studyUID })
-4. setProjectSnapshot({ studyUID, payload })
-5. setProject({ studyUID, props })
+    - getProject({ studyUID })
+    - getProjectList()
+    - getProjectSnapshot({ studyUID })
+    - setProjectSnapshot({ studyUID, payload })
+    - setProject({ studyUID, props })
 
 ### Local (used for testing without internet)
 
@@ -58,10 +80,10 @@ TODO Add description
 TODO Add description.  Add return object structure.
 
 Adapter functions
-1. getImages({ seriesUID })
-2. getSeries({ studyUID })
-3. getStudies()
-4. getStudy({ studyUID })
+    - getImages({ seriesUID })
+    - getSeries({ studyUID })
+    - getStudies()
+    - getStudy({ studyUID })
 
 ### Local (used for testing without internet)
 
@@ -71,10 +93,12 @@ Local DICOM storage contains no database, but instead just scans all the DICOM f
 
 Three tables contain the DICOM lookup information stored using Azure Table Storage. 
 
+*Note: default for DICOM_CONTAINER is "dicom"*
+
 ```
-{CONTAINER_NAME}Studies
-{CONTAINER_NAME}Series
-{CONTAINER_NAME}Images
+{DICOM_CONTAINER}Studies
+{DICOM_CONTAINER}Series
+{DICOM_CONTAINER}Images
 ```
 
 TODO Add additional information regarding PartitionKey and Rowkey.

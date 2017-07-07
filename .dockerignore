@@ -7,3 +7,4 @@ deploy.bash
 projectsLocal
 sessiondb
 bitbucket-pipelines.yml
+.env

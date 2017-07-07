@@ -32,6 +32,18 @@ TODO Add more description
 └─ styles       - SCSS style sheets for front-end components. Global sheets also.
 ```
 
+
+# Live site
+
+Live site can be accessed at:
+
+https://multus.hack.expert
+
+Test login:
+
+user: test@test.com
+pass: test91a
+
 ## Environment variables / Access keys
 
 Access keys to storage accounts need to be set as environment vars.
@@ -58,12 +70,15 @@ TODO Add description
 
 Snapshots contain an application state payload.
 
-Adapter functions
-    - getProject({ studyUID })
-    - getProjectList()
-    - getProjectSnapshot({ studyUID })
-    - setProjectSnapshot({ studyUID, payload })
-    - setProject({ studyUID, props })
+Adapter functions:
+
+```javascript
+getProject({ studyUID })
+getProjectList()
+getProjectSnapshot({ studyUID })
+setProjectSnapshot({ studyUID, payload })
+setProject({ studyUID, props })
+```
 
 ### Local (used for testing without internet)
 
@@ -77,11 +92,14 @@ TODO Add description
 
 TODO Add description.  Add return object structure.
 
-Adapter functions
-    - getImages({ seriesUID })
-    - getSeries({ studyUID })
-    - getStudies()
-    - getStudy({ studyUID })
+Adapter functions:
+
+```javascript
+getImages({ seriesUID })
+getSeries({ studyUID })
+getStudies()
+getStudy({ studyUID })
+```
 
 ### Local (used for testing without internet)
 

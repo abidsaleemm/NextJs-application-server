@@ -14,7 +14,7 @@ export default ({ server, app }) =>
 
             // Production
             return proxy({
-                target: 'http://multus-interface:8081',
+                target: 'http://application-interface:8081',
                 changeOrigin: true,
                 pathRewrite: { '^/client': '/' },
             })(req, res);

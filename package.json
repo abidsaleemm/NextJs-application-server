@@ -9,7 +9,7 @@
     "local-azure": "cross-env LOCAL_DICOM=true npm run dev",
     "azure-local": "cross-env LOCAL_PROJECTS=true npm run dev",
     "local-local": "cross-env LOCAL_DICOM=true LOCAL_PROJECTS=true npm run dev",
-    "dev": "cross-env NODE_ENV=dev APPSETTING_CONTAINER=dicom0001 APPSETTING_STORAGE2=nhf APPSETTING_STORAGE2_KEY=buhCol1dp0/mHtB4+88ZlHpSlYP+UhckhArfIuyEZFVQ7G9VG5f4/wqcSkfy5vedt884NygQWAMWtzoTj5Ccyg== APPSETTING_STORAGE=multus APPSETTING_STORAGE_KEY=GPdnTMIppeIIbaEumyc3oNQeePLs54woaMX1czJbVaMbnjYiRxXwrFXWYYRdr4JIdlf+boN8xGemUozKRhcS1w== node ./loader.js"
+    "dev": "cross-env NODE_ENV=dev node ./loader.js"
   },
   "dependencies": {
     "autoprefixer": "^7.1.1",

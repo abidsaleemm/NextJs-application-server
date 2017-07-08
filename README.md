@@ -137,10 +137,8 @@ npm install
 The following npm commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
 
 ```
-npm run azure-azure # Using azure based adapters for projects and dicom
-npm run local-azure     # Projects: azure DICOM: local
-npm run azure-local     # Projects: local DICOM: azure
-npm run local-local     # Projects: local DICOM: local
+npm run local   # Test using local DB adapters.  Requires no internet connection.
+npm run azure   # Test using azure DB adapters.
 ```
 
 ## Deployment script

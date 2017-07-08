@@ -5,10 +5,8 @@
   "author": "Warren Goble <warren@hack.expert>",
   "scripts": {
     "start": "node ./loader.js",
-    "azure-azure": "npm run dev",
-    "local-azure": "cross-env LOCAL_DICOM=true npm run dev",
-    "azure-local": "cross-env LOCAL_PROJECTS=true npm run dev",
-    "local-local": "cross-env LOCAL_DICOM=true LOCAL_PROJECTS=true npm run dev",
+    "azure": "npm run dev",
+    "local": "cross-env LOCAL=true npm run dev",
     "dev": "cross-env NODE_ENV=dev node ./loader.js"
   },
   "dependencies": {

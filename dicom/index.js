@@ -1,2 +1,2 @@
-module.exports = process.env.LOCAL_DICOM !== undefined ? 
+module.exports = process.env.LOCAL !== undefined ? 
     require('./adapterLocal') : require('./adapterAzure');

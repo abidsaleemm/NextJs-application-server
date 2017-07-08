@@ -1,2 +1,2 @@
-module.exports = process.env.LOCAL_PROJECTS !== undefined ? 
+module.exports = process.env.LOCAL !== undefined ? 
     require('./adapterJSON') : require('./adapterAzure');

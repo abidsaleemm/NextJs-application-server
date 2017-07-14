@@ -12,6 +12,7 @@ const socketActions = {
 };
 
 // TODO Handle internal state changes
+// Implement Redux?
 export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   const io = socketio.listen(server);
 

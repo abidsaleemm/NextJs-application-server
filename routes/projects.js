@@ -5,7 +5,7 @@ import getClientNameById from '../helpers/getClientNameById';
 
 export default ({ server, app }) =>
     server.get("/projects", async (req, res) => {
-        if (req.isAuthenticated()) { // TODO Handle as middleware?
+        if (req.isAuthenticated()) { // issue-15
             // TODO This should be integrated in as middleware
             // Check if Client
             const { user: { client = false } } = req;

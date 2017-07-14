@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import Nav from '../components/nav'; // TODO wrap in HOC
+import Nav from '../components/nav'; // issue-16
 import {
   Table,
   Button,

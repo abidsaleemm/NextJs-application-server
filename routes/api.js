@@ -2,7 +2,7 @@ import * as api from '../api';
 
 export default ({ server }) =>
     server.post("/api", async (req, res) => {
-        if (req.isAuthenticated()) { // TODO add to middleware
+        if (req.isAuthenticated()) { // issue-15
             const { body: { action = '', props } } = req;
             const { [action]: apiAction = () => { } } = api;
 

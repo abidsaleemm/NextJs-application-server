@@ -9,7 +9,7 @@ import createProject from '../projects/createProject';
 
 export default ({ server, app }) =>
     server.get("/projectDetail/:projectid", async (req, res) => {
-        if (req.isAuthenticated()) { // TODO Middleware?
+        if (req.isAuthenticated()) { // issue-15
             // TODO This should be integrated in as middleware
             // Check if Client
             const { user: { client = false } } = req;

@@ -2,7 +2,7 @@ import proxy from 'http-proxy-middleware';
 
 export default ({ server, app }) =>
     server.use("/client", (req, res) => {
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) { // issue-15
             // Dev
             if (process.env.NODE_ENV === 'dev') {
                 return proxy({

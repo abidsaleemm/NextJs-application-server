@@ -3,7 +3,7 @@ import { getProjectList } from '../projects';
 
 export default ({ server, app }) =>
     server.get("/portal", async (req, res) => {
-        if (req.isAuthenticated()) {
+        if (req.isAuthenticated()) { // issue-15
             // TODO This should be integrated in as middleware
             // Check if Client
             const { user: { client = false, id } } = req;

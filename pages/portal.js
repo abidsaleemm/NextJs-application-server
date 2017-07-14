@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Button } from 'reactstrap';
 
-import Nav from '../components/nav'; // TODO use HOC
+import Nav from '../components/nav'; // issue-16
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
 
 import getStatusName from '../helpers/getStatusName';

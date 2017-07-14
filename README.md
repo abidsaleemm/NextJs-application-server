@@ -11,6 +11,7 @@ TODO Add more description
 - React - https://facebook.github.io/react/
 - PassportJS - http://passportjs.org/
 - Websockets (Socket.io) - https://socket.io/
+- React Strap - https://reactstrap.github.io/
 - Azure AD
 - Azure Table Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-table-storage
 - Azure Blob Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-blob-storage

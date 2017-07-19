@@ -10,9 +10,6 @@ import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
 
-const AzureTablesStoreFactory = require('./auth/azure-session.js')(expressSession);
-const FileStore = require("session-file-store")(expressSession);
-
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });

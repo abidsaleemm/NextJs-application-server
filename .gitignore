@@ -19,3 +19,4 @@ dist
 sessiondb
 certs
 
+package-lock.json

@@ -7,12 +7,23 @@ import { checkExists, path } from './index';
 export default async ({ studyUID = "_", payload = {} }) => {
   checkExists(); // TODO Wrap this in high order function
   if (path === undefined) return;
-  
+
+  // TODO Reuseable?  
+  const db = low(`${path}/projects.json`);
+  db.defaults({ projects: [] }).write();
+  const ret = db.get("projects")
+    .find({ studyUID: studyUID })
+    .value();
+
+  // If project doesn't exist bailout
+  if (ret === undefined) {
+    return;
+  }
+
   const snapShotUID = uuid();
 
   // Query last snapshot and merge
-  const lastSnapshot = await getProjectSnapshot({ studyUID });
-
+  const lastSnapshot = await getProjectSnapshot({ studyUID }) || {};
   const mergedPayload = {
     ...lastSnapshot,
     ...payload,
@@ -23,39 +34,22 @@ export default async ({ studyUID = "_", payload = {} }) => {
     JSON.stringify(mergedPayload)
   );
 
-  const db = low(`${path}/projects.json`);
-  db.defaults({ projects: [] }).write();
+  db
+    .get("projects")
+    .find({ studyUID })
+    .assign({ snapshot: snapShotUID })
+    .write()
 
-  const ret = db.get("projects").find({ studyUID: studyUID }).value();
+  const snapshots = db
+    .get("projects")
+    .find({ studyUID })
+    .get('snapshots')
+    .value() || [];
 
-  if (ret === undefined) {
-    // TODO do nothing should be created via route entry or use setProject with default props?
-    // // create
-    // db
-    //   .get("projects")
-    //   .push({ studyUID, status: 0, client: 0, snapshot: snapShotUID, snapshots: [snapShotUID] })
-    //   .write();
-  } else {
-    // update
-    db
-      .get("projects")
-      .find({ studyUID })
-      .assign({ snapshot: snapShotUID })
-      .write()
+  db
+    .get("projects")
+    .find({ studyUID })
+    .assign({ snapshots: [...snapshots, snapShotUID] })
+    .write()
 
-    const snapshots = db
-      .get("projects")
-      .find({ studyUID })
-      .get('snapshots')
-      .value();
-
-    db
-      .get("projects")
-      .find({ studyUID })
-      .assign({ snapshots: [...snapshots, snapShotUID] })
-      .write()
-
-    // console.log('snapshots', snapshots);
-    // add snapshot to array
-  }
 };

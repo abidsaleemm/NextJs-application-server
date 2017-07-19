@@ -24,7 +24,7 @@ export default ({ server, app }) =>
 
             // TODO Should project creation be handled here?
             if (project === undefined) {
-                console.log('Creating new project');
+                console.log('Creating new project', studyUID);
                 project = createProject({ studyUID }); // TODO Add function to create default from existing
                 await setProject({ studyUID, props: { status: 0, client: 0 } });
                 await setProjectSnapshot({ studyUID, payload: project });

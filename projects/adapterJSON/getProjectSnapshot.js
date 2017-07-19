@@ -3,7 +3,7 @@ import low from "lowdb";
 
 import { checkExists, path } from './index';
 
-// TODO Add functionality to index prev snapshots
+// TODO Add functionality to index prev snapshots?
 export default async ({ studyUID = '' }) => {
   checkExists();
   if (path === undefined) return;
@@ -16,10 +16,12 @@ export default async ({ studyUID = '' }) => {
 
   if (project !== undefined) {
     const { snapshot: snapShotUID } = project;
+    if (snapShotUID === undefined) return; // No Snapshot.  First value?
+
     const data = fs.readFileSync(`${path}/snapshots/${snapShotUID}.json`);
 
     return JSON.parse(data);
   } else {
-    return undefined; // TODO If undefined create a new one and then try again
+    return;
   }
 };

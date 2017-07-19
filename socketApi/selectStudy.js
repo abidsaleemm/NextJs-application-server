@@ -13,17 +13,18 @@ export default async ({ socket, action }) => {
   }
 
   const dicomSeries = await getSeries({ studyUID });
+  const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
   socket.emit('action', {
     type: 'PROJECT_PAYLOAD',
     project: {
+      selectedSeries: firstSeriesUID,
       ...project,
       dicomSeries,
     },
   });
 
   if (dicomSeries.length > 0) {
-    const { 0: { seriesUID: firstSeriesUID } } = dicomSeries;
     const { seriesUID = firstSeriesUID } = project;
     const volume = await getImages({ seriesUID });
 

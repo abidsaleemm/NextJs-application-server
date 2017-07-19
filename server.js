@@ -9,41 +9,50 @@ import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
-const AzureTablesStoreFactory = require('./auth/azure-session.js')(expressSession);
 
-//const FileStore = require("session-file-store")(expressSession); // TODO Use import instead
+const AzureTablesStoreFactory = require('./auth/azure-session.js')(expressSession);
+const FileStore = require("session-file-store")(expressSession);
+
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-// TODO Is there a better place for this?
-// const sessionStore = new FileStore({ path: "./sessiondb" });
-// const sessionMiddleWare = expressSession({
-//   key: "express.sid",
-//   secret: "session_secret",
-//   resave: true,
-//   saveUninitialized: false,
-//   store: sessionStore,
-// });
+const sessionStoreLocal = () => {
+  console.log('Using session-file-store');
+
+  const FileStore = require("session-file-store")(expressSession);
+  return new FileStore({ path: "./sessiondb" });
+};
+
+const sessionStoreAzure = () => {
+  console.log('Using azure-session');
+
+  // TODO Prefer default should be declared in azure-session.js?  Not here?
+  // azure-session options
+  const options = {
+    logger: console.log,
+    errorLogger: console.log,
+    sessionTimeOut: 86400000,
+    overrideCron: '0 0 */1 * * *'
+  };
+
+  return require('./auth/azure-session.js')(expressSession).create(options);
+};
 
 app.prepare().then(() => {
   const server = express();
-
-  var options = { logger: console.log, errorLogger: console.log, sessionTimeOut: 86400000, overrideCron: '0 0 */1 * * *' };
-  // if dont have azure storage keys in .env file then we have to supply in option parameters (storageAccount,accessKey)
   const sessionMiddleWare = expressSession({
-    store: AzureTablesStoreFactory.create(options),
+    store: process.env.LOCAL ?
+      sessionStoreLocal() : // Used for local testing
+      sessionStoreAzure(),
     secret: 'session_secret',
     key: "express.sid",
     resave: true,
     rolling: true,
     cookie: { maxAge: 86400000 },
-    saveUninitialized: false
+    saveUninitialized: false,
   });
-
-
-
 
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
@@ -57,8 +66,8 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
- if (process.env.NODE_ENV !== 'dev') {
-    // If none dev we assume we are on Azure
+  if (process.env.NODE_ENV !== 'dev') {
+    // If not dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number
       cert: fs.readFileSync('certs/fullchain1.pem')

@@ -4,7 +4,7 @@ var azure = require('azure-storage');
 var util = require('util');
 var CronJob = require('cron').CronJob;
 
-var DEFAULT_TABLE = 'azureSessionsStore';//'ConnectAzureTablesSessions';
+var DEFAULT_TABLE = 'azureSessionsStore'; // TODO See issue comments regarding this
 var RETRY_LIMIT = 3;
 var RETRY_INTERVAL = 3000; //miliseconds
 

@@ -24,17 +24,7 @@ const sessionStoreLocal = () => {
 
 const sessionStoreAzure = () => {
   console.log('Using azure-session');
-
-  // TODO Prefer default should be declared in azure-session.js?  Not here?
-  // azure-session options
-  const options = {
-    logger: console.log,
-    errorLogger: console.log,
-    sessionTimeOut: 86400000,
-    overrideCron: '0 0 */1 * * *'
-  };
-
-  return require('./auth/azure-session.js')(expressSession).create(options);
+  return require('./auth/azure-session.js')(expressSession).create();
 };
 
 app.prepare().then(() => {
@@ -62,8 +52,7 @@ app.prepare().then(() => {
   server.get("*", (req, res) => {
     return handle(req, res);
   });
-
-  if (process.env.NODE_ENV !== 'dev') {
+   if (process.env.NODE_ENV !== 'dev') {
     // If not dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number

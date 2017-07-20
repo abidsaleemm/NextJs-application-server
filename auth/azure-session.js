@@ -7,21 +7,28 @@ var CronJob = require('cron').CronJob;
 var DEFAULT_TABLE = 'azureSessionsStore'; // TODO See issue comments regarding this
 var RETRY_LIMIT = 3;
 var RETRY_INTERVAL = 3000; //miliseconds
+var options = {
+    logger: console.log,
+    errorLogger: console.log,
+    sessionTimeOut: 86400000,
+    overrideCron: '0 0 */1 * * *'
+};
 
-module.exports = function(session) {
+module.exports = function (session) {
 
     var Store = session.Store;
 
-    function AzureTablesStore(options) {
+
+    function AzureTablesStore() {
 
         var self = this;
 
         options = options || {};
         self.log = options.logger || noop;
-        self.logError = options.errorLogger ||noop;
+        self.logError = options.errorLogger || noop;
         self.sessionTimeOut = options.sessionTimeOut;
         self.cronPattern = options.overrideCron || '59 * * * * *';
-        
+
         Store.call(this, options);
 
         /* 
@@ -54,12 +61,12 @@ module.exports = function(session) {
 
         self.table = options.table || DEFAULT_TABLE;
         self.tableService.createTableIfNotExists(self.table, logOrThrow);
-        
+
         //schedule expired session cleanup if session timeout is set
         if (options.sessionTimeOut) {
             self.startBackgroundCleanUp();
         }
-        
+
         //reducing function complexity to keep code climate happy
         function logOrThrow(error, result) {
 
@@ -78,7 +85,7 @@ module.exports = function(session) {
     //all - optional function
 
     //destroy - required function
-    AzureTablesStore.prototype.destroy = function(sid, fn) {
+    AzureTablesStore.prototype.destroy = function (sid, fn) {
         var store = this;
         var cleanSid = sanitize(sid);
         var entGen = azure.TableUtilities.entityGenerator;
@@ -90,25 +97,25 @@ module.exports = function(session) {
         if (!fn) {
             fn = noop;
         }
-        
+
         this.log('connect-azuretables called DESTROY ' + sid);
 
-        store.tableService.deleteEntity(store.table, session, function(error, result) {
+        store.tableService.deleteEntity(store.table, session, function (error, result) {
             return errorOrResult(error, result, fn);
         });
     };
 
     //get - required function
-    AzureTablesStore.prototype.get = function(sid, fn, retry) {
+    AzureTablesStore.prototype.get = function (sid, fn, retry) {
         var store = this;
         var cleanSid = sanitize(sid);
-        
+
         if (!fn) {
             fn = noop;
         }
         //this.log('connect-azuretables called GET ' + sid);
-        try{
-            store.tableService.retrieveEntity(store.table, cleanSid, cleanSid, function(error, result) {
+        try {
+            store.tableService.retrieveEntity(store.table, cleanSid, cleanSid, function (error, result) {
 
                 if (error && error.statusCode == 404 && !retry) {
                     store.get(sid, fn, true);
@@ -118,24 +125,24 @@ module.exports = function(session) {
                 }
             });
         }
-        catch(error){
+        catch (error) {
             console.log(error);
         }
 
     };
 
     //set - required function
-    AzureTablesStore.prototype.set = function(sid, data, fn) {
+    AzureTablesStore.prototype.set = function (sid, data, fn) {
         this.update('SET', sid, data, fn);
     };
 
     //touch - optional function
-    AzureTablesStore.prototype.touch = function(sid, data, fn) {
+    AzureTablesStore.prototype.touch = function (sid, data, fn) {
         this.update('TOUCH', sid, data, fn);
     };
-    
+
     //updates a session
-    AzureTablesStore.prototype.update = function(method, sid, data, fn) {
+    AzureTablesStore.prototype.update = function (method, sid, data, fn) {
         //this.log('connect-azuretables called ' + method + ' ' + sid);
         var store = this;
         var cleanSid = sanitize(sid);
@@ -145,35 +152,35 @@ module.exports = function(session) {
             RowKey: entGen.String(cleanSid),
             data: entGen.String(JSON.stringify(data))
         };
-        
+
         var expiryDate = getExpiryDate(store, data);
-        
+
         if (expiryDate) {
-            session.expiryDate = entGen.DateTime(expiryDate);  
+            session.expiryDate = entGen.DateTime(expiryDate);
         }
 
         if (!fn) {
             fn = noop;
         }
 
-        store.tableService.insertOrReplaceEntity(store.table, session, function(error, result) {
-            if(!error) {
+        store.tableService.insertOrReplaceEntity(store.table, session, function (error, result) {
+            if (!error) {
                 store.startBackgroundCleanUp();
             }
-            
+
             return errorOrResult(error, result, fn);
-        });         
+        });
     };
-    
+
     //start cron job
-    AzureTablesStore.prototype.startBackgroundCleanUp = function() {
+    AzureTablesStore.prototype.startBackgroundCleanUp = function () {
 
         if (!this.isRunningCleanUp) {
 
             var store = this;
             //store.log('starting session cleanup cron job with cron pattern ' + store.cronPattern);
             new CronJob(store.cronPattern,
-                function() {
+                function () {
                     store.cleanUp();
                 },
                 null,
@@ -182,16 +189,16 @@ module.exports = function(session) {
             this.isRunningCleanUp = true;
         }
     };
-    
+
     //remove timed out sessions from the store
-    AzureTablesStore.prototype.cleanUp = function() {
+    AzureTablesStore.prototype.cleanUp = function () {
         var query = new azure.TableQuery().where('expiryDate lt ?', new Date(Date.now()));
         var store = this;
         store.log('cleaning up expired sessions');
         getEntries(store.table, query, null);
 
         function getEntries(table, query, continuationToken) {
-            store.tableService.queryEntities(table, query, continuationToken, function(error, result, response) {
+            store.tableService.queryEntities(table, query, continuationToken, function (error, result, response) {
                 if (error) {
                     store.logError('Error when checking for expired sessions: ' + error);
                 } else {
@@ -208,14 +215,15 @@ module.exports = function(session) {
             }
         }
 
-        function deleteEntry(entry) {console.log("Deleting sessions Entry")
-            store.tableService.deleteEntity(store.table, entry, function(error, result) {
+        function deleteEntry(entry) {
+            console.log("Deleting sessions Entry")
+            store.tableService.deleteEntity(store.table, entry, function (error, result) {
                 if (error) {
                     //404 probably means the session was already deleted
                     //either by a logout or by a clean up running on another server
-                    if(error.statusCode != 404) {
-                        store.logError('Error deleting session: ' + error);          
-                    }         
+                    if (error.statusCode != 404) {
+                        store.logError('Error deleting session: ' + error);
+                    }
                 } else {
                     store.log('cleaned up session ' + entry.PartitionKey._);
                 }
@@ -237,10 +245,10 @@ module.exports = function(session) {
     function errorOrResult(error, result, fn) {
         return error ? fn(error) : fn(null, result);
     }
-    
+
     //expiry date for sessions
     function getExpiryDate(store, data) {
-        
+
         var offset;
 
         if (data.cookie.originalMaxAge) {
@@ -248,14 +256,14 @@ module.exports = function(session) {
         } else {
             offset = store.sessionTimeOut * 60000;
         }
-        
+
         return offset ? new Date(Date.now() + offset) : null;
     }
-    
+
     //export factory method instead of constructor for easier unit testing
     var factory = {
-        create: function(options) {
-            return new AzureTablesStore(options);
+        create: function () {
+            return new AzureTablesStore();
         }
     };
 

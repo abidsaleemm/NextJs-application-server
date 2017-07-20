@@ -66,7 +66,7 @@ export default class extends Component {
 
     if (container) {
       const { offsetTop = 0, clientTop = 0 } = container;
-      const height = window.innerHeight - (offsetTop + 6);
+      const height = window.innerHeight - (offsetTop + 8);
       this.setState({ height });
     }
   }

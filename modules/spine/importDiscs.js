@@ -1,7 +1,7 @@
 // issue-47
 
 const discs = {
-  // issue-48
+  DiskC1C2: { top: 'C1', bottom: 'C2' },
   DiskC2C3: { top: 'C2', bottom: 'C3' },
   DiskC3C4: { top: 'C3', bottom: 'C4' },
   DiskC4C5: { top: 'C4', bottom: 'C5' },

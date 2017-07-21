@@ -1,7 +1,6 @@
 // issue-47
 
 const discs = {
-  DiskC1C2: { top: 'C1', bottom: 'C2' },
   DiskC2C3: { top: 'C2', bottom: 'C3' },
   DiskC3C4: { top: 'C3', bottom: 'C4' },
   DiskC4C5: { top: 'C4', bottom: 'C5' },
@@ -32,7 +31,7 @@ export default () => {
   const offset = 0;
 
   // issue-47
-  // Might want to clean this up at some point.
+  // Might want o clean this up at some point.
   // Works well for now when resetting disc state,
   // but should move to reducer initial state and load default dataset
   const refactorDiscs = Object.entries(discs)

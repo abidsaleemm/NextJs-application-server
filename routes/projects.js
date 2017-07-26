@@ -2,18 +2,16 @@ import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 import getStatusName from '../helpers/getStatusName';
 import getClientNameById from '../helpers/getClientNameById';
+import middleware from '../auth/middleware';
 
 export default ({ server, app }) =>
-    server.get("/projects", async (req, res) => {
-        if (req.isAuthenticated()) { // issue-15
-            // TODO This should be integrated in as middleware
+    server.get("/projects", middleware.isLoggedin,async (req, res) => {
             // Check if Client
             const { user: { client = false } } = req;
             if (client === true) {
                 // No access redirect to portal
                 return res.redirect('/portal');
             }
-
             // Building query for data
             const studies = await getStudies();
             const projectsList = await getProjectList();
@@ -29,10 +27,5 @@ export default ({ server, app }) =>
                     } :
                     { ...study, status: '' };
             });
-
             return app.render(req, res, "/projects", { ...req.query, projects });
-        }
-
-        console.log('/projects not auth');
-        return res.redirect('/');
     });

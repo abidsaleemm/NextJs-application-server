@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import Nav from '../components/nav'; // issue-16
+import axios from "axios";
 import {
   Table,
   Button,
@@ -82,6 +83,20 @@ export default class extends Component {
     const { props: { studyUID = '' } = {} } = this;
     this.setState(await fetchApi('setProject', { studyUID, client }));
   }
+  iframeData = (url)=>{
+  axios.get(url)
+      .then(function (response) {
+        if (response.data) {
+          //return url;
+        }
+      })
+      .catch(function (error) {
+        if (error.response) {
+           return  window.location = '/';
+          
+        }
+      });
+}
 
   render() {
     const {
@@ -197,6 +212,7 @@ export default class extends Component {
           </div>
           <div style={{ width: '100%' }}>
             <Iframe url={`/client/?p=${studyUID}`}
+              onload={this.iframeData(`/client/?p=${studyUID}`)}
               width="100%"
               height={`${height}px`}
               display="initial"

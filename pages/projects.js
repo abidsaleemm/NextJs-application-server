@@ -1,61 +1,101 @@
 import React from "react";
 import { Table } from 'reactstrap';
+import ReactTable from 'react-table';
 
-import Nav from '../components/nav'; // issue-16
+
+import Nav from '../components/nav'; // TODO use HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
+import reactTable from 'react-table/react-table.css'
 
 export default class extends React.Component {
-  static async getInitialProps({ req, query }) {
-    const { projects } = query;
-    return { projects };
-  }
 
-  render() {
-    const { props: { projects = [] } } = this;
+    constructor() {
+        super();
+        this.state = {
+            columns: [
 
-    return (
-      <div>
-        <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
-        <Nav />
-        <Table striped hover>
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Patient Name</th>
-              <th>Study Name</th>
-              <th>Study Date</th>
-              <th>Modality</th>
-              <th>Activity</th>
-              <th>Location</th>
-              <th>Client</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projects.map(({
-              studyUID,
-              status,
-              patientName,
-              studyName,
-              studyDate,
-              modality,
-              activity,
-              location,
-              client,
-        }) => (
-                <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
-                  <td>{status}</td>
-                  <td>{patientName}</td>
-                  <td>{studyName}</td>
-                  <td>{studyDate}</td>
-                  <td>{modality}</td>
-                  <td>{activity}</td>
-                  <td>{location}</td>
-                  <td>{client}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-      </div>
-    );
-  }
+                {
+                    Header: 'Status',
+                    accessor: 'status'
+                },
+                {
+                    Header: 'Patient Name',
+                    accessor: 'patientName',
+
+                },
+                {
+                    Header: 'Study Name',
+                    accessor: 'studyName',
+
+                },
+                {
+                    Header: 'Study Date',
+                    accessor: 'studyDate',
+
+                },
+                {
+                    Header: 'Modality',
+                    accessor: 'modality',
+
+                },
+                {
+                    Header: 'Activity',
+                    accessor: 'activity',
+
+                },
+                {
+                    Header: 'Location',
+                    accessor: 'location',
+
+                },
+                {
+                    Header: 'Client',
+                    accessor: 'client',
+
+                },
+                {
+                    Header: 'Action',
+                    accessor: 'studyUID',
+                    show: false
+                }
+            ]
+        }
+
+    }
+
+
+    static async getInitialProps({ req, query }) {
+        const { projects } = query;
+        return { projects };
+    }
+    render() {
+        const { props: { projects = [] } } = this;
+
+        return (
+            <div>
+                <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
+                <Nav />
+                 
+                        <style dangerouslySetInnerHTML={{ __html: reactTable }} />
+                        <ReactTable data={projects} columns={this.state.columns} defaultPageSize={10} filterable={true}
+                            getTdProps={(state, rowInfo, column, instance) => {
+                                return {
+                                    onClick: e => {
+                                        console.log(rowInfo.row.studyUID);
+                                        window.location = `/projectDetail/` + rowInfo.row.studyUID;
+                                        {/*console.log('A Td Element was clicked!')
+                                            console.log('it produced this event:', e)
+                                            console.log('It was in this column:', column)
+                                            console.log('It was in this row:', rowInfo )
+                                            console.log('It was in this table instance:', instance)*/}
+                                    }
+                                }
+                            }}
+                        />
+                    </div>
+             
+        );
+    }
 }
+
+

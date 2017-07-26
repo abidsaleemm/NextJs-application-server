@@ -52,7 +52,7 @@ app.prepare().then(() => {
   server.get("*", (req, res) => {
     return handle(req, res);
   });
-   if (process.env.NODE_ENV !== 'dev') {
+  if (process.env.NODE_ENV !== 'dev') {
     // If not dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number

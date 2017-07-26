@@ -1,8 +1,8 @@
 import proxy from 'http-proxy-middleware';
+import middleware from '../auth/middleware';
 
 export default ({ server, app }) =>
-    server.use("/client", (req, res) => {
-        if (req.isAuthenticated()) { // issue-15
+    server.use("/client",middleware.isAuth, (req, res) => {
             // Dev
             if (process.env.NODE_ENV === 'dev') {
                 return proxy({
@@ -11,15 +11,10 @@ export default ({ server, app }) =>
                     pathRewrite: { '^/client': '/' },
                 })(req, res);
             }
-
             // Production
             return proxy({
                 target: 'http://application-interface:8081',
                 changeOrigin: true,
                 pathRewrite: { '^/client': '/' },
             })(req, res);
-        }
-
-        console.log('/client not auth');
-        return res.send('Client server error');
     });

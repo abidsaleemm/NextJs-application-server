@@ -1,8 +1,6 @@
 import React from "react";
 import { Table } from 'reactstrap';
 import ReactTable from 'react-table';
-
-
 import Nav from '../components/nav'; // TODO use HOC
 import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
 import reactTable from 'react-table/react-table.css'

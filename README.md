@@ -69,9 +69,13 @@ STORAGE2_KEY=$KEY   # Used to grab DICOM files from NHF file storage account for
 DICOM_CONTAINER=dicom   # default 'dicom'
 PROJECT_TABLE=projects  # default 'projects'
 <<<<<<< HEAD
+<<<<<<< HEAD
 LOCAL_PATH=             # Path to DICOM store in local directory.  Only used to local testing.   
 =======
 >>>>>>> init repo
+=======
+LOCAL_PATH=             # Path to DICOM store in local directory.  Only used to local testing.   
+>>>>>>> Reinitialize repository
 ```
 
 ## Project storage

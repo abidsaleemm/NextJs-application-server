@@ -9,7 +9,6 @@ import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
-
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -45,6 +44,7 @@ app.prepare().then(() => {
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
   server.use(sessionMiddleWare);
+  server.use(flash());
 
   const passport = auth(server);
   routes({ server, app }); // Setup routes
@@ -71,3 +71,4 @@ app.prepare().then(() => {
     });
   }
 });
+

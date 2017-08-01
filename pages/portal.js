@@ -6,28 +6,22 @@ import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
 
 import getStatusName from '../helpers/getStatusName';
 
-export default class extends React.Component {
+// TODO Create invoice
+// TODO create video preview and download link
 
+export default class extends React.Component {
   static async getInitialProps({ req, query }) {
     const { projects } = query;
-    const { session: { passport = undefined } } = req;
-
-    return {
-      session: passport,
-      projects: projects
-    };
+    return { projects };
   }
 
   render() {
     const { props: { projects = [] } } = this;
-    const { session } = this.props;
-
-    console.log(session);
 
     return (
       <div>
         <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
-        <Nav session={session} />
+        <Nav />
         <Table striped hover>
           <thead>
             <tr>
@@ -54,7 +48,7 @@ export default class extends React.Component {
               location,
         }) => (
                 <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
-                  <td>{getStatusName(status)}</td>
+                  <td>{ getStatusName(status) }</td>
                   <td>{patientName}</td>
                   <td>{studyName}</td>
                   <td>{studyDate}</td>

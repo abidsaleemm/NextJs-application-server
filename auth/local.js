@@ -60,7 +60,7 @@ export default server => {
 
   server.get("/auth/logout", (req, res) => {
     res.clearCookie('express.sid'); // TODO do we need this?
-    req.session.destroy(function (err) {console.log(err)
+    req.session.destroy(function (err) {
       res.redirect("/");
     });
   });

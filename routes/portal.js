@@ -1,10 +1,10 @@
 import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
+import middleware from '../auth/middleware';
 
 export default ({ server, app }) =>
-    server.get("/portal", async (req, res) => {
-        if (req.isAuthenticated()) { // issue-15
-            // TODO This should be integrated in as middleware
+    server.get("/portal", middleware("route").isAuth,  async (req, res) => {
+    
             // Check if Client
             const { user: { client = false, id } } = req;
             if (client === true) {
@@ -22,10 +22,4 @@ export default ({ server, app }) =>
             }
 
             return res.redirect('/projects');
-        }
-
-        // TODO create this as a reusable function
-        // Also user the Flash to send an error message
-        console.log('/portal not auth');
-        return res.redirect('/');
     });

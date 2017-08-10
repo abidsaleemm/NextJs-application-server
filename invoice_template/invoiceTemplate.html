@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Multus Invoice</title>
+
+</head>
+
+<body>
+  <header class="clearfix">
+    <div id="logo">
+      <h1>Multus</h1>
+    </div>
+    <div id="company"><br>
+      <h2 class="name"><strong> Multus</strong></h2>
+      <div>OPEN MIRI SOLUTION LLC</div>
+      <div>1020 E PALMDALE ST STE 150</div>
+      <div>TUCSON, AZ 857143309</div>
+      <div>1(520)434-0404</div>
+      <div><strong>FEDRAL TAX ID#</strong></div>
+      <div><strong>593784049</strong></div>
+
+    </div>
+    </div>
+  </header>
+  <main>
+    <div id="details" class="clearfix">
+      <div id="client">
+        <div class="to">INVOICE TO:</div>
+        <h2 class="name">{invoiceName}</h2>
+        <div class="address">{invoiceLocation}</div>
+        <!-- <div class="email">{email}</div> -->
+      </div>
+      <div id="invoice">
+        <h3>INVOICE - 5245471</h3>
+        <div class="date">Date of Invoice: {todayDate}</div>
+        <div class="date">Due Date: {invoiceStudyDate}</div>
+      </div>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th class="unit">Patient Name</th>
+          <th class="unit">Modality</th>
+          <th class="unit">Location</th>
+          <th class="unit">Study Name</th>
+          <th class="unit">Study Date</th>
+          <th class="total">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="unit">{invoiceName}</td>
+          <td class="unit">{invoiceModality}</td>
+          <td class="unit">{invoiceLocation}</td>
+          <td class="unit">{invoiceStudyName}</td>
+          <td class="unit">{invoiceStudyDate}</td>
+          <td class="total">{invoicePrice}</td>
+        </tr>
+
+      </tbody>
+      <tfoot>
+
+        <tr>
+          <td colspan="3"></td>
+          <td colspan="2">GRAND TOTAL</td>
+          <td>{invoicePrice}</td>
+        </tr>
+      </tfoot>
+    </table>
+
+  </main>
+  <div class="clearfix">
+    <hr/>
+  </div>
+
+</body>
+<style>
+  @font-face {
+    font-family: SourceSansPro;
+    src: url(SourceSansPro-Regular.ttf);
+  }
+
+  .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+
+
+  body {
+    position: relative;
+    width: 15cm;
+    margin-left: 5px;
+    margin-right: 2px;
+    color: #555555;
+    background: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-family: SourceSansPro;
+  }
+
+  header {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #AAAAAA;
+  }
+
+  #logo {
+    float: left;
+    margin-top: 8px;
+    margin-left: 15px;
+    text-shadow: 2px 2px 2px #CCCCCC;
+  }
+
+
+  #company {
+    float: right;
+    text-align: right;
+  }
+
+
+  #details {
+    margin-bottom: 50px;
+  }
+
+  #client {
+    padding-left: 6px;
+    margin-left: 5px;
+    float: left;
+  }
+
+  #client .to {
+    color: #777777;
+  }
+
+  h2.name {
+    font-size: 1.4em;
+    font-weight: normal;
+    margin: 0;
+  }
+
+  #invoice {
+    float: right;
+    text-align: right;
+  }
+
+  #invoice h1 {
+    color: #0087C3;
+    font-size: 2.4em;
+    line-height: 1em;
+    font-weight: normal;
+    margin: 0 0 10px 0;
+  }
+
+  #invoice .date {
+    font-size: 1.1em;
+    color: #777777;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 20px;
+    margin-left: 5px;
+  }
+
+  table th,
+  table td {
+    padding: 20px;
+    background: #EEEEEE;
+    text-align: center;
+    border-bottom: 1px solid #FFFFFF;
+  }
+
+  table th {
+    white-space: nowrap;
+    font-weight: normal;
+  }
+
+  table td {
+    text-align: right;
+  }
+
+  table .paitentName,
+  i table .Modality,
+  table .paitentName,
+  table .location {
+    text-align: left;
+  }
+
+  table .unit {
+    background: ##dedede;
+  }
+
+  table .total {
+    background: #878a85;
+    color: #FFFFFF;
+  }
+
+  table td.Modality,
+  table td.paitentName table td.unit,
+  table td.location,
+  table td.total {
+    font-size: 1.2em;
+  }
+
+  table tbody tr:last-child td {
+    border: none;
+  }
+
+  table tfoot td {
+    padding: 10px 20px;
+    background: #FFFFFF;
+    border-bottom: none;
+    font-size: 1.2em;
+    white-space: nowrap;
+    border-top: 1px solid #AAAAAA;
+  }
+
+  table tfoot tr:first-child td {
+    border-top: none;
+  }
+
+  table tfoot tr:last-child td {
+    color: #57B223;
+    font-size: 1.4em;
+    border-top: 1px solid #57B223;
+  }
+
+  table tfoot tr td:first-child {
+    border: none;
+  }
+</style>
+
+
+</html>

@@ -2,6 +2,8 @@ import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 import pdf from 'html-pdf';
 import fs from 'fs';
+import path from 'path';
+import moment from 'moment';
 
 export default ({ server, app }) => {
 
@@ -32,45 +34,50 @@ export default ({ server, app }) => {
         console.log('/portal not auth');
         return res.redirect('/');
     });
+
+    /*  api service to download invoice pdf for portle
+        used html-pdf npm module
+        used fs to read html template for th format
+     */
     server.get("/pdf", async (req, res) => {
-        console.log("inside pdf===========");
-        var path = require('path'),
-            filePath = path.join(__dirname, 'te.html');
-
-        var html = fs.readFileSync(filePath, { encoding: 'utf-8' });
-
-        var file = fs.createWriteStream("file.pdf");
-        var options = { format: 'Letter' };
-        pdf.create(html).toBuffer(function (err, stream) {
-            console.log(err);
-           // console.log(stream)
-            //stream.pipe(file);
-            //    stream.pipe(res);
-            //res.download(stream, 'test.pdf')
-
-            // res.setHeader('Content-Length', stream.length);
-            // res.setHeader('Content-Type', 'application/pdf');
-            // res.setHeader('Content-Disposition', 'attachment; filename=your_file_name.pdf');
-            // res.write(stream, 'binary');
-            // res.end();
-
-                console.log(stream.length);
-                res.setHeader('Content-Disposition', 'attachment; filename= name1.pdf');
-                res.setHeader('Content-Type', 'application/pdf');                
+        var fileName = (req.query.invoiceName != 'undefined') ? req.query.invoiceName : "patient";
+        invoiceHtml(req.query, '../invoice_template/invoiceTemplate.html', (htmlTemplate) => {
+            pdf.create(htmlTemplate).toBuffer(function (err, stream) {
+                if (err) res.send(err);
+                res.setHeader('Content-Disposition', 'attachment; filename= ' + fileName + '.pdf');
+                res.setHeader('Content-Type', 'application/pdf');
                 res.setHeader('Content-Length', stream.length);
                 res.status(200).end(stream, 'binary');
-                });
+            });
+        })
+    });
 
- });
+    /**
+     * returns callback with modified html template.
+     * @param  data object, for values to be changed in html
+     * @param  htmlPath string, html path with name.
+     * @param  done callback 
+     */
 
-// pdf.create(html).toBuffer(function (err, buffer) {
-//     if (err) return res.send(err);
-//     res.type('pdf');
-//     res.setHeader('Content-Type', 'application/pdf');
-//     res.end(buffer, 'binary');
-// });
+    const invoiceHtml = (data, htmlPath, done) => {
+        if(data.hasOwnProperty('id')){
+            delete data['id'];
+        }
+        const today = moment().format('MM-DD-YYYY');
+        data.todayDate = today;
+        const htmlFilePath = path.join(__dirname, htmlPath);
+        var htmlTemplate = fs.readFileSync(htmlFilePath, { encoding: 'utf-8' });
+        
+        for (var key in data){ 
+            if(data[key] != 'undefined'){
+               htmlTemplate = htmlTemplate.replace((new RegExp('{'+key+'}', "g")), data[key]);
+            }else{
+                 htmlTemplate = htmlTemplate.replace((new RegExp('{'+key+'}', "g")), '_');
+            }
+        }
+        done(htmlTemplate);
+    }
 
-  //  })
 
 }
 

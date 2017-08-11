@@ -2,7 +2,7 @@ import proxy from 'http-proxy-middleware';
 import middleware from '../auth/middleware';
 
 export default ({ server, app }) =>
-    server.use("/client",middleware.isAuth, (req, res) => {
+    server.use("/client", middleware('api').isAuth, (req, res) => {
             // Dev
             if (process.env.NODE_ENV === 'dev') {
                 return proxy({

@@ -5,7 +5,7 @@ import getClientNameById from '../helpers/getClientNameById';
 import middleware from '../auth/middleware';
 
 export default ({ server, app }) =>
-    server.get("/projects", middleware.isLoggedin,async (req, res) => {
+    server.get("/projects", middleware('page').isAuth,async (req, res) => {
             // Check if Client
             const { user: { client = false } } = req;
             if (client === true) {

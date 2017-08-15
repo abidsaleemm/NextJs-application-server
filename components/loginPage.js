@@ -132,8 +132,6 @@ export default ({ error = '' }) => (
                                     <Input type='password' name='password' placeholder='Password' />
                                 </FormGroup>
                                 <Button className="login_btn" type='submit'>Sign In</Button>
-                                <p className="Forgotpwd"><a href="#">Forgot Password</a></p>
-                                <p className="acc_crt">Don't have an account? <a href="#">Sign Up</a></p>
                             </Form>
                         </Container>
                     </div>

@@ -6,10 +6,51 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
-import { PROJECTS_TABLE_COLUMNS } from '../constants/constants';
 
 // TODO Move this to a action
 import fetchApi from '../helpers/fetchApi';
+
+export const headers = [
+	{
+		title: 'Status',
+		id: 'status'
+	},
+	{
+		title: 'Patient Name',
+		id: 'patientName',
+
+	},
+	{
+		title: 'Study Name',
+		id: 'studyName',
+
+	},
+	{
+		title: 'Study Date',
+		id: 'studyDate',
+
+	},
+	{
+		title: 'Modality',
+		id: 'modality',
+
+	},
+	{
+		title: 'Activity',
+		id: 'activity',
+
+	},
+	{
+		title: 'Location',
+		id: 'location',
+
+	},
+	{
+		title: 'Client',
+		id: 'client',
+
+	},
+];
 
 class ProjectsListing extends Component {
 	static async getInitialProps({ 
@@ -35,7 +76,7 @@ class ProjectsListing extends Component {
 		return (
 			<div>
 				<TableList
-					headers={PROJECTS_TABLE_COLUMNS}
+					headers={headers}
 					data={projects}
 					onRowClick={({ studyUID }) => {
 						Router.push({

@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import users from './users';
 
+
 export default server => {
   server.use(passport.initialize());
   server.use(passport.session());
@@ -53,6 +54,9 @@ export default server => {
           return next(loginErr);
         }
 
+        if (req.user.client)
+          return res.redirect ('/portal');
+
         return res.redirect("/projects");
       });
     })(req, res, next);
@@ -60,7 +64,7 @@ export default server => {
 
   server.get("/auth/logout", (req, res) => {
     res.clearCookie('express.sid'); // TODO do we need this?
-    req.session.destroy(function (err) {
+    req.session.destroy(function (err) {console.log(err)
       res.redirect("/");
     });
   });

@@ -4,16 +4,17 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
 import https from 'https';
-
 import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
 
+const flash = require('connect-flash');
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
 
 const sessionStoreLocal = () => {
   console.log('Using session-file-store');
@@ -31,8 +32,8 @@ app.prepare().then(() => {
   const server = express();
   const sessionMiddleWare = expressSession({
     store: process.env.LOCAL ?
-      sessionStoreLocal() : // Used for local testing
-      sessionStoreAzure(),
+     sessionStoreLocal() : // Used for local testing
+     sessionStoreAzure(),
     secret: 'session_secret',
     key: "express.sid",
     resave: true,
@@ -45,6 +46,7 @@ app.prepare().then(() => {
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
   server.use(sessionMiddleWare);
+  server.use(flash());
 
   const passport = auth(server);
   routes({ server, app }); // Setup routes
@@ -52,6 +54,7 @@ app.prepare().then(() => {
   server.get("*", (req, res) => {
     return handle(req, res);
   });
+
   if (process.env.NODE_ENV !== 'dev') {
     // If not dev we assume we are on Azure
     const options = {

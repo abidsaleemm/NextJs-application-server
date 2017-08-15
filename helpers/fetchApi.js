@@ -1,4 +1,4 @@
-export default async (action = '', props = {}) => { 
+export default async (action = '', props = {}) => {
     const res = await fetch(
       '/api',
       {

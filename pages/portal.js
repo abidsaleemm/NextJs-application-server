@@ -1,67 +1,99 @@
-import React from "react";
-import { Table, Button } from 'reactstrap';
+import React, { Component } from 'react';
+import withRedux from 'next-redux-wrapper';
+import { bindActionCreators } from 'redux'
+import { initStore } from '../store';
+import * as actions from '../actions';
+import Wrapper from '../hoc/wrapper';
+import TableList from '../components/tableList';
 
-import Nav from '../components/nav'; // issue-16
-import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
+// TODO Move this to an action?
+import fetchApi from '../helpers/fetchApi';
 
+// TODO should we build this value in query function?
 import getStatusName from '../helpers/getStatusName';
 
-// TODO Create invoice
-// TODO create video preview and download link
+// TODO Should we move this to query function instead and send with data?
+export const headers = [
+	{
+		title: 'Status',
+		id: 'status'
+	},
+	{
+		title: 'Patient Name',
+		id: 'patientName'
+	},
+	{
+		title: 'Study Name',
+		id: 'studyName'
+	},
+	{
+		title: 'Study Date',
+		id: 'studyDate'
+	},
+	{
+		title: 'Modality',
+		id: 'modality'
+	},
+	{
+		title: 'Location',
+		id: 'location'
+	},
+	{
+		title: 'Download',
+    id: 'download',
+    type: 'button',
+	},
+	{
+		title: 'Preview',
+    id: 'preview',
+    type: 'button',
+	},
+	{
+		title: 'Invoice',
+    id: 'invoice',
+    type: 'button',
+	}
+];
 
-export default class extends React.Component {
-  static async getInitialProps({ req, query }) {
-    const { projects } = query;
-    return { projects };
-  }
+const Portal = class extends Component {
+  static async getInitialProps({
+    req: { session } = {},  
+    store, 
+    isServer, 
+    query: { portal = {} } = {} 
+  }) {
+		const {
+			payloadPortal,
+			fetchAction,
+		} = actions;
+    
+    // console.log('session', session);
+
+		store.dispatch(fetchAction(true));
+		store.dispatch(payloadPortal(isServer ? portal : await fetchApi('portal')));
+		store.dispatch(fetchAction(false));
+
+		return { isServer, client: true };
+	}
 
   render() {
-    const { props: { projects = [] } } = this;
+    const { 
+      props: { projects = [] } 
+    } = this;
 
     return (
       <div>
-        <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
-        <Nav />
-        <Table striped hover>
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Patient Name</th>
-              <th>Study Name</th>
-              <th>Study Date</th>
-              <th>Modality</th>
-              <th>Location</th>
-              <th>Download</th>
-              <th>Preview</th>
-              <th>Invoice</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projects.map(({
-              studyUID,
-              status,
-              patientName,
-              studyName,
-              studyDate,
-              modality,
-              activity,
-              location,
-        }) => (
-                <tr onClick={() => window.location = `/projectDetail/${studyUID}`}>
-                  <td>{ getStatusName(status) }</td>
-                  <td>{patientName}</td>
-                  <td>{studyName}</td>
-                  <td>{studyDate}</td>
-                  <td>{modality}</td>
-                  <td>{location}</td>
-                  <td><Button>Download</Button></td>
-                  <td><Button>Preview</Button></td>
-                  <td><Button>Invoice</Button></td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+        <TableList
+					headers={headers}
+					data={projects}
+				/>
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ portal }) => ({ ...portal });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
+
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
+	Wrapper(Portal));

@@ -5,8 +5,8 @@ import users from './users';
 import bcrypt from 'bcrypt';
 import azure from 'azure-storage';
 const saltRounds = 10;
-const tableService = azure.createTableService();
-const entGen = azure.TableUtilities.entityGenerator;
+// const tableService = azure.createTableService();
+// const entGen = azure.TableUtilities.entityGenerator;
 
 export default server => {
   server.use(passport.initialize());

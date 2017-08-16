@@ -10,3 +10,4 @@ export default ({ server, app }) =>
                 ...query,
                 portal: await queryPortal({ clientId })
             }));
+            

@@ -12,3 +12,4 @@ export default ({ server, app }) =>
         projectDetail: await queryProjectDetail({ studyUID })
       })
   );
+    

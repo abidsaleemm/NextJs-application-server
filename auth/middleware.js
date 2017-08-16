@@ -1,4 +1,3 @@
-
 export default ({ redirect = true } = {}) => (req, res, next) => {
     // Check if a user session
     if (!req.isAuthenticated()) {

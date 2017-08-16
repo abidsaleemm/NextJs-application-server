@@ -13,8 +13,7 @@ var options = {
     sessionTimeOut: 86400000,
     overrideCron: '0 0 */1 * * *'
 };
-
-module.exports = function (session) {
+module.exports = function(session) {
 
     var Store = session.Store;
 
@@ -31,15 +30,6 @@ module.exports = function (session) {
 
         Store.call(this, options);
 
-        /* 
-        storage account set up. azure-storage will attempt to read the following environment variables:
-        AZURE_STORAGE_ACCOUNT
-        AZURE_STORAGE_ACCESS_KEY
-        or
-        AZURE_STORAGE_CONNECTION_STRING
-        if these are not found, storageAccount and accessKey
-        must be supplied on options
-        */
 
         //todo: allow retry policy to bet set on options
         var retryOperations = new azure.LinearRetryPolicyFilter(RETRY_LIMIT, RETRY_INTERVAL);

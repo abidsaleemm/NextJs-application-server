@@ -1,101 +1,96 @@
-import React from "react";
-import { Table } from 'reactstrap';
-import ReactTable from 'react-table';
+import React, { Component } from 'react';
+import withRedux from 'next-redux-wrapper';
+import { bindActionCreators } from 'redux'
+import Router from 'next/router';
+import { initStore } from '../store';
+import * as actions from '../actions';
+import Wrapper from '../hoc/wrapper';
+import TableList from '../components/tableList';
 
+// TODO Move this to a action
+import fetchApi from '../helpers/fetchApi';
 
-import Nav from '../components/nav'; // TODO use HOC
-import styleBootstrap from 'bootstrap/dist/css/bootstrap.css';
-import reactTable from 'react-table/react-table.css'
+export const headers = [
+	{
+		title: 'Status',
+		id: 'status'
+	},
+	{
+		title: 'Patient Name',
+		id: 'patientName',
 
-export default class extends React.Component {
+	},
+	{
+		title: 'Study Name',
+		id: 'studyName',
 
-    constructor() {
-        super();
-        this.state = {
-            columns: [
+	},
+	{
+		title: 'Study Date',
+		id: 'studyDate',
 
-                {
-                    Header: 'Status',
-                    accessor: 'status'
-                },
-                {
-                    Header: 'Patient Name',
-                    accessor: 'patientName',
+	},
+	{
+		title: 'Modality',
+		id: 'modality',
 
-                },
-                {
-                    Header: 'Study Name',
-                    accessor: 'studyName',
+	},
+	{
+		title: 'Activity',
+		id: 'activity',
 
-                },
-                {
-                    Header: 'Study Date',
-                    accessor: 'studyDate',
+	},
+	{
+		title: 'Location',
+		id: 'location',
 
-                },
-                {
-                    Header: 'Modality',
-                    accessor: 'modality',
+	},
+	{
+		title: 'Client',
+		id: 'client',
 
-                },
-                {
-                    Header: 'Activity',
-                    accessor: 'activity',
+	},
+];
 
-                },
-                {
-                    Header: 'Location',
-                    accessor: 'location',
+class ProjectsListing extends Component {
+	static async getInitialProps({ 
+		req = {}, 
+		store, 
+		isServer, 
+		query: { projects = [] } = {},
+	}) {
+		const { 
+			payloadProjects,
+			fetchAction,
+		} = actions;
+		
+		store.dispatch(fetchAction(true));
+		store.dispatch(payloadProjects(isServer ? projects : await fetchApi('projects')));
+		store.dispatch(fetchAction(false));
 
-                },
-                {
-                    Header: 'Client',
-                    accessor: 'client',
+		return { isServer };
+	}
 
-                },
-                {
-                    Header: 'Action',
-                    accessor: 'studyUID',
-                    show: false
-                }
-            ]
-        }
-
-    }
-
-
-    static async getInitialProps({ req, query }) {
-        const { projects } = query;
-        return { projects };
-    }
-    render() {
-        const { props: { projects = [] } } = this;
-
-        return (
-            <div>
-                <style dangerouslySetInnerHTML={{ __html: styleBootstrap }} />
-                <Nav />
-                 
-                        <style dangerouslySetInnerHTML={{ __html: reactTable }} />
-                        <ReactTable data={projects} columns={this.state.columns} defaultPageSize={10} filterable={true}
-                            getTdProps={(state, rowInfo, column, instance) => {
-                                return {
-                                    onClick: e => {
-                                        console.log(rowInfo.row.studyUID);
-                                        window.location = `/projectDetail/` + rowInfo.row.studyUID;
-                                        {/*console.log('A Td Element was clicked!')
-                                            console.log('it produced this event:', e)
-                                            console.log('It was in this column:', column)
-                                            console.log('It was in this row:', rowInfo )
-                                            console.log('It was in this table instance:', instance)*/}
-                                    }
-                                }
-                            }}
-                        />
-                    </div>
-             
-        );
-    }
+	render() {
+		const { props: { projects = [] } = {}, props } = this;
+		return (
+			<div>
+				<TableList
+					headers={headers}
+					data={projects}
+					onRowClick={({ studyUID }) => {
+						Router.push({
+						pathname: '/projectDetail',
+						query: { studyUID }
+					})}}
+				/>
+			</div>
+		)
+	}
 }
 
+const mapStateToProps = ({ projects }) => ({ ...projects });
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
 
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
+	Wrapper(ProjectsListing));

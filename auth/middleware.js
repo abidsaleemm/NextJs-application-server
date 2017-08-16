@@ -1,15 +1,35 @@
 
-export default (reqType) => {
-    return {
-        isAuth : (req, res, next) => {
-            // for api calling reqType will be 'api' or for page rendering it will be 'page'
-            if (reqType === "api") {
-                (req.isAuthenticated()) ? next() : res.status(403).send('You are not authorized to access this page');
-            } else {
-                (req.isAuthenticated()) ? next() : res.redirect('/');
-            }
+export default ({ redirect = true } = {}) => (req, res, next) => {
+    // Check if a user session
+    if (!req.isAuthenticated()) {
+        if (redirect === true) {
+            res.redirect('/');
+        } else {
+            res.status(403).send('You are not authorized to access this page');
         }
+        return;
+    } 
+
+    const { 
+        user: { client = false, id: clientId }, 
+        path = '',
+    } = req;
+
+    // TODO Handle using routing middleware
+    // Handle user type redirection
+    if (client === true && path === '/projects') {
+        console.log('redirect to portal');
+        res.redirect('/portal');
+        return;
+    } 
+
+    if (client === false && path === '/portal') {
+        console.log('redirect to projects');
+        res.redirect('/projects');
+        return;
     }
+
+    next();
 }
 
 

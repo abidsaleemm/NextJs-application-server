@@ -51,7 +51,8 @@ export const headers = [
 	{
 		title: 'Invoice',
     id: 'invoice',
-    type: 'button',
+		type: 'button',
+		action: 'click',
 	}
 ];
 
@@ -79,7 +80,7 @@ const Portal = class extends Component {
   render() {
     const { 
       props: { projects = [] } 
-    } = this;
+		} = this;
 
     return (
       <div>

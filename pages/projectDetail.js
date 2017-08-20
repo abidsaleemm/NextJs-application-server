@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
 import Iframe from 'react-iframe';
-
-// TODO Move these to different Area?
-import getStatusName from '../helpers/getStatusName';
-import getClientList from '../helpers/getClientList';
-import getClientNameById from '../helpers/getClientNameById';
-
 import {
-  Container, Row, Col, Card, CardBlock, CardTitle, CardSubtitle, CardText, CardLink, Button, Table,
-  ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+  Container, 
+  Row, 
+  Col, 
+  Card, 
+  CardBlock, 
+  CardTitle, 
+  CardSubtitle, 
+  CardText, 
+  CardLink, 
+  Button, 
+  Table,
+  ButtonDropdown, 
+  DropdownToggle, 
+  DropdownMenu, 
+  DropdownItem
 } from 'reactstrap';
-
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux';
 import { initStore } from '..//store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
+
+// TODO Move these to different Area?
+import getStatusName from '../helpers/getStatusName';
 
 // TODO Move this to an action?
 import fetchApi from '../helpers/fetchApi';
@@ -76,12 +85,13 @@ const ProjectDetails = class extends Component {
         location,
         status = 0, 
         client = 0,
+        clientList = [],
       },
       state: { height, openStatus, openClient } = {},
       setStatus
     } = this;
 
-    const clients = getClientList();
+    const { name: selectedClient = "None" } = clientList.find(({ id }) => id === client);
 
     return <div className="root" ref={input => {
           this.container = input;
@@ -128,19 +138,34 @@ const ProjectDetails = class extends Component {
                         {getStatusName(status)}
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem onClick={() => setProjectStatus({ studyUID , status: 0 })}>
+                        <DropdownItem onClick={() => setProjectStatus({
+                              studyUID,
+                              status: 0
+                            })}>
                           {getStatusName(0)}
                         </DropdownItem>
-                        <DropdownItem onClick={() => setProjectStatus({ studyUID , status: 1 })}>
+                        <DropdownItem onClick={() => setProjectStatus({
+                              studyUID,
+                              status: 1
+                            })}>
                           {getStatusName(1)}
                         </DropdownItem>
-                        <DropdownItem onClick={() => setProjectStatus({ studyUID , status: 2 })}>
+                        <DropdownItem onClick={() => setProjectStatus({
+                              studyUID,
+                              status: 2
+                            })}>
                           {getStatusName(2)}
                         </DropdownItem>
-                        <DropdownItem onClick={() => setProjectStatus({ studyUID , status: 3 })}>
+                        <DropdownItem onClick={() => setProjectStatus({
+                              studyUID,
+                              status: 3
+                            })}>
                           {getStatusName(3)}
                         </DropdownItem>
-                        <DropdownItem onClick={() => setProjectStatus({ studyUID , status: 4 })}>
+                        <DropdownItem onClick={() => setProjectStatus({
+                              studyUID,
+                              status: 4
+                            })}>
                           {getStatusName(4)}
                         </DropdownItem>
                       </DropdownMenu>
@@ -180,16 +205,17 @@ const ProjectDetails = class extends Component {
                         });
                       }}>
                       <DropdownToggle caret>
-                        {getClientNameById(client) || "None"}
+                        {selectedClient}
                       </DropdownToggle>
                       <DropdownMenu>
                         <DropdownItem onClick={() => this.setClient(0)}>
                           None
                         </DropdownItem>
-                        {clients.map(({ id, name }) =>
+                        {clientList.map(({ id, name }) =>
                           <DropdownItem
                             key={`${name}-${id}`}
-                            onClick={() => setProjectClient({ studyUID , client: id })}
+                            onClick={() =>
+                              setProjectClient({ studyUID, client: id })}
                           >
                             {name}
                           </DropdownItem>
@@ -203,16 +229,7 @@ const ProjectDetails = class extends Component {
           </Card>
         </div>
         <div className="projectDetailRight">
-          <Iframe 
-            url={`/client/?p=${studyUID}`} 
-            width="100%" 
-            height={`${height}px`} 
-            display="initial" 
-            position="relative" 
-            marginheight={0} 
-            frameborder={0} 
-            marginwidth={0} 
-          />
+          <Iframe url={`/client/?p=${studyUID}`} width="100%" height={`${height}px`} display="initial" position="relative" marginheight={0} frameborder={0} marginwidth={0} />
         </div>
       </div>;
   }

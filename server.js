@@ -30,6 +30,7 @@ const sessionStoreAzure = () => {
 
 app.prepare().then(() => {
   const server = express();
+  server.disable('x-powered-by'); //x-powered-by disable form headers
   const sessionMiddleWare = expressSession({
     store: process.env.LOCAL ?
      sessionStoreLocal() : // Used for local testing

@@ -1,23 +1,25 @@
-import React from 'react';
-import Styles from '../hoc/styles';
-import LoginPage from '../components/loginPage';
+import React, { Component } from "react";
+import Styles from "../hoc/styles";
+import LoginPage from "../components/loginPage";
 
-const EntryPage = class extends React.Component {
-    static getInitialProps({ req: { session } }) {
-        let props = {};
-        if (session.sessionFlash !== undefined) {
-            props = { ...session.sessionFlash };
-            session.sessionFlash = {}
-        }
-        return props;
-    };
+const EntryPage = class extends Component {
+  static getInitialProps({ req: { session } }) {
+      let props = {};
 
-    render() {
-        const { props = {} } = this;
-        return (
-            <LoginPage {...props} />
-        );
-    }
-}
+      if (session.sessionFlash !== undefined) {
+          props = { ...session.sessionFlash };
+        //   session.sessionFlash = undefined;
+      }
 
-export default Styles(LoginPage);
+      return props;
+  };
+
+  render() {
+    const { props = {} } = this;
+    return <LoginPage {...props} />;
+  }
+};
+
+const Enhanced = Styles(EntryPage);
+Enhanced.getInitialProps = EntryPage.getInitialProps;
+export default Enhanced;

@@ -1,25 +1,14 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import users from './users';
-
+import { getUser } from "../authUsers";
 
 export default server => {
   server.use(passport.initialize());
   server.use(passport.session());
-
   passport.use(
-    new Strategy((username, password, done) => {
-      const user = users().find(user =>
-        user.username === username && user.password === password);
-
-      if (user !== undefined) {
-        console.log('User found logging in')
-        return done(null, user);
-      }
-
-      return done(null, false);
-    })
-  );
+    new Strategy((username, password, done) =>
+      getUser({ username, password }).then(user => 
+        done(null, user))));
 
   passport.serializeUser((user, done) => {
     done(null, user);
@@ -30,23 +19,21 @@ export default server => {
       done(err);
       return;
     }
-
     done(null, user);
   });
 
   server.post("/auth/local", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) {
-        return next(err)
+        return next(err);
       }
 
       if (!user) {
-        // TODO Create a reusable function for this
         req.session.sessionFlash = {
-          error: 'Invalid username / password',
+          error: "Invalid username / password"
         };
 
-        return res.redirect("/")
+        return res.redirect("/");
       }
 
       req.login(user, loginErr => {
@@ -54,8 +41,7 @@ export default server => {
           return next(loginErr);
         }
 
-        if (req.user.client)
-          return res.redirect ('/portal');
+        if (req.user.client) return res.redirect("/portal");
 
         return res.redirect("/projects");
       });
@@ -63,8 +49,9 @@ export default server => {
   });
 
   server.get("/auth/logout", (req, res) => {
-    res.clearCookie('express.sid'); // TODO do we need this?
-    req.session.destroy(function (err) {console.log(err)
+    res.clearCookie("express.sid"); // TODO do we need this?
+    req.session.destroy(function(err) {
+      console.log(err);
       res.redirect("/");
     });
   });

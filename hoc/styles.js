@@ -7,6 +7,3 @@ export default WrappedComponent => ({ ...props }) => (
           <WrappedComponent { ...props } />
       </div>
     );
-
-    //  {/* <style jsx global>  */}
-        //  {/* </style>  */}

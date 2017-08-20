@@ -1,50 +1,13 @@
-
 import passport from "passport";
-import {
-  Strategy
-} from "passport-local";
-import users from './users';
-import azure from 'azure-storage';
-const saltRounds = 10;
-import bcrypt from 'bcrypt';
-import queryTable from '../helpers/azure/queryTable';
-const tableService = azure.createTableService();
+import { Strategy } from "passport-local";
+import { getUser } from "../authUsers";
+
 export default server => {
   server.use(passport.initialize());
   server.use(passport.session());
-
-
-  
- 
   passport.use(
-    new Strategy((username, password, done) => {
-
-      if (process.env.NODE_ENV !== 'dev') {
-        let query = new azure.TableQuery().top(5).where('PartitionKey eq ?', username);
-        queryTable({tableService, query, tableName:'users'}).then((response)=>{
-            bcrypt.compare(password, response['0'].password, function (err, res) { 
-              if (res === true) { 
-                const {PartitionKey, RowKey, Timestamp, password, '.metadata':undefined, ...user} = response['0'];
-                return done(null,user);
-              } else {
-                return done(null, false);
-              }
-            })
-          }).catch(error=>{
-            console.log(error);
-            throw new Error (error);
-          })
-      } else {
-        const user = users().find(user =>
-          user.username === username && user.password === password);
-        return done(null, user);
-      }
-    })
-  );
-
-
-
-
+    new Strategy((username, password, done) =>
+      getUser({ username, password }).then(user => done(null, user))));
 
   passport.serializeUser((user, done) => {
     done(null, user);
@@ -61,16 +24,15 @@ export default server => {
   server.post("/auth/local", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) {
-        return next(err)
+        return next(err);
       }
 
       if (!user) {
-        // TODO Create a reusable function for this
         req.session.sessionFlash = {
-          error: 'Invalid username / password',
+          error: "Invalid username / password"
         };
 
-        return res.redirect("/")
+        return res.redirect("/");
       }
 
       req.login(user, loginErr => {
@@ -78,8 +40,7 @@ export default server => {
           return next(loginErr);
         }
 
-        if (req.user.client)
-          return res.redirect('/portal');
+        if (req.user.client) return res.redirect("/portal");
 
         return res.redirect("/projects");
       });
@@ -87,9 +48,9 @@ export default server => {
   });
 
   server.get("/auth/logout", (req, res) => {
-    res.clearCookie('express.sid'); // TODO do we need this?
-    req.session.destroy(function (err) {
-      console.log(err)
+    res.clearCookie("express.sid"); // TODO do we need this?
+    req.session.destroy(function(err) {
+      console.log(err);
       res.redirect("/");
     });
   });

@@ -5,6 +5,7 @@ import {
     setProjectSnapshot,
 } from '../projects';
 import createProject from '../projects/createProject';
+import { getClients } from "../authUsers";
 
 export default async ({ studyUID }) => {
     const study = await getStudy({ studyUID });
@@ -19,7 +20,6 @@ export default async ({ studyUID }) => {
     }
 
     // Merge project and study table
-    project = { ...project, ...study, studyUID };
-
-    return project;
+    const clientList = await getClients();
+    return { ...project, ...study, studyUID, clientList };
 }

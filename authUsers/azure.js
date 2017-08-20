@@ -11,38 +11,18 @@ const tableService = azure.createTableService(
 
 const tableName = 'users';
 
-export default ({ username, password }) => {
-    let query = new azure.TableQuery().where('PartitionKey eq ?', username);
-    queryTable({ tableService, query, tableName }).then((response) => {
-        bcrypt.compare(password, response['0'].password, (err, res)  => {
-            // return res === true ? 
-            if (res === true) {
-                const { PartitionKey, RowKey, Timestamp, password, '.metadata': undefined, ...user } = response['0'];
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-        })
-    }).catch(error => {
-        console.log(error);
-        throw new Error(error);
-    });
+export const getUser = async ({ username, password }) => {
+    const query = new azure.TableQuery().where('PartitionKey eq ?', username);
+    const { 0: { password: passwordCheck, ...user } = {} } = 
+        await queryTable({ tableService, query, tableName });
+    const res = await bcrypt.compare(password, passwordCheck);
+
+    return res === true ? user : false;
 }
 
-export const getClients = () => {
-//   users
-//     .filter(({ client }) => client !== undefined)
-//     .map(({ id, name }) => ({ id, name }));
-
-    return [];
-};
-
-// export const getUser = ({ username, password }) =>
-//     users.find(user =>
-//         user.username === username && user.password === password)
-        
-// export const getClients = () => {
-//   users
-//     .filter(({ client }) => client !== undefined)
-//     .map(({ id, name }) => ({ id, name }));
-// };
+export const getClients = async () => 
+    await queryTable({ 
+        tableService, 
+        query: new azure.TableQuery().where("client eq ?", true), 
+        tableName 
+    });

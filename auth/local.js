@@ -7,7 +7,8 @@ export default server => {
   server.use(passport.session());
   passport.use(
     new Strategy((username, password, done) =>
-      getUser({ username, password }).then(user => done(null, user))));
+      getUser({ username, password }).then(user => 
+        done(null, user))));
 
   passport.serializeUser((user, done) => {
     done(null, user);

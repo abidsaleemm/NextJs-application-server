@@ -91,7 +91,8 @@ const ProjectDetails = class extends Component {
       setStatus
     } = this;
 
-    const { name: selectedClient = "None" } = clientList.find(({ id }) => id === client);
+    const { name: selectedClient = "None" } = 
+      clientList.find(({ id }) => id === client) || {};
 
     return <div className="root" ref={input => {
           this.container = input;
@@ -208,7 +209,8 @@ const ProjectDetails = class extends Component {
                         {selectedClient}
                       </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem onClick={() => this.setClient(0)}>
+                        <DropdownItem onClick={() => 
+                            setProjectClient({ studyUID, client: 0 })}>
                           None
                         </DropdownItem>
                         {clientList.map(({ id, name }) =>

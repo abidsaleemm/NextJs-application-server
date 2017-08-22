@@ -6,14 +6,6 @@ import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
 import InvoicePreview, { showModal, closeModal } from '../components/pdfPreviewModal';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
-
-// TODO Move this to an action?
-import fetchApi from '../helpers/fetchApi';
-import PDFJS from 'pdfjs-dist';
-
-// TODO should we build this value in query function?
-import getStatusName from '../helpers/getStatusName';
 
 // TODO Should we move this to query function instead and send with data?
 export const headers = [

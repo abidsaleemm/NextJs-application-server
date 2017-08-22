@@ -8,14 +8,16 @@ import DownloadLink from 'react-download-link';
 var overlay;
 var id;
 var pdfData;
+var canvasContext;
 
 export const openModal = ( studyUID ) => {
 	overlay = document.getElementById('overlay');
 	id = studyUID;
 	overlay.classList.remove("is-hidden");
-
+	document.getElementById('loader').style.display = 'block';
 	axios.get(`http://localhost:3000/pdf/?id=${studyUID}`,{ responseType: 'arraybuffer' })
 			.then(function (response) {		
+				document.getElementById('loader').style.display = 'none';
 				console.log (response);
 				const data = new Uint8Array( response.data )
 
@@ -32,10 +34,15 @@ export const openModal = ( studyUID ) => {
 						const scale = 1.2;
 						const viewport = page.getViewport(scale);
 						
-						const canvas = document.getElementById('the-canvas');
+						const canvas = document.createElement ('canvas');
+						// const canvas = document.getElementById('the-canvas');
 						const context = canvas.getContext('2d');
+						canvasContext = context;
 						canvas.height = viewport.height;
 						canvas.width = viewport.width;
+
+						canvas.setAttribute ('id', 'canvas');
+						document.getElementById ('canvas-container').appendChild (canvas);
 					
 						const renderContext = {
 							canvasContext: context,
@@ -58,7 +65,10 @@ export const openModal = ( studyUID ) => {
 			});
 }
 
-export const closeModal = () => overlay.classList.add("is-hidden");
+export const closeModal = () => {
+	overlay.classList.add("is-hidden");
+	document.getElementById ('canvas-container').removeChild (document.getElementById ('canvas'));
+};
 
 // export const download = () => window.location = `/pdf/?id=${id}`
 
@@ -100,18 +110,19 @@ export default ( { studyUID = undefined, fetching = false } ) => (
 			margin: 5% auto 0;
 			background: #fff;
 		}
+		.text-center {
+			text-align: center;
+		}
 	`}</style>
 
 	<section className="modal-content">
 		<span className="button-close" onClick={() => closeModal()}></span>
-		<h3>Preview Invoice</h3>
+		<p>Preview Invoice &nbsp; <DownloadLink className="btn btn-default" filename={"Invoice.pdf"} label={"Download as pdf"} exportFile = {() => pdfData }/></p>
 		<section>
-			<Loader fetching={ fetching } />
-			<canvas id="the-canvas">Loading preview..</canvas>
-			
-			<Button>
-				<DownloadLink className="btn btn-default" filename={"Invoice.pdf"} label={"Download as pdf"} exportFile = {() => pdfData }/>
-			</Button>
+			<p id='loader' className='text-center'>Generating preview..</p>
+			<section id='canvas-container'>
+				
+			</section>
 		</section>
 	</section>
 	

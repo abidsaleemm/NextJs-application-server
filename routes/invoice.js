@@ -8,7 +8,8 @@ export default ({ server, app }) => {
     const { user: { name, ...user} = {} } = req;
 
     const projectDetail = await queryProjectDetail({ studyUID: req.query.id });
-    console.log (projectDetail);
+    // const projectDetail = {};
+    // console.log (projectDetail);
     const invoiceDetails = {
       ...projectDetail,
       ...user,

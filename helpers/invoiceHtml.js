@@ -17,7 +17,7 @@ export default async ({
     taxId = '-',
     invoiceDate = moment().format("MM-DD-YYYY"),
 }) => {
-    const htmlFilePath = path.join(__dirname, '../invoiceTemplate/invoiceTemplate.html');
+    const htmlFilePath = path.join(__dirname, '../invoiceTemplate/invoice.html');
     let htmlTemplate = fs.readFileSync(htmlFilePath, {
         encoding: "utf-8"
     });

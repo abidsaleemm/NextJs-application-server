@@ -15,9 +15,17 @@ export default ({ data = [], headers = [], onRowClick = () => {} }) => (
             {data.map((dataProps) => (
                 <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
                     {headers
-                        .map(({ id, type, title, action }) => ({ data: dataProps[id], type, title }))
+                        .map(({ id, type, title, action }) => ({ data: dataProps[id], type, title, action }))
                         .map(({ data, type, title, action }) => ( 
-                            <td key={uuid()}>{type === 'button' ? <Button onClick={() => window.location = `/pdf/?id=${dataProps.studyUID}`} >{}{title}</Button> : data} </td>))
+                            <td key={uuid()}>
+                                { 
+                                    type === 'button' ? 
+                                        action === 'click' ? 
+                                            <Button onClick={() => window.location = `/pdf/?id=${dataProps.studyUID}`} >{title}</Button> : 
+                                            <Button>{title}</Button> 
+                                    : data
+                                } 
+                            </td>))
                     }
                 </tr>
             ))}

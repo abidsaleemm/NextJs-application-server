@@ -8,15 +8,14 @@ export default ({ server, app }) => {
     const { user: { name, ...user} = {} } = req;
 
     const projectDetail = await queryProjectDetail({ studyUID: req.query.id });
+    console.log (projectDetail);
     const invoiceDetails = {
       ...projectDetail,
       ...user,
       price: "$300", //  TODO This will work for now but should decide best way to store
       taxId: "593784049", 
       // TODO Clean up address and break up into street, city, zip, state, country
-      addrssline1: name,
-      addrssline2: "1020 E PALMDALE ST STE 150",
-      addrssline3: 'TUCSON, AZ 857143309',
+      ownerName: name,
     };
 
     // TODO Decide best way to name file?

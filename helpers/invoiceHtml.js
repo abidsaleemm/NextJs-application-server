@@ -9,9 +9,11 @@ export default async ({
     studyName = '-',
     price = '-',
     patientID = '-',
-    addrssline1 = '',
-    addrssline2 = '',
-    addrssline3 = '',
+    ownerName = '',
+    city = '',
+    state = '',
+    phone = '',
+    country= '',
     taxId = '-',
     invoiceDate = moment().format("MM-DD-YYYY"),
 }) => {
@@ -29,9 +31,11 @@ export default async ({
         .replace(/{invoiceStudyName}/g, studyName)
         .replace(/{invoicePrice}/g, price)
         .replace(/{clientId}/g, patientID)
-        .replace(/{addrssline1}/g, addrssline1)
-        .replace(/{addrssline2}/g, addrssline2)
-        .replace(/{addrssline3}/g, addrssline3)
+        .replace(/{ownerName}/g, ownerName)
+        .replace(/{city}/g, city)
+        .replace (/{state}/g, state)
+        .replace (/{country}/g, country)
+        .replace(/{phone}/g, phone)
         .replace(/{taxId}/g, taxId);
 
     return htmlTemplate;

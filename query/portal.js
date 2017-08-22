@@ -3,7 +3,12 @@ import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 
 export default async ({ clientId = 0 }) => {
-    const studies = await getStudies();
+    let studies = await getStudies();
+
+    // console.log (studies);
+    const refactoredStudies = studies.map (study => Object.assign ({}, study, {patientName: study.patientName.replace ('^^^', '').replace ('^', ' ')})); 
+
+    studies = refactoredStudies;
 
     // TODO Do query directly getProjectList instead of filtering with javascript
     let projects = await getProjectList();

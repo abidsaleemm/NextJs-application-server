@@ -15,10 +15,10 @@ export const openModal = ( studyUID ) => {
 	id = studyUID;
 	overlay.classList.remove("is-hidden");
 	document.getElementById('loader').style.display = 'block';
+	
 	axios.get(`http://localhost:3000/pdf/?id=${studyUID}`,{ responseType: 'arraybuffer' })
 			.then(function (response) {		
-				document.getElementById('loader').style.display = 'none';
-				console.log (response);
+				// console.log (response);
 				const data = new Uint8Array( response.data )
 
 				pdfData = data;
@@ -30,6 +30,7 @@ export const openModal = ( studyUID ) => {
 					
 					pdf.getPage(1).then(function(page) {
 						console.log('Page loaded');
+						document.getElementById('loader').style.display = 'none';
 						
 						const scale = 1.2;
 						const viewport = page.getViewport(scale);

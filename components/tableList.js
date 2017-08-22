@@ -20,8 +20,8 @@ export default ({ data = [], headers = [], onRowClick = () => {} }) => (
                             <td key={uuid()}>
                                 { 
                                     type === 'button' ? 
-                                        action === 'click' ? 
-                                            <Button onClick={() => window.location = `/pdf/?id=${dataProps.studyUID}`} >{title}</Button> : 
+                                        action ? 
+                                            <Button onClick={() => action (dataProps.studyUID)} >{title}</Button> : 
                                             <Button>{title}</Button> 
                                     : data
                                 } 

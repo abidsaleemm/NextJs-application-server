@@ -52,9 +52,18 @@ export const headers = [
 		title: 'Invoice',
     id: 'invoice',
 		type: 'button',
-		action: 'click',
+		action: studyUID => invoiceDownloadAction(studyUID)
+
 	}
 ];
+
+/**
+ * handler for portal click
+ * @param {*} studyUID 
+ */
+const invoiceDownloadAction = (studyUID) => {
+	window.location = `/pdf/?id=${studyUID}`;
+}
 
 const Portal = class extends Component {
   static async getInitialProps({

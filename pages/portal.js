@@ -83,9 +83,8 @@ const Portal = class extends Component {
 					headers={headers}
 					data={projects}
 				/>
-
 				
-				<InvoicePreview />
+				<InvoicePreview fetching={this.props.fetching}/>
       </div>
     );
   }

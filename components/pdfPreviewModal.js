@@ -1,6 +1,9 @@
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import PDFJS from 'pdfjs-dist';
 import axios from 'axios';
+import Loader from '../components/loader';
+// for performing cached download rather than lookup downloads
+import DownloadLink from 'react-download-link';
 
 var id;
 /**
@@ -66,6 +69,7 @@ var id;
 
 var overlay;
 var id;
+var pdfData;
 export const openModal = ( studyUID ) => {
 	overlay = document.getElementById('overlay');
 	id = studyUID;
@@ -75,6 +79,9 @@ export const openModal = ( studyUID ) => {
 			.then(function (response) {		
 				console.log (response);
 				const data = new Uint8Array( response.data )
+
+				pdfData = data;
+
 				const loadingTask = PDFJS.getDocument({data: data});
 				
 				loadingTask.promise.then(function(pdf) {
@@ -114,13 +121,13 @@ export const openModal = ( studyUID ) => {
 
 export const closeModal = () => overlay.classList.add("is-hidden");
 
-export const download = () => window.location = `/pdf/?id=${id}`
+// export const download = () => window.location = `/pdf/?id=${id}`
 
 /**
  * @prop {any} data -> any data (specially keys)
  * @prop {actionCallback} -> callback for action to perform when clicked primary button
  */
-export default ( { studyUID = undefined } ) => (
+export default ( { studyUID = undefined, fetching = false } ) => (
 	<section className='overlay is-hidden' id='overlay'>
 	<style jsx>{`
 		.is-hidden { display: none; }
@@ -158,10 +165,14 @@ export default ( { studyUID = undefined } ) => (
 
 	<section className="modal-content">
 		<span className="button-close" onClick={() => closeModal()}></span>
-		<h3>Modal Heading</h3>
+		<h3>Preview Invoice</h3>
 		<section>
+			<Loader fetching={ fetching } />
 			<canvas id="the-canvas">Loading preview..</canvas>
-			<Button onClick={() => download()}>Download</Button>
+			
+			<Button>
+				<DownloadLink className="btn btn-default" filename={"Invoice.pdf"} label={"Download as pdf"} exportFile = {() => pdfData }/>
+			</Button>
 		</section>
 	</section>
 	

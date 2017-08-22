@@ -5,9 +5,12 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
+import InvoicePreview, { showModal, closeModal } from '../components/pdfPreviewModal';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
 
 // TODO Move this to an action?
 import fetchApi from '../helpers/fetchApi';
+import PDFJS from 'pdfjs-dist';
 
 // TODO should we build this value in query function?
 import getStatusName from '../helpers/getStatusName';
@@ -52,18 +55,9 @@ export const headers = [
 		title: 'Invoice',
     id: 'invoice',
 		type: 'button',
-		action: studyUID => invoiceDownloadAction(studyUID)
-
+		action: studyUID => showModal(studyUID)
 	}
 ];
-
-/**
- * handler for portal click
- * @param {*} studyUID 
- */
-const invoiceDownloadAction = (studyUID) => {
-	window.location = `/pdf/?id=${studyUID}`;
-}
 
 const Portal = class extends Component {
   static async getInitialProps({
@@ -97,6 +91,9 @@ const Portal = class extends Component {
 					headers={headers}
 					data={projects}
 				/>
+
+				
+				<InvoicePreview />
       </div>
     );
   }

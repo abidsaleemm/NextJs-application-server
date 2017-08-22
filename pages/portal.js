@@ -5,7 +5,7 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
-import InvoicePreview, { showModal, closeModal } from '../components/pdfPreviewModal';
+import InvoicePreview, { openModal, closeModal } from '../components/pdfPreviewModal';
 
 // TODO Should we move this to query function instead and send with data?
 export const headers = [
@@ -47,7 +47,7 @@ export const headers = [
 		title: 'Invoice',
     id: 'invoice',
 		type: 'button',
-		action: studyUID => showModal(studyUID)
+		action: studyUID => openModal(studyUID)
 	}
 ];
 

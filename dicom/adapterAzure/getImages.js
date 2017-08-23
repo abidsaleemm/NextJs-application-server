@@ -8,13 +8,13 @@ import pullBlob from './helpers/pullBlob';
 export default async ({ seriesUID }) => {
     const images = await queryTable({
         query: new azure.TableQuery()
-            .select(['path', 'imageNumber'])
-            .where('instanceUID eq ?', seriesUID),
+            .select(['instanceUID', 'imageNumber'])
+            .where('seriesUID eq ?', seriesUID),
         tableName: `${tablePrefix}Images`,
     });
 
     return await Promise.all(
         images
             .sort((a, b) => a.imageNumber - b.imageNumber)
-            .map(async ({ path }) => parseRaw(await pullBlob({ path }))))
+            .map(async ({ instanceUID }) => parseRaw(await pullBlob({ instanceUID }))))
 };

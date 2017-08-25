@@ -1,9 +1,9 @@
 import { blobService } from '../';
 
-export default ({ instanceId = '' }) => new Promise((resolve, reject) => {
+export default ({ instanceUID = '' }) => new Promise((resolve, reject) => {
    const stream = blobService.createReadStream(
         process.env.DICOM_CONTAINER,
-        instanceId
+        instanceUID
     );
     const buffers = [];
     stream.on('data', (buffer) => {

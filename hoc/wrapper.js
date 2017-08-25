@@ -3,6 +3,7 @@ import Styles from './styles';
 
 export default WrappedComponent => {
     const enhanced = Styles(Nav1(WrappedComponent));
-    enhanced.getInitialProps = WrappedComponent.getInitialProps
+    enhanced.getInitialProps = WrappedComponent.getInitialProps;
+
     return enhanced;
-}
+};

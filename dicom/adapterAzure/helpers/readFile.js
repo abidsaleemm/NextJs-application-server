@@ -3,17 +3,16 @@ import { fileService } from '../';
 export default ({ path = '' }) => new Promise((resolve, reject) => {
     const indexLast = path.lastIndexOf("/");
     const indexFirst = path.indexOf("/");
-
+    
     const file = path.substring(indexLast + 1);
     const directory = path.substring(indexFirst + 1, indexLast);
     const share = path.substring(0, indexFirst);
-
+    //console.log(path);
     const stream = fileService.createReadStream(
         share,
         directory,
         file,
     );
-
     const buffers = [];
     stream.on('data', (buffer) => {
         buffers.push(buffer);

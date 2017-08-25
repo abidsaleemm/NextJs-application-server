@@ -4,6 +4,10 @@ export const fileService = azure.createFileService(
     process.env.STORAGE2,
     process.env.STORAGE2_KEY
 );
+export const blobService = azure.createBlobService(
+    process.env.STORAGE,
+    process.env.STORAGE_KEY
+);
 
 export const tableService = azure.createTableService(
     process.env.STORAGE,

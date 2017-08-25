@@ -1,5 +1,5 @@
 import azure from 'azure-storage';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import queryTable from '../helpers/azure/queryTable';
 
 // TODO This is pretty reusable.  Propose moving to azure helpers.  

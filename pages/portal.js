@@ -52,16 +52,8 @@ export const headers = [
 ];
 
 const Portal = class extends Component {
-  static async getInitialProps({
-    req: { session } = {},  
-    store, 
-    isServer, 
-    query: { portal = {} } = {} 
-  }) {
-		const {
-			payloadPortal,
-			fetchAction,
-		} = actions;
+  static async getInitialProps({ req: { session } = {},  store, isServer, query: { portal = {} } = {} }) {
+		const { payloadPortal,fetchAction,} = actions;
     
     // console.log('session', session);
 
@@ -73,9 +65,7 @@ const Portal = class extends Component {
 	}
 
   render() {
-    const { 
-      props: { projects = [] } 
-		} = this;
+    const { props: { projects = [] } } = this;
 
     return (
       <div>

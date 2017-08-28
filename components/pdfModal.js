@@ -1,5 +1,4 @@
 import PDF from 'react-pdf-js';
-import DownloadLink from 'react-download-link';
 
 export default ({ 
 	url = null, 

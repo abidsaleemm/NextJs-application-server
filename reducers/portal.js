@@ -1,14 +1,14 @@
-import { PAYLOAD_PORTAL, PAYLOAD_INVOICE, INVOICE_MODAL } from '../constants/actionTypes'; 
+import { PAYLOAD_PORTAL, INVOICE_SET } from '../constants/actionTypes'; 
 
 export const initialState = {
 	projects: [],
+	invoiceRoute: null,
 };
 
-export default  ( state = initialState, { type, portal = {}, pdfData, showModal = false} ) => {
+export default  ( state = initialState, { type, portal = {}, pdfData, invoiceRoute = null, showModal = false} ) => {
 	switch ( type ) {
 		case PAYLOAD_PORTAL: return { ...state, ...portal };
-		case PAYLOAD_INVOICE: return {...state, ...portal, pdfData }
-		case INVOICE_MODAL: return { ...state, showModal }
+		case INVOICE_SET: return { ...state, invoiceRoute }
 		default: return state;
 	}
 };

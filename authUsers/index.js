@@ -1,2 +1,1 @@
-module.exports = process.env.LOCAL !== undefined ? 
-    require("./local") : require("./azure");
+module.exports = process.env.LOCAL ? require("./local") : require("./azure");

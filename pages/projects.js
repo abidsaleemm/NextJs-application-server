@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import Router from 'next/router';
 import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
 
-// TODO Move this to a action
+// TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
 
 export const headers = [

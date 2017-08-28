@@ -3,7 +3,7 @@ import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 
 export default async ({ clientId = 0 }) => {
-    const studies = await getStudies();
+    let studies = await getStudies();
 
     // TODO Do query directly getProjectList instead of filtering with javascript
     let projects = await getProjectList();
@@ -14,13 +14,6 @@ export default async ({ clientId = 0 }) => {
             const study = studies.find(({ studyUID }) => v.studyUID === studyUID);
             return { ...v, ...study };
         })
-        .map(v => ({
-             ...v,
-            //  download: 'test', // TODO Add Link
-            //  preview: <a>Preview</a>,
-            //  invoice: <a>Invoice</a>,
-            }))
 
-    
     return { projects };
 }

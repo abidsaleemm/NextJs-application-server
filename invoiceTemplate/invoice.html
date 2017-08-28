@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'/>
+	<title>Invoice</title>
+</head>
+<body>
+	<section class='container invoice'>
+		<section class='row'>
+			<section class='col-md-12'>
+					<b>Invoice#</b> 748574 on 23-Mar-2017
+					<hr/>
+			</section>
+			<section class='col-md-4 col-sm-8 col-xs-4' >
+				<h6>Payable to</h6>
+				<address>
+						{ownerName} <br/>
+						{city}, {state} {country} <br/>
+						{phone} <br/>
+						<b>Federal Tax ID # </b> {taxId}
+				</address>
+			</section>
+			<section class='col-xs-4'>
+				<p class='text-center'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAkFBMVEX///8AAABubG1jYWJqaGnn5+e/v79oZmdiYGH8/Pzs7Oyampr5+fnf3991dXXy8vKtra3T09Ph4eG5ubl9fX2ioqLJycmPj49xb3BXV1fFxcWWlpbU1NSLi4tbW1tISEhPT08lJSU+Pj4XFxd8ensrKysdHR02NjaOjI2pqakODg6Dg4MvLy87OztERESzsrPBu4oFAAAI7UlEQVR4nO2daYOazBKFafYdUUAE1FkcI0MS//+/u1XdjaKjSea+Kor15MMICHYdej10E0UhCIIgCIIgCIIgCIIgCIIgCIIgCOK+8P2LXi5yLnq52xDYTV2MowtcycjS8AdzL3Clm5NqlqZZ+WabGf9vlnCruvn9yZD0omm7GbmK6KhE6E3ib91IP5hMZyJ6zu9rJfLKjBfqDq5EkprB3wvHuCjVd3bEQ5YEZKupB+iWpdnWHKqJ04XDzdLVz+PoOdsbp/yCrHT1K6CEbeflNjb2X/TjbfNyMnrOor8Q/jOGLcIOEywK+qESmm2vRH6ozoT+q/1widalNyaiNFiRPy7SRD0WwhK1/e+v4b81o8DJ5IbZcxT/kYbHrK/4hm9koya3O0JoWB4mB9G/L6dbUV9Eck/eZwAXwLVErKPdHseNt5tQCqFvYM+6Df91VprGvj+4EHs/L9vh7IFClAZ7fLg7qiYlCrGoFA8D/aml2VH7N5LKZLdL7LXYiNIQnjjkB6aXKjO1zk7cakNKkFw9hdcn0vfVnxH80ykGtgOyqXy9auJuRSYaSLuCz28sr/+sg2F6GsqVymxQ3SSNV6cU9WKOtR2v/+z0dGTBZGPBQAvrybYkzG+a0uvhyNLgKfv2ji3LrOsIONW2EW2FaEd/iG999JPiK1DJ0hDD5+CgIxTz43G92ncadKwfp/Ibxh+v+1Ck1j48s9shEv3E2t73HnmvqRXK6zXVF0ZaCSV+9joaiIGAsR9f8ppTeZX5pMcUX55Algbe3wl3EmjycNLmA5sPDRp5+GFNg9OM2sETbuxGye1gyLRkQahxK5ZHR2ev9qAIK0HnbZ3/IaNsD0Yim1hTviUPznpK6fWQVoLI7MZxN3jOB1Ar3lq2ReWhTYPTSCvB5qFVR33AjB/kh1rTYNJTOq+KtBIavoGewWfnoC1bRcWXElh9JPHquCIjaOIGl4etf6rbor9kSQ0e3jQ4jSlLg+j85QdNXzAT0rSeUtFD+m7CpmusKYeOgugxtsOJU27DMIi+GGvHzIQE60d8wPqPtFbCOQuhtc/im6bqxpTnjTXAlRIMxTQ4jd8x1r6yFBIMwz47T9wx1o5p7bN/Mx0fGK9jrB3S2mdlD6m6MereWDtE2mc/ekjTrQkWe2OtSymzwYDss/PUHWNtT2ufPeicm+8SigZyerBT2mcvvaTo9oy7xppkoPbZebZdK4HT2mcPPOfmuyQdYw1x3g891mdAmula66kO2D6TuHsi2RhIK0ETxb84sJmdyNgzlPpBtXdoejivcbLFpmOstfYZjKSCOnw7mJs4lMcssh2Q4GzN1bZS98aatM9es+bL1MzhtBOjo7ma0FW29o8XW/vs84sAg2onTs7VFLkiiU6E3vLSd8IviDuzNawN8J+mWQcqLP+gwUDNZceNa1Xr5Iv8tRP0e1OMB+wldqmmHRWsnQLqoH3ELxibXT2Zy8fQ1lOMmg+I1bZeyPEx9HoAUzG/jz9ts4I+5Icqf2ErK4V8ObjpFv+M95HLanEgMzG/T8DYToSB9gT+CnYMfsoZa9O/f32ICPvsh8gI9lM2C619JuflacP1T84jx8mJMuX9BH3YD1pPIu2zJYwghNeuPfjKre/T2mdYAowDY+1paO0z0S8QUzPkjLWnQecKrNs5iCYfTWuDnJJ4Dm6fvXVCdoqVrcsZis8B2mfasVdQbWxr1UtyemHJklN33PBm9c3T0hN+ea4/FD1VjUAQBEEQBEEQxBOxDREPxsAN/J3juNDL+SM0J8ljJcvx8EosV0tV/paccZ74uFGEKveT5qp45BbkjQNn63x0Xat8OUMcJvwxzDbHCe9Zgle7t7fFbIU3ttgtU3X5J5QC3+ewW6mEUQZyulnIV+2EzJzypSuTdn6iytcwWHyqnsHYT9wHp07FJst2r1DoJ9SzzJgX4fxDJWcNfHhhNTeL0A/4EBrA7shjL7BjDjswI6Ch5oAGE2XNUrQY5QysBWNrPIoaoICYEZhY4lMznMUYshX+2L15sEsmXwK14IvSUrhrqMFMLk8BDfD5wZiv0Phkb/ymwv2G+FGDgjG/QZ+dY/NAhQbv8F08k4lMNeOHrPt8b9SyXYUkNPC4BhbOqqrZ4vNAg4z9qvhNVVkCcaMGcNZyv47Jhv0zoUHMfgaYKUADC8pRBKWNa3CXk3ZOatDM4IZBseD5IHENd45vQlSZB5k/xg/ZBxsnqAE6jLsHTTaL18zNUYMQaoYPvOtQUJgNFcGs4Rr8+P329vbST6hnOanBPGWNA3m4UydmioNVX4kTT0CDmjUNX+Xv8bstsFkF54eoAdatHr44D06Cq4QsFRp8Anf34qDT+cBgvwq2dLgGy3nTzANsQd69coW1IWjgs7XFNcg678qEfBCxVw2CnbBPr0ywRMElfrP4lRmrXX3g3NskvqM6UWiQKK/shXlCg3aGQfsyFBM0KBQIkDcHRxpA84LfkMufQSW4BDQqUI2E91sfLJgVAwE0fLM4hnK+5RpgiIG/axcUvp43DoJxCTGjBsEZDfBFGWbEvxt4UEPCJQL+lBo1aPA34vjeJvDIrtGL4otn6msfNAhxksEaW35oHeTTxFIsVoHwfAvfcrAU7zrI4NQWrEmVXxB/Kt4LA+e72CFaY3WCVeVY/NincmcYKYJF24S/2LQHHgRneobieJ5SebJJrz1RcYy8selB+Yn4OYrh7R8tTOAc2G/Cd8St3npBCl1k1zPxgnB+NMIfe97JbARBDIni4KGzGWX31sjdgOSgh5MHxV32eK7Lxq40VV35bq7rtRKOR6YytfTGcVe6PqBFXH+kMZ3KLPTA3LixBhqkk2hmGCpsRyO778TdiCZ2tDC0A7NWIktoAB3lJDCbRB3s+7GOaGJXh5irLxqEz1M5JnG0KMuZkdneXFXysTeJXhQlrDLdK5/ghTCc2FXGRQH3PCtGupJF1diHgUDmKnFRPEtZaNkuNO1Z7vs5fP/C/5cXQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRAEQRDEg/E/+MpzHV4nPxcAAAAASUVORK5CYII=' width=100/></p>
+			</section>
+			<section class='col-md-4 col-sm-4 col-xs-4'>
+				<p class='multus-logo text-right'>MULTUS</p>
+			</section>
+		</section>
+		<section class='row'>
+			<section class='col-md-3 col-xs-2'></section>
+			<section class='col-md-6 col-xs-8 invoice-title text-center'>
+			</section>
+			<section class='col-md-3 col-xs-2'></section>
+		</section>
+		<section class='row'>
+			<section class='col-xs-6'>
+					<h6>Invoice to</h6>
+					<address>
+							{invoiceName} <br/>
+							{invoiceLocation} <br/>
+							{clientId} <br/>
+					</address>
+			</section>
+			<section class='col-xs-6 text-right'>
+				<table class='table table-bordered table-condensed'>
+					<thead>
+						<thead>
+							<th class='text-right'>Date of Invoice</th>
+							<th class='text-right'>Due date</th>
+						</thead>
+					</thead>
+					<tbody>
+						<tr class='active'>
+							<td>{todayDate}</td>
+							<td>{invoiceStudyDate}</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</section>
+		<section class='row' style='padding: 10px;'>
+			<table class='table table-striped table-bordered'>
+				<thead>
+					<th>Patient</th>
+					<th>Modality</th>
+					<th>Location</th>
+					<th>Study Name</th>
+					<th>Study Date</th>
+					<th>Price</th>
+				</thead>
+				<tbody>
+					<tr class='info'>
+						<td>{invoiceName}</td>
+						<td>{invoiceModality}</td>
+						<td>{invoiceLocation}</td>
+						<td>{invoiceStudyName}</td>
+						<td>{invoiceStudyDate}</td>
+						<td>{invoicePrice}</td>
+					</tr>
+				</tbody>
+				<tfoot>	
+					<tr>
+						<td colspan="3"></td>
+						<td colspan="2">GRAND TOTAL</td>
+						<td>{invoicePrice}</td>
+					</tr>
+				</tfoot>
+			</table>
+		</section>
+		<p style='position: absolute; top: 0; margin-top: 820px;'>Powered by MULTUS &copy; &reg;<p>
+	</section>
+</body>
+<style>
+	.header {
+		padding: 5px;
+	}
+	.invoice {
+		background-color: #fafafa;
+		border: solid 1px silver;
+		padding: 10px;
+		width: 595px;
+		height: 842px;
+	}
+	.invoice-title {
+		border-top: solid 1px #f0f0f0;
+		font-size: 30px;
+		padding: 10px;
+	}
+	.multus-logo {
+		color: #3079c6;
+		font-size: 30px;
+		padding: 10px;
+	}
+	address {
+		padding: 10px;
+	}
+</style>
+</html>

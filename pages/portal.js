@@ -5,12 +5,9 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
+import InvoiceModal from '../containers/invoiceModal';
 
-// TODO Move this to an action?
 import fetchApi from '../helpers/fetchApi';
-
-// TODO should we build this value in query function?
-import getStatusName from '../helpers/getStatusName';
 
 // TODO Should we move this to query function instead and send with data?
 export const headers = [
@@ -40,34 +37,25 @@ export const headers = [
 	},
 	{
 		title: 'Download',
-    id: 'download',
-    type: 'button',
+		id: 'download',
+		type: 'button',
 	},
 	{
 		title: 'Preview',
-    id: 'preview',
-    type: 'button',
+		id: 'preview',
+		type: 'button',
 	},
 	{
 		title: 'Invoice',
-    id: 'invoice',
-    type: 'button',
+		id: 'invoice',
+		type: 'button',
+		// action: studyUID => openModal(studyUID)
 	}
 ];
 
 const Portal = class extends Component {
-  static async getInitialProps({
-    req: { session } = {},  
-    store, 
-    isServer, 
-    query: { portal = {} } = {} 
-  }) {
-		const {
-			payloadPortal,
-			fetchAction,
-		} = actions;
-    
-    // console.log('session', session);
+	static async getInitialProps({ req: { session } = {}, store, isServer, query: { portal = {} } = {} }) {
+		const { payloadPortal, fetchAction } = actions;
 
 		store.dispatch(fetchAction(true));
 		store.dispatch(payloadPortal(isServer ? portal : await fetchApi('portal')));
@@ -76,24 +64,25 @@ const Portal = class extends Component {
 		return { isServer, client: true };
 	}
 
-  render() {
-    const { 
-      props: { projects = [] } 
-    } = this;
+	render() {
+		console.log(this.props);
+		const { props: { projects = [], dispatch, fetchAction, setInvoice } } = this;
 
-    return (
-      <div>
-        <TableList
-					headers={headers}
-					data={projects}
-				/>
-      </div>
-    );
-  }
+		// TODO - to pull it off from here and find a way to
+		// bind it with some better way
+		headers[8].action = studyUID => dispatch(setInvoice(studyUID))
+
+		return (
+			<div>
+				<TableList headers={headers} data={projects} />
+				<InvoiceModal />
+			</div>
+		);
+	}
 }
 
-const mapStateToProps = ({ portal }) => ({ ...portal });
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
+const mapStateToProps = ({ portal, pdfData, showModal }) => ({ ...portal, ...pdfData, showModal });
+// const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+const mapDispatchToProps = dispatch => ({ dispatch: dispatch, ...actions });
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
-	Wrapper(Portal));
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Wrapper(Portal));

@@ -8,7 +8,7 @@ import createProject from '../projects/createProject';
 import { getClients } from "../authUsers";
 
 export default async ({ studyUID }) => {
-    const study = await getStudy({ studyUID });
+    let study = await getStudy({ studyUID });
     let project = await getProject({ studyUID });
 
     // TODO Should project creation be handled here?

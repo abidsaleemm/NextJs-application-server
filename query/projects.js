@@ -4,7 +4,7 @@ import getStatusName from '../helpers/getStatusName';
 import { getClients } from '../authUsers';
 
 export default async () => {
-    const studies = await getStudies();
+    let studies = await getStudies();
     const projectsList = await getProjectList();
     const clientList = await getClients() || [];
 

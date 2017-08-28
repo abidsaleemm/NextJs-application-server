@@ -69,6 +69,8 @@ const Portal = class extends Component {
 		console.log (this.props);
 		const { props: { projects = [], dispatch, fetchAction, payloadInvoice } } = this;
 
+		// TODO - to pull it off from here and find a way to
+		// bind it with some better way
 		headers[8].action = studyUID => dispatch (payloadInvoice (studyUID))
 
     return (

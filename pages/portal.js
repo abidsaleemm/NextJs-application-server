@@ -47,15 +47,16 @@ export const headers = [
 		title: 'Invoice',
     id: 'invoice',
 		type: 'button',
-		action: studyUID => openModal(studyUID)
+		// action: studyUID => openModal(studyUID)
 	}
 ];
 
+var invoiceAction;
+
 const Portal = class extends Component {
-  static async getInitialProps({ req: { session } = {},  store, isServer, query: { portal = {} } = {} }) {
-		const { payloadPortal,fetchAction,} = actions;
-    
-    // console.log('session', session);
+
+	static async getInitialProps({ req: { session } = {},  store, isServer, query: { portal = {} } = {} }) {
+		const { payloadPortal,fetchAction, payloadInvoice } = actions;
 
 		store.dispatch(fetchAction(true));
 		store.dispatch(payloadPortal(isServer ? portal : await fetchApi('portal')));
@@ -65,23 +66,22 @@ const Portal = class extends Component {
 	}
 
   render() {
-    const { props: { projects = [] } } = this;
+		console.log (this.props);
+		const { props: { projects = [], dispatch, fetchAction, payloadInvoice } } = this;
+
+		headers[8].action = studyUID => dispatch (payloadInvoice (studyUID))
 
     return (
       <div>
-        <TableList
-					headers={headers}
-					data={projects}
-				/>
-				
-				<InvoicePreview fetching={this.props.fetching}/>
+        <TableList headers={headers} data={projects}/>	
+				<InvoicePreview showModal={ this.props.showModal } data={ this.props.pdfData }/>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ portal }) => ({ ...portal });
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
+const mapStateToProps = ({ portal, pdfData, showModal }) => ({ ...portal, ...pdfData, showModal });
+// const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+const mapDispatchToProps = dispatch => ({dispatch: dispatch, ...actions});
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
-	Wrapper(Portal));
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Wrapper(Portal));

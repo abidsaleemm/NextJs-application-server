@@ -7,3 +7,4 @@ export { default as setProjectStatus } from "./setProjectStatus";
 export { default as fetchAction } from "./fetchAction";
 
 export { default as payloadInvoice } from './payloadInvoice';
+export { default as invoiceModalAction } from './modalAction';

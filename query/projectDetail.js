@@ -11,8 +11,6 @@ export default async ({ studyUID }) => {
     let study = await getStudy({ studyUID });
     let project = await getProject({ studyUID });
 
-    study.patientName = study.patientName.replace ('^^^', '').replace ('^', ' ');
-
     // TODO Should project creation be handled here?
     if (project === undefined) {
         console.log('Creating new project', studyUID);

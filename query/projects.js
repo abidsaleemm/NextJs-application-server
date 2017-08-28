@@ -8,10 +8,6 @@ export default async () => {
     const projectsList = await getProjectList();
     const clientList = await getClients() || [];
 
-    const refactoredStudies = studies.map (study => Object.assign ({}, study, {patientName: study.patientName.replace('^^^', '').replace('^', ' ')})); 
-
-    studies = refactoredStudies;
-
     const projects = studies.map(study => {
         const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
         const { name: clientName } = clientList.find(({ id }) => id === project.client) || {};

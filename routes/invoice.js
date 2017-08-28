@@ -4,7 +4,7 @@ import queryProjectDetail from "../query/projectDetail";
 import pdf from "html-pdf";
 
 export default ({ server, app }) => {
-  server.get("/pdf", authMiddleware(), async (req, res) => {
+  server.get("/invoice", authMiddleware(), async (req, res) => {
     const { user: { name, ...user} = {} } = req;
 
     const projectDetail = await queryProjectDetail({ studyUID: req.query.id });

@@ -15,10 +15,6 @@ module.exports = {
         test: /\.css$/,
         use: ["babel-loader", "raw-loader", "postcss-loader"]
       },
-       {
-        test: /\.html$/,
-        use: 'raw-loader'
-      },
       {
         test: /\.s(a|c)ss$/,
         use: [

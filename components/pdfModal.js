@@ -53,13 +53,7 @@ export default ({
 		<div className="body">
 			<div className="header">
 				<div>
-					<p>Preview Invoice <DownloadLink
-						className="btn btn-default"
-						filename={"Invoice.pdf"}
-						label={"Download as pdf"}
-						exportFile={() => pdfData}
-					/>
-					</p>
+					<p>Preview Invoice <a href={url}>Download as pdf</a></p>
 				</div>
 				<div className="buttonClose" onClick={() => onClose()}></div>
 			</div>

@@ -7,6 +7,8 @@ import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
 import InvoiceModal from '../containers/invoiceModal';
 
+import fetchApi from '../helpers/fetchApi';
+
 // TODO Should we move this to query function instead and send with data?
 export const headers = [
 	{

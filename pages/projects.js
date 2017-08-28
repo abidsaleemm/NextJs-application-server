@@ -7,7 +7,7 @@ import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
 
-// TODO Move this to a action
+// TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
 
 export const headers = [

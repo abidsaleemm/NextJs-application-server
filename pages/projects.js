@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import Router from 'next/router';
 import { initStore } from '../store';
 import * as actions from '../actions';

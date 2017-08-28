@@ -5,7 +5,7 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
-import InvoicePreview, { openModal, closeModal } from '../components/pdfPreviewModal';
+import InvoiceModal from '../containers/invoiceModal';
 
 // TODO Should we move this to query function instead and send with data?
 export const headers = [
@@ -35,28 +35,25 @@ export const headers = [
 	},
 	{
 		title: 'Download',
-    id: 'download',
-    type: 'button',
+		id: 'download',
+		type: 'button',
 	},
 	{
 		title: 'Preview',
-    id: 'preview',
-    type: 'button',
+		id: 'preview',
+		type: 'button',
 	},
 	{
 		title: 'Invoice',
-    id: 'invoice',
+		id: 'invoice',
 		type: 'button',
 		// action: studyUID => openModal(studyUID)
 	}
 ];
 
-var invoiceAction;
-
 const Portal = class extends Component {
-
-	static async getInitialProps({ req: { session } = {},  store, isServer, query: { portal = {} } = {} }) {
-		const { payloadPortal,fetchAction, payloadInvoice } = actions;
+	static async getInitialProps({ req: { session } = {}, store, isServer, query: { portal = {} } = {} }) {
+		const { payloadPortal, fetchAction } = actions;
 
 		store.dispatch(fetchAction(true));
 		store.dispatch(payloadPortal(isServer ? portal : await fetchApi('portal')));
@@ -65,25 +62,25 @@ const Portal = class extends Component {
 		return { isServer, client: true };
 	}
 
-  render() {
-		console.log (this.props);
-		const { props: { projects = [], dispatch, fetchAction, payloadInvoice } } = this;
+	render() {
+		console.log(this.props);
+		const { props: { projects = [], dispatch, fetchAction, setInvoice } } = this;
 
 		// TODO - to pull it off from here and find a way to
 		// bind it with some better way
-		headers[8].action = studyUID => dispatch (payloadInvoice (studyUID))
+		headers[8].action = studyUID => dispatch(setInvoice(studyUID))
 
-    return (
-      <div>
-        <TableList headers={headers} data={projects}/>	
-				<InvoicePreview showModal={ this.props.showModal } data={ this.props.pdfData }/>
-      </div>
-    );
-  }
+		return (
+			<div>
+				<TableList headers={headers} data={projects} />
+				<InvoiceModal />
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = ({ portal, pdfData, showModal }) => ({ ...portal, ...pdfData, showModal });
 // const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
-const mapDispatchToProps = dispatch => ({dispatch: dispatch, ...actions});
+const mapDispatchToProps = dispatch => ({ dispatch: dispatch, ...actions });
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Wrapper(Portal));

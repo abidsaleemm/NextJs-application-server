@@ -10,6 +10,7 @@ import TableList from '../components/tableList';
 // TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
 
+// TODO This constant should be handled in redux
 export const headers = [
 	{
 		title: 'Status',

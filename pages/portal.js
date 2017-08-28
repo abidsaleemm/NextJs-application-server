@@ -1,27 +1,31 @@
 import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux'
+import { Button } from 'reactstrap';
 import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
 import InvoiceModal from '../containers/invoiceModal';
-
 import fetchApi from '../helpers/fetchApi';
 
 // TODO Should we move this to query function instead and send with data?
+// TODO Should just add filters here?
 export const headers = [
-	{
-		title: 'Status',
-		id: 'status'
-	},
+	// {
+	// 	title: 'Status',
+	// 	id: 'status',
+	// 	filter: '',
+	// },
 	{
 		title: 'Patient Name',
-		id: 'patientName'
+		id: 'patientName',
+		filter: '',
 	},
 	{
 		title: 'Study Name',
-		id: 'studyName'
+		id: 'studyName',
+		filter: '',
 	},
 	{
 		title: 'Study Date',
@@ -29,27 +33,21 @@ export const headers = [
 	},
 	{
 		title: 'Modality',
-		id: 'modality'
+		id: 'modality',
+		filter: '',
 	},
 	{
 		title: 'Location',
-		id: 'location'
+		id: 'location',
+		filter: '',
 	},
 	{
-		title: 'Download',
-		id: 'download',
-		type: 'button',
-	},
-	{
-		title: 'Preview',
-		id: 'preview',
-		type: 'button',
+		title: 'Video',
+		id: 'video',
 	},
 	{
 		title: 'Invoice',
 		id: 'invoice',
-		type: 'button',
-		// action: studyUID => openModal(studyUID)
 	}
 ];
 
@@ -66,15 +64,22 @@ const Portal = class extends Component {
 
 	render() {
 		console.log(this.props);
-		const { props: { projects = [], dispatch, fetchAction, setInvoice } } = this;
+		const {
+			props: {
+				projects = [],
+			setInvoice = () => { }
+			} } = this;
 
-		// TODO - to pull it off from here and find a way to
-		// bind it with some better way
-		headers[8].action = studyUID => dispatch(setInvoice(studyUID))
+		const projectsEnhanced = projects.map(({ ...project, studyUID }) =>
+			({
+				...project,
+				invoice: <Button onClick={() => setInvoice(studyUID)} >Invoice</Button>,
+				video: <Button onClick={() => {}} >Video</Button>
+			}))
 
 		return (
 			<div>
-				<TableList headers={headers} data={projects} />
+				<TableList headers={headers} data={projectsEnhanced} />
 				<InvoiceModal />
 			</div>
 		);
@@ -82,7 +87,6 @@ const Portal = class extends Component {
 }
 
 const mapStateToProps = ({ portal, pdfData, showModal }) => ({ ...portal, ...pdfData, showModal });
-// const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
-const mapDispatchToProps = dispatch => ({ dispatch: dispatch, ...actions });
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Wrapper(Portal));

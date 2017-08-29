@@ -6,8 +6,8 @@ export default ({
   data = [],
   headers = [],
   filter = {},
-  onRowClick = () => {},
-  onFilter = () => {}
+  onRowClick = () => { },
+  onFilter = () => { }
 }) =>
   <div>
     <style jsx>
@@ -35,38 +35,31 @@ export default ({
             ({ id }) =>
               filter[id] !== undefined
                 ? <td className="fieldFilter" key={`${id}-filter`}>
-                    <Input
-                      type="text"
-                      name={`filter-${id}`}
-                      value={filter[id]}
-                      onChange={({ target: { value } = {} }) =>
-                        onFilter({ [id]: value })}
-                    />
-                  </td>
+                  <Input
+                    type="text"
+                    name={`filter-${id}`}
+                    value={filter[id]}
+                    onChange={({ target: { value } = {} }) =>
+                      onFilter({ [id]: value })}
+                  />
+                </td>
                 : <td key={`${id}-filter`} />
           )}
         </tr>
       </thead>
       <tbody>
         {data
-          .filter(v => {
-            const ret = Object.entries(v).reduce(
-              (a, [k, dataValue]) => {
-                const ret2 = filter[k] !== undefined
+          .filter(v =>
+            Object.entries(v).reduce(
+              (a, [k, dataValue]) => 
+                filter[k] !== undefined
                   ? filter[k] !== ""
-                    ? dataValue.match(new RegExp(`/${filter[k]}/gi`))
-                    : a // Handle string match here
-                  : a;
-
-                console.log("key", k, ret2, filter[k]);
-                return ret2;
-                },
+                    ? new RegExp(`${filter[k]}`, 'gi').test(dataValue)
+                    : a
+                  : a,
               true
-              );
-            
-            console.log("ret", ret);
-            return ret;
-          })
+            ))
+          // TODO Add sorting
           .map(dataProps =>
             <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
               {headers

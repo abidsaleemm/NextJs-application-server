@@ -6,8 +6,10 @@ export default ({
   data = [],
   headers = [],
   filter = {},
+  sort = {},
   onRowClick = () => { },
-  onFilter = () => { }
+  onFilter = () => { },
+  onSort = () => {},
 }) =>
   <div>
     <style jsx>
@@ -22,6 +24,15 @@ export default ({
 
         .headerCell {
           white-space: nowrap;
+          cursor: pointer;
+        }
+
+        .headerCell:hover {
+          background: #d5d5d5;
+        }
+        
+        .headerCell:selected {
+          background: #999;
         }
       `}
     </style>
@@ -29,7 +40,11 @@ export default ({
       <thead>
         <tr>
           {headers.map(({ title, id }) =>
-            <th className="headerCell" key={`${title}-${id}`}>
+            <th 
+              className="headerCell" 
+              key={`${title}-${id}`}
+              onClick={() => onSort({ id })}
+            >
               {title}
             </th>
           )}
@@ -64,6 +79,7 @@ export default ({
               true
             ))
           // TODO Add sorting
+          
           .map(dataProps =>
             <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
               {headers

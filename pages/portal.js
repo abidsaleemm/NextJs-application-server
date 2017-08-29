@@ -37,11 +37,13 @@ const headers = [
   },
   {
     title: "Video",
-    id: "video"
+    id: "video",
+    sortDisabled: true,
   },
   {
     title: "Invoice",
-    id: "invoice"
+    id: "invoice",
+    sortDisabled: true,
   }
 ];
 

@@ -31,6 +31,11 @@ export default ({
           padding: 0.65em;
         }
 
+        .headerCellDisabled {
+          white-space: nowrap;
+          padding: 0.65em;
+        }
+
         .headerCell:hover {
           background: #d5d5d5;
         }
@@ -49,16 +54,24 @@ export default ({
     <Table striped hover>
       <thead>
         <tr>
-          {headers.map(({ title, id }) =>
-            <th
-              className="headerCell"
-              key={`${title}-${id}`}
-              onClick={() => onSort({ id })}
-            >
-              {id === sortId ? !sortDesc ? <div className="headerCellSort" /> : null : null}
-              {title}
-              {id === sortId ? sortDesc ? <div className="headerCellSort" /> : null : null}
-            </th>
+          {headers.map(({ title, id, sortDisabled }) =>
+            sortDisabled ?
+              <th
+                className="headerCellDisabled"
+                key={`${title}-${id}`}
+              >
+                {title}
+              </th>
+              :
+              <th
+                className="headerCell"
+                key={`${title}-${id}`}
+                onClick={() => onSort({ id })}
+              >
+                {id === sortId ? !sortDesc ? <div className="headerCellSort" /> : null : null}
+                {title}
+                {id === sortId ? sortDesc ? <div className="headerCellSort" /> : null : null}
+              </th>
           )}
         </tr>
         <tr className="fieldColor">

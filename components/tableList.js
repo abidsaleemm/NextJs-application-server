@@ -44,10 +44,6 @@ export default ({
         .dataCellSort {
           background: #e0f4ff;
         }
-
-        .dataCellSort:hover {
-          background: #ade2ff;
-        }
       `}
     </style>
     <Table striped hover>
@@ -104,7 +100,7 @@ export default ({
                   data: dataProps[id],
                 }))
                 .map(({ id, data, type, title, action }) =>
-                  <td className={id == sortId ? 'dataCellSort' : ''} key={uuid()}>
+                  <td key={uuid()}>
                     {data}
                   </td>
                 )}

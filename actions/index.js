@@ -7,4 +7,6 @@ export { default as setProjectClient } from "./setProjectClient";
 export { default as setProjectStatus } from "./setProjectStatus";
 
 export { default as fetchAction } from "./fetchAction";
-export { default as setInvoice } from './setInvoice';
+export { default as setInvoice } from "./setInvoice";
+
+export { default as setPortalFilter } from "./setPortalFilter";

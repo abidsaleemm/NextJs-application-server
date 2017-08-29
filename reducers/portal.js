@@ -15,14 +15,14 @@ export const initialState = {
     location: ""
   },
   sort: {
-		id: '', // Set default soft id
+		id: 'patientName', // Set default soft id
 		desc: false,
 	}
 };
 
 export default (
   state = initialState,
-  { type, portal = {}, invoiceRoute = null, filter = {} }
+  { type, portal = {}, invoiceRoute = null, filter = {}, sort = {} }
 ) => {
   switch (type) {
     case PAYLOAD_PORTAL:

@@ -67,8 +67,10 @@ const Portal = class extends Component {
       props: {
         projects = [],
         filter = {},
+        sort = {},
         setInvoice = () => {},
-        setPortalFilter = () => {}
+        setPortalFilter = () => {},
+        setPortalSort = () => {},
       }
     } = this;
 
@@ -82,9 +84,11 @@ const Portal = class extends Component {
       <div>
         <TableList
           headers={headers}
+          sort={sort}
 					filter={filter}
           data={projectsEnhanced}
           onFilter={props => setPortalFilter(props)}
+          onSort={props => setPortalSort(props)}
         />
         <InvoiceModal />
       </div>

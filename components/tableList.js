@@ -20,8 +20,8 @@ export default ({
           background: #ddd;
         }
 
-        .header {
-          point
+        .headerCell {
+          white-space: nowrap;
         }
       `}
     </style>
@@ -29,7 +29,7 @@ export default ({
       <thead>
         <tr>
           {headers.map(({ title, id }) =>
-            <th key={`${title}-${id}`}>
+            <th className="headerCell" key={`${title}-${id}`}>
               {title}
             </th>
           )}

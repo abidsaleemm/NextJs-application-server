@@ -1,13 +1,17 @@
 import React from "react";
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import uuid from 'uuid';
 
-export default ({ data = [], headers = [], onRowClick = () => {} }) => (
+
+
+
+export default ({ data = [], headers = [], sort = () => {}, onRowClick = () => {} }) => (
+    
     <Table striped hover>
         <thead>
             <tr>
-                {headers.map(({ title, id }) =>
-                    <th key={`${title}-${id}`}>{title}</th>
+                {headers.map(({ title, id, type, action }) =>
+                    <th key={`${title}-${id}`} onClick={() => sort (id, data)} >{title}</th>
                 )}
             </tr>
         </thead>
@@ -15,10 +19,9 @@ export default ({ data = [], headers = [], onRowClick = () => {} }) => (
             {data.map((dataProps) => (
                 <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
                     {headers
-                        .map(({ id, type, title, action }) => 
-                            ({ data: dataProps[id], type, title, action }))
-                        .map(({ data, type, title, action }) => 
-                            (<td key={uuid()}>{data}</td>))
+                        .map(({ id, type, title }) => ({ data: dataProps[id], type, title }))
+                        .map(({ data, type, title }) => (
+                            <td key={uuid()}>{type === 'button' ? <Button>{title}</Button> : data}</td>))
                     }
                 </tr>
             ))}

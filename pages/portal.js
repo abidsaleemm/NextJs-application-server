@@ -61,9 +61,25 @@ const Portal = class extends Component {
 
 		return { isServer, client: true };
 	}
+	sort  (id, data){
+		//sorted data array need to be done with redux to change props.projects array.
+		let d =	data.sort(
+			function (a, b) {
+			let compare1 = (a[id] !== undefined && a[id] !== null) ? a[id].toString().toUpperCase() : '';
+			let compare2 = (b[id] !== undefined && b[id] !== null) ? b[id].toString().toUpperCase() : '';
+			if (compare1 === "" || compare1 === null) return 1;
+			if (compare2 === "" || compare2 === null) return -1;
+			if (compare1 === compare2) return 0;
+				return (compare1 < compare2) ? -1 : 1;
+			//todo need to return unsorted array on toggle click
+			//return (type === 'sort') ? ((compare1 < compare2) ? -1 : 1) : (compare1 < compare2 ? 1 : -1);
+		}
+	)
+		
 
+		
+	}
 	render() {
-		console.log(this.props);
 		const {
 			props: {
 				projects = [],
@@ -79,7 +95,7 @@ const Portal = class extends Component {
 
 		return (
 			<div>
-				<TableList headers={headers} data={projectsEnhanced} />
+				<TableList headers={headers} data={projectsEnhanced} sort={(id, data) => this.sort(id, data)} />
 				<InvoiceModal />
 			</div>
 		);

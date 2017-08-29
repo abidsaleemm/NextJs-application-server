@@ -10,6 +10,7 @@ import TableList from '../components/tableList';
 // TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
 
+// TODO This constant should be handled in redux
 export const headers = [
 	{
 		title: 'Status',
@@ -33,11 +34,6 @@ export const headers = [
 	{
 		title: 'Modality',
 		id: 'modality',
-
-	},
-	{
-		title: 'Activity',
-		id: 'activity',
 
 	},
 	{
@@ -72,17 +68,30 @@ class ProjectsListing extends Component {
 	}
 
 	render() {
-		const { props: { projects = [] } = {}, props } = this;
+		const { 
+			props: { 
+				projects = [], 
+				filter = {}, 
+				sort = {},
+				setProjectsFilter = () => {},
+				setProjectsSort = () => {},
+			} = {}, 
+		} = this;
+
 		return (
 			<div>
 				<TableList
 					headers={headers}
 					data={projects}
+					filter={filter}
+					sort={sort}
 					onRowClick={({ studyUID }) => {
 						Router.push({
 						pathname: '/projectDetail',
 						query: { studyUID }
 					})}}
+					onFilter={props => setProjectsFilter(props)}
+					onSort={props => setProjectsSort(props)}
 				/>
 			</div>
 		)

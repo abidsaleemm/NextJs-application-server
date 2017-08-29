@@ -37,11 +37,6 @@ export const headers = [
 
 	},
 	{
-		title: 'Activity',
-		id: 'activity',
-
-	},
-	{
 		title: 'Location',
 		id: 'location',
 

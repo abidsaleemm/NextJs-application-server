@@ -6,7 +6,10 @@ export default ({
   data = [],
   headers = [],
   filter = {},
-  sort = {},
+  sort: {
+    id: sortId = '',
+    desc: sortDesc = false,
+  } = {},
   onRowClick = () => { },
   onFilter = () => { },
   onSort = () => { },
@@ -56,9 +59,9 @@ export default ({
               key={`${title}-${id}`}
               onClick={() => onSort({ id })}
             >
-              {id === sort.id ? !sort.desc ? <div className="headerCellSort" /> : null : null}
+              {id === sortId ? !sortDesc ? <div className="headerCellSort" /> : null : null}
               {title}
-              {id === sort.id ? sort.desc ? <div className="headerCellSort" /> : null : null}
+              {id === sortId ? sortDesc ? <div className="headerCellSort" /> : null : null}
             </th>
           )}
         </tr>
@@ -91,8 +94,8 @@ export default ({
                   : a,
               true
             ))
-          .sort(({ [sort.id]: a = '' }, { [sort.id]: b = '' }) =>
-            !sort.desc ? a.localeCompare(b) : b.localeCompare(a))
+          .sort(({ [sortId]: a = '' }, { [sortId]: b = '' }) =>
+            !sortDesc ? a.localeCompare(b) : b.localeCompare(a))
           .map(dataProps =>
             <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
               {headers
@@ -101,7 +104,7 @@ export default ({
                   data: dataProps[id],
                 }))
                 .map(({ id, data, type, title, action }) =>
-                  <td className={id == sort.id ? 'dataCellSort' : ''} key={uuid()}>
+                  <td className={id == sortId ? 'dataCellSort' : ''} key={uuid()}>
                     {data}
                   </td>
                 )}

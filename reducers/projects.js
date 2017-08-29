@@ -15,7 +15,7 @@ export const initialState = {
 		client: "",
 	},
 	sort: {
-		id: 'patientName', // Set default soft id
+		id: 'status', // Set default soft id
 		desc: false,
 	}
 };

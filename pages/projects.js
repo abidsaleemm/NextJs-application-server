@@ -73,17 +73,26 @@ class ProjectsListing extends Component {
 	}
 
 	render() {
-		const { props: { projects = [] } = {}, props } = this;
+		const { 
+			props: { 
+				projects = [], 
+				filter = {}, 
+				setProjectsFilter = () => {},
+			} = {}, 
+		} = this;
+
 		return (
 			<div>
 				<TableList
 					headers={headers}
 					data={projects}
+					filter={filter}
 					onRowClick={({ studyUID }) => {
 						Router.push({
 						pathname: '/projectDetail',
 						query: { studyUID }
 					})}}
+					onFilter={props => setProjectsFilter(props)}
 				/>
 			</div>
 		)

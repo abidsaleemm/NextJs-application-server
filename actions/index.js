@@ -10,3 +10,4 @@ export { default as fetchAction } from "./fetchAction";
 export { default as setInvoice } from "./setInvoice";
 
 export { default as setPortalFilter } from "./setPortalFilter";
+export { default as setProjectsFilter } from "./setProjectsFilter";

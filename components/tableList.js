@@ -19,6 +19,10 @@ export default ({
         .fieldColor {
           background: #ddd;
         }
+
+        .header {
+          point
+        }
       `}
     </style>
     <Table striped hover>

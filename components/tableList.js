@@ -9,7 +9,7 @@ export default ({
   sort = {},
   onRowClick = () => { },
   onFilter = () => { },
-  onSort = () => {},
+  onSort = () => { },
 }) =>
   <div>
     <style jsx>
@@ -25,14 +25,25 @@ export default ({
         .headerCell {
           white-space: nowrap;
           cursor: pointer;
+          padding: 0.65em;
         }
 
         .headerCell:hover {
           background: #d5d5d5;
         }
         
-        .headerCell:selected {
-          background: #999;
+        .headerCellSort {
+          width: 100%;
+          height: 0.25em;
+          background: #1bf;
+        }
+
+        .dataCellSort {
+          background: #e0f4ff;
+        }
+
+        .dataCellSort:hover {
+          background: #ade2ff;
         }
       `}
     </style>
@@ -40,12 +51,14 @@ export default ({
       <thead>
         <tr>
           {headers.map(({ title, id }) =>
-            <th 
-              className="headerCell" 
+            <th
+              className="headerCell"
               key={`${title}-${id}`}
               onClick={() => onSort({ id })}
             >
+              {id === sort.id ? !sort.desc ? <div className="headerCellSort" /> : null : null}
               {title}
+              {id === sort.id ? sort.desc ? <div className="headerCellSort" /> : null : null}
             </th>
           )}
         </tr>
@@ -70,7 +83,7 @@ export default ({
         {data
           .filter(v =>
             Object.entries(v).reduce(
-              (a, [k, dataValue]) => 
+              (a, [k, dataValue]) =>
                 filter[k] !== undefined
                   ? filter[k] !== ""
                     ? new RegExp(`${filter[k]}`, 'gi').test(dataValue)
@@ -78,19 +91,17 @@ export default ({
                   : a,
               true
             ))
-          // TODO Add sorting
-          
+          .sort(({ [sort.id]: a = '' }, { [sort.id]: b = '' }) =>
+            !sort.desc ? a.localeCompare(b) : b.localeCompare(a))
           .map(dataProps =>
             <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
               {headers
-                .map(({ id, type, title, action }) => ({
+                .map(({ ...props, id }) => ({
+                  ...props,
                   data: dataProps[id],
-                  type,
-                  title,
-                  action
                 }))
-                .map(({ data, type, title, action }) =>
-                  <td key={uuid()}>
+                .map(({ id, data, type, title, action }) =>
+                  <td className={id == sort.id ? 'dataCellSort' : ''} key={uuid()}>
                     {data}
                   </td>
                 )}

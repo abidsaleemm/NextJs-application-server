@@ -6,9 +6,17 @@ import Loader from '../containers/loader';
 
 export default WrappedComponent => ({ ...props, client }) =>
   (
-    <div>
+    <div className="root">
       <style jsx global>
         {`
+          .root {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+          }
+
           .button {
             margin: 10px;
             cursor: pointer;

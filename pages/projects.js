@@ -77,7 +77,9 @@ class ProjectsListing extends Component {
 			props: { 
 				projects = [], 
 				filter = {}, 
+				sort = {},
 				setProjectsFilter = () => {},
+				setProjectsSort = () => {},
 			} = {}, 
 		} = this;
 
@@ -87,12 +89,14 @@ class ProjectsListing extends Component {
 					headers={headers}
 					data={projects}
 					filter={filter}
+					sort={sort}
 					onRowClick={({ studyUID }) => {
 						Router.push({
 						pathname: '/projectDetail',
 						query: { studyUID }
 					})}}
 					onFilter={props => setProjectsFilter(props)}
+					onSort={props => setProjectsSort(props)}
 				/>
 			</div>
 		)

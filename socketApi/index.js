@@ -2,13 +2,17 @@ import socketio from 'socket.io';
 import projectState from './projectState';
 import selectSeries from './selectSeries';
 import selectStudy from './selectStudy';
+import renderFrame from './renderFrame';
+import renderDone from './renderDone';
 import { queryProject } from '../projects';
 
 // TODO Works but clean this up somehow
 const socketActions = {
   projectState,
   selectSeries,
-  selectStudy
+  selectStudy,
+  renderFrame,
+  renderDone,
 };
 
 // TODO Handle internal state changes

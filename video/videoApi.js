@@ -20,37 +20,41 @@ const options = {
 };
 
 // TODO move this to index.js
-export const compose = async ({ session }) => {
-	// TODO Check and read all frame files by directory listing if frame missing throw error
-	const imagePaths = [];
-	const ret = await generateVideo({ session, imagePaths });
-	// await cleanup({ session });
-};
+// export const compose = async ({ session }) => {
+// 	// TODO Check and read all frame files by directory listing if frame missing throw error
+// 	const imagePaths = [];
+// 	const ret = await generateVideo({ session, imagePaths });
+// 	// await cleanup({ session });
+// };
 
-export const saveImage = async ({ session, index, raw }) => {
-	const fullPath = os.tmpdir();
+// export const compose
+export const saveImage = async ({ session, index, data }) => {
+	const dirPath = `${os.tmpdir()}/${session}`;
 
-	// TODO handle Image number
-	// TODO store as PNG
+	try {
+		fs.mkdirSync(dirPath); // Create if does not exist
+	} catch (e) { }
 
-	console.log('fullPath', fullPath);
+	const fullPath = `${dirPath}/${index}.png`;
+
+	fs.writeFileSync(fullPath, data);
 };
 
 // This could burn up a bunch of disk space so just destroy after a video is created and pushed to blob
-export const cleanupImages = async ({ session }) => 
-	new Promise((resolve, reject) => 
+export const cleanupImages = async ({ session }) =>
+	new Promise((resolve, reject) =>
 		rimraf(`${os.tmpdir(session)}/`, err =>
 			err ? reject(err) : resolve(folderName)));
 
 // export const cleanupVideo = async () => 
-	// new Promise((resolve, reject) => 
-		// fs.unlink(path.resolve(buildStorage, videoName), (err, stat) =>
+// new Promise((resolve, reject) => 
+// fs.unlink(path.resolve(buildStorage, videoName), (err, stat) =>
 
 export const generateVideo = async ({ session, imagePaths }) => {
 	// TODO check to make sure all frames exist
 	const videoPath = `${os.tmpdir()}/${session}.mp4`;
 	console.log('videoPath', videoPath);
-	
+
 	return new Promise((resolve, reject) => {
 		videoshow(imagePaths, options)
 			.save(videoPath)
@@ -130,7 +134,7 @@ export const generateVideo = async ({ session, imagePaths }) => {
 // create a temporary directory
 // export const createTemporaryFolder = folderName => {
 // 	let uniqueFilename = createUniqueFilename();
-	
+
 // 	fs.mkdirSync(path.resolve(tempStorage, folderName ? folderName : uniqueFilename));
 
 // 	return (folderName ? folderName : uniqueFilename);

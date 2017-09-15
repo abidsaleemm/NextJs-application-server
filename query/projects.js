@@ -15,7 +15,7 @@ export default async () => {
         return project ?
             {
                 ...study,
-                status: getStatusName(project.status || 0),
+                status: getStatusName(project.status),
                 client: clientName,
             } :
             { ...study, status: '' };

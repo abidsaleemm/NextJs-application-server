@@ -86,7 +86,6 @@ const ProjectDetails = class extends Component {
             }
 
             .projectDetailRight {
-              pointer-events: none;
               width: 100%;
               height: 100%;
               background: lightGray;

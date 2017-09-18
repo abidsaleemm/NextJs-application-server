@@ -1,5 +1,6 @@
 import fs from "fs";
 import low from "lowdb";
+import FileSync from 'lowdb/adapters/FileSync';
 import uuid from "uuid";
 import getProjectSnapshot from './getProjectSnapshot';
 import { checkExists, path } from './index';
@@ -9,7 +10,7 @@ export default async ({ studyUID = "_", payload = {} }) => {
   if (path === undefined) return;
 
   // TODO Reuseable?  
-  const db = low(`${path}/projects.json`);
+  const db = low(new FileSync(`${path}/projects.json`));
   db.defaults({ projects: [] }).write();
   const ret = db.get("projects")
     .find({ studyUID: studyUID })

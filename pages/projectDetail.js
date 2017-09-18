@@ -17,6 +17,7 @@ import {
   DropdownItem,
   UncontrolledDropdown,
 } from 'reactstrap';
+import Sidebar from '../components/Sidebar';
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux';
 import { initStore } from '..//store';
@@ -80,7 +81,7 @@ const ProjectDetails = class extends Component {
             }
 
             .projectDetailLeft {
-              min-width: 400px;
+              width: 100%;
               height: 100%;
             }
 
@@ -91,114 +92,116 @@ const ProjectDetails = class extends Component {
             }
           `}
       </style>
-      <div className="projectDetailLeft">
-        <Card>
-          <CardBlock>
-            <CardTitle>Project Details</CardTitle>
-            <CardSubtitle>
-              {patientName}
-            </CardSubtitle>
-          </CardBlock>
-          <br />
-          <Button>Preview Video</Button>
-          <br />
-          <Table>
-            <tbody>
-              <tr>
-                <th scope="row">Status</th>
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle caret>
-                      {getStatusName(status)}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem onClick={() => setProjectStatus({
-                        studyUID,
-                        status: 0
-                      })}>
-                        {getStatusName(0)}
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setProjectStatus({
-                        studyUID,
-                        status: 1
-                      })}>
-                        {getStatusName(1)}
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setProjectStatus({
-                        studyUID,
-                        status: 2
-                      })}>
-                        {getStatusName(2)}
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setProjectStatus({
-                        studyUID,
-                        status: 3
-                      })}>
-                        {getStatusName(3)}
-                      </DropdownItem>
-                      <DropdownItem onClick={() => setProjectStatus({
-                        studyUID,
-                        status: 4
-                      })}>
-                        {getStatusName(4)}
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Study Name</th>
-                <td>
-                  {studyName}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Study Date</th>
-                <td>
-                  {studyDate}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Modality</th>
-                <td>
-                  {modality}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Location</th>
-                <td>
-                  {location}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Client</th>
-                <td>
-                  <UncontrolledDropdown>
-                    <DropdownToggle caret>
-                      {selectedClient}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      <DropdownItem onClick={() =>
-                        setProjectClient({ studyUID, client: 0 })}>
-                        None
+      <Sidebar width={400}>
+        <div className="projectDetailLeft">
+          <Card>
+            <CardBlock>
+              <CardTitle>Project Details</CardTitle>
+              <CardSubtitle>
+                {patientName}
+              </CardSubtitle>
+            </CardBlock>
+            <br />
+            <Button>Preview Video</Button>
+            <br />
+            <Table>
+              <tbody>
+                <tr>
+                  <th scope="row">Status</th>
+                  <td>
+                    <UncontrolledDropdown>
+                      <DropdownToggle caret>
+                        {getStatusName(status)}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() => setProjectStatus({
+                          studyUID,
+                          status: 0
+                        })}>
+                          {getStatusName(0)}
                         </DropdownItem>
-                      {clientList.map(({ id, name }) =>
-                        <DropdownItem
-                          key={`${name}-${id}`}
-                          onClick={() =>
-                            setProjectClient({ studyUID, client: id })}
-                        >
-                          {name}
+                        <DropdownItem onClick={() => setProjectStatus({
+                          studyUID,
+                          status: 1
+                        })}>
+                          {getStatusName(1)}
                         </DropdownItem>
-                      )}
-                    </DropdownMenu>
-                  </UncontrolledDropdown>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Card>
-      </div>
+                        <DropdownItem onClick={() => setProjectStatus({
+                          studyUID,
+                          status: 2
+                        })}>
+                          {getStatusName(2)}
+                        </DropdownItem>
+                        <DropdownItem onClick={() => setProjectStatus({
+                          studyUID,
+                          status: 3
+                        })}>
+                          {getStatusName(3)}
+                        </DropdownItem>
+                        <DropdownItem onClick={() => setProjectStatus({
+                          studyUID,
+                          status: 4
+                        })}>
+                          {getStatusName(4)}
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Study Name</th>
+                  <td>
+                    {studyName}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Study Date</th>
+                  <td>
+                    {studyDate}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Modality</th>
+                  <td>
+                    {modality}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Location</th>
+                  <td>
+                    {location}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Client</th>
+                  <td>
+                    <UncontrolledDropdown>
+                      <DropdownToggle caret>
+                        {selectedClient}
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() =>
+                          setProjectClient({ studyUID, client: 0 })}>
+                          None
+                          </DropdownItem>
+                        {clientList.map(({ id, name }) =>
+                          <DropdownItem
+                            key={`${name}-${id}`}
+                            onClick={() =>
+                              setProjectClient({ studyUID, client: id })}
+                          >
+                            {name}
+                          </DropdownItem>
+                        )}
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+          </Card>
+        </div>
+      </Sidebar>
       <iframe
         className="projectDetailRight"
         src={`/client/?p=${studyUID}`}

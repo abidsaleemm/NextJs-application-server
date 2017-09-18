@@ -8,6 +8,7 @@ import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
+import fs from 'fs';
 
 const flash = require('connect-flash');
 const port = process.env.PORT || 3000;

@@ -3,8 +3,9 @@ export { default as getProjectSnapshot } from './getProjectSnapshot';
 export { default as getProjectList } from './getProjectList';
 export { default as setProjectSnapshot } from './setProjectSnapshot';
 export { default as setProject } from './setProject';
-
 export const path = "./projectsLocal";
+
+import fs from 'fs';
 
 // Add path if doesn't exist
 export const checkExists = () => {

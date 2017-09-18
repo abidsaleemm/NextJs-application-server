@@ -1,5 +1,6 @@
 import path from 'path';
 import moment from 'moment';
+import fs from 'fs';
 
 export default async ({
     patientName = '-',

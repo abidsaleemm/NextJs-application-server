@@ -81,7 +81,7 @@ const ProjectDetails = class extends Component {
             }
 
             .projectDetailLeft {
-              min-width: 400px;
+              width: 100%;
               height: 100%;
             }
 
@@ -92,7 +92,7 @@ const ProjectDetails = class extends Component {
             }
           `}
       </style>
-      <Sidebar sidebarWidth={400}>
+      <Sidebar width={400}>
         <div className="projectDetailLeft">
           <Card>
             <CardBlock>

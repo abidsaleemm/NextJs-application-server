@@ -62,8 +62,7 @@
     "three": "^0.87.1",
     "uuid": "^3.1.0",
     "videoshow": "^0.1.11",
-    "walk": "^2.3.9",
-    "webshot": "^0.18.0"
+    "walk": "^2.3.9"
   },
   "devDependencies": {
     "create-index": "^2.2.0",

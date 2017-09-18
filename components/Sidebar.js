@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 
 export default class extends Component {
+  static defaultProps = {
+    width: 400,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -16,14 +20,14 @@ export default class extends Component {
   }
 
   render() {
-    const { props, state: { shouldShowToggle, isOpen } } = this;
+    const { props: { children, width }, state: { shouldShowToggle, isOpen } } = this;
     const toggleWidth = 30;
-    const toggleIn = shouldShowToggle ? -toggleWidth + "px" : "3px";
+    const toggleIn = shouldShowToggle ? `${-toggleWidth}px` : "3px";
     const triggerWidth = 100;
-    const overlayIn = !shouldShowToggle ? -triggerWidth + "px" : "-0";
+    const overlayIn = !shouldShowToggle ? `${-triggerWidth}px` : "-0px";
     const iconTransform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     const contentOpacity = isOpen ? "1" : "0";
-    const sidebarWidth = isOpen ? "400px" : "0px";
+    const sidebarWidth = isOpen ? `${width}px` : "0px";
 
     const dynamicStyle = {
       sidebar: {
@@ -38,7 +42,7 @@ export default class extends Component {
       },
       toggleOverlay: {
         right: overlayIn,
-        width: triggerWidth + "px"
+        width: `${triggerWidth}px`
       },
       toggleIcon: {
         transform: iconTransform
@@ -60,6 +64,7 @@ export default class extends Component {
             }
 
             .content {
+              width: 100%;
               background: white;
               overflow: hidden;
               height: 100%;
@@ -71,6 +76,7 @@ export default class extends Component {
               align-items: center;
               position: absolute;
               height: 100%;
+              z-index: -1;
               pointer-events: none;
               transition: all 0.08s ease;
             }
@@ -118,7 +124,7 @@ export default class extends Component {
           </div>
         </div>
         <div style={dynamicStyle.content} className="content">
-          {props.children}
+          {children}
         </div>
       </div>
     );

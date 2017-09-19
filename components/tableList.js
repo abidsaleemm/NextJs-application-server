@@ -14,9 +14,13 @@ export default ({
   onFilter = () => { },
   onSort = () => { },
 }) =>
-  <div>
+  <div className="root">
     <style jsx>
       {`
+        .root {
+          overflow: auto;
+        }
+
         .fieldFilter {
           padding: 0.4em;
         }

@@ -5,7 +5,6 @@ TODO Add more description
 ## Requirements:
 
 - Node > 7 - https://nodejs.org
-- NPM - https://www.npmjs.com/
 - Yarn - https://yarnpkg.com/en/
 - Express - https://expressjs.com/
 - Nextjs - https://zeit.co/blog/next2
@@ -22,16 +21,23 @@ TODO Add more description
 
 ```
 . 
+├─ actions      - Redux actions. 
 ├─ api          - API based functions here.               
 ├─ auth         - PassportJS strategy functions and user based functions.
 ├─ components   - Reusable React components are declared here.
+├─ constants    - Redux action types defined here.
+├─ containers   - Redux container connected components.
 ├─ dicom        - Functions for querying and reading DICOM files from storage.
+├─ hoc          - React Higher Order Components
 ├─ modules      - Module specific for creating initial state data for client frontend. (Spine, Shoulder, Knee)
 ├─ pages        - React pages for NextJS.
 ├─ projects     - Functions for querying, saving and reading projects from storage.
+├─ query        - Data querying functions.
+├─ reducers     - Redux state reducers.
 ├─ routes       - Express routing handling functions.
 ├─ socketApi    - Socket.io functions for client API.
-└─ styles       - SCSS style sheets for front-end components. Global sheets also.
+├─ styles       - SCSS style sheets for front-end components. Global sheets also.
+└─ video       - Video Rendering processing code.
 ```
 
 

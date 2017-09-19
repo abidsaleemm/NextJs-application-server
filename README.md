@@ -6,6 +6,7 @@ TODO Add more description
 
 - Node > 7 - https://nodejs.org
 - NPM - https://www.npmjs.com/
+- Yarn - https://yarnpkg.com/en/
 - Express - https://expressjs.com/
 - Nextjs - https://zeit.co/blog/next2
 - React - https://facebook.github.io/react/
@@ -131,16 +132,16 @@ TODO Add additional information regarding PartitionKey and Rowkey.
 ```sh
 git clone git@bitbucket.org:interbizconsulting/application-server.git
 cd application-server
-npm install
+yarn install
 ```
 
 ## Testing locally
 
-The following npm commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
+The following yard commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
 
 ```
-npm run local   # Test using local DB adapters.  Requires no internet connection.
-npm run azure   # Test using azure DB adapters.
+yarn local   # Test using local DB adapters.  Requires no internet connection.
+yarn azure   # Test using azure DB adapters.
 ```
 
 ## Deployment script

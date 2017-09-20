@@ -30,7 +30,7 @@ export default WrappedComponent => ({ ...props, client }) =>
       </style>
       <div>
         <Nav className="nav">
-          <Link><a className="button" href="/auth/logout">Logout</a></Link>
+          <Link href="/auth/logout"><a className="button">Logout</a></Link>
           <div className="button" onClick={() => Router.push({
             pathname: client === true ? '/portal' : '/projects',
           })}>

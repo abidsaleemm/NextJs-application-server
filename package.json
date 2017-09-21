@@ -31,6 +31,7 @@
     "dotenv": "^4.0.0",
     "express": "4.x",
     "express-session": "^1.15.5",
+    "fluent-ffmpeg": "^2.1.2",
     "glob": "^7.1.2",
     "html-pdf": "^2.1.0",
     "http-proxy-middleware": "^0.17.4",
@@ -61,7 +62,6 @@
     "styled-jsx": "^1.0.10",
     "three": "^0.87.1",
     "uuid": "^3.1.0",
-    "videoshow": "^0.1.11",
     "walk": "^2.3.9"
   },
   "devDependencies": {

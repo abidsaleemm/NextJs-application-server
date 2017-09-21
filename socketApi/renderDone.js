@@ -1,19 +1,22 @@
-// import { saveImage } from '../video/videoApi';
+import generateVideo from '../video/generateVideo';
+import cleanupImages from "../video/cleanupImages";
+import cleanupVideo from "../video/cleanupVideo";
 
 export default async ({ socket, action }) => {
-  const { session, index = 0 } = action;
+  const { session, numberImages = 0 } = action;
 
-  // TODO handle frame number?
   if (session) {
-    // Decode png image
-    // const output = data.replace(/^data:image\/(png|jpg);base64,/, "");
-    // TODO Handle any conversion?
-    // const imageBuffer = new Buffer(output, "base64");
 
-    console.log('Render done', session, index);
-    // await saveImage({ session, index, data: imageBuffer, overlay });
+    const ret = await generateVideo({ session, numberImages });
+
+    console.log("Render done. Cleaning up.", session, numberImages);
+
+    await cleanupImages({ session });
+
+    console.log('Cleanup done');
   }
 
+  // TODO Should we send a response?
   //   socket.emit('action', {
   //     type: 'VOLUME_SET',
   //     volume,

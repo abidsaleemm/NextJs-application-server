@@ -1,4 +1,4 @@
-import { saveImage } from '../video/videoApi';
+import saveImage from "../video/saveImage";
 
 export default async ({ socket, action }) => {
   const { data, session, index = 0 } = action;

@@ -28,12 +28,12 @@ export default async ({ socket, action }) => {
   );
 
   if (dicomSeries.length > 0) {
-    const { seriesUID = firstSeriesUID } = project;
-    const volume = await getImages({ seriesUID });
+    const { selectedSeries = firstSeriesUID } = project;
+    const volume = await getImages({ seriesUID: selectedSeries });
 
     socket.emit("action", {
       type: "VOLUME_SET",
-      volume
+      volume,
     });
   }
 };

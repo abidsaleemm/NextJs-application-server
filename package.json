@@ -9,9 +9,6 @@
     "local": "cross-env LOCAL=true npm run dev",
     "dev": "cross-env NODE_ENV=dev node ./loader.js"
   },
-  "resolutions": {
-    "bootstrap": "4.0.0-alpha.6"
-  },
   "dependencies": {
     "autoprefixer": "^7.1.4",
     "axios": "^0.16.2",

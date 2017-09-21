@@ -9,6 +9,6 @@ export default async ({ studyUID = '' }) => {
   const db = low(new FileSync(`${path}/projects.json`));
   db.defaults({ projects: [] }).write();
 
-  const project = db.get("projects").find({ studyUID: studyUID }).value();
-  return project;
+  const { status, client } = db.get("projects").find({ studyUID: studyUID }).value();
+  return { studyUID, status, client };
 };

@@ -2,7 +2,7 @@ import fs from 'fs';
 
 const savePath = 'projectsLocal/video';
 
-export const saveVideo = async ({ studyUID, readStream }) => {
+export const videoSave = async ({ studyUID, readStream }) => {
     if (fs.existsSync(savePath) === false) {
         fs.mkdirSync(savePath);
     }
@@ -11,6 +11,10 @@ export const saveVideo = async ({ studyUID, readStream }) => {
     readStream.pipe(writeStream);
 };
 
-export const loadVideo = ({ studyUID }) => {
+export const videoLoad = ({ studyUID }) => {
     return fs.createReadStream(`${savePath}/${studyUID}.mp4`);
+};
+
+export const videoExists = ({ studyUID }) => {
+    return fs.existsSync(`${savePath}/${studyUID}.mp4`);
 };

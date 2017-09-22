@@ -1,5 +1,5 @@
 import authMiddleware from "../auth/middleware";
-import { loadVideo } from '../video';
+import { videoLoad } from '../video';
 
 export default ({ server, app }) => {
   server.get(
@@ -9,7 +9,7 @@ export default ({ server, app }) => {
         const { query: { id } = {} } = req;
 
         res.setHeader("Content-Type", "video/mp4");
-        const stream = await loadVideo({ studyUID: id });
+        const stream = await videoLoad({ studyUID: id });
         stream.pipe(res);
     }
   );

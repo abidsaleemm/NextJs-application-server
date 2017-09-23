@@ -1,8 +1,8 @@
 import {
   generateVideo,
   cleanupImages,
-  // cleanupVideo,
-  saveVideo,
+  cleanupVideo,
+  videoSave,
 } from '../video';
 
 export default async ({ socket, action }) => {
@@ -17,7 +17,8 @@ export default async ({ socket, action }) => {
     await cleanupImages({ session });
 
     console.log('Cleanup done.  Saving Video');
-    await saveVideo({ studyUID, session }); 
+    await videoSave({ studyUID, session }); 
+    await cleanupVideo({ session });
   }
 
   // TODO Should we send a response?

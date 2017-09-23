@@ -18,6 +18,6 @@ module.exports = {
         const videoPath = `${os.tmpdir()}/${session}.mp4`;
         const readStream = fs.createReadStream(videoPath);
 
-        return await saveVideo({ session, studyUID, readStream });
+        return await videoSave({ session, studyUID, readStream });
     },
 };

@@ -31,7 +31,7 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         .body {
           display: flex;
           flex-direction: column;
-          min-width: 600px;
+          min-width: 40%; 
           height: 90vh;
           background: #fff;
           padding: 15px;
@@ -51,7 +51,7 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         }
 
         /*
-         * "global" and !impotant are smelly to me.
+         * "global" and !important are smelly to me.
          * TODO: look at either PDF or CSS alternative
         */
         .content > :global(canvas) {

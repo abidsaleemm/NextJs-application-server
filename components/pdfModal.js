@@ -33,8 +33,8 @@ export default ({
 			.body {
 				display: flex;
 				flex-direction: column;
-				min-width: 350px;
-				min-height: 150px;
+				min-width: 600px;
+				height: 90vh;
 				background: #fff;
 				padding: 15px; 
 			}
@@ -46,7 +46,19 @@ export default ({
 			}
 
 			.content {
-				padding: 10px; 
+				display: flex;
+				justify-content: center;
+				height: 100%;
+				padding: 10px;
+			}
+
+			/*
+			 *	"global" and !impotant are smelly to me.
+			 *	TODO: look at either PDF or CSS alternative
+			*/
+			.content > :global(canvas) {
+				height: 100% !important;
+				width: auto !important;
 			}
 		`}
 		</style>
@@ -58,7 +70,12 @@ export default ({
 				<div className="buttonClose" onClick={() => onClose()}></div>
 			</div>
 			<div className="content">
-				{url ? <PDF file={url} page={1} scale={1} /> : null}
+				{url ? (
+					<PDF
+						file={url}
+						page={1}
+					/>
+				): null}
 			</div>
 		</div>
 	</div>

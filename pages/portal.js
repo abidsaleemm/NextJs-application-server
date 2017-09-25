@@ -77,10 +77,10 @@ const Portal = class extends Component {
       }
     } = this;
 
-    const projectsEnhanced = projects.map(({ ...project, studyUID }) => ({
+    const projectsEnhanced = projects.map(({ ...project, studyUID, videoExists = false}) => ({
       ...project,
       invoice: <Button onClick={() => setInvoice(studyUID)}>Invoice</Button>,
-      video: <Button onClick={() => setVideo(studyUID)}>Video</Button>
+      video: videoExists ? <Button onClick={() => setVideo(studyUID)}>Video</Button> : null,
     }));
 
     return (

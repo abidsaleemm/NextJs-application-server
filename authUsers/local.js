@@ -24,7 +24,12 @@ const users = [
     username: "user@nhf.com",
     password: "test91a",
     id: 4,
-    client: true
+    client: true,
+    address: '6781 Hollywood Blvd',
+    city: 'Los Angeles',
+    state: 'California',
+    zip: '90028',
+    phone: '+1 234-789-4555',
   },
   {
     name: "Test User",

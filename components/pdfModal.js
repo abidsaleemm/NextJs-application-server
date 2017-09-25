@@ -31,8 +31,8 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         .body {
           display: flex;
           flex-direction: column;
-          min-width: 40%; 
-          height: 90vh;
+          min-width: 95vw; 
+          height: 95vh;
           background: #fff;
           padding: 15px;
         }
@@ -44,20 +44,21 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         }
 
         .content {
-          display: flex;
           justify-content: center;
-          height: 100%;
-          padding: 10px;
+          padding: 5px;
+          width: 100%;
+          overflow: auto;
         }
 
-        /*
-         * "global" and !important are smelly to me.
-         * TODO: look at either PDF or CSS alternative
-        */
-        .content > :global(canvas) {
-          height: 100% !important;
-          width: auto !important;
-        }
+      /*
+        * "global" and !important are smelly to me.
+        * TODO: look at either PDF or CSS alternative
+       */
+       
+       .content > :global(canvas) {
+         height: auto !important;
+         width: 100% !important;
+       }
       `}
     </style>
     <div className="body">
@@ -69,7 +70,7 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         </div>
         <div className="buttonClose" onClick={() => onClose()} />
       </div>
-      <div className="content">{url ? <PDF file={url} page={1} scale={1}/> : null}</div>
+      <div className="content">{url ? <PDF file={url} page={1} scale={2}/> : null}</div>
     </div>
   </div>
 );

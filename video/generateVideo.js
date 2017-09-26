@@ -19,11 +19,11 @@ import ffmpeg from 'fluent-ffmpeg';
 export default async ({ session, numberImages = 0 }) => {
   // TODO Error check to make sure all frames exist?
   const videoPath = `${os.tmpdir()}/${session}.mp4`;
-  console.log("videoPath", videoPath);
+  // console.log("videoPath", videoPath);
 
   return new Promise((resolve, reject) => {
     const command = ffmpeg()
-      .addInput(`${os.tmpdir()}/${session}/%04d.png`) // TODO Will break if more than 9999 frames
+      .addInput(`${os.tmpdir()}/${session}/frames/%04d.png`) // TODO Will break if more than 9999 frames
       .on('end', () => {
         resolve();
       })

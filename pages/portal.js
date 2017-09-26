@@ -7,6 +7,7 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import InvoiceModal from "../containers/invoiceModal";
+import VideoModal from "../containers/videoModal";
 import fetchApi from "../helpers/fetchApi";
 
 // TODO Should we move these someplace else?
@@ -64,22 +65,22 @@ const Portal = class extends Component {
   }
 
   render() {
-    console.log(this.props);
     const {
       props: {
         projects = [],
         filter = {},
         sort = {},
         setInvoice = () => {},
+        setVideo = () => {},
         setPortalFilter = () => {},
         setPortalSort = () => {},
       }
     } = this;
 
-    const projectsEnhanced = projects.map(({ ...project, studyUID }) => ({
+    const projectsEnhanced = projects.map(({ ...project, studyUID, videoExists = false}) => ({
       ...project,
       invoice: <Button onClick={() => setInvoice(studyUID)}>Invoice</Button>,
-      video: <Button onClick={() => {}}>Video</Button>
+      video: videoExists ? <Button onClick={() => setVideo(studyUID)}>Video</Button> : null,
     }));
 
     return (
@@ -93,6 +94,7 @@ const Portal = class extends Component {
           onSort={props => setPortalSort(props)}
         />
         <InvoiceModal />
+        <VideoModal />
       </div>
     );
   }

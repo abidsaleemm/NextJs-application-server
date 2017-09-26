@@ -4,6 +4,7 @@ import projectDetail from './projectDetail';
 import client from './client';
 import portal from './portal';
 import invoice from './invoice';
+import video from './video';
 
 export default (props) => {
     api(props);
@@ -12,4 +13,5 @@ export default (props) => {
     portal(props);
     client(props);
     invoice(props);
+    video(props);
 };

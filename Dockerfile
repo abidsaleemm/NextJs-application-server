@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:8
+FROM keymetrics/pm2:latest
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs

@@ -1,7 +1,7 @@
 import request from 'request';
 import xmlbuilder from 'xmlbuilder';
 import wav from 'wav';
-
+import { Readable } from 'stream';
 import saveAudio from "../video/saveAudio";
 
 const apiKey = "dbe1e8e3c5384d5b9015f951b0e40b8b";
@@ -31,6 +31,7 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
         if (err || resp.statusCode != 200) {
             // TODO handle using reject?
             console.log(err, resp.body);
+            reject(err);
         } else {
             try {
                 request.post({
@@ -48,29 +49,28 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
                     encoding: null
                 }, (err, resp, speakData) => {
                     if (err || resp.statusCode != 200) {
-                        // TODO handle using reject?
                         console.log(err, resp.body);
+                        reject(err);
                     } else {
                         try {
                             const reader = new wav.Reader();
-                            reader.on('format', function (format) {
-                                resolve({ data: speakData, format });
+                            reader.on('format', (format) => {
+                                resolve({ data: speakData.slice(44, speakData.length - (16000)), format });
                             });
-                            const Readable = require('stream').Readable;
-                            const s = new Readable;
                             
+                            const s = new Readable;
                             s.push(speakData);
                             s.push(null);
                             s.pipe(reader);
                         } catch (e) {
-                            // TODO handle using reject?
                             console.log(e.message);
+                            reject(e);
                         }
                     }
                 });
             } catch (e) {
-                // TODO handle using reject?
                 console.log(e.message);
+                reject(e);
             }
         }
     });

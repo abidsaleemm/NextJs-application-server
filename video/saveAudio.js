@@ -1,8 +1,19 @@
-import { Writer, FileWriter } from 'wav';
+import { FileWriter } from 'wav';
 import fs from 'fs';
 import os from 'os';
 
-export default async ({ session, index, data, format }) => {
+export const format = { 
+    audioFormat: 1,
+    endianness: 'LE',
+    channels: 1,
+    sampleRate: 16000,
+    byteRate: 32000,
+    blockAlign: 2,
+    bitDepth: 16,
+    signed: true 
+};
+
+export default async ({ session, index, data }) => {
     const fileName = `${index.toString().padStart(4, '0')}.wav`;
     const dirPath = `${os.tmpdir()}/${session}/audio`;
     const filePath = `${dirPath}/${fileName}`;

@@ -14,16 +14,12 @@ export default async ({ socket, action }) => {
     const ret = await generateVideo({ session, numberImages });
 
     console.log("Render done. Cleaning up.", session, numberImages);
-    await cleanupImages({ session });
+    // await cleanupImages({ session });
 
     console.log('Cleanup done.  Saving Video');
     await videoSave({ studyUID, session }); 
-    await cleanupVideo({ session });
-  }
 
-  // TODO Should we send a response?
-  //   socket.emit('action', {
-  //     type: 'VOLUME_SET',
-  //     volume,
-  //   });
+    // TODO Cleanup the cleanup function
+    // await cleanupVideo({ session });
+  }
 };

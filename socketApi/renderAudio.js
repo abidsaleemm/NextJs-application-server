@@ -16,7 +16,7 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
         // .att('xml:gender', 'Female')
         .att('name', 'Microsoft Server Speech Text to Speech Voice (en-US, JessaRUS)')
         .ele('prosody')
-        .att('rate', "-10.00%")
+        .att('rate', "-15.00%")
         .txt(text)
         .end();
 

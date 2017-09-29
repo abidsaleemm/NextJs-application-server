@@ -7,6 +7,7 @@ import saveAudio from "../video/saveAudio";
 const apiKey = "dbe1e8e3c5384d5b9015f951b0e40b8b";
 
 // TODO Will not work if not connected to internet
+// Add some sort of error checking and don't add any audio if this is the case
 const azureAudio = ({ text }) => new Promise((resolve, reject) => {
     const ssmlDoc = xmlbuilder.create('speak')
         .att('version', '1.0')
@@ -32,6 +33,7 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
             // TODO handle using reject?
             console.log(err, resp.body);
             reject(err);
+            return;
         } else {
             try {
                 request.post({
@@ -39,7 +41,6 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
                     body: postSpeakData,
                     headers: {
                         'content-type': 'application/ssml+xml',
-                        // 'X-Microsoft-OutputFormat': 'raw-16khz-16bit-mono-pcm',
                         'X-Microsoft-OutputFormat': 'riff-16khz-16bit-mono-pcm',
                         'Authorization': `Bearer ${accessToken}`,
                         'X-Search-AppId': '07D3234E49CE426DAA29772419F436CA',
@@ -51,6 +52,7 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
                     if (err || resp.statusCode != 200) {
                         console.log(err, resp.body);
                         reject(err);
+                        return;
                     } else {
                         try {
                             const reader = new wav.Reader();
@@ -65,12 +67,14 @@ const azureAudio = ({ text }) => new Promise((resolve, reject) => {
                         } catch (e) {
                             console.log(e.message);
                             reject(e);
+                            return;
                         }
                     }
                 });
             } catch (e) {
                 console.log(e.message);
                 reject(e);
+                return;
             }
         }
     });

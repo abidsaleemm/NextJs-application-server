@@ -4,11 +4,12 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
 import https from 'https';
+import fs from 'fs';
 import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
-import fs from 'fs';
+import authMiddleware from "./auth/middleware";
 
 const flash = require('connect-flash');
 const port = process.env.PORT || 3000;
@@ -44,14 +45,19 @@ app.prepare().then(() => {
     saveUninitialized: false,
   });
 
+  
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
   server.use(sessionMiddleWare);
   server.use(flash());
-
+  
   const passport = auth(server);
   routes({ server, app }); // Setup routes
+  
+  // Setup static materials
+  server.use('/static', authMiddleware());
+  server.use('/static', express.static('static'));
 
   server.get("*", (req, res) => {
     return handle(req, res);

@@ -35,10 +35,10 @@ workflows:
       - deploy-production:
           filters:
             tags:
-              only: /^production*/
+              only: /.*/
+            branches:
+              ignore: /.*/
       - deploy-staging:
           filters:
             branches:
               only: master
-            tags:
-              ignore: /^production*/

@@ -12,7 +12,6 @@ TODO Add more description
 - PassportJS - http://passportjs.org/
 - Websockets (Socket.io) - https://socket.io/
 - React Strap - https://reactstrap.github.io/
-- Azure AD
 - Azure Table Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-table-storage
 - Azure Blob Storage - https://docs.microsoft.com/en-us/azure/storage/storage-nodejs-how-to-use-blob-storage
 - lowdb - (Used for local testing and debugging) - https://github.com/typicode/lowdb
@@ -45,15 +44,13 @@ TODO Add more description
 
 Live site can be accessed at:
 
-https://multus.hack.expert
+https://portal.multusmedical.com
 
-Test user:
-
+_Test user:_
 user: user@test.com
 pass: test91a
 
-Test client:
-
+_Test client:_
 user: client@test.com
 pass: test91a
 
@@ -63,7 +60,7 @@ Access keys to storage accounts need to be set as environment vars.
 
 *Note:  These do not apply if you are locally testing. This is required for Azure testing.*
 
-Below is an example .env file.
+Below is an example env file.
 
 ```bash
 # Required
@@ -136,14 +133,14 @@ TODO Add additional information regarding PartitionKey and Rowkey.
 ## Getting started
 
 ```sh
-git clone git@bitbucket.org:interbizconsulting/application-server.git
+git clone git@github.com:MultusMedical/application-server.git
 cd application-server
 yarn install
 ```
 
 ## Testing locally
 
-The following yard commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
+The following yarn commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
 
 ```
 yarn local   # Test using local DB adapters.  Requires no internet connection.
@@ -176,5 +173,5 @@ docker push multus/application-server
 Test Docker locally.
 
 ```bash
-docker run -it -v /etc/letsencrypt/live/multus.hack.expert:/usr/certs hackexpert/application-server
+docker run -it -v /etc/letsencrypt/archive/portal.multusmedical.com:/usr/certs hackexpert/application-server
 ```

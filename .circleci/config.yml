@@ -11,7 +11,7 @@ jobs:
       - run:
           name: DeployingProduction
           command: |
-            docker build -t multus/application-server .
+            docker build -t multus/application-server --build-arg machinename=application-server .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push multus/application-server
   deploy-staging:
@@ -25,7 +25,7 @@ jobs:
       - run:
           name: DeployingStaging
           command: |
-            docker build -t multus/application-server:staging .
+            docker build -t multus/application-server:staging --build-arg machinename=application-server-staging .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push multus/application-server:staging
 workflows:

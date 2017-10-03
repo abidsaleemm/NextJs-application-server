@@ -1,3 +1,4 @@
+ARG MACHINENAME
 FROM keymetrics/pm2:latest
 
 RUN mkdir -p /usr/src
@@ -13,6 +14,6 @@ RUN npm install
 COPY . /usr/src/
 
 EXPOSE 3000
-ARG MACHINENAME
 
+RUN RUN echo "var ${MACHINENAME}"
 CMD ["pm2-docker", "--public", "gz4rkzmirzdlp2r", "--secret", "9761q3vfr9xyfih", "process.json", "--machine-name", "${MACHINENAME}"]

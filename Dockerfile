@@ -9,9 +9,10 @@ WORKDIR /usr/src
 COPY package.json /usr/src/
 RUN npm install
 
-
 # Bundle app source
 COPY . /usr/src/
+
+RUN npm run build
 
 EXPOSE 3000
 

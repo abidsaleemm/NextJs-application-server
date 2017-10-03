@@ -56,7 +56,7 @@ app.prepare().then(() => {
   routes({ server, app }); // Setup routes
   
   // Setup static materials
-  server.use('/static', authMiddleware());
+  server.use('/static', authMiddleware({ redirect: false }));
   server.use('/static', express.static('static'));
 
   server.get("*", (req, res) => {

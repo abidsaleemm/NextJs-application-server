@@ -66,7 +66,7 @@ app.prepare().then(() => {
   if (process.env.NODE_ENV !== 'dev') {
     // If not dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number
+      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive
       cert: fs.readFileSync('certs/fullchain1.pem')
     };
 

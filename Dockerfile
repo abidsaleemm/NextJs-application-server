@@ -17,5 +17,4 @@ RUN npm run build
 EXPOSE 3000
 EXPOSE 3001
 
-RUN echo "var ${MACHINENAME}"
 CMD ["pm2-docker", "--public", "gz4rkzmirzdlp2r", "--secret", "9761q3vfr9xyfih", "process.json", "--machine-name", "${MACHINENAME}"]

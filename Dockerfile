@@ -1,5 +1,5 @@
 FROM keymetrics/pm2:latest
-ARG MACHINENAME
+ARG MACHINENAME=application-server
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs

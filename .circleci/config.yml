@@ -36,6 +36,8 @@ workflows:
           filters:
             tags:
               only: production
+            branches:
+              ignore: /.*/
       - deploy-staging:
           filters:
             branches:

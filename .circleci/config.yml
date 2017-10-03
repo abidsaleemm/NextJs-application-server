@@ -9,7 +9,7 @@ jobs:
       # TODO Add interface submodule
       - setup_remote_docker
       - run:
-          name: DeployingProduction
+          name: Deploying Production
           command: |
             docker build -t multus/application-server --build-arg MACHINENAME=application-server .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -23,7 +23,7 @@ jobs:
       # TODO Add interface submodule
       - setup_remote_docker
       - run:
-          name: DeployingStaging
+          name: Deploying Staging
           command: |
             docker build -t multus/application-server:staging --build-arg MACHINENAME=application-server-staging .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
@@ -35,8 +35,8 @@ workflows:
       - deploy-production:
           filters:
             tags:
-              only: /^production*/
+              only: production
       - deploy-staging:
           filters:
             branches:
-              only: /^master*/
+              only: master

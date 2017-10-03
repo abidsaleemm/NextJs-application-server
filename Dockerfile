@@ -1,5 +1,5 @@
-ARG MACHINENAME
 FROM keymetrics/pm2:latest
+ARG MACHINENAME
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs

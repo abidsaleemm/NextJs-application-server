@@ -3,6 +3,7 @@ import next from "next";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
+import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import auth from "./auth";
@@ -64,6 +65,15 @@ app.prepare().then(() => {
   });
 
   if (process.env.NODE_ENV !== 'dev') {
+    // Handle port 80 redirect
+    http.createServer((req, res) => {
+      const { headers: { host = 'portal.multusmedical.com' } = {} }= req;
+      res.writeHead(301, { "Location": `https://${host}` });
+      res.end();
+    }).listen(3001, () => {
+      console.log(`Redirect HTTP to HTTPS running`);
+    });
+    
     // If not dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive

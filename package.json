@@ -7,7 +7,8 @@
     "start": "node ./loader.js",
     "azure": "npm run dev",
     "local": "cross-env LOCAL=true npm run dev",
-    "dev": "cross-env NODE_ENV=dev node ./loader.js"
+    "dev": "cross-env NODE_ENV=dev node ./loader.js",
+    "build": "next build"
   },
   "dependencies": {
     "autoprefixer": "^7.1.4",

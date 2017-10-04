@@ -45,10 +45,3 @@ workflows:
           filters:
             branches:
               only: master
-
-
-              export CIRCLE_TOKEN='?circle-token=:your_token'
-
-curl https://circleci.com/api/v1.1/project/:vcs-type/:username/:project/:build_num/artifacts$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-
-<artifacts.txt xargs -P4 -I % wget %$CIRCLE_TOKEN

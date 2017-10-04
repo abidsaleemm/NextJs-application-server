@@ -7,6 +7,14 @@ jobs:
     steps:
       - checkout
       # TODO Add interface submodule
+      - run: 
+          name: Downloading Artifacts
+          command: |
+            mkdir static/interface
+            cd static/interface
+            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
+            cat artifacts.txt
+            cd ~/repo
       - setup_remote_docker
       - run:
           name: Deploying Production
@@ -27,7 +35,10 @@ jobs:
             mkdir static/interface
             cd static/interface
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-            cat artifacts.txt
+            <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
+            for file in *.js\?*; do mv "$file" "${file%%\?*}"; done
+            ls
+            rm artifacts.txt
             cd ~/repo
       # - run: cd
       # - run: curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt

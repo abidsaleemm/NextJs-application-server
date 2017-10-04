@@ -20,8 +20,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: curl https://circleci.com/api/v1.1/project/github/warrengoble/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-      - run: <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
+      - run: curl https://circleci.com/api/v1.1/project/github/warrengoble/application-interface/latest/artifacts$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
+      - run: <artifacts.txt xargs -P4 -I % wget %$CIRCLE_TOKEN
       - run: ls
       # TODO Add interface submodule
       - setup_remote_docker

@@ -64,6 +64,7 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
+  // TODO Use a single env var to declare if production or not? process.env.LOCAL?
   if (process.env.NODE_ENV !== 'dev') {
     // Handle port 80 redirect
     http.createServer((req, res) => {

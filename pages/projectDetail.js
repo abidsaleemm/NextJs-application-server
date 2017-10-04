@@ -204,7 +204,7 @@ const ProjectDetails = class extends Component {
       </Sidebar>
       <iframe
         className="projectDetailRight"
-        src={`/client/?p=${studyUID}`}
+        src={`/static/interface/?p=${studyUID}`}
         title="iframe"
         width="100%"
         height="100%"
@@ -219,3 +219,5 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
   Wrapper(ProjectDetails));
+
+// src={`/client/?p=${studyUID}`}

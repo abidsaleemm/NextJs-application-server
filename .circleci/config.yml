@@ -6,14 +6,16 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # TODO Add interface submodule
       - run: 
           name: Downloading Artifacts
           command: |
             mkdir static/interface
             cd static/interface
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-            cat artifacts.txt
+            <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
+            for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
+            ls
+            rm artifacts.txt
             cd ~/repo
       - setup_remote_docker
       - run:
@@ -28,7 +30,6 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      # - run: sudo npm install -g circle-get-artifact
       - run: 
           name: Downloading Artifacts
           command: |
@@ -36,17 +37,10 @@ jobs:
             cd static/interface
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
             <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
-            for file in *.js\?*; do mv "$file" "${file%%\?*}"; done
+            for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
             ls
             rm artifacts.txt
             cd ~/repo
-      # - run: cd
-      # - run: curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-      # - run: <artifacts.txt xargs -P4 -I % wget %$CIRCLE_TOKEN
-      # - run: circle-get-artifact --token "$CIRCLE_TOKEN" --user "warrengoble" --project "application-interface" --branch "master" --path 'dist'
-      # - run: cat artifacts.txt
-      # - run: for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
-      # TODO Add interface submodule
       - setup_remote_docker
       - run:
           name: Deploying Staging

@@ -1,4 +1,3 @@
-# FROM keymetrics/pm2:latest
 FROM node
 
 ARG MACHINENAME=application-server
@@ -9,6 +8,7 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
+# Setup Poppler for handling PDF server functions
 RUN apt-get update
 RUN apt-get install libcairo2-dev libpoppler-qt5-dev -y
 

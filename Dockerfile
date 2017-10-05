@@ -1,4 +1,6 @@
-FROM keymetrics/pm2:latest
+# FROM keymetrics/pm2:latest
+FROM node
+
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
 
@@ -7,9 +9,10 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
-RUN uname -a
-# RUN yum update
-# RUN yum install -y poppler
+RUN apt-get update
+RUN apt-get install libcairo2-dev libpoppler-qt5-dev -y
+
+RUN npm install pm2 -g
 
 COPY package.json /usr/src/
 RUN npm install

@@ -10,19 +10,18 @@ export default async ({ clientId = 0 }) => {
 
     // TODO Do query directly getProjectList instead of filtering with javascript
     let projects = await getProjectList();
-    projects = await Promise.all(projects
-        .filter(v => v.client == clientId) // TODO fix typing?
-        .map(async project => {
-            // Find matching Study
-            const study = studies.find(({ studyUID }) => project.studyUID === studyUID);
-            return { 
-                ...project, 
+    projects = await Promise.all(
+        projects
+            .filter(v => v.client == clientId) // TODO fix typing?
+            .filter(({ studyUID }) => studyUID !== undefined) // Not sure if this will happen?
+            .map(project => [project, studies.find(({ studyUID = '' }) => project.studyUID === studyUID)])
+            .filter(([project, study]) => study)
+            .map(async ([project, { ...study, studyUID }]) => ({
+                ...project,
                 ...study,
                 status: getStatusName(project.status || 0),
-                videoExists: await videoExists({ studyUID: study.studyUID }),
-            };
-        })
-    );
+                videoExists: await videoExists({ studyUID }),
+            })));
 
     return { projects };
 }

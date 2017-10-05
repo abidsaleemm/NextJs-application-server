@@ -7,6 +7,9 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
+RUN apt-get update
+RUN apt-get install -y poppler
+
 COPY package.json /usr/src/
 RUN npm install
 

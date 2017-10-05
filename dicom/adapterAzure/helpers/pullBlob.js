@@ -16,7 +16,7 @@ export default ({ instanceUID = '' }) => new Promise((resolve, reject) => {
     });
 
     stream.on('error', ({ name, message, statusCode }) => {
-        console.log('error', name, message, statusCode);
+        console.log('error', name, message, statusCode, instanceUID, process.env.DICOM_CONTAINER);
         reject({ name, message, statusCode });
     });
 

@@ -3,11 +3,10 @@ import React from 'react';
 export default ({ fetching = false }) =>
 	<section
 		className='loader'
-		style={{ display: 'flex' }}
-		
+		style={{ display: fetching ? 'flex' : 'none' }}
 	>
 		<style jsx>
-		{`
+			{`
 		.loader {
             position: fixed;
         	top: 0;

@@ -7,8 +7,9 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
-RUN yum update
-RUN yum install -y poppler
+RUN uname -a
+# RUN yum update
+# RUN yum install -y poppler
 
 COPY package.json /usr/src/
 RUN npm install

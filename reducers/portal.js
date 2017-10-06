@@ -1,6 +1,5 @@
 import {
   PAYLOAD_PORTAL,
-  INVOICE_SET,
   VIDEO_SET,
   PORTAL_SET_FILTER,
   PORTAL_SET_SORT,
@@ -8,7 +7,6 @@ import {
 
 export const initialState = {
   projects: [],
-  invoiceRoute: null,
   filter: {
     patientName: "",
     studyName: "",
@@ -28,8 +26,6 @@ export default (
   switch (type) {
     case PAYLOAD_PORTAL:
       return { ...state, ...portal };
-    case INVOICE_SET:
-      return { ...state, invoiceRoute };
     case VIDEO_SET:
       return { ...state, videoRoute };
 

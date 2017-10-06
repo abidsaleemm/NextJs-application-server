@@ -6,7 +6,6 @@ import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
-import InvoiceModal from "../containers/invoiceModal";
 import VideoModal from "../containers/videoModal";
 import fetchApi from "../helpers/fetchApi";
 
@@ -70,7 +69,6 @@ const Portal = class extends Component {
         projects = [],
         filter = {},
         sort = {},
-        setInvoice = () => {},
         setVideo = () => {},
         setPortalFilter = () => {},
         setPortalSort = () => {},
@@ -93,7 +91,6 @@ const Portal = class extends Component {
           onFilter={props => setPortalFilter(props)}
           onSort={props => setPortalSort(props)}
         />
-        <InvoiceModal />
         <VideoModal />
       </div>
     );

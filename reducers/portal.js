@@ -1,6 +1,7 @@
 import {
   PAYLOAD_PORTAL,
   INVOICE_SET,
+  VIDEO_SET,
   PORTAL_SET_FILTER,
   PORTAL_SET_SORT,
 } from "../constants/actionTypes";
@@ -22,13 +23,16 @@ export const initialState = {
 
 export default (
   state = initialState,
-  { type, portal = {}, invoiceRoute = null, filter = {}, sort = {} }
+  { type, portal = {}, invoiceRoute = null, videoRoute = null, filter = {}, sort = {} }
 ) => {
   switch (type) {
     case PAYLOAD_PORTAL:
       return { ...state, ...portal };
     case INVOICE_SET:
       return { ...state, invoiceRoute };
+    case VIDEO_SET:
+      return { ...state, videoRoute };
+
     // issue-34 This is reusable cut this reducer up
     case PORTAL_SET_FILTER:
       return {

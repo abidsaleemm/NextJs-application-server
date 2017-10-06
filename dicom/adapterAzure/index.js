@@ -1,9 +1,6 @@
 import azure from "azure-storage";
 
-export const fileService = azure.createFileService(
-    process.env.STORAGE2,
-    process.env.STORAGE2_KEY
-);
+// TODO Move this under helpers?  Reusable.
 export const blobService = azure.createBlobService(
     process.env.STORAGE,
     process.env.STORAGE_KEY

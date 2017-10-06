@@ -4,6 +4,7 @@ import selectSeries from './selectSeries';
 import selectStudy from './selectStudy';
 import renderFrame from './renderFrame';
 import renderDone from './renderDone';
+import renderAudio from './renderAudio';
 import { queryProject } from '../projects';
 
 // TODO Works but clean this up somehow
@@ -13,6 +14,7 @@ const socketActions = {
   selectStudy,
   renderFrame,
   renderDone,
+  renderAudio,
 };
 
 // TODO Handle internal state changes

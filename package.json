@@ -7,7 +7,8 @@
     "start": "node ./loader.js",
     "azure": "npm run dev",
     "local": "cross-env LOCAL=true npm run dev",
-    "dev": "cross-env NODE_ENV=dev node ./loader.js"
+    "dev": "cross-env NODE_ENV=dev node ./loader.js",
+    "build": "next build"
   },
   "dependencies": {
     "autoprefixer": "^7.1.4",
@@ -52,6 +53,7 @@
     "react-addons-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-pdf-js": "^2.0.4",
+    "react-player": "^0.24.5",
     "react-redux": "^5.0.6",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
@@ -63,7 +65,8 @@
     "styled-jsx": "^1.0.10",
     "three": "^0.87.1",
     "uuid": "^3.1.0",
-    "walk": "^2.3.9"
+    "walk": "^2.3.9",
+    "wav": "^1.0.1"
   },
   "devDependencies": {
     "create-index": "^2.2.0",

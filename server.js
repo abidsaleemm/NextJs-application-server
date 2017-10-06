@@ -3,12 +3,14 @@ import next from "next";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
+import http from 'http';
 import https from 'https';
+import fs from 'fs';
 import auth from "./auth";
 import api from './api';
 import routes from './routes';
 import socketApi from './socketApi';
-import fs from 'fs';
+import authMiddleware from "./auth/middleware";
 
 const flash = require('connect-flash');
 const port = process.env.PORT || 3000;
@@ -44,23 +46,38 @@ app.prepare().then(() => {
     saveUninitialized: false,
   });
 
+  
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
   server.use(sessionMiddleWare);
   server.use(flash());
-
+  
   const passport = auth(server);
   routes({ server, app }); // Setup routes
+  
+  // Setup static materials
+  server.use('/static', authMiddleware({ redirect: false }));
+  server.use('/static', express.static('static'));
 
   server.get("*", (req, res) => {
     return handle(req, res);
   });
 
+  // TODO Use a single env var to declare if production or not? process.env.LOCAL?
   if (process.env.NODE_ENV !== 'dev') {
+    // Handle port 80 redirect
+    http.createServer((req, res) => {
+      const { headers: { host = 'portal.multusmedical.com' } = {} }= req;
+      res.writeHead(301, { "Location": `https://${host}` });
+      res.end();
+    }).listen(3001, () => {
+      console.log(`Redirect HTTP to HTTPS running`);
+    });
+    
     // If not dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive so thats why there is a number
+      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive
       cert: fs.readFileSync('certs/fullchain1.pem')
     };
 

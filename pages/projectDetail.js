@@ -62,6 +62,7 @@ const ProjectDetails = class extends Component {
       status = 0,
       client = 0,
       clientList = [],
+      serverURL = '',
       },
     } = this;
 
@@ -204,7 +205,7 @@ const ProjectDetails = class extends Component {
       </Sidebar>
       <iframe
         className="projectDetailRight"
-        src={`/client/?p=${studyUID}`}
+        src={`${serverURL}/?p=${studyUID}`}
         title="iframe"
         width="100%"
         height="100%"
@@ -214,7 +215,7 @@ const ProjectDetails = class extends Component {
   }
 };
 
-const mapStateToProps = ({ projectDetail }) => ({ ...projectDetail });
+const mapStateToProps = ({ projectDetail, serverURL }) => ({ ...projectDetail, serverURL });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

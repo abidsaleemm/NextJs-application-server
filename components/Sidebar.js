@@ -23,7 +23,7 @@ export default class extends Component {
     const { props: { children, width }, state: { shouldShowToggle, isOpen } } = this;
     const toggleWidth = 30;
     const toggleIn = shouldShowToggle ? `${-toggleWidth}px` : "3px";
-    const triggerWidth = 100;
+    const triggerWidth = 10;
     const overlayIn = !shouldShowToggle ? `${-triggerWidth}px` : "-0px";
     const iconTransform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     const contentOpacity = isOpen ? "1" : "0";

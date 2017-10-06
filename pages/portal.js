@@ -79,7 +79,7 @@ const Portal = class extends Component {
 
     const projectsEnhanced = projects.map(({ ...project, studyUID, videoExists = false}) => ({
       ...project,
-      invoice: <Button onClick={() => setInvoice(studyUID)}>Invoice</Button>,
+      invoice: <a target="_blank" href={`/invoice/?id=${studyUID}`}>View Invoice</a>,
       video: videoExists ? <Button onClick={() => setVideo(studyUID)}>Video</Button> : null,
     }));
 

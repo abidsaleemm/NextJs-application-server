@@ -70,7 +70,9 @@ export default ({ url = null, show = false, onClose = () => {} }) => (
         </div>
         <div className="buttonClose" onClick={() => onClose()} />
       </div>
-      <div className="content">{url ? <PDF file={url} page={1} scale={2}/> : null}</div>
+      <div className="content">
+        {url ? <iframe src={url}/> : null}
+      </div>
     </div>
   </div>
 );

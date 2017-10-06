@@ -10,8 +10,8 @@ const templateFile = path.resolve(
 
 export default ({ server, app }) => {
   server.get("/invoice", authMiddleware(), async (req, res) => {
-    const { 
-      user: { 
+    const {
+      user: {
         // Client data
         name,
         address,
@@ -19,14 +19,14 @@ export default ({ server, app }) => {
         zip,
         city,
         phone,
-        ...user 
-      } = {} 
+        ...user
+      } = {}
     } = req;
 
     // TODO Handle multible studies
     // This need to be patient distinct
     const projectDetail = await queryProjectDetail({ studyUID: req.query.id });
-    const { 
+    const {
       patientID,
       patientName,
       patientBirthDate,
@@ -36,20 +36,51 @@ export default ({ server, app }) => {
       patientAddress,
       patientTelephoneNumbers,
       institutionName,
-      referringPhysicianName,
+      referringPhysicianName
     } = projectDetail;
 
+    /*
+     * TODO: These values are hard coded until we add these fields
+     * to the user project model. At that time we might consider making
+     * the model fields the same name as the pdf so that we can map 1 to 1
+    */
+
     const pdfDetails = {
-      // ...projectDetail,
-      // ...user,
+      insurance_type: "Medicaid",
       pt_name: patientName,
-      form_to: `${name}\r\n${address}`,
-      price: "$300", //  TODO This will work for now but should decide best way to store
-      // taxId: "593784049",
-      // TODO Clean up address and break up into street, city, zip, state, country
+      form_to: `${name}\r\n3333 E. Diego Dr\r\nTucson AZ`,
+      pt_street: "123 W Elm St",
+      pt_city: "Tucson",
+      pt_state: "AZ",
+      pt_zip: "85224",
+      pt_AreaCode: "520",
+      pt_phone: "555-5555",
+      sex: "male",
+      rel_to_ins: "spouse",
+      employment: "no",
+      pt_accident: "yes",
+      other_accident: "no",
+      pt_signature: "SIGNATURE ON FILE",
+      ins_name: "Same",
+      ins_street: "Same",
+      ins_dob_mm: "01",
+      ins_dob_dd: "01",
+      ins_dod_yy: "77",
+      ins_signature: "SIGNATURE ON FILE",
+      add_claim_info: "MEDICAL RECORDS ATTACHED",
+      sv1_mm_from: "08",
+      sv1_dd_from: "22",
+      sv1_yy_from: "17",
+      place1: "76377",
+      ch1: "500.00",
+      tax_id: "593784049",
+      ssn: "EIN",
+      t_charge: "500.00"
     };
 
-    const result = await pdfFillForm.write(templateFile, pdfDetails, { save: "pdf" })
+    const result = await pdfFillForm.write(templateFile, pdfDetails, {
+      save: "pdf"
+    });
 
     const fileName = `${name} - ${patientName}`;
 
@@ -57,10 +88,7 @@ export default ({ server, app }) => {
     res.setHeader("Content-Encoding", "none");
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Length", result.length);
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename=${fileName}.pdf`
-    );
+    res.setHeader("Content-Disposition", `inline; filename=${fileName}.pdf`);
     res.status(200).end(result, "binary");
   });
 };

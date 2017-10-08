@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux';
 import Router from 'next/router';
+import R from 'ramda';
+import getProjectList from '../selectors/getProjectList';
 import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
@@ -69,7 +71,8 @@ class ProjectsListing extends Component {
 
 	render() {
 		const { 
-			props: { 
+			props: {
+				settings = {},
 				projects = [], 
 				filter = {}, 
 				sort = {},
@@ -78,9 +81,12 @@ class ProjectsListing extends Component {
 			} = {}, 
 		} = this;
 
+		console.log(settings)
+
 		return (
 			<div>
 				<TableList
+					settings={ settings }
 					headers={headers}
 					data={projects}
 					filter={filter}
@@ -98,7 +104,10 @@ class ProjectsListing extends Component {
 	}
 }
 
-const mapStateToProps = ({ projects }) => ({ ...projects });
+const mapStateToProps = store => ({
+	settings: store.projSettings,
+	...getProjectList(store, {})
+});
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

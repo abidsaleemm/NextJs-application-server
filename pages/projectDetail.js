@@ -52,6 +52,7 @@ const ProjectDetails = class extends Component {
       // Actions
       setProjectStatus,
       setProjectClient,
+      videoRender,
       // State
       studyUID,
       studyName,
@@ -67,6 +68,12 @@ const ProjectDetails = class extends Component {
 
     const { name: selectedClient = "None" } =
       clientList.find(({ id }) => id === client) || {};
+
+    // TODO Used for render video will be removed in the future
+    const windowName = 'renderWindow';
+    const width = 1920 / 2; // TODO Add a few different presets
+    const height = 1080 / 2;
+    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
 
     return <div className="root" ref={input => {
       this.container = input;
@@ -102,7 +109,7 @@ const ProjectDetails = class extends Component {
               </CardSubtitle>
             </CardBlock>
             <br />
-            <Button onClick={() => videoRender({ studyUID })}>Render Video</Button>
+            <Button onClick={() => window.open(`/static/render/?p=${studyUID}`, windowName, windowSettings)}>Render Video</Button>
             <br />
             <Table>
               <tbody>

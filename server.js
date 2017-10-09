@@ -66,7 +66,7 @@ app.prepare().then(() => {
       proxy({ target: "http://localhost:8081", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
 
     server.use("/static/render", authMiddleware({ redirect: false }), (req, res) =>
-      proxy({ target: "http://localhost:8082", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
+      proxy({ target: "http://localhost:8082", changeOrigin: true, pathRewrite: { "^/static/render": "/" } })(req, res));
   }
 
   server.get("*", (req, res) => {

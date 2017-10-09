@@ -6,6 +6,7 @@ import expressSession from "express-session";
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
+import proxy from "http-proxy-middleware";
 import auth from "./auth";
 import api from './api';
 import routes from './routes';
@@ -36,8 +37,8 @@ app.prepare().then(() => {
   server.disable('x-powered-by'); //x-powered-by disable form headers
   const sessionMiddleWare = expressSession({
     store: process.env.LOCAL ?
-     sessionStoreLocal() : // Used for local testing
-     sessionStoreAzure(),
+      sessionStoreLocal() : // Used for local testing
+      sessionStoreAzure(),
     secret: 'session_secret',
     key: "express.sid",
     resave: true,
@@ -46,19 +47,27 @@ app.prepare().then(() => {
     saveUninitialized: false,
   });
 
-  
+
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
   server.use(cookieParser());
   server.use(sessionMiddleWare);
   server.use(flash());
-  
+
   const passport = auth(server);
   routes({ server, app }); // Setup routes
-  
-  // Setup static materials
-  server.use('/static', authMiddleware({ redirect: false }));
-  server.use('/static', express.static('static'));
+
+  // Setup static routes
+  if (process.env.NODE_ENV !== 'dev') {
+    server.use('/static', authMiddleware({ redirect: false }));
+    server.use('/static', express.static('static'));
+  } else {
+    server.use("/static/interface", authMiddleware({ redirect: false }), (req, res) =>
+      proxy({ target: "http://localhost:8081", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
+
+    server.use("/static/render", authMiddleware({ redirect: false }), (req, res) =>
+      proxy({ target: "http://localhost:8082", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
+  }
 
   server.get("*", (req, res) => {
     return handle(req, res);
@@ -68,13 +77,13 @@ app.prepare().then(() => {
   if (process.env.NODE_ENV !== 'dev') {
     // Handle port 80 redirect
     http.createServer((req, res) => {
-      const { headers: { host = 'portal.multusmedical.com' } = {} }= req;
+      const { headers: { host = 'portal.multusmedical.com' } = {} } = req;
       res.writeHead(301, { "Location": `https://${host}` });
       res.end();
     }).listen(3001, () => {
       console.log(`Redirect HTTP to HTTPS running`);
     });
-    
+
     // If not dev we assume we are on Azure
     const options = {
       key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive

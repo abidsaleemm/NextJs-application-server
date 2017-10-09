@@ -6,7 +6,6 @@ import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
-import InvoiceModal from "../containers/invoiceModal";
 import VideoModal from "../containers/videoModal";
 import fetchApi from "../helpers/fetchApi";
 
@@ -18,11 +17,11 @@ const headers = [
   },
   {
     title: "Patient Name",
-    id: "patientName",
+    id: "patientName"
   },
   {
     title: "Study Name",
-    id: "studyName",
+    id: "studyName"
   },
   {
     title: "Study Date",
@@ -30,21 +29,21 @@ const headers = [
   },
   {
     title: "Modality",
-    id: "modality",
+    id: "modality"
   },
   {
     title: "Location",
-    id: "location",
+    id: "location"
   },
   {
     title: "Video",
     id: "video",
-    sortDisabled: true,
+    sortDisabled: true
   },
   {
     title: "Invoice",
     id: "invoice",
-    sortDisabled: true,
+    sortDisabled: true
   }
 ];
 
@@ -70,30 +69,40 @@ const Portal = class extends Component {
         projects = [],
         filter = {},
         sort = {},
-        setInvoice = () => {},
         setVideo = () => {},
         setPortalFilter = () => {},
-        setPortalSort = () => {},
+        setPortalSort = () => {}
       }
     } = this;
 
-    const projectsEnhanced = projects.map(({ ...project, studyUID, videoExists = false}) => ({
-      ...project,
-      invoice: <Button onClick={() => setInvoice(studyUID)}>Invoice</Button>,
-      video: videoExists ? <Button onClick={() => setVideo(studyUID)}>Video</Button> : null,
-    }));
+    const projectsEnhanced = projects.map(
+      ({ studyUID, videoExists = false, ...project }) => ({
+        ...project,
+        invoice: (
+          <a
+            className="btn btn-primary"
+            target="_blank"
+            href={`/invoice/?id=${studyUID}`}
+          >
+            View invoice
+          </a>
+        ),
+        video: videoExists ? (
+          <Button onClick={() => setVideo(studyUID)}>Video</Button>
+        ) : null
+      })
+    );
 
     return (
       <div>
         <TableList
           headers={headers}
           sort={sort}
-					filter={filter}
+          filter={filter}
           data={projectsEnhanced}
           onFilter={props => setPortalFilter(props)}
           onSort={props => setPortalSort(props)}
         />
-        <InvoiceModal />
         <VideoModal />
       </div>
     );

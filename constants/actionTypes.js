@@ -14,5 +14,4 @@ export const PROJECTS_SET_SORT = "PROJECTS_SET_SORT";
 // Globals
 export const PAGE_LOADING = "PAGE_LOADING";
 export const FETCHING = "FETCHING";
-export const INVOICE_SET = "INVOICE_SET";
 export const VIDEO_SET = "VIDEO_SET";

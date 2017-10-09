@@ -15,3 +15,5 @@ export const PROJECTS_SET_SORT = "PROJECTS_SET_SORT";
 export const PAGE_LOADING = "PAGE_LOADING";
 export const FETCHING = "FETCHING";
 export const VIDEO_SET = "VIDEO_SET";
+
+export const VIDEO_RENDER = "VIDEO_RENDER" // Used for tracking window. 

@@ -14,3 +14,5 @@ export { default as setProjectsFilter } from "./setProjectsFilter";
 
 export { default as setProjectsSort } from "./setProjectsSort";
 export { default as setPortalSort } from "./setPortalSort";
+
+export { default as videoRender } from './videoRender'; 

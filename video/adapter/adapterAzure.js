@@ -21,8 +21,7 @@ const createContainer = () => new Promise((resolve, reject) => {
 
 export const videoSave = async ({ studyUID, readStream }) => {
     await createContainer(); // Create if container does not exists
-
-    new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
         const writeStream = blobService.createWriteStreamToBlockBlob(container, studyUID, (err, result) => {
             if (err) {
                 return reject(err);

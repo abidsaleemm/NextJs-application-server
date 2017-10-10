@@ -81,7 +81,7 @@ const Portal = class extends Component {
         invoice: (
           <a
             className="btn btn-primary"
-            target="_blank"
+            target="_pdfPreview"
             href={`/invoice/?id=${studyUID}`}
           >
             View invoice

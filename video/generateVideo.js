@@ -28,8 +28,8 @@ const readWav = ({ filePath }) => new Promise((resolve, reject) => {
 });
 
 export default async ({ session, numberImages = 0 }) => { // TODO Use numberFrames var name instead of numberImages
-  const videoPath = `${os.tmpdir()}/${session}.mp4`;
-  const audioPath = `${os.tmpdir()}/${session}.wav`;
+  const videoPath = `${os.tmpdir()}/${session}/video.mp4`;
+  const audioPath = `${os.tmpdir()}/${session}/audio.wav`;
   const audioDir = `${os.tmpdir()}/${session}/audio`;
 
   // TODO Handle error check on fs sync call

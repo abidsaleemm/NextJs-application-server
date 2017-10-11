@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Styles from "../hoc/styles";
+import Wrapper from "../hoc/wrapper";
 import LoginPage from "../components/loginPage";
 
 const EntryPage = class extends Component {
@@ -20,6 +20,4 @@ const EntryPage = class extends Component {
   }
 };
 
-const Enhanced = Styles(EntryPage);
-Enhanced.getInitialProps = EntryPage.getInitialProps;
-export default Enhanced;
+export default Wrapper(EntryPage, { nav: false, loader: false });

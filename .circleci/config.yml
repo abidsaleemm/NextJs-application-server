@@ -10,7 +10,7 @@ jobs:
           name: Downloading Artifacts
           command: |
             mkdir static/interface
-            cd static/interface
+            cd static
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
             <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
             for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
@@ -32,7 +32,7 @@ jobs:
       - run: 
           name: Downloading Artifacts
           command: |
-            mkdir static/interface
+            mkdir static
             cd static/interface
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
             <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN

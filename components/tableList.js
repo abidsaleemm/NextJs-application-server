@@ -18,7 +18,10 @@ export default ({
     <style jsx>
       {`
         .root {
-          overflow: auto;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
         }
 
         .fieldFilter {
@@ -55,7 +58,7 @@ export default ({
         }
       `}
     </style>
-    <Table striped hover>
+    <Table striped>
       <thead>
         <tr>
           {headers.map(({ title, id, sortDisabled }) =>

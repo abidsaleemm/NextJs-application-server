@@ -34,12 +34,12 @@ jobs:
           command: |
             # mkdir static
             # cd static
-            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
+            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
             # <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
             # for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
             npm i wget-improved
-            node ./.circleci/artifacts.js
-            rm artifacts.txt
+            node ./.circleci/artifacts.json
+            rm artifacts.json
       - setup_remote_docker
       - run:
           name: Deploying Staging

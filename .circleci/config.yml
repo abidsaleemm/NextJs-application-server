@@ -33,12 +33,12 @@ jobs:
           name: Downloading Artifacts
           command: |
             # mkdir static
-            # cd static
+            cd .circleci
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
             # <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
             # for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
             npm i wget-improved
-            node ./.circleci/artifacts.json
+            node ./.circleci/artifacts.js
             rm artifacts.json
       - setup_remote_docker
       - run:

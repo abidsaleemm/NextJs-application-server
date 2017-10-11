@@ -1,72 +1,55 @@
-// import Azure from 'azure-storage';
-// import path from 'path';
+import azure from "azure-storage";
 
-// let self = {};
+// TODO Move this under helpers?  Reusable.
+export const blobService = azure.createBlobService(
+    process.env.STORAGE,
+    process.env.STORAGE_KEY
+);
 
-// const defaultContainerConfig = {
-// 	publicAccessLevel: 'blob'
-// };
+const container = 'videos';
 
-// /**
-//  * creates a new instance of AzureBlob storage
-//  * @param {*} config 
-//  */
+// TODO Move this to default azure helpers?
+const createContainer = () => new Promise((resolve, reject) => {
+    blobService.createContainerIfNotExists(container, (err, result, response) => {
+        if (err) {
+            return reject(err);
+        }
 
-// let AzureBlob = ( config ) => {
-// 	self.config = config;
-// 	try {
-// 		self._azureBlobService = Azure.createBlobService(config.account, config.accessKey);
-// 	} catch (err) {
-// 		throw new Error ('Error in configurations: '+ err);
-// 	}
-// }
-
-// /**
-//  * The function to push video to blob
-//  * @param { string } filePath -> path of the video file
-//  * @param { string } blobName -> optional name to give to a new blob. If no name, the filename will be used
-//  * @param { string } container -> name of the container to push to
-//  */
-// AzureBlob.prototype.pushBlobFromFile = ( filePath, blobName, container = self.config.container ) => {
-// 	return new Promise((resolve, reject) => {
-// 		// define the blob name
-// 		self._azureBlobService.createContainerIfNotExists(container, defaultContainerConfig, (err, result, response) => {
-// 			if (err) {
-// 				return reject (err);
-// 			}
-// 			const targetBlobName = blobName ? blobName : filePath.split(path.sep)[filePath.split(path.sep).length - 1];
-// 			self._azureBlobService.createBlockBlobFromLocalFile(container, targetBlobName, filePath, (err, result, response) => {
-// 				if (err) {
-// 					return reject(err);
-// 				} else {
-// 					return resolve('success')
-// 				}
-// 			});
-// 		})
-// 	});
-// }
-
-// module.exports = (config) => new AzureBlob import fs from 'fs';
-
-// const savePath = 'projectsLocal/video';
+        resolve();
+    });
+});
 
 export const videoSave = async ({ studyUID, readStream }) => {
-    // if (fs.existsSync(savePath) === false) {
-    //     fs.mkdirSync(savePath);
-    // }
+    await createContainer(); // Create if container does not exists
+    await new Promise((resolve, reject) => {
+        const writeStream = blobService.createWriteStreamToBlockBlob(container, studyUID, (err, result) => {
+            if (err) {
+                return reject(err);
+            }
 
-    // const writeStream = fs.createWriteStream(`${savePath}/${studyUID}.mp4`);
-    // readStream.pipe(writeStream);
-};
+            console.log('Video blob uploaded.', studyUID);
+            resolve(result);
+        })
 
-export const videoLoad = ({ studyUID }) => {
-    // return fs.createReadStream(`${savePath}/${studyUID}.mp4`);
-};
+        readStream.pipe(writeStream);
+    });
+}
 
-export const videoExists = ({ studyUID }) => {
-    return true;
-    // return fs.existsSync(`${savePath}/${studyUID}.mp4`);
-};
+// Returns readStream
+export const videoLoad = async ({ studyUID }) =>
+    blobService.createReadStream(container, studyUID, (err, result) => {
+        if (err) {
+            return reject(err);
+        }
 
-// (config);
-// // export default (config) => new AzureBlob (config);
+        console.log(`Video blob loaded ${result.contentLength} bytes.`, studyUID);
+    });
+
+export const videoExists = ({ studyUID }) => new Promise((resolve, reject) =>
+    blobService.doesBlobExist(container, studyUID, (err, { exists }) => {
+        if (err) {
+            return reject(err);
+        }
+
+        resolve(exists);
+    }));

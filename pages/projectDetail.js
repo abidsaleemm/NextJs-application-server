@@ -52,6 +52,7 @@ const ProjectDetails = class extends Component {
       // Actions
       setProjectStatus,
       setProjectClient,
+      videoRender,
       // State
       studyUID,
       studyName,
@@ -62,12 +63,17 @@ const ProjectDetails = class extends Component {
       status = 0,
       client = 0,
       clientList = [],
-      serverURL = '',
       },
     } = this;
 
     const { name: selectedClient = "None" } =
       clientList.find(({ id }) => id === client) || {};
+
+    // TODO Used for render video will be removed in the future
+    const windowName = 'renderWindow';
+    const width = 1920 / 2; // TODO Add a few different presets
+    const height = 1080 / 2;
+    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
 
     return <div className="root" ref={input => {
       this.container = input;
@@ -103,7 +109,7 @@ const ProjectDetails = class extends Component {
               </CardSubtitle>
             </CardBlock>
             <br />
-            <Button>Preview Video</Button>
+            <Button onClick={() => window.open(`/static/render/?p=${studyUID}`, windowName, windowSettings)}>Render Video</Button>
             <br />
             <Table>
               <tbody>
@@ -205,7 +211,7 @@ const ProjectDetails = class extends Component {
       </Sidebar>
       <iframe
         className="projectDetailRight"
-        src={`${serverURL}/?p=${studyUID}`}
+        src={`/static/interface/?p=${studyUID}`}
         title="iframe"
         width="100%"
         height="100%"
@@ -215,7 +221,7 @@ const ProjectDetails = class extends Component {
   }
 };
 
-const mapStateToProps = ({ projectDetail, serverURL }) => ({ ...projectDetail, serverURL });
+const mapStateToProps = ({ projectDetail }) => ({ ...projectDetail });
 const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

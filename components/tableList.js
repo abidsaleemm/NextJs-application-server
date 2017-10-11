@@ -20,10 +20,12 @@ export default props => {
     <div className="root">
       <style jsx>
         {`
-          .root {
-            overflow: auto;
-          }
-
+        .root {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+        }
           .fieldFilter {
             padding: 0.4em;
             border: none;
@@ -90,14 +92,14 @@ export default props => {
           <tr>
             {headers.map(({ title, id }) => (
               <th
-                className={`headerCell ${id !== sortId || "headerCell--active"}`}
+                className={`headerCell ${id === sortId ? "headerCell--active" : null }`}
                 key={`${title}-${id}`}
                 onClick={() => onSort({ id })}
               >
                 <div className="headerTab">
                   {title}
                   {id === sortId ? (
-                    <div className={`arrow ${!sortDesc || "arrow--up"}`} />
+                    <div className={`arrow ${sortDesc ? "arrow--up" : null}`} />
                   ) : null}
                 </div>
               </th>

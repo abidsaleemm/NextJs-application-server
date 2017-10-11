@@ -81,7 +81,7 @@ const Portal = class extends Component {
         invoice: (
           <a
             className="btn btn-primary"
-            target="_blank"
+            target="_pdfPreview"
             href={`/invoice/?id=${studyUID}`}
           >
             View invoice
@@ -94,7 +94,18 @@ const Portal = class extends Component {
     );
 
     return (
-      <div>
+      <div className="portal">
+        <style jsx>
+        {`
+          .portal {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+          }
+        `}
+        </style>
         <TableList
           headers={headers}
           data={projectsEnhanced}

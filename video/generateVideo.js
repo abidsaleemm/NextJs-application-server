@@ -14,12 +14,10 @@ const readWav = ({ filePath }) => new Promise((resolve, reject) => {
 
   const buffers = [];
   reader.on("data", chunk => {
-    console.log(`Received ${chunk.length} bytes of data.`);
     buffers.push(chunk);
   });
 
   reader.on("end", () => {
-    console.log("There will be no more data.");
     const buffer = Buffer.concat(buffers);
     resolve(buffer);
   });
@@ -28,8 +26,8 @@ const readWav = ({ filePath }) => new Promise((resolve, reject) => {
 });
 
 export default async ({ session, numberImages = 0 }) => { // TODO Use numberFrames var name instead of numberImages
-  const videoPath = `${os.tmpdir()}/${session}.mp4`;
-  const audioPath = `${os.tmpdir()}/${session}.wav`;
+  const videoPath = `${os.tmpdir()}/${session}/video.mp4`;
+  const audioPath = `${os.tmpdir()}/${session}/audio.wav`;
   const audioDir = `${os.tmpdir()}/${session}/audio`;
 
   // TODO Handle error check on fs sync call
@@ -56,12 +54,11 @@ export default async ({ session, numberImages = 0 }) => { // TODO Use numberFram
       buffers.push(new Buffer(diff % 2 === 0 ? diff : diff + 1)); // Align to even bytes
     }
 
-    console.log('length', length, frame, diff);
     buffers.push(data);
   }
 
   const data = Buffer.concat(buffers);
-  console.log('Writing audio file', data.length)
+  console.log('Writing audio file size=', data.length)
   writer.write(new Buffer(data));
   writer.end();
 

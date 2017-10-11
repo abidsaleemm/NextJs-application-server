@@ -4,6 +4,7 @@ import wav from 'wav';
 import { Readable } from 'stream';
 import saveAudio from "../video/saveAudio";
 
+// TODO Handle this as ENV var
 const apiKey = "dbe1e8e3c5384d5b9015f951b0e40b8b";
 
 // TODO Will not work if not connected to internet

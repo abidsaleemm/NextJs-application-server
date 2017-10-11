@@ -8,6 +8,7 @@ import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
 import fetchApi from "../helpers/fetchApi";
+import getProjectList from "../selectors/getProjectList";
 
 // TODO Should we move these someplace else?
 const headers = [
@@ -66,16 +67,15 @@ const Portal = class extends Component {
   render() {
     const {
       props: {
-        projects = [],
-        filter = {},
-        sort = {},
+        data = [],
+        settings,
         setVideo = () => {},
-        setPortalFilter = () => {},
-        setPortalSort = () => {}
+        setProjectsFilter = () => {},
+        setProjectsSort = () => {}
       }
     } = this;
 
-    const projectsEnhanced = projects.map(
+    const projectsEnhanced = data.map(
       ({ studyUID, videoExists = false, ...project }) => ({
         ...project,
         invoice: (
@@ -97,11 +97,10 @@ const Portal = class extends Component {
       <div>
         <TableList
           headers={headers}
-          sort={sort}
-          filter={filter}
           data={projectsEnhanced}
-          onFilter={props => setPortalFilter(props)}
-          onSort={props => setPortalSort(props)}
+          settings={settings}
+          onFilter={props => setProjectsFilter(props)}
+          onSort={props => setProjectsSort(props)}
         />
         <VideoModal />
       </div>
@@ -109,7 +108,10 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = ({ portal }) => ({ ...portal });
+const mapStateToProps = store => ({
+  settings: store.projSettings,
+  data: getProjectList(store.portal, store.projSettings)
+});
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

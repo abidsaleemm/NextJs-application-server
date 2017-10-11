@@ -2,28 +2,19 @@ import React from "react";
 import { Table, Input } from "reactstrap";
 import uuid from "uuid";
 
-export default (props) => {
+export default props => {
   const {
     data = [],
     headers = [],
-    onRowClick = () => { },
-    onFilter = () => { },
-    onSort = () => { },
-    settings = {
-      filter: {
-      status: "",
-      patientName: "",
-      studyName: "",
-      modality: "",
-      location: "",
-      client: "",
-  },
-  sort: {
-      id: 'status', // Set default soft id
-      desc: false,
-  }}
+    onRowClick = () => {},
+    onFilter = () => {},
+    onSort = () => {},
+    settings: {
+      filter = {},
+      sort: { id: sortId = "", desc: sortDesc = false } = {}
+    }
   } = props;
-  console.log(settings)
+
   return (
     <div className="root">
       <style jsx>
@@ -54,15 +45,35 @@ export default (props) => {
           .headerCell:hover {
             background: #d5d5d5;
           }
-          
+
           .headerCellSort {
             width: 100%;
             height: 0.25em;
             background: #1bf;
           }
+          .headerTab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
 
           .dataCellSort {
             background: #e0f4ff;
+          }
+
+          .arrow {
+            display: inline-block;
+            position: relative;
+            margin-left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #292b2c;
+            transition: cubic-bezier(0.52, 0.13, 0, 1.07) 0.2s all;
+          }
+          .arrow--up {
+            transform: rotate(180deg);
           }
         `}
       </style>
@@ -70,59 +81,50 @@ export default (props) => {
       <Table striped hover>
         <thead>
           <tr>
-            {headers.map(({ title, id, sortDisabled }) =>
-              sortDisabled ?
-                <th
-                  className="headerCellDisabled"
-                  key={`${title}-${id}`}
-                >
+            {headers.map(({ title, id }) => (
+              <th
+                className="headerCell"
+                key={`${title}-${id}`}
+                onClick={() => onSort({ id })}
+              >
+                <div className="headerTab">
                   {title}
-                </th>
-                :
-                <th
-                  className="headerCell"
-                  key={`${title}-${id}`}
-                  onClick={() => onSort({ id })}
-                >
-                  {title}
-                </th>
-            )}
+                  {id === sortId ? (
+                    <div className={`arrow ${!sortDesc || "arrow--up"}`} />
+                  ) : null}
+                </div>
+              </th>
+            ))}
           </tr>
           <tr className="fieldColor">
-            { headers.map(
-              ({ id }) => (
-                <td className="fieldFilter" key={`${id}-filter`}>
-                  <Input
-                    type="text"
-                    name={`filter-${id}`}
-                    value={settings.filter[id]}
-                    onChange={({ target: { value } = {} }) =>
+            {headers.map(({ id }) => (
+              <td className="fieldFilter" key={`${id}-filter`}>
+                <Input
+                  type="text"
+                  name={`filter-${id}`}
+                  value={filter[id]}
+                  onChange={({ target: { value } = {} }) =>
                     onFilter({ [id]: value })}
-                  />
-                </td>
-              )
-            ) }
+                />
+              </td>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {
-            data.map(dataProps =>
-              <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
-                {headers
-                  .map(({ ...props, id }) => ({
-                    ...props,
-                    data: dataProps[id],
-                  }))
-                  .map(({ id, data, type, title, action }) =>
-                    <td key={uuid()}>
-                      {data}
-                    </td>
-                  )}
-              </tr>
-            )
-          }
+          {data.map(dataProps => (
+            <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
+              {headers
+                .map(({ id, ...props }) => ({
+                  ...props,
+                  data: dataProps[id]
+                }))
+                .map(({ id, data, type, title, action }) => (
+                  <td key={uuid()}>{data}</td>
+                ))}
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>
-  )
+  );
 };

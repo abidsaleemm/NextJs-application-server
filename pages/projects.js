@@ -79,7 +79,18 @@ class ProjectsListing extends Component {
 		} = this;
 
 		return (
-			<div>
+			<div className="projects">
+				<style jsx>
+				{`
+					.projects {
+						display: flex;
+						flex-direction: column;
+						width: 100%;
+						height: 100%;
+						overflow: auto;
+					}
+				`}
+				</style>
 				<TableList
 					headers={headers}
 					data={projects}

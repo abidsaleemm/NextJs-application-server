@@ -9,7 +9,7 @@ jobs:
       - run: 
           name: Downloading Artifacts
           command: |
-            mkdir static
+            #mkdir static
             cd static
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
             <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
@@ -33,12 +33,13 @@ jobs:
           name: Downloading Artifacts
           command: |
             # mkdir static
-            cd static
+            # cd static
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-            <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
-            for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
+            # <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
+            # for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
+            npm i wget-improved
+            node ./.circleci/artifacts.js
             rm artifacts.txt
-            cd ~/repo
       - setup_remote_docker
       - run:
           name: Deploying Staging

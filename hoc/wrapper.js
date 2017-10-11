@@ -10,9 +10,8 @@ const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props 
             .root {
                 display: flex;
                 flex-direction: column;
-                width: 100%;
-                height: 100%;
-                /*overflow: hidden;*/
+                width: 100vw;
+                height: 100vh;
             }
         `}
         </style>

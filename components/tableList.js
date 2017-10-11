@@ -1,5 +1,6 @@
 import React from "react";
-import { Table, Input } from "reactstrap";
+import { Table } from "reactstrap";
+import SearchInput from "./SearchInput";
 import uuid from "uuid";
 
 export default props => {
@@ -25,6 +26,7 @@ export default props => {
 
           .fieldFilter {
             padding: 0.4em;
+            border: none;
           }
 
           .fieldColor {
@@ -34,7 +36,7 @@ export default props => {
           .headerCell {
             white-space: nowrap;
             cursor: pointer;
-            padding: 0.65em;
+            border: none;
           }
 
           .headerCellDisabled {
@@ -46,6 +48,10 @@ export default props => {
             background: #d5d5d5;
           }
 
+          .headerCell--active {
+            background: #ddd;
+          }
+
           .headerCellSort {
             width: 100%;
             height: 0.25em;
@@ -55,6 +61,7 @@ export default props => {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-right: .2rem;
           }
 
           .dataCellSort {
@@ -83,7 +90,7 @@ export default props => {
           <tr>
             {headers.map(({ title, id }) => (
               <th
-                className="headerCell"
+                className={`headerCell ${id !== sortId || "headerCell--active"}`}
                 key={`${title}-${id}`}
                 onClick={() => onSort({ id })}
               >
@@ -99,12 +106,14 @@ export default props => {
           <tr className="fieldColor">
             {headers.map(({ id }) => (
               <td className="fieldFilter" key={`${id}-filter`}>
-                <Input
+                <SearchInput
                   type="text"
                   name={`filter-${id}`}
                   value={filter[id]}
+                  onClear={() => onFilter({ [id]: "" })}
                   onChange={({ target: { value } = {} }) =>
-                    onFilter({ [id]: value })}
+                    onFilter({ [id]: value })
+                  }
                 />
               </td>
             ))}

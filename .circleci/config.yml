@@ -32,7 +32,7 @@ jobs:
       - run: 
           name: Downloading Artifacts
           command: |
-            mkdir static
+            # mkdir static
             cd static
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
             <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN

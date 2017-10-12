@@ -1,4 +1,3 @@
-
 import queryProjectDetail from "../query/projectDetail";
 import authMiddleware from "../auth/middleware";
 

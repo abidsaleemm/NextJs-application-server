@@ -10,7 +10,7 @@ export default props => {
       <style jsx>
         {`
             .root {
-                padding: 5px;
+                padding: 5px ;
                 background: white;
                 display: flex;
                 position: relative;
@@ -23,25 +23,34 @@ export default props => {
                 cursor: pointer;
             }
             .input {
-                flex: 1 1 100%;
+                height: 30px;
                 border: none;
                 box-shadow: none;
+                width: 100%;
+                flex: 0 1 100%;
             }
             .input:focus {
                 outline: none;
             }
-            .input:focus": {
+            .input:focus {
                 outline: none;
             }
-            // TODO: this doesn't select the button below???
             .clearButton {
+                flex: 1 0 30px;
                 background: none;
-                position: absolute;
                 right: 5px;
                 line-height: 0;
+                width: 30px;
+                height: 30px;
+                border: none;
+                justify-content: center;
+                align-items: center;
+                padding: 0;
+                border-radius: 900px;
             }
             .clearButton:focus {
                 background: #EFEFEF;
+                outline: none;
             }
         `}
       </style>
@@ -55,16 +64,7 @@ export default props => {
       />
       {shouldShowClear ? (
         <button
-          style={{
-            background: "none",
-            width: "30px",
-            height: "20px",
-            border: "none",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 0,
-            lineHeight: 0
-          }}
+          className="clearButton"
           onClick={onClear}
         >
           <svg

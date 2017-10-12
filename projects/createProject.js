@@ -17,5 +17,3 @@ export default ({ studyUID }) => {
     discs,
   });
 }
-
-// TODO creates a fresh state from module

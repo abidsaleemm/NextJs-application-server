@@ -6,12 +6,17 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
+import { Button } from 'reactstrap';
 
 // TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
 
 // TODO This constant should be handled in redux
 export const headers = [
+	{
+		title: 'Action',
+		id: 'action'
+	},
 	{
 		title: 'Status',
 		id: 'status'
@@ -49,17 +54,17 @@ export const headers = [
 ];
 
 class ProjectsListing extends Component {
-	static async getInitialProps({ 
-		req = {}, 
-		store, 
-		isServer, 
+	static async getInitialProps({
+		req = {},
+		store,
+		isServer,
 		query: { projects = [] } = {},
 	}) {
-		const { 
+		const {
 			payloadProjects,
 			fetchAction,
 		} = actions;
-		
+
 		store.dispatch(fetchAction(true));
 		store.dispatch(payloadProjects(isServer ? projects : await fetchApi('projects')));
 		store.dispatch(fetchAction(false));
@@ -68,20 +73,40 @@ class ProjectsListing extends Component {
 	}
 
 	render() {
-		const { 
-			props: { 
-				projects = [], 
-				filter = {}, 
-				sort = {},
-				setProjectsFilter = () => {},
-				setProjectsSort = () => {},
-			} = {}, 
+		const {
+			props: {
+				projects = [],
+			filter = {},
+			sort = {},
+			setProjectsFilter = () => { },
+			setProjectsSort = () => { },
+			} = {},
 		} = this;
+
+		// TODO Should this be moved?
+		const projectsEnhanced = projects.map(({ ...project, studyUID, status = '' }) =>
+			({
+				...project,
+				action: status === '' ?
+					// TODO Create as Button dropdown
+					<Button onClick={() => 
+						Router.push({
+							pathname: '/projectDetail',
+							query: { studyUID }
+						})}
+					>Create</Button> :
+					<Button onClick={() =>
+						Router.push({
+							pathname: '/projectDetail',
+							query: { studyUID }
+						})}
+					>Edit</Button>,
+			}));
 
 		return (
 			<div className="projects">
 				<style jsx>
-				{`
+					{`
 					.projects {
 						display: flex;
 						flex-direction: column;
@@ -93,14 +118,9 @@ class ProjectsListing extends Component {
 				</style>
 				<TableList
 					headers={headers}
-					data={projects}
+					data={projectsEnhanced}
 					filter={filter}
 					sort={sort}
-					onRowClick={({ studyUID }) => {
-						Router.push({
-						pathname: '/projectDetail',
-						query: { studyUID }
-					})}}
 					onFilter={props => setProjectsFilter(props)}
 					onSort={props => setProjectsSort(props)}
 				/>

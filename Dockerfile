@@ -10,7 +10,7 @@ WORKDIR /usr/src
 
 # Setup Poppler for handling PDF server functions
 RUN apt-get update
-RUN apt-get install libcairo2-dev libpoppler-qt5-dev -y
+RUN apt-get install libcairo2-dev libpoppler-qt5-dev ffmpeg -y
 
 RUN npm install pm2 -g
 

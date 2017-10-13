@@ -62,6 +62,7 @@ app.prepare().then(() => {
     server.use('/static', authMiddleware({ redirect: false }));
     server.use('/static', express.static('static'));
   } else {
+    // Used for local testing.
     server.use("/static/interface", authMiddleware({ redirect: false }), (req, res) =>
       proxy({ target: "http://localhost:8081", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
 
@@ -69,9 +70,30 @@ app.prepare().then(() => {
       proxy({ target: "http://localhost:8082", changeOrigin: true, pathRewrite: { "^/static/render": "/" } })(req, res));
   }
 
+  // TODO Add host middleware rewrite to add www if hots is only multusmedical.com
+
+  // TODO Hack for now.  But this redirects to Multus Medical public website if host is www.multusmedical.com
+  server.get("*", (req, res, next) => {
+    const { headers: { host } = {} } = req;
+    
+    if(host === 'www.multusmedical.com') {
+      // Redirect to separate hosted site at 192.155.246.146
+      return proxy({ 
+        target: "http://192.155.246.146", 
+        changeOrigin: true, 
+        // pathRewrite: { "^/static/interface": "/" } 
+      })(req, res);
+    }
+
+    console.log('host', host);
+    next();
+  });
+
+  // All other pages handle with Nextjs
   server.get("*", (req, res) => {
     return handle(req, res);
   });
+
 
   // TODO Use a single env var to declare if production or not? process.env.LOCAL?
   if (process.env.NODE_ENV !== 'dev') {

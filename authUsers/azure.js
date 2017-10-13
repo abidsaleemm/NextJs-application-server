@@ -12,7 +12,7 @@ const tableService = azure.createTableService(
 const tableName = 'users';
 
 export const getUser = async ({ username, password }) => {
-    const query = new azure.TableQuery().where('PartitionKey eq ?', username);
+    const query = new azure.TableQuery().where('username eq ?', username);
     const { 0: { password: passwordCheck, ...user } = {} } = 
         await queryTable({ tableService, query, tableName });
     const res = await bcrypt.compare(password, passwordCheck);

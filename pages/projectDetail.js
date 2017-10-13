@@ -203,12 +203,6 @@ const ProjectDetails = class extends Component {
             </Table>
           </Card>
           <div>
-            <div><b>History</b></div>
-            <Table>
-              No History
-            </Table>
-          </div>
-          <div>
             <div>Data functions</div>
             <div>
               <Button>Import</Button>
@@ -221,6 +215,7 @@ const ProjectDetails = class extends Component {
             <div>
               <Input />
               <Button>Create</Button>
+              <Button>Create From File</Button>
             </div>
             <Table>
               No Defaults

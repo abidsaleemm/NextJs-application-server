@@ -76,16 +76,17 @@ app.prepare().then(() => {
   server.get("*", (req, res, next) => {
     const { headers: { host } = {} } = req;
     
-    if(host === 'www.multusmedical.com') {
+    console.log('host', host);
+
+    if(host === 'www.multusmedical.com' || host === 'www.multusmedical.com:3000') {
       // Redirect to separate hosted site at 192.155.246.146
       return proxy({ 
-        target: "http://192.155.246.146", 
-        changeOrigin: true, 
+        target: "http://192.155.246.146:8341", 
+        changeOrigin: true,
         // pathRewrite: { "^/static/interface": "/" } 
       })(req, res);
     }
 
-    console.log('host', host);
     next();
   });
 

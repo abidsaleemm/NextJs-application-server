@@ -20,12 +20,12 @@ export default props => {
     <div className="root">
       <style jsx>
         {`
-        .root {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          height: 100%;
-        }
+          .root {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+          }
           .fieldFilter {
             padding: 0.4em;
             border: none;
@@ -63,7 +63,7 @@ export default props => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-right: .2rem;
+            padding-right: 0.2rem;
           }
 
           .dataCellSort {
@@ -90,15 +90,17 @@ export default props => {
       <Table striped hover>
         <thead>
           <tr>
-            {headers.map(({ title, id }) => (
+            {headers.map(({ title, id, sortDisabled }) => (
               <th
-                className={`headerCell ${id === sortId ? "headerCell--active" : null }`}
+                className={`headerCell ${id === sortId
+                  ? "headerCell--active"
+                  : null}`}
                 key={`${title}-${id}`}
                 onClick={() => onSort({ id })}
               >
                 <div className="headerTab">
                   {title}
-                  {id === sortId ? (
+                  {id === sortId && !sortDisabled ? (
                     <div className={`arrow ${sortDesc ? "arrow--up" : null}`} />
                   ) : null}
                 </div>
@@ -106,17 +108,18 @@ export default props => {
             ))}
           </tr>
           <tr className="fieldColor">
-            {headers.map(({ id }) => (
+            {headers.map(({ id, sortDisabled }) => (
               <td className="fieldFilter" key={`${id}-filter`}>
-                <SearchInput
-                  type="text"
-                  name={`filter-${id}`}
-                  value={filter[id]}
-                  onClear={() => onFilter({ [id]: "" })}
-                  onChange={({ target: { value } = {} }) =>
-                    onFilter({ [id]: value })
-                  }
-                />
+                {!sortDisabled ? (
+                  <SearchInput
+                    type="text"
+                    name={`filter-${id}`}
+                    value={filter[id]}
+                    onClear={() => onFilter({ [id]: "" })}
+                    onChange={({ target: { value } = {} }) =>
+                      onFilter({ [id]: value })}
+                  />
+                ) : null}
               </td>
             ))}
           </tr>

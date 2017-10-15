@@ -70,8 +70,8 @@ const Portal = class extends Component {
         data = [],
         settings,
         setVideo = () => {},
-        setProjectsFilter = () => {},
-        setProjectsSort = () => {}
+        setPortalFilter = () => {},
+        setPortalSort = () => {}
       }
     } = this;
 
@@ -96,22 +96,22 @@ const Portal = class extends Component {
     return (
       <div className="portal">
         <style jsx>
-        {`
-          .portal {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-          }
-        `}
+          {`
+            .portal {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              height: 100%;
+              overflow: auto;
+            }
+          `}
         </style>
         <TableList
           headers={headers}
           data={projectsEnhanced}
           settings={settings}
-          onFilter={props => setProjectsFilter(props)}
-          onSort={props => setProjectsSort(props)}
+          onFilter={props => setPortalFilter(props)}
+          onSort={props => setPortalSort(props)}
         />
         <VideoModal />
       </div>
@@ -120,8 +120,8 @@ const Portal = class extends Component {
 };
 
 const mapStateToProps = store => ({
-  settings: store.projSettings,
-  data: getProjectList(store.portal, store.projSettings)
+  settings: store.portSettings,
+  data: getProjectList(store.portal, store.portSettings)
 });
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

@@ -11,11 +11,11 @@ import {
   CardLink,
   Button,
   Table,
-  // ButtonDropdown, 
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
+  Input,
 } from 'reactstrap';
 import Sidebar from '../components/Sidebar';
 import withRedux from 'next-redux-wrapper';
@@ -123,12 +123,6 @@ const ProjectDetails = class extends Component {
                       <DropdownMenu>
                         <DropdownItem onClick={() => setProjectStatus({
                           studyUID,
-                          status: 0
-                        })}>
-                          {getStatusName(0)}
-                        </DropdownItem>
-                        <DropdownItem onClick={() => setProjectStatus({
-                          studyUID,
                           status: 1
                         })}>
                           {getStatusName(1)}
@@ -151,6 +145,7 @@ const ProjectDetails = class extends Component {
                         })}>
                           {getStatusName(4)}
                         </DropdownItem>
+
                       </DropdownMenu>
                     </UncontrolledDropdown>
                   </td>
@@ -207,6 +202,26 @@ const ProjectDetails = class extends Component {
               </tbody>
             </Table>
           </Card>
+          <div>
+            <div>Data functions</div>
+            <div>
+              <Button>Import</Button>
+              <Button>Export</Button>
+              <Button color="danger">Delete</Button>
+            </div>
+          </div>
+          <div>
+            <div><b>Defaults</b></div>
+            <div>
+              <Input />
+              <Button>Create</Button>
+              <Button>Create From File</Button>
+            </div>
+            <Table>
+              No Defaults
+            </Table>
+          </div>
+
         </div>
       </Sidebar>
       <iframe

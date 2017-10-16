@@ -1,18 +1,25 @@
-import React, { Component } from "react";
-import withRedux from "next-redux-wrapper";
-import { bindActionCreators } from "redux";
-import Router from "next/router";
+import React, { Component } from 'react';
+import withRedux from 'next-redux-wrapper';
+import { bindActionCreators } from 'redux';
+import Router from 'next/router';
 import getProjectList from "../selectors/getProjectList";
-import { initStore } from "../store";
-import * as actions from "../actions";
-import Wrapper from "../hoc/wrapper";
-import TableList from "../components/tableList";
+import { initStore } from '../store';
+import * as actions from '../actions';
+import Wrapper from '../hoc/wrapper';
+import TableList from '../components/tableList';
+import { Button } from 'reactstrap';
+
+
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
 
 // TODO This constant should be handled in redux
 export const headers = [
+	{
+		title: "Action",
+		id: "action"
+	},
   {
     title: "Status",
     id: "status"
@@ -58,6 +65,7 @@ class ProjectsListing extends Component {
     );
     store.dispatch(fetchAction(false));
 
+
     return { isServer };
   }
 
@@ -70,6 +78,24 @@ class ProjectsListing extends Component {
         setProjectsSort = () => {}
       } = {}
     } = this;
+		const dataEnhanced = data.map(({ ...data, studyUID, status = '' }) =>
+		({
+			...data,
+			action: status === '' ?
+				// TODO Create as Button dropdown
+				<Button onClick={() => 
+					Router.push({
+						pathname: '/projectDetail',
+						query: { studyUID }
+					})}
+				>Create</Button> :
+				<Button onClick={() =>
+					Router.push({
+						pathname: '/projectDetail',
+						query: { studyUID }
+					})}
+				>Edit</Button>,
+		}));
 
     return (
       <div className="projects">
@@ -85,7 +111,7 @@ class ProjectsListing extends Component {
           `}
       </style>
         <TableList
-          data={data}
+          data={dataEnhanced}
           headers={headers}
           settings={settings}
           onRowClick={({ studyUID }) => {

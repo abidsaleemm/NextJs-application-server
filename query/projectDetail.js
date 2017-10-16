@@ -12,10 +12,11 @@ export default async ({ studyUID }) => {
     let project = await getProject({ studyUID });
 
     // TODO Should project creation be handled here?
+    // TODO Add ability to select default template
     if (project === undefined) {
         console.log('Creating new project', studyUID);
         project = createProject({ studyUID }); // TODO Add function to create default from existing
-        await setProject({ studyUID, props: { status: 0, client: 0 } });
+        await setProject({ studyUID, props: { status: 1, client: 0 } });
         await setProjectSnapshot({ studyUID, payload: project });
     }
 

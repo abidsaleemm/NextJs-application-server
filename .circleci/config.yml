@@ -9,13 +9,10 @@ jobs:
       - run: 
           name: Downloading Artifacts
           command: |
-            mkdir static/interface
-            cd static/interface
-            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-            <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
-            for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
-            rm artifacts.txt
-            cd ~/repo
+            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
+            npm i wget-improved
+            node ./.circleci/artifacts.js
+            rm artifacts.json
       - setup_remote_docker
       - run:
           name: Deploying Production
@@ -32,13 +29,10 @@ jobs:
       - run: 
           name: Downloading Artifacts
           command: |
-            mkdir static/interface
-            cd static/interface
-            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN | grep -o 'https://[^"]*' > artifacts.txt
-            <artifacts.txt xargs -P4 -I % wget %?circle-token=$CIRCLE_TOKEN
-            for file in *.*\?*; do mv "$file" "${file%%\?*}"; done
-            rm artifacts.txt
-            cd ~/repo
+            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
+            npm i wget-improved
+            node ./.circleci/artifacts.js
+            rm artifacts.json
       - setup_remote_docker
       - run:
           name: Deploying Staging

@@ -1,4 +1,4 @@
-FROM node
+FROM node:stretch
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
@@ -8,9 +8,9 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
-# Setup Poppler for handling PDF server functions
+# Setup Poppler for handling PDF server functions. Also set up ffmpeg to handle video rendering.
 RUN apt-get update
-RUN apt-get install libcairo2-dev libpoppler-qt5-dev -y
+RUN apt-get install libcairo2-dev libpoppler-qt5-dev ffmpeg -y
 
 RUN npm install pm2 -g
 

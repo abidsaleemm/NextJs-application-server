@@ -5,6 +5,7 @@ TODO Add more description
 ## Requirements:
 
 - Node > 7 - https://nodejs.org
+- Ramda - http://ramdajs.com
 - Yarn - https://yarnpkg.com/en/
 - Express - https://expressjs.com/
 - Nextjs - https://zeit.co/blog/next2

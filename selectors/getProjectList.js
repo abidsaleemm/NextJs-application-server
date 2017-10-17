@@ -1,6 +1,6 @@
 import R from "ramda";
 
-export default ( data , settings ) => {
+export default ( data , { filter, sort } ) => {
   // Filter list by given key and query
   const filterByKey = (key, query) =>
     R.filter(item =>
@@ -15,16 +15,16 @@ export default ( data , settings ) => {
   // Use filterByKey for each key in settings
   const filteredList = list =>
     R.reduce(
-      (acc, i) => filterByKey(i[0], i[1])(acc),
+      (acc, [key, query]) => filterByKey(key, query)(acc),
       list,
-      R.toPairs(settings.filter)
+      R.toPairs(filter)
     );
 
   // Sort by key: key, cb
-  const sortedList = R.sortBy(R.prop(settings.sort.id));
+  const sortedList = R.sortBy(R.prop(sort.id));
 
   // Set list order
-  const orderedList = list => settings.sort.desc ? R.reverse(list) : list;
+  const orderedList = list => sort.desc ? R.reverse(list) : list;
 
   return R.compose(orderedList, filteredList, sortedList)(data.projects)
 };

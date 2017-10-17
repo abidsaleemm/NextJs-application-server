@@ -6,7 +6,13 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
-import { Button } from 'reactstrap';
+import {
+	Button,
+	UncontrolledDropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+} from 'reactstrap';
 
 // TODO Move this to a action?
 import fetchApi from '../helpers/fetchApi';
@@ -53,6 +59,16 @@ export const headers = [
 	},
 ];
 
+/*
+
+<Button onClick={() => 
+						Router.push({
+							pathname: '/projectDetail',
+							query: { studyUID }
+						})}
+					>Create</Button>
+*/
+
 class ProjectsListing extends Component {
 	static async getInitialProps({
 		req = {},
@@ -89,12 +105,30 @@ class ProjectsListing extends Component {
 				...project,
 				action: status === '' ?
 					// TODO Create as Button dropdown
-					<Button onClick={() => 
-						Router.push({
-							pathname: '/projectDetail',
-							query: { studyUID }
-						})}
-					>Create</Button> :
+					<UncontrolledDropdown>
+						<DropdownToggle caret>
+							Create
+					</DropdownToggle>
+						<DropdownMenu>
+							<DropdownItem onClick={() =>
+								Router.push({
+									pathname: '/projectDetail',
+									query: { studyUID }
+								})}
+							>
+								Spine Lumbar
+						</DropdownItem>
+							<DropdownItem onClick={() =>
+								Router.push({
+									pathname: '/projectDetail',
+									query: { studyUID }
+								})}
+							>
+								Spine Cervical
+					</DropdownItem>
+
+						</DropdownMenu>
+					</UncontrolledDropdown> :
 					<Button onClick={() =>
 						Router.push({
 							pathname: '/projectDetail',

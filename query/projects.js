@@ -10,13 +10,13 @@ export default async () => {
 
     const projects = studies.map(study => {
         const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
-        const { name: clientName } = clientList.find(({ id }) => id === project.client) || {};
+        const { name: client = '' } = clientList.find(({ id }) => id === project.client) || {};
         
         return project ?
             {
                 ...study,
+                client,
                 status: getStatusName(project.status),
-                client: clientName,
             } :
             { ...study, status: '' };
     });

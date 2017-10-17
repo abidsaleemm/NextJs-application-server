@@ -27,7 +27,7 @@ export default ({
 				left: 0;
 				width: 100%;
 				height: 100%;
-				overflow-y: scroll; 
+				overflow-y: scroll;
 				background: rgba(0, 0, 0, 0.6);
 				justify-content: space-around;
 				align-items: center;
@@ -38,6 +38,8 @@ export default ({
 				flex-direction: column;
 				min-width: 350px;
 				min-height: 150px;
+				max-height: 90%;
+				max-width: 90%;
 				width: 90%;
 				background: #fff;
 				padding: 15px; 
@@ -62,13 +64,13 @@ export default ({
 					<div className="buttonClose" onClick={() => onClose()}></div>
 				</div>
 				<div className="content">
-				<ReactPlayer 
-				url={url}
-				width="100%"
-				height="100%"
-				playing 
-				controls
-			/>				
+					<ReactPlayer
+						url={url}
+						width="100%"
+						height="100%"
+						playing
+						controls
+					/>
 				</div>
 			</div>
 		</div>

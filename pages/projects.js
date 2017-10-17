@@ -76,7 +76,6 @@ class ProjectsListing extends Component {
 	render() {
 		const {
 			props: {
-				projects = [],
         data = [],
         settings,
 			  setProjectsFilter = () => { },
@@ -112,7 +111,7 @@ class ProjectsListing extends Component {
 								Spine Cervical
 					</DropdownItem>
 
-						</DropdownMenu>
+					</DropdownMenu>
 					</UncontrolledDropdown> :
 					<Button onClick={() =>
 						Router.push({

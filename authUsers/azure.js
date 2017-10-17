@@ -11,8 +11,9 @@ const tableService = azure.createTableService(
 
 const tableName = 'users';
 
-export const getUser = async ({ username, password }) => {
-    const query = new azure.TableQuery().where('username eq ?', username);
+export const getUser = async ({ username = '', password }) => {
+    // Always handle and store as lower case
+    const query = new azure.TableQuery().where('username eq ?', username.toLowerCase());
     const { 0: { password: passwordCheck, ...user } = {} } = 
         await queryTable({ tableService, query, tableName });
     const res = await bcrypt.compare(password, passwordCheck);
@@ -23,6 +24,6 @@ export const getUser = async ({ username, password }) => {
 export const getClients = async () => 
     await queryTable({ 
         tableService, 
-        query: new azure.TableQuery().where("client eq ?", true), 
-        tableName 
+        query: new azure.TableQuery().where("client eq ?", true),
+        tableName
     });

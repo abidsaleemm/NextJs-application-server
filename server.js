@@ -3,50 +3,48 @@ import next from "next";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import expressSession from "express-session";
-import http from 'http';
-import https from 'https';
-import fs from 'fs';
+import http from "http";
+import https from "https";
+import fs from "fs";
 import proxy from "http-proxy-middleware";
 import auth from "./auth";
-import api from './api';
-import routes from './routes';
-import socketApi from './socketApi';
+import api from "./api";
+import routes from "./routes";
+import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
 
-const flash = require('connect-flash');
+const flash = require("connect-flash");
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-
 const sessionStoreLocal = () => {
-  console.log('Using session-file-store');
+  console.log("Using session-file-store");
 
   const FileStore = require("session-file-store")(expressSession);
   return new FileStore({ path: "./sessiondb" });
 };
 
 const sessionStoreAzure = () => {
-  console.log('Using azure-session');
-  return require('./auth/azure-session.js')(expressSession).create();
+  console.log("Using azure-session");
+  return require("./auth/azure-session.js")(expressSession).create();
 };
 
 app.prepare().then(() => {
   const server = express();
-  server.disable('x-powered-by'); //x-powered-by disable form headers
+  server.disable("x-powered-by"); //x-powered-by disable form headers
   const sessionMiddleWare = expressSession({
-    store: process.env.LOCAL ?
-      sessionStoreLocal() : // Used for local testing
-      sessionStoreAzure(),
-    secret: 'session_secret',
+    store: process.env.LOCAL
+      ? sessionStoreLocal() // Used for local testing
+      : sessionStoreAzure(),
+    secret: "session_secret",
     key: "express.sid",
     resave: true,
     rolling: true,
     cookie: { maxAge: 86400000 },
-    saveUninitialized: false,
+    saveUninitialized: false
   });
-
 
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: false }));
@@ -58,59 +56,57 @@ app.prepare().then(() => {
   routes({ server, app }); // Setup routes
 
   // Setup static routes
-  if (process.env.NODE_ENV !== 'dev') {
-    server.use('/static', authMiddleware({ redirect: false }));
-    server.use('/static', express.static('static'));
+  if (process.env.NODE_ENV !== "dev") {
+    server.use("/static", authMiddleware({ redirect: false }));
+    server.use("/static", express.static("static"));
   } else {
     // Used for local testing.
-    server.use("/static/interface", authMiddleware({ redirect: false }), (req, res) =>
-      proxy({ target: "http://localhost:8081", changeOrigin: true, pathRewrite: { "^/static/interface": "/" } })(req, res));
+    server.use(
+      "/static/interface",
+      authMiddleware({ redirect: false }),
+      (req, res) =>
+        proxy({
+          target: "http://localhost:8081",
+          changeOrigin: true,
+          pathRewrite: { "^/static/interface": "/" }
+        })(req, res)
+    );
 
-    server.use("/static/render", authMiddleware({ redirect: false }), (req, res) =>
-      proxy({ target: "http://localhost:8082", changeOrigin: true, pathRewrite: { "^/static/render": "/" } })(req, res));
+    server.use(
+      "/static/render",
+      authMiddleware({ redirect: false }),
+      (req, res) =>
+        proxy({
+          target: "http://localhost:8082",
+          changeOrigin: true,
+          pathRewrite: { "^/static/render": "/" }
+        })(req, res)
+    );
   }
 
-  // TODO Add host middleware rewrite to add www if hots is only multusmedical.com
-
-  // TODO Hack for now.  But this redirects to Multus Medical public website if host is www.multusmedical.com
-  server.get("*", (req, res, next) => {
-    const { headers: { host } = {} } = req;
-    
-    console.log('host', host);
-
-    if(host === 'www.multusmedical.com' || host === 'www.multusmedical.com:3000') {
-      // Redirect to separate hosted site at 192.155.246.146
-      return proxy({ 
-        target: "http://192.155.246.146:8341", 
-        changeOrigin: true,
-        // pathRewrite: { "^/static/interface": "/" } 
-      })(req, res);
-    }
-
-    next();
-  });
-
-  // All other pages handle with Nextjs
+  // All other pages handle with NextJS
   server.get("*", (req, res) => {
     return handle(req, res);
   });
 
-
   // TODO Use a single env var to declare if production or not? process.env.LOCAL?
-  if (process.env.NODE_ENV !== 'dev') {
-    // Handle port 80 redirect
-    http.createServer((req, res) => {
-      const { headers: { host = 'portal.multusmedical.com' } = {} } = req;
-      res.writeHead(301, { "Location": `https://${host}` });
-      res.end();
-    }).listen(3001, () => {
-      console.log(`Redirect HTTP to HTTPS running`);
-    });
+  if (process.env.NODE_ENV !== "dev") {
+    // Handle port 80 redirect if portal.multusmedical.com
+    http
+      .createServer((req, res) => {
+        const { headers: { host = "portal.multusmedical.com" } = {} } = req;
+
+        res.writeHead(301, { Location: `https://${host}` });
+        res.end();
+      })
+      .listen(3001, () => {
+        console.log(`Redirect HTTP server running`);
+      });
 
     // If not dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync('certs/privkey1.pem'), // Uses Certbot mount archive
-      cert: fs.readFileSync('certs/fullchain1.pem')
+      key: fs.readFileSync("certs/privkey1.pem"), // Uses Certbot mount archive
+      cert: fs.readFileSync("certs/fullchain1.pem")
     };
 
     const serverHttp = https.createServer(options, server).listen(port, () => {
@@ -125,4 +121,3 @@ app.prepare().then(() => {
     });
   }
 });
-

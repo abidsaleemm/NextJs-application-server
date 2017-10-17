@@ -147,9 +147,9 @@ class ProjectsListing extends Component {
 	}
 }
 
-const mapStateToProps = store => ({
-  settings: store.projSettings,
-  data: getProjectList(store.projects, store.projSettings)
+const mapStateToProps = ({ projSettings: settings, projects }) => ({
+  settings,
+  data: getProjectList(projects, settings)
 });
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

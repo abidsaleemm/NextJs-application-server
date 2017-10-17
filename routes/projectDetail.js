@@ -5,9 +5,12 @@ export default ({ server, app }) =>
   server.get(
     "/projectDetail",
     authMiddleware(),
-    async ({ ...req, query: { ...query, studyUID = "" } = {} }, res) =>
-      app.render(req, res, "/projectDetail", {
+    async ({ ...req, query: { ...query, studyUID = "" } = {} }, res) => {
+      
+      // TODO Create a project here from template
+      return app.render(req, res, "/projectDetail", {
         ...query,
         projectDetail: await queryProjectDetail({ studyUID })
       })
+    }
   );

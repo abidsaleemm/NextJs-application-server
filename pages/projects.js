@@ -7,14 +7,18 @@ import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
 import TableList from '../components/tableList';
-import { Button } from 'reactstrap';
-
-
+import {
+	Button,
+	UncontrolledDropdown,
+	DropdownToggle,
+	DropdownMenu,
+	DropdownItem,
+} from 'reactstrap';
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
 
-// TODO This constant should be handled in redux
+// TODO This constant should be handled in redux.  Move to settings?
 export const headers = [
 	{
 		title: "Action",
@@ -51,81 +55,96 @@ export const headers = [
 ];
 
 class ProjectsListing extends Component {
-  static async getInitialProps({
-    req = {},
-    store,
-    isServer,
-    query: { projects = [] } = {}
-  }) {
-    const { payloadProjects, fetchAction } = actions;
+	static async getInitialProps({
+		req = {},
+		store,
+		isServer,
+		query: { projects = [] } = {},
+	}) {
+		const {
+			payloadProjects,
+			fetchAction,
+		} = actions;
 
-    store.dispatch(fetchAction(true));
-    store.dispatch(
-      payloadProjects(isServer ? projects : await fetchApi("projects"))
-    );
-    store.dispatch(fetchAction(false));
+		store.dispatch(fetchAction(true));
+		store.dispatch(payloadProjects(isServer ? projects : await fetchApi('projects')));
+		store.dispatch(fetchAction(false));
 
+		return { isServer };
+	}
 
-    return { isServer };
-  }
-
-  render() {
-    const {
-      props: {
+	render() {
+		const {
+			props: {
+				projects = [],
         data = [],
-        settings = {},
-        setProjectsFilter = () => {},
-        setProjectsSort = () => {}
-      } = {}
-    } = this;
-		const dataEnhanced = data.map(({ ...data, studyUID, status = '' }) =>
-		({
-			...data,
-			action: status === '' ?
-				// TODO Create as Button dropdown
-				<Button onClick={() => 
-					Router.push({
-						pathname: '/projectDetail',
-						query: { studyUID }
-					})}
-				>Create</Button> :
-				<Button onClick={() =>
-					Router.push({
-						pathname: '/projectDetail',
-						query: { studyUID }
-					})}
-				>Edit</Button>,
-		}));
+        settings,
+			  setProjectsFilter = () => { },
+			  setProjectsSort = () => { },
+			} = {},
+		} = this;
 
-    return (
-      <div className="projects">
-        <style jsx>
-          {`
-            .projects {
-              display: flex;
-              flex-direction: column;
-              width: 100%;
-              height: 100%;
-              overflow: auto;
-            }
-          `}
-      </style>
-        <TableList
+		// TODO Should this be moved?
+		const dataEnhanced = data.map(({ ...project, studyUID, status = '' }) =>
+			({
+				...project,
+				action: status === '' ?
+					// TODO Create as Button dropdown
+					<UncontrolledDropdown>
+						<DropdownToggle caret>
+							Create
+					</DropdownToggle>
+						<DropdownMenu>
+							<DropdownItem onClick={() =>
+								Router.push({
+									pathname: '/projectDetail',
+									query: { studyUID }
+								})}
+							>
+								Spine Lumbar
+						</DropdownItem>
+							<DropdownItem onClick={() =>
+								Router.push({
+									pathname: '/projectDetail',
+									query: { studyUID }
+								})}
+							>
+								Spine Cervical
+					</DropdownItem>
+
+						</DropdownMenu>
+					</UncontrolledDropdown> :
+					<Button onClick={() =>
+						Router.push({
+							pathname: '/projectDetail',
+							query: { studyUID }
+						})}
+					>Edit</Button>,
+			}));
+
+		return (
+			<div className="projects">
+				<style jsx>
+					{`
+					.projects {
+						display: flex;
+						flex-direction: column;
+						width: 100%;
+						height: 100%;
+						overflow: auto;
+					}
+				`}
+				</style>
+         <TableList
           data={dataEnhanced}
           headers={headers}
           settings={settings}
-          onRowClick={({ studyUID }) => {
-            Router.push({
-              pathname: "/projectDetail",
-              query: { studyUID }
-            });
-          }}
-          onFilter={props => setProjectsFilter(props)}
-          onSort={props => setProjectsSort(props)}
+          onFilter={setProjectsFilter}
+          onSort={setProjectsSort}
         />
-      </div>
-    );
-  }
+			</div>
+		)
+	}
 }
 
 const mapStateToProps = store => ({

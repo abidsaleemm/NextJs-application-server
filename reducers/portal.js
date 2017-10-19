@@ -1,5 +1,9 @@
 import { PAYLOAD_PORTAL, VIDEO_SET } from "../constants/actionTypes";
 
+export const initialState = {
+	projects: [],
+};
+
 export default (
   state = {},
   { type, portal = {}, invoiceRoute = null, videoRoute = null }

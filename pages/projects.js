@@ -110,7 +110,7 @@ class ProjectsListing extends Component {
 	}
 }
 
-const mapStateToProps = ({ projectsSettings, projects }) => ({
+const mapStateToProps = ({ projectsSettings, projects: { projects } }) => ({
 	tableHeader: {
 		action: { title: "", sort: false },
 		status: { title: "Status", sort: true },
@@ -123,8 +123,8 @@ const mapStateToProps = ({ projectsSettings, projects }) => ({
 	},
 	tableSettings: projectsSettings,
   tableData: selectProjectList({ 
+		projects,
 		settings: projectsSettings, 
-		data: projects 
 	})
 });
 

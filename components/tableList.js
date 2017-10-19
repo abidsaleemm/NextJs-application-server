@@ -36,6 +36,7 @@ export default props => {
             white-space: nowrap;
             cursor: pointer;
             border: none;
+            user-select: none;
           }
 
           .headerCellDisabled {
@@ -89,7 +90,9 @@ export default props => {
             {Object.entries(header).map(
               ([id, { title = "", sort = false }]) => (
                 <th
-                  className={`${sort ? 'headerCell' : "headerCellDisabled"} ${id === sortKey
+                  className={`${sort
+                    ? "headerCell"
+                    : "headerCellDisabled"} ${id === sortKey
                     ? "headerCell--active"
                     : null}`}
                   key={`${title}-${id}`}
@@ -115,7 +118,7 @@ export default props => {
                     type="text"
                     name={`filter-${id}`}
                     value={filter[id]}
-                    onClear={() => onFilter([id, ''])}
+                    onClear={() => onFilter([id, ""])}
                     onChange={({ target: { value } = {} }) =>
                       onFilter([id, value])}
                   />

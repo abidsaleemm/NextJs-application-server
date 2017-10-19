@@ -1,4 +1,4 @@
-import { PORTAL_SET_FILTER, PORTAL_SET_SORT } from "../constants/actionTypes";
+import { PORTAL_SET_SETTINGS } from "../constants/actionTypes";
 
 export const initialState = {
   filter: {
@@ -14,25 +14,25 @@ export const initialState = {
   sortDesc: false,
 };
 
-export default (state = initialState, { type, filter = {}, sort = {} }) => {
+export default (
+  state = initialState,
+  { type, settings: { sortKey, filter = {}, ...settings } = {} }
+) => {
   switch (type) {
-    // TODO This is used in two places.  Should a utility function be created and used to handle the merge?
-    case PORTAL_SET_FILTER:
+    // TODO This is used in two places.  Should a utility function?
+    case PORTAL_SET_SETTINGS:
       return {
         ...state,
+        sortKey: sortKey !== undefined ? sortKey : state.sortKey,
+        sortDesc:
+          sortKey !== undefined
+            ? state.sortKey === sortKey ? !state.sortDesc : state.sortDesc
+            : state.sortDesc,
+        ...settings,
+        // Merge filters if any
         filter: {
           ...state.filter,
           ...filter
-        }
-      };
-    // issue-34 This is reusable cut this reducer up
-    case PORTAL_SET_SORT:
-      return {
-        ...state,
-        sort: {
-          ...state.sort,
-          ...sort,
-          desc: state.sort.id === sort.id ? !state.sort.desc : state.sort.desc
         }
       };
     default:

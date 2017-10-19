@@ -16,6 +16,7 @@ const initialState = {
 
 export default (state = initialState, { type, settings: { sortKey , filter = {}, ...settings } = {} }) => {
   switch (type) {
+    // TODO This is used in two places.  Should a utility function?
     case PROJECTS_SET_SETTINGS:
       return {
         ...state,
@@ -26,7 +27,6 @@ export default (state = initialState, { type, settings: { sortKey , filter = {},
         filter: {
           ...state.filter,
           ...filter,
-
         }
       };
     default:

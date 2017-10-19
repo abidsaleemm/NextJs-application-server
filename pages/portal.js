@@ -32,10 +32,10 @@ const Portal = class extends Component {
     const {
       props: {
         tableData = [],
-				tableHeader = {},
-				tableSettings = {},
-        setProjectsSettings = () => { },
-        setVideo = () => {},
+        tableHeader = {},
+        tableSettings = {},
+        setPortalSettings = () => {},
+        setVideo = () => {}
       }
     } = this;
 
@@ -72,10 +72,10 @@ const Portal = class extends Component {
         </style>
         <TableList
           data={tableDataEnhanced}
-					header={tableHeader}
-					onSort={k => setProjectsSettings({ sortKey: k })}
-					onFilter={([k, v]) => setProjectsSettings({ filter: { [k]: v } })}
-					{...tableSettings}
+          header={tableHeader}
+          onSort={k => setPortalSettings({ sortKey: k })}
+          onFilter={([k, v]) => setPortalSettings({ filter: { [k]: v } })}
+          {...tableSettings}
         />
         <VideoModal />
       </div>
@@ -83,22 +83,22 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = ({ portalSettings, portal }) => ({
+const mapStateToProps = ({ portal: { projects }, portalSettings }) => ({
   tableHeader: {
-		status: { title: "Status", sort: true },
+    status: { title: "Status", sort: true },
     patientName: { title: "Patient Name", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },
     modality: { title: "Modality", sort: true },
     location: { title: "Location", sort: true },
     video: { title: "", sort: false },
-    invoice: { title: "", sort: false },
-	},
-	tableSettings: portalSettings,
+    invoice: { title: "", sort: false }
+  },
+  tableSettings: portalSettings,
   tableData: selectProjectList({ 
-    settings: portalSettings, 
-    data: portal 
-  })
+		projects,
+		settings: portalSettings, 
+	})
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

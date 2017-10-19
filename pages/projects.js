@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux';
 import Router from 'next/router';
-import getProjectList from "../selectors/getProjectList";
+import selectProjectList from "../selectors/selectProjectList";
 import { initStore } from '../store';
 import * as actions from '../actions';
 import Wrapper from '../hoc/wrapper';
@@ -17,42 +17,6 @@ import {
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
-
-// TODO This constant should be handled in redux.  Move to settings?
-export const headers = [
-	{
-		title: "Action",
-		id: "action"
-	},
-  {
-    title: "Status",
-    id: "status"
-  },
-  {
-    title: "Patient Name",
-    id: "patientName"
-  },
-  {
-    title: "Study Name",
-    id: "studyName"
-  },
-  {
-    title: "Study Date",
-    id: "studyDate"
-  },
-  {
-    title: "Modality",
-    id: "modality"
-  },
-  {
-    title: "Location",
-    id: "location"
-  },
-  {
-    title: "Client",
-    id: "client"
-  }
-];
 
 class ProjectsListing extends Component {
 	static async getInitialProps({
@@ -76,15 +40,15 @@ class ProjectsListing extends Component {
 	render() {
 		const {
 			props: {
-        data = [],
-        settings,
-			  setProjectsFilter = () => { },
-			  setProjectsSort = () => { },
+        tableData = [],
+				tableHeader = {},
+				tableSettings = {},
+				setProjectsSettings = () => { },
 			} = {},
 		} = this;
 
 		// TODO Should this be moved?
-		const dataEnhanced = data.map(({ ...project, studyUID, status = '' }) =>
+		const tableDataEnhanced = tableData.map(({ ...project, studyUID, status = '' }) =>
 			({
 				...project,
 				action: status === '' ?
@@ -135,21 +99,32 @@ class ProjectsListing extends Component {
 				`}
 				</style>
          <TableList
-          data={dataEnhanced}
-          headers={headers}
-          settings={settings}
-          onFilter={setProjectsFilter}
-          onSort={setProjectsSort}
+          data={tableDataEnhanced}
+					header={tableHeader}
+					onSort={k => setProjectsSettings({ sortKey: k })}
+					onFilter={([k, v]) => setProjectsSettings({ filter: { [k]: v } })}
+					{...tableSettings}
         />
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = ({ projSettings: settings, projects }) => ({
-  settings,
-  data: getProjectList(projects, settings)
+const mapStateToProps = ({ projectsSettings, projects }) => ({
+	tableHeader: {
+		action: { title: "", sort: false },
+		status: { title: "Status", sort: true },
+    patientName: { title: "Patient Name", sort: true },
+    studyName: { title: "Study Name", sort: true },
+    studyDate: { title: "Study Date", sort: true },
+    modality: { title: "Modality", sort: true },
+    location: { title: "Location", sort: true },
+    client: { title: "Client", sort: true },
+	},
+	tableSettings: projectsSettings, // TODO Add selector
+  tableData: selectProjectList({ projectsSettings, projects })
 });
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

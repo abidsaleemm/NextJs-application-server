@@ -34,7 +34,8 @@ const Portal = class extends Component {
         tableData = [],
 				tableHeader = {},
 				tableSettings = {},
-				setProjectsSettings = () => { },
+        setProjectsSettings = () => { },
+        setVideo = () => {},
       }
     } = this;
 

@@ -1,26 +1,23 @@
-import {
-  PROJECTS_SET_FILTER,
-  PROJECTS_SET_SORT
-} from "../constants/actionTypes";
+import { PORTAL_SET_FILTER, PORTAL_SET_SORT } from "../constants/actionTypes";
 
 export const initialState = {
   filter: {
-    status: "",
+    status: "", // TODO Change type later
     patientName: "",
     studyName: "",
+    studyDate: "", // TODO Change type later
     modality: "",
     location: "",
     client: ""
   },
-  sort: {
-    id: "status", // Set default soft id
-    desc: false
-  }
+  sortKey: "status",
+  sortDesc: false,
 };
 
 export default (state = initialState, { type, filter = {}, sort = {} }) => {
   switch (type) {
-    case PROJECTS_SET_FILTER:
+    // TODO This is used in two places.  Should a utility function be created and used to handle the merge?
+    case PORTAL_SET_FILTER:
       return {
         ...state,
         filter: {
@@ -29,7 +26,7 @@ export default (state = initialState, { type, filter = {}, sort = {} }) => {
         }
       };
     // issue-34 This is reusable cut this reducer up
-    case PROJECTS_SET_SORT:
+    case PORTAL_SET_SORT:
       return {
         ...state,
         sort: {

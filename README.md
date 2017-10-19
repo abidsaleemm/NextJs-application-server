@@ -5,6 +5,7 @@ TODO Add more description
 ## Requirements:
 
 - Node > 7 - https://nodejs.org
+- Ramda - http://ramdajs.com
 - Yarn - https://yarnpkg.com/en/
 - Express - https://expressjs.com/
 - Nextjs - https://zeit.co/blog/next2
@@ -34,6 +35,7 @@ TODO Add more description
 ├─ query        - Data querying functions.
 ├─ reducers     - Redux state reducers.
 ├─ routes       - Express routing handling functions.
+├─ selectors    - Redux selectors.
 ├─ socketApi    - Socket.io functions for client API.
 ├─ styles       - SCSS style sheets for front-end components. Global sheets also.
 └─ video       - Video Rendering processing code.

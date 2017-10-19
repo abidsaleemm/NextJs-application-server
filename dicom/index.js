@@ -1,3 +1,10 @@
+const setDefaults = ({ ...study, patientName = '' }) => ({
+    ...Object
+        .entries(study)
+        .reduce((a, [k, v]) => ({ ...a, [k]: v === undefined ? '' : v }), {}),
+    patientName: patientName.replace(/\^/g, ' ')
+});
+
 module.exports = (({
     ...adapter,
     getStudies,
@@ -5,19 +12,10 @@ module.exports = (({
 }) => ({
         ...adapter,
         getStudies: async () => {
-            const studies = await getStudies()
-            return studies.map(({ ...study, patientName = '' }) => ({
-                ...study,
-                patientName: patientName.replace(/\^/g, ' ')
-            }));
+            const studies = await getStudies();
+            return studies.map(setDefaults);
         },
-        getStudy: async (props) => {
-            const { patientName = '', ...study } = await getStudy(props);
-            return ({
-                ...study,
-                patientName: patientName.replace(/\^/g, ' ')
-            })
-        }
+        getStudy: async (props) => setDefaults(await getStudy(props))
     }))(process.env.LOCAL !== undefined ?
         require('./adapterLocal') :
         require('./adapterAzure'));

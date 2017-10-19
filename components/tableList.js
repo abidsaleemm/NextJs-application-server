@@ -1,131 +1,143 @@
 import React from "react";
-import { Table, Input } from "reactstrap";
+import { Table } from "reactstrap";
+import SearchInput from "./SearchInput";
 import uuid from "uuid";
 
-export default ({
-  data = [],
-  headers = [],
-  filter = {},
-  sort: {
-    id: sortId = '',
-    desc: sortDesc = false,
-  } = {},
-  onRowClick = () => { },
-  onFilter = () => { },
-  onSort = () => { },
-}) =>
-  <div className="root">
-    <style jsx>
-      {`
-        .root {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          height: 100%;
-        }
+export default props => {
+  const {
+    data = [],
+    header = {},
+    filter = {},
+    sortKey = "",
+    sortDesc = false,
+    onRowClick = () => {},
+    onFilter = () => {},
+    onSort = () => {},
+  } = props;
 
-        .fieldFilter {
-          padding: 0.4em;
-        }
+  return <div className="root">
+      <style jsx>
+        {`.root {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+          }
+          .fieldFilter {
+            padding: 0.4em;
+            border: none;
+          }
 
-        .fieldColor {
-          background: #ddd;
-        }
+          .fieldColor {
+            background: #ddd;
+          }
 
-        .headerCell {
-          white-space: nowrap;
-          cursor: pointer;
-          padding: 0.65em;
-        }
+          .headerCell {
+            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+          }
 
-        .headerCellDisabled {
-          white-space: nowrap;
-          padding: 0.65em;
-        }
+          .headerCellDisabled {
+            white-space: nowrap;
+            padding: 0.65em;
+          }
 
-        .headerCell:hover {
-          background: #d5d5d5;
-        }
-        
-        .headerCellSort {
-          width: 100%;
-          height: 0.25em;
-          background: #1bf;
-        }
+          .headerCell:hover {
+            background: #d5d5d5;
+          }
 
-        .dataCellSort {
-          background: #e0f4ff;
-        }
-      `}
-    </style>
-    <Table striped>
-      <thead>
-        <tr>
-          {headers.map(({ title, id, sortDisabled }) =>
-            sortDisabled ?
-              <th
-                className="headerCellDisabled"
-                key={`${title}-${id}`}
-              >
-                {title}
-              </th>
-              :
-              <th
-                className="headerCell"
-                key={`${title}-${id}`}
-                onClick={() => onSort({ id })}
-              >
-                {id === sortId ? !sortDesc ? <div className="headerCellSort" /> : null : null}
-                {title}
-                {id === sortId ? sortDesc ? <div className="headerCellSort" /> : null : null}
-              </th>
-          )}
-        </tr>
-        <tr className="fieldColor">
-          {headers.map(
-            ({ id }) =>
-              filter[id] !== undefined
-                ? <td className="fieldFilter" key={`${id}-filter`}>
-                  <Input
+          .headerCell--active {
+            background: #ddd;
+          }
+
+          .headerCellSort {
+            width: 100%;
+            height: 0.25em;
+            background: #1bf;
+          }
+          .headerTab {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-right: 0.2rem;
+          }
+
+          .dataCellSort {
+            background: #e0f4ff;
+          }
+
+          .arrow {
+            display: inline-block;
+            position: relative;
+            margin-left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #292b2c;
+            transition: cubic-bezier(0.52, 0.13, 0, 1.07) 0.2s all;
+          }
+          .arrow--up {
+            transform: rotate(180deg);
+          }`}
+      </style>
+
+      <Table striped hover>
+        <thead>
+          <tr>
+            {Object.entries(header).map(
+              ([id, { title = "", sort = false }]) => (
+                <th
+                  className={`${sort ? 'headerCell' : "headerCellDisabled"} ${id === sortKey
+                    ? "headerCell--active"
+                    : null}`}
+                  key={`${title}-${id}`}
+                  onClick={() => onSort(id)}
+                >
+                  <div className="headerTab">
+                    {title}
+                    {id === sortKey && sort ? (
+                      <div
+                        className={`arrow ${sortDesc ? "arrow--up" : null}`}
+                      />
+                    ) : null}
+                  </div>
+                </th>
+              )
+            )}
+          </tr>
+          <tr className="fieldColor">
+            {Object.entries(header).map(([id, { sort }]) => (
+              <td className="fieldFilter" key={`${id}-filter`}>
+                {filter[id] !== undefined ? (
+                  <SearchInput
                     type="text"
                     name={`filter-${id}`}
                     value={filter[id]}
+                    onClear={() => onFilter([id, ''])}
                     onChange={({ target: { value } = {} }) =>
-                      onFilter({ [id]: value })}
+                      onFilter([id, value])}
                   />
-                </td>
-                : <td key={`${id}-filter`} />
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {data
-          .filter(v =>
-            Object.entries(v).reduce(
-              (a, [k, dataValue]) =>
-                filter[k] !== undefined
-                  ? filter[k] !== ""
-                    ? new RegExp(`${filter[k]}`, 'gi').test(dataValue)
-                    : a
-                  : a,
-              true
-            ))
-          .sort(({ [sortId]: a = '' }, { [sortId]: b = '' }) =>
-            !sortDesc ? a.localeCompare(b) : b.localeCompare(a))
-          .map(dataProps =>
+                ) : null}
+              </td>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(dataProps => (
             <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
-              {headers
-                .map(({ ...props, id }) => ({
+              {Object.entries(header)
+                .map(([id, props]) => ({
                   ...props,
-                  data: dataProps[id],
+                  data: dataProps[id]
                 }))
-                .map(({ id, data, type, title, action }) =>
-                  <td key={uuid()}>
-                    {data}
-                  </td>
-                )}
+                .map(({ id, data, type, title, action }) => (
+                  <td key={uuid()}>{data}</td>
+                ))}
             </tr>
-          )}
-      </tbody>
-    </Table>
-  </div>;
+          ))}
+        </tbody>
+      </Table>
+    </div>;
+};

@@ -7,45 +7,10 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
-import fetchApi from "../helpers/fetchApi";
+import selectProjectList from "../selectors/selectProjectList";
 
-// TODO Should we move these someplace else?
-const headers = [
-  {
-    title: "Status",
-    id: "status"
-  },
-  {
-    title: "Patient Name",
-    id: "patientName"
-  },
-  {
-    title: "Study Name",
-    id: "studyName"
-  },
-  {
-    title: "Study Date",
-    id: "studyDate"
-  },
-  {
-    title: "Modality",
-    id: "modality"
-  },
-  {
-    title: "Location",
-    id: "location"
-  },
-  {
-    title: "Video",
-    id: "video",
-    sortDisabled: true
-  },
-  {
-    title: "Invoice",
-    id: "invoice",
-    sortDisabled: true
-  }
-];
+// TODO Move this to a action?
+import fetchApi from "../helpers/fetchApi";
 
 const Portal = class extends Component {
   static async getInitialProps({
@@ -66,16 +31,15 @@ const Portal = class extends Component {
   render() {
     const {
       props: {
-        projects = [],
-        filter = {},
-        sort = {},
-        setVideo = () => {},
-        setPortalFilter = () => {},
-        setPortalSort = () => {}
+        tableData = [],
+        tableHeader = {},
+        tableSettings = {},
+        setPortalSettings = () => {},
+        setVideo = () => {}
       }
     } = this;
 
-    const projectsEnhanced = projects.map(
+    const tableDataEnhanced = tableData.map(
       ({ studyUID, videoExists = false, ...project }) => ({
         ...project,
         invoice: (
@@ -96,23 +60,22 @@ const Portal = class extends Component {
     return (
       <div className="portal">
         <style jsx>
-        {`
-          .portal {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-          }
-        `}
+          {`
+            .portal {
+              display: flex;
+              flex-direction: column;
+              width: 100%;
+              height: 100%;
+              overflow: auto;
+            }
+          `}
         </style>
         <TableList
-          headers={headers}
-          sort={sort}
-          filter={filter}
-          data={projectsEnhanced}
-          onFilter={props => setPortalFilter(props)}
-          onSort={props => setPortalSort(props)}
+          data={tableDataEnhanced}
+          header={tableHeader}
+          onSort={k => setPortalSettings({ sortKey: k })}
+          onFilter={([k, v]) => setPortalSettings({ filter: { [k]: v } })}
+          {...tableSettings}
         />
         <VideoModal />
       </div>
@@ -120,7 +83,24 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = ({ portal }) => ({ ...portal });
+const mapStateToProps = ({ portal: { projects }, portalSettings }) => ({
+  tableHeader: {
+    status: { title: "Status", sort: true },
+    patientName: { title: "Patient Name", sort: true },
+    studyName: { title: "Study Name", sort: true },
+    studyDate: { title: "Study Date", sort: true },
+    modality: { title: "Modality", sort: true },
+    location: { title: "Location", sort: true },
+    video: { title: "", sort: false },
+    invoice: { title: "", sort: false }
+  },
+  tableSettings: portalSettings,
+  tableData: selectProjectList({ 
+		projects,
+		settings: portalSettings, 
+	})
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

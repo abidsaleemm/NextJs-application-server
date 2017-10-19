@@ -16,7 +16,7 @@ export const initialState = {
 };
 
 export default (
-  state = initialState, 
+  state = initialState,
   { type, projectDetail = {}, client = 0, status = 0 }
 ) => {
   switch (type) {

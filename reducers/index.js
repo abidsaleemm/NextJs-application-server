@@ -4,3 +4,4 @@ export { default as projectDetail } from "./projectDetail";
 export { default as portal } from "./portal";
 export { default as portalSettings } from "./portalSettings";
 export { default as fetching } from "./fetching";
+export { default as videoRoute } from "./videoRoute";

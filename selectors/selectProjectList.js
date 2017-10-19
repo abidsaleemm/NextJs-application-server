@@ -13,7 +13,10 @@ const filterByKey = (key, query) =>
   );
 
 export default createSelector(
-  [({ projects }) => projects, ({ projectsSettings }) => projectsSettings],
+  [
+    ({ data }) => data, 
+    ({ settings }) => settings
+  ],
   ({ projects }, { filter, filterFunc, sortKey, sortDesc }) => {
     const filteredList = list =>
       R.reduce(

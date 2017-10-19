@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import withRedux from 'next-redux-wrapper';
 import { bindActionCreators } from 'redux';
 import Router from 'next/router';
-import selectProjectList from "../selectors/selectProjectList";
-import { initStore } from '../store';
-import * as actions from '../actions';
-import Wrapper from '../hoc/wrapper';
-import TableList from '../components/tableList';
 import {
 	Button,
 	UncontrolledDropdown,
@@ -14,6 +9,11 @@ import {
 	DropdownMenu,
 	DropdownItem,
 } from 'reactstrap';
+import { initStore } from '../store';
+import * as actions from '../actions';
+import Wrapper from '../hoc/wrapper';
+import TableList from '../components/tableList';
+import selectProjectList from "../selectors/selectProjectList";
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
@@ -121,8 +121,11 @@ const mapStateToProps = ({ projectsSettings, projects }) => ({
     location: { title: "Location", sort: true },
     client: { title: "Client", sort: true },
 	},
-	tableSettings: projectsSettings, // TODO Add selector
-  tableData: selectProjectList({ projectsSettings, projects })
+	tableSettings: projectsSettings,
+  tableData: selectProjectList({ 
+		settings: projectsSettings, 
+		data: projects 
+	})
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);

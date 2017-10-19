@@ -7,46 +7,10 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
-import fetchApi from "../helpers/fetchApi";
-import getProjectList from "../selectors/getProjectList";
+import selectProjectList from "../selectors/selectProjectList";
 
-// TODO Should we move these someplace else?
-const headers = [
-  {
-    title: "Status",
-    id: "status"
-  },
-  {
-    title: "Patient Name",
-    id: "patientName"
-  },
-  {
-    title: "Study Name",
-    id: "studyName"
-  },
-  {
-    title: "Study Date",
-    id: "studyDate"
-  },
-  {
-    title: "Modality",
-    id: "modality"
-  },
-  {
-    title: "Location",
-    id: "location"
-  },
-  {
-    title: "Video",
-    id: "video",
-    sortDisabled: true
-  },
-  {
-    title: "Invoice",
-    id: "invoice",
-    sortDisabled: true
-  }
-];
+// TODO Move this to a action?
+import fetchApi from "../helpers/fetchApi";
 
 const Portal = class extends Component {
   static async getInitialProps({
@@ -67,15 +31,14 @@ const Portal = class extends Component {
   render() {
     const {
       props: {
-        data = [],
-        settings,
-        setVideo = () => {},
-        setPortalFilter = () => {},
-        setPortalSort = () => {}
+        tableData = [],
+				tableHeader = {},
+				tableSettings = {},
+				setProjectsSettings = () => { },
       }
     } = this;
 
-    const projectsEnhanced = data.map(
+    const tableDataEnhanced = tableData.map(
       ({ studyUID, videoExists = false, ...project }) => ({
         ...project,
         invoice: (
@@ -107,11 +70,11 @@ const Portal = class extends Component {
           `}
         </style>
         <TableList
-          headers={headers}
-          data={projectsEnhanced}
-          settings={settings}
-          onFilter={props => setPortalFilter(props)}
-          onSort={props => setPortalSort(props)}
+          data={tableDataEnhanced}
+					header={tableHeader}
+					onSort={k => setProjectsSettings({ sortKey: k })}
+					onFilter={([k, v]) => setProjectsSettings({ filter: { [k]: v } })}
+					{...tableSettings}
         />
         <VideoModal />
       </div>
@@ -119,10 +82,24 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = store => ({
-  settings: store.portSettings,
-  data: getProjectList(store.portal, store.portSettings)
+const mapStateToProps = ({ portalSettings, portal }) => ({
+  tableHeader: {
+		status: { title: "Status", sort: true },
+    patientName: { title: "Patient Name", sort: true },
+    studyName: { title: "Study Name", sort: true },
+    studyDate: { title: "Study Date", sort: true },
+    modality: { title: "Modality", sort: true },
+    location: { title: "Location", sort: true },
+    video: { title: "", sort: false },
+    invoice: { title: "", sort: false },
+	},
+	tableSettings: portalSettings,
+  tableData: selectProjectList({ 
+    settings: portalSettings, 
+    data: portal 
+  })
 });
+
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(

@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import * as reducers from './reducers';
 
 const enhancer = compose(
-  process.env.NODE_ENV !== "dev" && process.env.NODE_ENV !== "production"
+  process.env.NODE_ENV !== "production"
     ? applyMiddleware(thunk, createLogger())
     : applyMiddleware(thunk)
 );

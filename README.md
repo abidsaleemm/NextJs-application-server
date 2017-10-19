@@ -35,6 +35,7 @@ TODO Add more description
 ├─ query        - Data querying functions.
 ├─ reducers     - Redux state reducers.
 ├─ routes       - Express routing handling functions.
+├─ selectors    - Redux selectors.
 ├─ socketApi    - Socket.io functions for client API.
 ├─ styles       - SCSS style sheets for front-end components. Global sheets also.
 └─ video       - Video Rendering processing code.

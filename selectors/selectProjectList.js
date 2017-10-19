@@ -14,10 +14,10 @@ const filterByKey = (key, query) =>
 
 export default createSelector(
   [
-    ({ data }) => data, 
+    ({ projects }) => projects, 
     ({ settings }) => settings
   ],
-  ({ projects }, { filter, filterFunc, sortKey, sortDesc }) => {
+  (projects, { filter, filterFunc, sortKey, sortDesc }) => {
     const filteredList = list =>
       R.reduce(
         (acc, [key, query]) => filterByKey(key, query)(acc),
@@ -32,12 +32,10 @@ export default createSelector(
     // Set list order
     const orderedList = list => (sortDesc ? R.reverse(list) : list);
 
-    const ret =R.compose(
+    return R.compose(
       orderedList, 
       sortedList,
       filteredList, 
     )(projects);
-
-    return ret; 
   }
 );

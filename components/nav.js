@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
-export default ({ client }) =>
+const RenderUser = () =>
+  <div className="buttonLink" onClick={() => Router.push({ pathname: '/projects' })}>
+    Projects
+  </div>
+
+const RenderClient = () =>
+  <div className="buttonLink" onClick={() => Router.push({ pathname: '/portal' })}>
+    Portal
+  </div>
+
+const RenderAdmin = () =>
+  <div>
+    <div className="buttonLink" onClick={() => Router.push({ pathname: '/projects' })}>
+      Projects
+    </div>
+    <div className="buttonLink" onClick={() => Router.push({ pathname: '/portal' })}>
+      Portal
+    </div>
+  </div>
+
+export default ({ client, admin = false }) =>
   <div>
     <style jsx global>
       {`
-        .button {
+        .buttonLink {
           margin: 10px;
           cursor: pointer;
           color: white;
+          display: inline-block;
         }
         .nav {
           background: #3079C6;
@@ -19,11 +40,7 @@ export default ({ client }) =>
       `}
     </style>
     <Nav className="nav">
-      <Link href="/auth/logout"><a className="button">Logout</a></Link>
-      <div className="button" onClick={() => Router.push({
-        pathname: client === true ? '/portal' : '/projects',
-      })}>
-        {client === true ? 'Portal' : 'Projects'}
-      </div>
+      <Link href="/auth/logout"><a className="buttonLink">Logout</a></Link>
+      {admin ? <RenderAdmin /> : client === true ? <RenderClient /> : <RenderUser />}
     </Nav>
   </div>

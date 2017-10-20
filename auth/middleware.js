@@ -10,11 +10,14 @@ export default ({ redirect = true } = {}) => (req, res, next) => {
     } 
 
     const { 
-        user: { client = false, id: clientId }, 
+        user: { admin = false, client = false, id: clientId }, 
         path = '',
     } = req;
 
-    // TODO Handle using routing middleware
+    if (admin) {
+        return next();
+    }
+
     // Handle user type redirection
     if (client === true && path === '/projects') {
         console.log('redirect to portal');

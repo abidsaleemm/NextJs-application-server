@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
-import { Button } from "reactstrap";
+import {
+  Button,
+  Table
+} from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
@@ -11,37 +14,67 @@ import selectProjectList from "../selectors/selectProjectList";
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
+const window = {};
 
 const Portal = class extends Component {
   static async getInitialProps({
-    req: { session } = {},
     store,
     isServer,
-    query: { portal = {} } = {}
+    userId: clientId,
+    admin,
+    query: { portal = {} } = {},
+    ...props,
   }) {
     const { payloadPortal, fetchAction } = actions;
 
     store.dispatch(fetchAction(true));
-    store.dispatch(payloadPortal(isServer ? portal : await fetchApi("portal")));
+    store.dispatch(payloadPortal(isServer ? portal : await fetchApi("portal", { clientId, admin })));
     store.dispatch(fetchAction(false));
+  }
 
-    return { isServer, client: true };
+  handleUpload() {
+    console.log(files);
+    // console.log('files',file);
+    // Extract ref
   }
 
   render() {
     const {
       props: {
         tableData = [],
-        tableHeader = {},
-        tableSettings = {},
-        setPortalSettings = () => {},
-        setVideo = () => {}
+      tableHeader = {},
+      tableSettings = {},
+      tableSubHeader = {},
+      admin = false,
+      setPortalSettings = () => { },
+      setVideo = () => { }
       }
     } = this;
+
+    const tableHeaderEnhanced = admin ? { 
+      client: { title: "Client", sort: true },
+      ...tableHeader 
+    } : tableHeader;
 
     const tableDataEnhanced = tableData.map(
       ({ studyUID, videoExists = false, ...project }) => ({
         ...project,
+        // upload: 
+        //   <div>
+        //     <label htmlFor="file-upload">
+        //       <div className="btn btn-secondary">Upload File</div>
+        //     </label>
+        //     <input style={{ display: 'none' }} id="file-upload" type="file" onChange={this.handleUpload}/>
+        //   </div>,
+        // tableSubHeader: {
+  //   studyName: { title: "Study Name", sort: true },
+  //   studyDate: { title: "Study Date", sort: true },
+  //   status: { title: "Status", sort: true },
+  //   modality: { title: "Modality", sort: true },
+  //   location: { title: "Imaging Center", sort: true },
+  //   upload: { title: "Attach Files", sort: false },
+  //   video: { title: "", sort: false },
+  // },
         invoice: (
           <a
             className="btn btn-primary"
@@ -51,6 +84,18 @@ const Portal = class extends Component {
             View invoice
           </a>
         ),
+        studies:
+        <Table>
+          <tbody>
+            <tr>
+              <td>studyName</td>
+              <td>studyDate</td>
+              <td>status</td>
+              <td>location</td>
+              <td>video</td>
+            </tr>
+          </tbody>
+        </Table>,
         video: videoExists ? (
           <Button onClick={() => setVideo(studyUID)}>Video</Button>
         ) : null
@@ -61,6 +106,13 @@ const Portal = class extends Component {
       <div className="portal">
         <style jsx>
           {`
+            .custom-file-upload {
+              border: 1px solid #ccc;
+              display: inline-block;
+              padding: 6px 12px;
+              cursor: pointer;
+          }
+
             .portal {
               display: flex;
               flex-direction: column;
@@ -72,7 +124,7 @@ const Portal = class extends Component {
         </style>
         <TableList
           data={tableDataEnhanced}
-          header={tableHeader}
+          header={tableHeaderEnhanced}
           onSort={k => setPortalSettings({ sortKey: k })}
           onFilter={([k, v]) => setPortalSettings({ filter: { [k]: v } })}
           {...tableSettings}
@@ -83,22 +135,28 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = ({ portal: { projects }, portalSettings }) => ({
+const mapStateToProps = ({ portal: { projects = [], patients = [] }, portalSettings = {} }) => ({
   tableHeader: {
-    status: { title: "Status", sort: true },
     patientName: { title: "Patient Name", sort: true },
-    studyName: { title: "Study Name", sort: true },
-    studyDate: { title: "Study Date", sort: true },
-    modality: { title: "Modality", sort: true },
-    location: { title: "Location", sort: true },
-    video: { title: "", sort: false },
-    invoice: { title: "", sort: false }
+    patientDOB: { title: "DOB", sort: true },
+    patientAddress: { title: "Patient Address", sort: true },
+    invoice: { title: "Invoice", sort: false },
+    studies: { title: "Studies", sort: false }
   },
+  // tableSubHeader: {
+  //   studyName: { title: "Study Name", sort: true },
+  //   studyDate: { title: "Study Date", sort: true },
+  //   status: { title: "Status", sort: true },
+  //   modality: { title: "Modality", sort: true },
+  //   location: { title: "Imaging Center", sort: true },
+  //   upload: { title: "Attach Files", sort: false },
+  //   video: { title: "", sort: false },
+  // },
   tableSettings: portalSettings,
-  tableData: selectProjectList({ 
-		projects,
-		settings: portalSettings, 
-	})
+  tableData: selectProjectList({
+    projects,
+    settings: portalSettings,
+  })
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
@@ -106,3 +164,48 @@ const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
   Wrapper(Portal)
 );
+
+/*
+<thead>
+<tr>
+  {Object.entries(header).map(
+    ([id, { title = "", sort = false }]) => (
+      <th
+        className={`${sort
+          ? "headerCell"
+          : "headerCellDisabled"} ${id === sortKey
+          ? "headerCell--active"
+          : null}`}
+        key={`${title}-${id}`}
+        onClick={() => onSort(id)}
+      >
+        <div className="headerTab">
+          {title}
+          {id === sortKey && sort ? (
+            <div
+              className={`arrow ${sortDesc ? "arrow--up" : null}`}
+            />
+          ) : null}
+        </div>
+      </th>
+    )
+  )}
+</tr>
+<tr className="fieldColor">
+  {Object.entries(header).map(([id, { sort }]) => (
+    <td className="fieldFilter" key={`${id}-filter`}>
+      {filter[id] !== undefined ? (
+        <SearchInput
+          type="text"
+          name={`filter-${id}`}
+          value={filter[id]}
+          onClear={() => onFilter([id, ""])}
+          onChange={({ target: { value } = {} }) =>
+            onFilter([id, value])}
+        />
+      ) : null}
+    </td>
+  ))}
+</tr>
+</thead>
+*/

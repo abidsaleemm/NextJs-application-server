@@ -20,7 +20,7 @@ const Portal = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    userId: clientId,
+    userId: clientID,
     admin,
     query: { portal = {} } = {},
     ...props,
@@ -28,7 +28,7 @@ const Portal = class extends Component {
     const { payloadPortal, fetchAction } = actions;
 
     store.dispatch(fetchAction(true));
-    store.dispatch(payloadPortal(isServer ? portal : await fetchApi("portal", { clientId, admin })));
+    store.dispatch(payloadPortal(isServer ? portal : await fetchApi("portal", { clientID, admin })));
     store.dispatch(fetchAction(false));
   }
 

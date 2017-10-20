@@ -64,13 +64,9 @@ const ProjectDetails = class extends Component {
         modality,
         location,
         status = 0,
-        client = 0,
-        clientList = []
+        client = '',
       }
     } = this;
-
-    const { name: selectedClient = "None" } =
-      clientList.find(({ id }) => id === client) || {};
 
     // TODO Used for render video will be removed in the future
     const windowName = "renderWindow";
@@ -197,28 +193,7 @@ const ProjectDetails = class extends Component {
                   </tr>
                   <tr>
                     <th scope="row">Client</th>
-                    <td>
-                      <UncontrolledDropdown>
-                        <DropdownToggle caret>{selectedClient}</DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectClient({ studyUID, client: 0 })}
-                          >
-                            None
-                          </DropdownItem>
-                          {clientList.map(({ id, name }) => (
-                            <DropdownItem
-                              key={`${name}-${id}`}
-                              onClick={() =>
-                                setProjectClient({ studyUID, client: id })}
-                            >
-                              {name}
-                            </DropdownItem>
-                          ))}
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
-                    </td>
+                    <td>{client}</td>
                   </tr>
                 </tbody>
               </Table>

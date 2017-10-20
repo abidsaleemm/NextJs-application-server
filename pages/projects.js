@@ -38,10 +38,10 @@ class ProjectsListing extends Component {
 	render() {
 		const {
 			props: {
-        tableData = [],
-			tableHeader = {},
-			tableSettings = {},
-			setProjectsSettings = () => { },
+        		tableData = [],
+				tableHeader = {},
+				tableSettings = {},
+				setProjectsSettings = () => { },
 			} = {},
 		} = this;
 
@@ -49,7 +49,7 @@ class ProjectsListing extends Component {
 		const tableDataEnhanced = tableData.map(({ ...project, studyUID, status = '' }) =>
 			({
 				...project,
-				action: <div style={{ height: "40px" }}>
+				action: <div style={{ height: "60px", display: 'flex', alignItems: 'center' }}>
 					{status === '' ?
 						// TODO Create as Button dropdown
 						<UncontrolledDropdown>

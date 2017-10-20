@@ -42,8 +42,6 @@ const ProjectDetails = class extends Component {
       payloadProjectDetail(isServer ?
         projectDetail : await fetchApi("projectDetail", { studyUID })));
     store.dispatch(fetchAction(false));
-
-    return { isServer };
   }
 
   render() {

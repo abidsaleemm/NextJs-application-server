@@ -15,6 +15,7 @@ export default props => {
     onSort = () => {},
   } = props;
 
+  //striped hover
   return <div className="root">
       <style jsx>
         {`.root {
@@ -42,6 +43,8 @@ export default props => {
           .headerCellDisabled {
             white-space: nowrap;
             padding: 0.65em;
+            pointer-events: none;
+            user-select: none;
           }
 
           .headerCell:hover {
@@ -68,6 +71,11 @@ export default props => {
             background: #e0f4ff;
           }
 
+          .dataCell {
+            padding: 0 0.65em 0 0.65em;
+            vertical-align: middle;
+          }
+
           .arrow {
             display: inline-block;
             position: relative;
@@ -79,12 +87,14 @@ export default props => {
             border-top: 8px solid #292b2c;
             transition: cubic-bezier(0.52, 0.13, 0, 1.07) 0.2s all;
           }
+
           .arrow--up {
             transform: rotate(180deg);
-          }`}
+          }
+        `}
       </style>
 
-      <Table striped hover>
+      <Table striped>
         <thead>
           <tr>
             {Object.entries(header).map(
@@ -136,7 +146,7 @@ export default props => {
                   data: dataProps[id]
                 }))
                 .map(({ id, data, type, title, action }) => (
-                  <td key={uuid()}>{data}</td>
+                  <td className="dataCell" key={uuid()}>{data}</td>
                 ))}
             </tr>
           ))}

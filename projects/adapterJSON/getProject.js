@@ -12,7 +12,7 @@ export default async ({ studyUID = '' }) => {
   const project = db.get("projects").find({ studyUID: studyUID }).value();
 
   if (project !== undefined) {
-    const { status = 0, client = 0 } = project;
-    return { studyUID, status, client };
+    const { status = 0 } = project;
+    return { studyUID, status };
   }
 };

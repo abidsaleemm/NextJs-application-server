@@ -13,5 +13,5 @@ export default  async () => {
   const projects = db.get("projects").value();
 
   // Strip unused props
-  return projects.map(({ studyUID, status, client }) => ({ studyUID, status, client }));
+  return projects.map(({ studyUID, status }) => ({ studyUID, status }));
 };

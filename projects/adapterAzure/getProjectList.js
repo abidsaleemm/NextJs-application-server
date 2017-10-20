@@ -6,6 +6,6 @@ export default async () => {
 
     const values = await queryTableAll({ tableService, tableName });
 
-    return values.map(({ RowKey: studyUID, status = 0, client = 0 }) => 
-        ({ studyUID, status, client }));
+    return values.map(({ RowKey: studyUID, status = 0 }) => 
+        ({ studyUID, status }));
 };

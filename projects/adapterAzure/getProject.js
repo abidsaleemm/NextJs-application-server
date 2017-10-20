@@ -13,11 +13,10 @@ export default async ({ studyUID = '' }) => {
     });
 
     if (project.length > 0) {
-        const { 0: { status = 0, client = 0 } = {} } = project;
+        const { 0: { status = 0 } = {} } = project;
         return { 
             studyUID,
             status,
-            client,
         };
     }
 };

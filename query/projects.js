@@ -1,25 +1,26 @@
-import { getStudies } from '../dicom';
-import { getProjectList } from '../projects';
-import getStatusName from '../helpers/getStatusName';
-import { getClients } from '../authUsers';
+import { getStudies } from "../dicom";
+import { getProjectList } from "../projects";
+import getStatusName from "../helpers/getStatusName";
+import { getClientName } from "../authUsers";
 
 export default async () => {
-    let studies = await getStudies();
-    const projectsList = await getProjectList();
-    const clientList = await getClients() || [];
+  let studies = await getStudies();
+  const projectsList = await getProjectList();
 
-    const projects = studies.map(study => {
-        const project = projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
-        const { name: client = '' } = clientList.find(({ id }) => id === project.client) || {};
-        
-        return project ?
-            {
-                ...study,
-                client,
-                status: getStatusName(project.status),
-            } :
-            { ...study, status: '' };
-    });
+  const projects = await Promise.all(
+    studies.map(async ({ clientID = 0, ...study}) => {
+      const project =
+        projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
 
-    return projects;
-}
+      const client = await getClientName({ clientID });
+
+      return {
+        ...study,
+        client,
+        status: project ? getStatusName(project.status) : ""
+      };
+    })
+  );
+
+  return projects;
+};

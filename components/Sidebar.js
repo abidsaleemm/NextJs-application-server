@@ -3,14 +3,15 @@ import ArrowIcon from "./icons/ArrowIcon";
 
 export default class extends Component {
   static defaultProps = {
+    toggleSidebar: () => {},
     width: 400,
+    isOpen: true,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       shouldShowToggle: false,
-      isOpen: true // TODO: Handle this through redux
     };
   }
 
@@ -20,7 +21,7 @@ export default class extends Component {
   }
 
   render() {
-    const { props: { children, width }, state: { shouldShowToggle, isOpen } } = this;
+    const { props: { toggleSidebar, isOpen, children, width }, state: { shouldShowToggle } } = this;
     const toggleWidth = 30;
     const toggleIn = shouldShowToggle ? `${-toggleWidth}px` : "3px";
     const triggerWidth = 10;
@@ -115,7 +116,7 @@ export default class extends Component {
         />
         <div className="toggleContainer" style={dynamicStyle.toggle}>
           <div
-            onClick={() => this.setState({ isOpen: !this.state.isOpen })}
+            onClick={ toggleSidebar }
             className="toggle"
           >
             <span style={dynamicStyle.toggleIcon} className="toggleIcon">

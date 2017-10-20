@@ -18,9 +18,17 @@ export const getUser = async ({ username = '', password }) => {
         await queryTable({ tableService, query, tableName });
     const res = await bcrypt.compare(password, passwordCheck);
 
+    // TODO strip and only returned selected props
     return res === true ? user : false;
 }
 
+export const getClientName = async ({ clientID = 0 }) => {
+    const query = new azure.TableQuery().where('id eq ?', clientID);
+    const { name } = await queryTable({ tableService, query, tableName });
+    return name ? name : '';
+}
+
+// TODO should only be for admins
 export const getClients = async () => 
     await queryTable({ 
         tableService, 

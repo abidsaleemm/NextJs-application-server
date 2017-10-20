@@ -14,12 +14,6 @@ const users = [
     admin: true
   },
   {
-    name: "Warren Goble",
-    username: "warrengoble@gmail.com",
-    password: "test91a",
-    id: 3
-  },
-  {
     name: "NHF",
     username: "user@nhf.com",
     password: "test91a",
@@ -37,13 +31,6 @@ const users = [
     password: "test91a",
     id: 5
   },
-  {
-    name: "Test Client",
-    username: "client@test.com",
-    password: "test91a",
-    id: 6,
-    client: true
-  }
 ];
 
 export const getUser = async ({ username, password }) =>

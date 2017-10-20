@@ -64,6 +64,7 @@ export { default as getImages } from './getImages';
                     patientID,
                     modality,
                     location,
+                    clientID: 4, 
                     }
                 };
 

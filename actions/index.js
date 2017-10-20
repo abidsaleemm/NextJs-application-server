@@ -9,7 +9,8 @@ export { default as setProjectStatus } from "./setProjectStatus";
 export { default as fetchAction } from "./fetchAction";
 export { default as setVideo } from "./setVideo";
 
-export { default as setPortalSettings } from "./setPortalSettings";;
+export { default as setPortalSettings } from "./setPortalSettings";
 export { default as setProjectsSettings } from "./setProjectsSettings";
+export { default as toggleSidebar } from "./toggleSidebar";
 
 export { default as videoRender } from './videoRender'; 

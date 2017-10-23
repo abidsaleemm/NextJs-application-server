@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
-import {
-  Button,
-  Table
-} from "reactstrap";
+import { Button, Table } from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
@@ -15,6 +12,26 @@ import selectProjectList from "../selectors/selectProjectList";
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
 const window = {};
+
+const CellTableWrapper = (array, key) =>
+  <Table>
+  <style jsx>
+  {`
+    td {
+      background-color: white;
+      vertical-align: middle;
+    }
+  `}
+  </style>
+    <tbody>
+      {
+        array.map(({ [key]: value }) => 
+        <tr>
+          <td>{value}</td>
+        </tr>
+      )}
+    </tbody>
+  </Table>
 
 const Portal = class extends Component {
   static async getInitialProps({
@@ -42,65 +59,60 @@ const Portal = class extends Component {
     const {
       props: {
         tableData = [],
-      tableHeader = {},
-      tableSettings = {},
-      tableSubHeader = {},
-      admin = false,
-      setPortalSettings = () => { },
-      setVideo = () => { }
+        tableHeader = {},
+        tableSettings = {},
+        tableSubHeader = {},
+        admin = false,
+        setPortalSettings = () => {},
+        setVideo = () => {}
       }
     } = this;
 
-    const tableHeaderEnhanced = admin ? { 
-      client: { title: "Client", sort: true },
-      ...tableHeader 
-    } : tableHeader;
+    // TODO Move this to prop mapping instead
+    const tableHeaderEnhanced = admin
+      ? {
+          client: { title: "Client", sort: true },
+          ...tableHeader
+        }
+      : tableHeader;
 
     const tableDataEnhanced = tableData.map(
-      ({ studyUID, videoExists = false, ...project }) => ({
+      ({ studyUID, videoExists = false, ...project, studies = [] }) => {
+        
+        const studiesEnhanced = studies.map(({ ...study, videoExists }) => {
+          return {
+            ...study,
+            upload: <div>
+                <label htmlFor="file-upload" style={{ padding: 0, margin: 0 }}>
+                  <div className="btn btn-secondary">Upload File</div>
+                </label>
+                <input style={{ display: 'none' }} id="file-upload" type="file" onChange={this.handleUpload}/>
+              </div>,
+            video: <Button disabled={!videoExists} onClick={() => setVideo(studyUID)}>Video</Button>
+          };
+        });
+
+        return({
         ...project,
-        // upload: 
-        //   <div>
-        //     <label htmlFor="file-upload">
-        //       <div className="btn btn-secondary">Upload File</div>
-        //     </label>
-        //     <input style={{ display: 'none' }} id="file-upload" type="file" onChange={this.handleUpload}/>
-        //   </div>,
-        // tableSubHeader: {
-  //   studyName: { title: "Study Name", sort: true },
-  //   studyDate: { title: "Study Date", sort: true },
-  //   status: { title: "Status", sort: true },
-  //   modality: { title: "Modality", sort: true },
-  //   location: { title: "Imaging Center", sort: true },
-  //   upload: { title: "Attach Files", sort: false },
-  //   video: { title: "", sort: false },
-  // },
-        invoice: (
+        invoice:
           <a
-            className="btn btn-primary"
+            className="btn btn-secondary"
             target="_pdfPreview"
             href={`/invoice/?id=${studyUID}`}
           >
             View invoice
-          </a>
-        ),
-        studies:
-        <Table>
-          <tbody>
-            <tr>
-              <td>studyName</td>
-              <td>studyDate</td>
-              <td>status</td>
-              <td>location</td>
-              <td>video</td>
-            </tr>
-          </tbody>
-        </Table>,
-        video: videoExists ? (
-          <Button onClick={() => setVideo(studyUID)}>Video</Button>
-        ) : null
+          </a>,
+        studies: CellTableWrapper(studiesEnhanced, 'studyName'),
+        studyDate: CellTableWrapper(studiesEnhanced, 'studyDate'),
+        status: CellTableWrapper(studiesEnhanced, 'status'),
+        location: CellTableWrapper(studiesEnhanced, 'location'),
+        upload: CellTableWrapper(studiesEnhanced, 'upload'),
+        video: CellTableWrapper(studiesEnhanced, 'video'),
       })
+    }
     );
+
+    console.log('tableDataEnhanced', tableDataEnhanced);
 
     return (
       <div className="portal">
@@ -111,7 +123,7 @@ const Portal = class extends Component {
               display: inline-block;
               padding: 6px 12px;
               cursor: pointer;
-          }
+            }
 
             .portal {
               display: flex;
@@ -135,27 +147,26 @@ const Portal = class extends Component {
   }
 };
 
-const mapStateToProps = ({ portal: { projects = [], patients = [] }, portalSettings = {} }) => ({
+const mapStateToProps = ({
+  portal: { projects = [] },
+  portalSettings = {}
+}) => ({
   tableHeader: {
     patientName: { title: "Patient Name", sort: true },
-    patientDOB: { title: "DOB", sort: true },
-    patientAddress: { title: "Patient Address", sort: true },
+    patientBirthDate: { title: "Patient DOB", sort: true },
     invoice: { title: "Invoice", sort: false },
-    studies: { title: "Studies", sort: false }
+    studies: { title: "Studies", sort: false },
+    studyDate: { title: "Study Date", sort: false },
+    status: { title: "Status", sort: true },
+    // modality: { title: "Modality", sort: true },
+    location: { title: "Imaging Center", sort: false },
+    upload: { title: "Attach Files", sort: false },
+    video: { title: "Video", sort: false },
   },
-  // tableSubHeader: {
-  //   studyName: { title: "Study Name", sort: true },
-  //   studyDate: { title: "Study Date", sort: true },
-  //   status: { title: "Status", sort: true },
-  //   modality: { title: "Modality", sort: true },
-  //   location: { title: "Imaging Center", sort: true },
-  //   upload: { title: "Attach Files", sort: false },
-  //   video: { title: "", sort: false },
-  // },
   tableSettings: portalSettings,
   tableData: selectProjectList({
     projects,
-    settings: portalSettings,
+    settings: portalSettings
   })
 });
 

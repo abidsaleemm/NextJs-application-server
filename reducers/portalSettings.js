@@ -3,15 +3,11 @@ import { PORTAL_SET_SETTINGS } from "../constants/actionTypes";
 export const initialState = {
   filter: {
     patientName: "",
-    studyName: "",
-    studyDate: "", // TODO Change type later
-    modality: "",
-    location: "",
     client: "",
-    patientDOB: "",
+    patientBirthDate: "",
     patientAddress: "",
   },
-  sortKey: "status",
+  sortKey: "patientName",
   sortDesc: false,
 };
 

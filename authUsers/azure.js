@@ -16,9 +16,11 @@ export const getUser = async ({ username = '', password }) => {
     const query = new azure.TableQuery().where('username eq ?', username.toLowerCase());
     const { 0: { password: passwordCheck, ...user } = {} } = 
         await queryTable({ tableService, query, tableName });
-    const res = await bcrypt.compare(password, passwordCheck);
-
-    return res === true ? user : false;
+    if (passwordCheck) {
+        const res = await bcrypt.compare(password, passwordCheck);
+        return res === true ? user : false;
+    }
+    return false;
 }
 
 export const getClients = async () => 

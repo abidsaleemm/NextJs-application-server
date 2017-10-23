@@ -1,2 +1,1 @@
-module.exports = process.env.LOCAL ? require("./local") : require("./azure");
-// Changing to es6 export.
+module.exports = process.env.NODE_ENV === 'dev' ? require("./local") : require("./azure");

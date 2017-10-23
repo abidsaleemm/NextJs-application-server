@@ -2,6 +2,7 @@ import pdfFillForm from "pdf-fill-form";
 import path from "path";
 import authMiddleware from "../auth/middleware";
 import queryProjectDetail from "../query/projectDetail";
+import { getStudiesByPatientID } from '../dicom';
 
 const templateFile = path.resolve(
   __dirname,
@@ -20,14 +21,19 @@ export default ({ server, app }) => {
         city,
         phone,
         ...user
+      } = {},
+      query: {
+        id: patientID = 0
       } = {}
     } = req;
 
-    // TODO Handle multible studies
+    // Do lookup of patient study just need first record for now
+    const studies = getStudiesByPatientID({ patientID });
+    const { 0: { studyUID: firstStudy = '' } = {} } = studies;
+
     // This need to be patient distinct
-    const projectDetail = await queryProjectDetail({ studyUID: req.query.id });
+    const projectDetail = await queryProjectDetail({ studyUID: firstStudy });
     const {
-      patientID,
       patientName,
       patientBirthDate,
       patientSex,

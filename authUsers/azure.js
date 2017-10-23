@@ -1,25 +1,28 @@
 import azure from 'azure-storage';
 import bcrypt from 'bcryptjs';
 import queryTable from '../helpers/azure/queryTable';
-
-// TODO This is pretty reusable.  Propose moving to azure helpers.  
-// Is already used in multiple places for each adapter
-const tableService = azure.createTableService(
-    process.env.STORAGE,
-    process.env.STORAGE_KEY
-);
+// Using reusable table service
+import { tableService } from '../projects/adapterAzure/';
 
 const tableName = 'users';
 
+/**
+ * validates/invalidates the username/password auth from azure
+ * @param {*} username
+ * @param {*} password
+ */
 export const getUser = async ({ username = '', password }) => {
     // Always handle and store as lower case
     const query = new azure.TableQuery().where('username eq ?', username.toLowerCase());
     const { 0: { password: passwordCheck, ...user } = {} } = 
         await queryTable({ tableService, query, tableName });
-    const res = await bcrypt.compare(password, passwordCheck);
-
-    // TODO strip and only returned selected props
-    return res === true ? user : false;
+        
+    // check if the query corrosponding entry has been found or not
+    if (passwordCheck) {
+        const res = await bcrypt.compare(password, passwordCheck);
+        return res === true ? user : false;
+    }
+    return false;
 }
 
 export const getClientName = async ({ clientID = 0 }) => {

@@ -28,10 +28,11 @@ export default ({ server, app }) => {
     } = req;
 
     // Do lookup of patient study just need first record for now
-    const studies = getStudiesByPatientID({ patientID });
+    const studies = await getStudiesByPatientID({ patientID });
     const { 0: { studyUID: firstStudy = '' } = {} } = studies;
 
     // This need to be patient distinct
+    // DO use a different query
     const projectDetail = await queryProjectDetail({ studyUID: firstStudy });
     const {
       patientName,

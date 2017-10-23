@@ -74,7 +74,7 @@ export default props => {
           }
 
           .dataCell {
-            padding: 0;
+            padding: 0 3 0 3;
             margin: 0;
             vertical-align: middle;
             height: 50px;

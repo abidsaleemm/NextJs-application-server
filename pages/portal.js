@@ -69,7 +69,7 @@ const Portal = class extends Component {
       : tableHeader;
 
     const tableDataEnhanced = tableData.map(
-      ({ studyUID, videoExists = false, patientName, client, patientBirthDate, studies = [] }) => {
+      ({ studyUID, patientID, videoExists = false, patientName, client, patientBirthDate, studies = [] }) => {
         
         const studiesEnhanced = studies.map(({ ...study, videoExists }) => {
           return {
@@ -92,7 +92,7 @@ const Portal = class extends Component {
           <a
             className="btn btn-secondary"
             target="_pdfPreview"
-            href={`/invoice/?id=${studyUID}`}
+            href={`/invoice/?id=${patientID}`}
           >
             View invoice
           </a>,

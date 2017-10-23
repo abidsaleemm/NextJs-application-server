@@ -1,7 +1,8 @@
 import React from "react";
 import { Table } from "reactstrap";
-import SearchInput from "./SearchInput";
+import R from 'ramda';
 import uuid from "uuid";
+import SearchInput from "./SearchInput";
 
 export default props => {
   const {
@@ -12,13 +13,14 @@ export default props => {
     sortDesc = false,
     onRowClick = () => {},
     onFilter = () => {},
-    onSort = () => {},
+    onSort = () => {}
   } = props;
 
-  //striped hover
-  return <div className="root">
+  return (
+    <div className="root">
       <style jsx>
-        {`.root {
+        {`
+          .root {
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -71,8 +73,11 @@ export default props => {
             background: #e0f4ff;
           }
 
+          .dataRow {
+            min-height: 80px;
+          }
+
           .dataCell {
-            padding: 0 0.65em 0 0.65em;
             vertical-align: middle;
           }
 
@@ -94,31 +99,28 @@ export default props => {
         `}
       </style>
 
-      <Table striped>
+      <Table hover>
         <thead>
           <tr>
-            {Object.entries(header).map(
-              ([id, { title = "", sort = false }]) => (
-                <th
-                  className={`${sort
-                    ? "headerCell"
-                    : "headerCellDisabled"} ${id === sortKey
-                    ? "headerCell--active"
-                    : null}`}
-                  key={`${title}-${id}`}
-                  onClick={() => onSort(id)}
-                >
-                  <div className="headerTab">
-                    {title}
-                    {id === sortKey && sort ? (
-                      <div
-                        className={`arrow ${sortDesc ? "arrow--up" : null}`}
-                      />
-                    ) : null}
-                  </div>
-                </th>
-              )
-            )}
+            {Object.entries(
+              header
+            ).map(([id, { title = "", sort = false }]) => (
+              <th
+                className={`
+                  ${sort ? "headerCell" : "headerCellDisabled"} 
+                  ${id === sortKey ? "headerCell--active" : null}
+                  `}
+                key={`${title}-${id}`}
+                onClick={() => onSort(id)}
+              >
+                <div className="headerTab">
+                  {title}
+                  {id === sortKey && sort ? (
+                    <div className={`arrow ${sortDesc ? "arrow--up" : null}`} />
+                  ) : null}
+                </div>
+              </th>
+            ))}
           </tr>
           <tr className="fieldColor">
             {Object.entries(header).map(([id, { sort }]) => (
@@ -139,18 +141,22 @@ export default props => {
         </thead>
         <tbody>
           {data.map(dataProps => (
-            <tr key={uuid()} onClick={() => onRowClick(dataProps)}>
-              {Object.entries(header)
-                .map(([id, props]) => ({
-                  ...props,
-                  data: dataProps[id]
-                }))
-                .map(({ id, data, type, title, action }) => (
-                  <td className="dataCell" key={uuid()}>{data}</td>
-                ))}
-            </tr>
-          ))}
+              <tr className="dataRow" key={uuid()} onClick={() => onRowClick(dataProps)}>
+                {Object.entries(header)
+                  .map(([id, props]) => ({
+                    ...props,
+                    id,
+                    data: dataProps[id]
+                  }))
+                  .map(({ id, data, type, title, action }) => (
+                      <td className="dataCell" key={uuid()}>
+                        {data}
+                      </td>
+                    ))}
+              </tr>
+            ))}
         </tbody>
       </Table>
-    </div>;
+    </div>
+  );
 };

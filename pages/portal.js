@@ -14,20 +14,12 @@ import fetchApi from "../helpers/fetchApi";
 const window = {};
 
 const CellTableWrapper = (array, key) =>
-  <Table>
-  <style jsx>
-  {`
-    td {
-      background-color: white;
-      vertical-align: middle;
-    }
-  `}
-  </style>
+  <Table style={{ margin: 0, padding: 0, background: 'inherit', height: '100%' }}>
     <tbody>
       {
         array.map(({ [key]: value }) => 
-        <tr>
-          <td>{value}</td>
+        <tr style={{ background: 'inherit' }}>
+          <td style={{ margin: 0, padding: 0, verticalAlign: 'middle' }}>{value}</td>
         </tr>
       )}
     </tbody>
@@ -77,23 +69,25 @@ const Portal = class extends Component {
       : tableHeader;
 
     const tableDataEnhanced = tableData.map(
-      ({ studyUID, videoExists = false, ...project, studies = [] }) => {
+      ({ studyUID, videoExists = false, patientName, client, patientBirthDate, studies = [] }) => {
         
         const studiesEnhanced = studies.map(({ ...study, videoExists }) => {
           return {
             ...study,
             upload: <div>
-                <label htmlFor="file-upload" style={{ padding: 0, margin: 0 }}>
+                <label htmlFor={`file-upload-${studyUID}`} style={{ padding: 0, margin: 0 }}>
                   <div className="btn btn-secondary">Upload File</div>
                 </label>
-                <input style={{ display: 'none' }} id="file-upload" type="file" onChange={this.handleUpload}/>
+                <input style={{ display: 'none' }} id={`file-upload-${studyUID}`} type="file" onChange={this.handleUpload}/>
               </div>,
             video: <Button disabled={!videoExists} onClick={() => setVideo(studyUID)}>Video</Button>
           };
         });
 
         return({
-        ...project,
+        client,
+        patientName,
+        patientBirthDate,
         invoice:
           <a
             className="btn btn-secondary"
@@ -111,8 +105,6 @@ const Portal = class extends Component {
       })
     }
     );
-
-    console.log('tableDataEnhanced', tableDataEnhanced);
 
     return (
       <div className="portal">

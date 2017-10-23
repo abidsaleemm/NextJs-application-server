@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
-import R from 'ramda';
+import R from "ramda";
 import uuid from "uuid";
 import SearchInput from "./SearchInput";
 
@@ -73,12 +73,12 @@ export default props => {
             background: #e0f4ff;
           }
 
-          .dataRow {
-            min-height: 80px;
-          }
-
           .dataCell {
+            padding: 0;
+            margin: 0;
             vertical-align: middle;
+            height: 50px;
+            min-height: 50px;
           }
 
           .arrow {
@@ -98,7 +98,6 @@ export default props => {
           }
         `}
       </style>
-
       <Table hover>
         <thead>
           <tr>
@@ -141,20 +140,21 @@ export default props => {
         </thead>
         <tbody>
           {data.map(dataProps => (
-              <tr className="dataRow" key={uuid()} onClick={() => onRowClick(dataProps)}>
-                {Object.entries(header)
-                  .map(([id, props]) => ({
-                    ...props,
-                    id,
-                    data: dataProps[id]
-                  }))
-                  .map(({ id, data, type, title, action }) => (
-                      <td className="dataCell" key={uuid()}>
-                        {data}
-                      </td>
-                    ))}
-              </tr>
-            ))}
+            <tr
+              key={uuid()}
+              onClick={() => onRowClick(dataProps)}
+            >
+              {Object.entries(header)
+                .map(([id, props]) => ({
+                  ...props,
+                  id,
+                  data: dataProps[id]
+                }))
+                .map(({ id, data, type, title, action }) => {
+                  return <td className="dataCell">{data !== undefined ? data : null}</td>;
+                })}
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

@@ -3,37 +3,51 @@ import R from 'ramda';
 import { getStudies } from '../dicom';
 import { getProjectList } from '../projects';
 import { videoExists } from '../video';
-import { getClients } from '../authUsers';
+import { getClientName } from "../authUsers";
 import getStatusName from '../helpers/getStatusName';
 
-export default async ({ clientId = 0, admin = false }) => {
-    const studies = await getStudies();
-    const clientList = await getClients() || [];
-
+export default async ({ clientID = 0, admin = false }) => {
     // TODO Do query directly getProjectList instead of filtering with javascript
-    let projects = await getProjectList();
-    projects = await Promise.all(
-        projects
-            .filter(v => admin ? true : v.client == clientId) // TODO fix typing?
-            .filter(({ studyUID }) => studyUID !== undefined) // Not sure if this will happen?
-            .map(project => [project, studies.find(({ studyUID = '' }) => project.studyUID === studyUID)])
-            .filter(([project, study]) => study)
-            .map(async ([{ status, client, ...project }, { ...study, studyUID }]) => ({
+    const projects = await getProjectList();
+
+    let studies = await getStudies();
+    studies = await Promise.all(
+        studies
+            .filter(study => admin ? true : study.clientID == clientID) // TODO fix typing?
+            .map(study => [study, projects.find(({ studyUID = '' }) => study.studyUID === studyUID)])
+            .map(async ([{ ...study, studyUID, clientID = 0 }, { status = 0, ...project } = {}]) => ({
                 ...project,
                 ...study,
-                status: getStatusName(status || 0),
+                status: getStatusName(status || 0) || '',
                 videoExists: await videoExists({ studyUID }),
-                client: (({ name = '' }) => name)(clientList.find(({ id }) => id === client) || {})
+                client: await getClientName({ clientID }),
             })));
 
-    const patients = projects.reduce((a, v) => {}, {});
+    // const patients = projects.reduce((a, v) => {}, {});
 
-    const test = R.uniqWith((v) => {
-        // console.log('v', v);
-        return v.patientName;
-    })(projects);
+    // TODO create distinct patient list
+    const patients = R.uniqWith((a, b) => a.patientName === b.patientName)(studies)
+        .map(({ client, patientName, patientID, patientBirthDate }) => {
+            // studies.map(
+            // )
+            // const studies = [
 
-    console.log('test', test);
+            // ];
+            return ({ 
+                client,
+                patientName,
+                patientID,
+                patientBirthDate,
+                studies: studies
+                    .filter(v => v.patientID === patientID)
+                    .map(({ studyUID, studyName, status, location, client, videoExists }) => 
+                        ({ studyUID, studyName, status, location, client, videoExists })),
+            });
+        });
 
-    return { projects, patients };
+    console.log('patients', patients);
+
+    return { 
+        projects: patients,
+    };
 }

@@ -56,7 +56,7 @@ app.prepare().then(() => {
   routes({ server, app }); // Setup routes
 
   // Setup static routes
-  if (process.env.NODE_ENV !== "dev") {
+  if (!dev) {
     server.use("/static", authMiddleware({ redirect: false }));
     server.use("/static", express.static("static"));
   } else {
@@ -89,8 +89,8 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  // TODO Use a single env var to declare if production or not? process.env.LOCAL?
-  if (process.env.NODE_ENV !== "dev") {
+  // Resolved to a single variable dev that refers whether environment is dev or not
+  if (!dev) {
     // Handle port 80 redirect if portal.multusmedical.com
     http
       .createServer((req, res) => {

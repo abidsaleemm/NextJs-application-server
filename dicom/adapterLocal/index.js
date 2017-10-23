@@ -32,6 +32,7 @@ export { default as getImages } from './getImages';
                 newPath = newPath.indexOf('/') === 0 ? newPath.substring(1): location;
 
                 const location = newPath.substring(0, newPath.indexOf("/"));
+                const { mtime: uploadDateTime } = fs.statSync(fullPath);
 
                 const {
                     studyUID,
@@ -39,6 +40,7 @@ export { default as getImages } from './getImages';
                     studyDate,
                     patientName,
                     patientID,
+                    patientBirthDate,
                     modality,
                     seriesName,
                     seriesUID,
@@ -62,8 +64,10 @@ export { default as getImages } from './getImages';
                     studyDate,
                     patientName,
                     patientID,
+                    patientBirthDate,
                     modality,
                     location,
+                    uploadDateTime,
                     clientID: 4, 
                     }
                 };

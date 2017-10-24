@@ -10,7 +10,7 @@ export default ({ redirect = true } = {}) => (req, res, next) => {
     } 
 
     const { 
-        user: { admin = false, client = false, id: clientId }, 
+        user: { admin = false, client = false, id: clientID }, 
         path = '',
     } = req;
 

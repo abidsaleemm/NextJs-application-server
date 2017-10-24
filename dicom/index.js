@@ -8,7 +8,7 @@ const setDefaults = ({ ...study, patientName = '' }) => ({
 module.exports = (({
     ...adapter,
     getStudies,
-    getStudy
+    getStudy,
 }) => ({
         ...adapter,
         getStudies: async () => {

@@ -12,6 +12,7 @@ export { default as getStudies } from './getStudies';
 export { default as getStudy } from './getStudy';
 export { default as getSeries } from './getSeries';
 export { default as getImages } from './getImages';
+export { default as getStudiesByPatientID } from './getStudiesByPatientID';
 
 // Self Invoking function used for testing locally
 ((directory = path) =>
@@ -32,6 +33,7 @@ export { default as getImages } from './getImages';
                 newPath = newPath.indexOf('/') === 0 ? newPath.substring(1): location;
 
                 const location = newPath.substring(0, newPath.indexOf("/"));
+                const { mtime: uploadDateTime } = fs.statSync(fullPath);
 
                 const {
                     studyUID,
@@ -39,6 +41,7 @@ export { default as getImages } from './getImages';
                     studyDate,
                     patientName,
                     patientID,
+                    patientBirthDate,
                     modality,
                     seriesName,
                     seriesUID,
@@ -62,8 +65,11 @@ export { default as getImages } from './getImages';
                     studyDate,
                     patientName,
                     patientID,
+                    patientBirthDate,
                     modality,
                     location,
+                    uploadDateTime,
+                    clientID: 4, 
                     }
                 };
 

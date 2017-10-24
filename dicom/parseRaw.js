@@ -28,8 +28,10 @@ export default (data) => {
       studyName: dataSet.string('x00081030'),
       studyDate: dataSet.string('x00080020'),
       patientName: dataSet.string('x00100010'),
+      patientID: dataSet.string('x00100020'),
+      patientBirthDate: dataSet.string('x00100030'),
     };
-
+    
     const pixelDataElement = dataSet.elements.x7fe00010;
     if (pixelDataElement) {
       const dataPixels = new Uint8Array(

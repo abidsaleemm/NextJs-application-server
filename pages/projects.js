@@ -38,10 +38,10 @@ class ProjectsListing extends Component {
 	render() {
 		const {
 			props: {
-        tableData = [],
-			tableHeader = {},
-			tableSettings = {},
-			setProjectsSettings = () => { },
+        		tableData = [],
+				tableHeader = {},
+				tableSettings = {},
+				setProjectsSettings = () => { },
 			} = {},
 		} = this;
 
@@ -49,7 +49,7 @@ class ProjectsListing extends Component {
 		const tableDataEnhanced = tableData.map(({ ...project, studyUID, status = '' }) =>
 			({
 				...project,
-				action: <div style={{ height: "40px" }}>
+				action: <div>
 					{status === '' ?
 						// TODO Create as Button dropdown
 						<UncontrolledDropdown>
@@ -114,13 +114,13 @@ const mapStateToProps = ({ projectsSettings, projects: { projects } }) => ({
 	tableHeader: {
 		action: { title: "", sort: false },
 		status: { title: "Status", sort: true },
-		dateReceived: { title: "Received", sort: true },
 		patientName: { title: "Patient Name", sort: true },
 		studyName: { title: "Study Name", sort: true },
 		studyDate: { title: "Study Date", sort: true },
 		modality: { title: "Modality", sort: true },
 		location: { title: "Location", sort: true },
 		client: { title: "Client", sort: true },
+		// uploadDateTime: { title: "Date Uploaded", sort: true },
 	},
 	tableSettings: projectsSettings,
 	tableData: selectProjectList({

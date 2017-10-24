@@ -17,3 +17,4 @@ export { default as getSeries } from './getSeries';
 export { default as getStudies } from './getStudies';
 export { default as getStudy } from './getStudy'; 
 export { default as getImages } from './getImages';
+export { default as getStudiesByPatientID } from './getStudiesByPatientID';

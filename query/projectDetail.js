@@ -5,10 +5,10 @@ import {
     setProjectSnapshot,
 } from '../projects';
 import createProject from '../projects/createProject';
-import { getClients } from "../authUsers";
+import { getClientName } from "../authUsers";
 
 export default async ({ studyUID }) => {
-    let study = await getStudy({ studyUID });
+    const { clientID = 0, ...study } = await getStudy({ studyUID });
     let project = await getProject({ studyUID });
 
     // TODO Should project creation be handled here?
@@ -16,11 +16,15 @@ export default async ({ studyUID }) => {
     if (project === undefined) {
         console.log('Creating new project', studyUID);
         project = createProject({ studyUID }); // TODO Add function to create default from existing
-        await setProject({ studyUID, props: { status: 1, client: 0 } });
+        await setProject({ studyUID, props: { status: 1 } });
         await setProjectSnapshot({ studyUID, payload: project });
     }
 
     // Merge project and study table
-    const clientList = await getClients();
-    return { ...project, ...study, studyUID, clientList };
+    return { 
+        ...project, 
+        ...study, 
+        studyUID, 
+        client: await getClientName({ clientID })
+    };
 }

@@ -65,6 +65,7 @@
     "sass-loader": "^6.0.6",
     "session-file-store": "^1.1.2",
     "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.4",
     "styled-jsx": "^1.0.10",
     "three": "^0.87.1",
     "uuid": "^3.1.0",

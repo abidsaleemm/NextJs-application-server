@@ -60,6 +60,7 @@ export default props => {
             height: 0.25em;
             background: #1bf;
           }
+
           .headerTab {
             display: flex;
             justify-content: space-between;
@@ -72,11 +73,12 @@ export default props => {
           }
 
           .dataCell {
+            white-space: nowrap;
             padding: 0 3 0 3;
             margin: 0;
             vertical-align: middle;
-            height: 50px;
-            min-height: 50px;
+            height: 0.25em;
+            min-height: 0.25em;
           }
 
           .arrow {

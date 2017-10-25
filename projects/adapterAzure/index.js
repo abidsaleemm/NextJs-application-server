@@ -8,11 +8,13 @@ export { default as setProjectSnapshot } from './setProjectSnapshot';
 
 export const tableName = process.env.PROJECT_TABLE || 'projects';
 
+// TODO Should be moved to helpers?
 export const blobService = azure.createBlobService(
     process.env.STORAGE,
     process.env.STORAGE_KEY
 );
 
+// TODO Should be moved to helpers?
 export const tableService = azure.createTableService(
     process.env.STORAGE,
     process.env.STORAGE_KEY

@@ -17,7 +17,7 @@ export const getUser = async ({ username = '', password }) => {
     const { 0: { password: passwordCheck, ...user } = {} } = 
         await queryTable({ tableService, query, tableName });
         
-    // check if the query corrosponding entry has been found or not
+    // check if the query corresponding entry has been found or not
     if (passwordCheck) {
         const res = await bcrypt.compare(password, passwordCheck);
         return res === true ? user : false;
@@ -27,8 +27,8 @@ export const getUser = async ({ username = '', password }) => {
 
 export const getClientName = async ({ clientID = 0 }) => {
     const query = new azure.TableQuery().where('id eq ?', clientID);
-    const { name } = await queryTable({ tableService, query, tableName });
-    return name ? name : '';
+    const { 0: { name = '' } = {} } = await queryTable({ tableService, query, tableName });
+    return name;
 }
 
 // TODO should only be for admins

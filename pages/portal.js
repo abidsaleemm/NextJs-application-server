@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
 import { Button, ButtonGroup, Table } from "reactstrap";
-import uuid from "uuid";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import selectProjectList from "../selectors/selectProjectList";

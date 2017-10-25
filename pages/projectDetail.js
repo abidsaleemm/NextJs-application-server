@@ -41,7 +41,9 @@ const ProjectDetails = class extends Component {
     store.dispatch(fetchAction(true));
     store.dispatch(
       payloadProjectDetail(
-        isServer ? projectDetail : await fetchApi("projectDetail", { studyUID })
+        isServer
+          ? projectDetail
+          : await fetchApi("projectDetail", { studyUID })
       )
     );
     store.dispatch(fetchAction(false));
@@ -64,7 +66,7 @@ const ProjectDetails = class extends Component {
         modality,
         location,
         status = 0,
-        client = '',
+        client = ""
       }
     } = this;
 
@@ -236,8 +238,11 @@ const mapStateToProps = ({
   projectDetail,
   projectDetailSettings: { sidebarIsOpen }
 }) => ({ ...projectDetail, sidebarIsOpen });
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(actions, dispatch);
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
-  Wrapper(ProjectDetails)
-);
+export default withRedux(
+  initStore,
+  mapStateToProps,
+  mapDispatchToProps
+)(Wrapper(ProjectDetails));

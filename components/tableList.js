@@ -145,7 +145,7 @@ export default props => {
           </tr>
         </thead>
         <tbody>
-          {data.map((dataProps, i) => (
+          {data.map(({ tableBackground, ...dataProps }, i) => (
             <tr
               key={`tableList-tableRow-${i}`}
               onClick={() => onRowClick(dataProps)}
@@ -161,6 +161,7 @@ export default props => {
                     <td
                       key={`tableList-tableCell-${id}-${title}`}
                       className="dataCell"
+                      style={tableBackground ? { background: tableBackground } : {}}
                     >
                       {data !== undefined ? data : null}
                     </td>

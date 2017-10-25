@@ -2,19 +2,18 @@ import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
 import { Button, ButtonGroup, Table } from "reactstrap";
+import uuid from "uuid";
 import { initStore } from "../store";
 import * as actions from "../actions";
+import selectProjectList from "../selectors/selectProjectList";
+
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
 import TooltipPopup from "../components/TooltipPopup";
 
-import selectProjectList from "../selectors/selectProjectList";
-import uuid from "uuid";
-
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
-import socketApi from "../helpers/socketApi";
 
 // TODO Move to separate file?
 const CellTableWrapper = (array, key) => (
@@ -59,48 +58,34 @@ const Portal = class extends Component {
       payloadPortal(isServer ? portal : await fetchApi("portal"))
     );
     store.dispatch(fetchAction(false));
-
-    return { clientID };
   }
 
   constructor(props) {
     super(props);
 
-    // TODO Move to redux
+    // TODO Move to redux?
     this.state = {
       popupTarget: null,
       popupFileList: []
     };
   }
 
-  // TODO Move to redux
+  // TODO Move to redux action?
   handleUpload({ target, studyUID }) {
-    const { props: { payloadPortal, fetchAction } } = this;
+    const { props: { uploadPut = () => {} } }  = this;
 
     // TODO Handle multiple files?
     const { 0: file } = target.files;
     const name = file.name;
 
     const reader = new FileReader();
-    reader.onload = ({ target: { result } = {} }) => {
-      // TODO Handle as single action?
-      fetchAction(true);
-      socketApi("uploadPut", { studyUID, name, data: result })
-        .then(async v => {
-          console.log("File pushed", name);
-          payloadPortal(await fetchApi("portal"));
-          fetchAction(false);
-        })
-        .catch(e => {
-          console.log(e);
-          fetchAction(false);
-        });
-    };
+    reader.onload = ({ target: { result } = {} }) =>
+      uploadPut({ data: result, name, studyUID });
 
     reader.readAsDataURL(file);
   }
 
-  // TODO Move to redux
+  // TODO Move to redux action?
   popupOpen({ target, fileList = [] }) {
     this.setState({
       popupTarget: target,
@@ -108,7 +93,7 @@ const Portal = class extends Component {
     });
   }
 
-  // TODO Move to redux
+  // TODO Move to redux action?
   popupToggle() {
     this.setState({
       popupTarget: null

@@ -66,7 +66,8 @@ const Portal = class extends Component {
     // TODO Move to redux?
     this.state = {
       popupTarget: null,
-      popupFileList: []
+      popupFileList: [],
+      popupStudyUID: ''
     };
   }
 
@@ -86,10 +87,11 @@ const Portal = class extends Component {
   }
 
   // TODO Move to redux action?
-  popupOpen({ target, fileList = [] }) {
+  popupOpen({ target, fileList = [], studyUID }) {
     this.setState({
       popupTarget: target,
-      popupFileList: fileList
+      popupFileList: fileList,
+      popupStudyUID: studyUID
     });
   }
 
@@ -111,7 +113,7 @@ const Portal = class extends Component {
         setPortalSettings = () => {},
         setVideo = () => {}
       },
-      state: { popupTarget, popupFileList }
+      state: { popupTarget, popupFileList, popupStudyUID }
     } = this;
 
     // TODO Move this to prop mapping instead and remove from component class?
@@ -153,6 +155,7 @@ const Portal = class extends Component {
                       color="success"
                       onClick={() =>
                         this.popupOpen({
+                          studyUID,
                           target: popoverID,
                           fileList: uploadedFiles
                         })}
@@ -262,6 +265,7 @@ const Portal = class extends Component {
           popupTarget={popupTarget}
           fileList={popupFileList}
           toggle={() => this.popupToggle()}
+          studyUID={popupStudyUID}
         />
       </div>
     );

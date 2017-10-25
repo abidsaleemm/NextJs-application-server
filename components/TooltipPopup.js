@@ -3,7 +3,8 @@ import { Table, Tooltip } from "reactstrap";
 export default ({
   popupTarget = null,
   fileList = [],
-  toggle = () => {}
+  toggle = () => {},
+  studyUID = ""
 }) =>
   popupTarget !== null ? (
     <div>
@@ -53,10 +54,15 @@ export default ({
             </tr>
           </thead>
           <tbody>
-            {fileList.map((v, i) => (
+            {fileList.map((name, i) => (
               <tr key={`file-upload-${popupTarget}-${i}`}>
                 <td className="tableCell">
-                  <a href="">{v}</a>
+                  <a
+                    href={`/uploadGet/?id=${studyUID}&name=${name}`}
+                    target="_UploadPreview"
+                  >
+                    {name}
+                  </a>
                 </td>
               </tr>
             ))}

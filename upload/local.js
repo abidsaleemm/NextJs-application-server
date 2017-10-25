@@ -27,7 +27,7 @@ export const list = async ({ studyUID }) => {
   return [];
 };
 
-export const get = async ({ studyUID, file }) => {
+export const get = async ({ studyUID, name }) => {
   checkExists({ studyUID });
 
   const studyDir = `${pathUploads}/${studyUID}`;
@@ -35,7 +35,7 @@ export const get = async ({ studyUID, file }) => {
     fs.mkdirSync(studyDir);
   }
 
-  const filePath = `${pathUploads}/${studyUID}/${file}`;
+  const filePath = `${pathUploads}/${studyUID}/${name}`;
   if (fs.existsSync(filePath)) {
     return fs.createReadStream(filePath);
   }
@@ -59,5 +59,5 @@ export const put = ({ studyUID, name, stream }) => new Promise((resolve, reject)
 export const del = async ({ studyUID, file }) => {
   checkExists({ studyUID });
 
-  
+
 };

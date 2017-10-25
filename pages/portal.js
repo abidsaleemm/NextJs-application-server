@@ -1,26 +1,20 @@
 import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
-import {
-  Button,
-  ButtonGroup,
-  Table,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  Tooltip
-} from "reactstrap";
+import { Button, ButtonGroup, Table } from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
+import TooltipPopup from "../components/TooltipPopup";
+
 import selectProjectList from "../selectors/selectProjectList";
 import uuid from "uuid";
 
 // TODO Move this to a action?
 import fetchApi from "../helpers/fetchApi";
-import socketApi from '../helpers/socketApi';
+import socketApi from "../helpers/socketApi";
 
 // TODO Move to separate file?
 const CellTableWrapper = (array, key) => (
@@ -33,8 +27,11 @@ const CellTableWrapper = (array, key) => (
     }}
   >
     <tbody>
-      {array.map(({ [key]: value }) => (
-        <tr style={{ background: "inherit" }}>
+      {array.map(({ [key]: value }, i) => (
+        <tr
+          key={`cell-table-wrapper-${key}-${i}`}
+          style={{ background: "inherit" }}
+        >
           <td
             style={{ margin: 0, padding: 0, verticalAlign: "middle" }}
           >
@@ -45,73 +42,6 @@ const CellTableWrapper = (array, key) => (
     </tbody>
   </Table>
 );
-
-// TODO Move to separate file?
-const ToolTipPopUp = ({
-  popupTarget = null,
-  fileList = [],
-  toggle = () => {}
-}) =>
-  popupTarget !== null ? (
-    <div>
-      <Tooltip
-        placement="left"
-        isOpen={true}
-        autohide={false}
-        target={popupTarget}
-        toggle={() => {
-          toggle();
-        }}
-      >
-        <style jsx>
-          {`
-            :global(div.tooltip.show) {
-              opacity: 1;
-            }
-
-            :global(div.tooltip-inner) {
-              background: white;
-              color: black;
-              border-radius: 5px;
-              width: 200px;
-              padding: 5px;
-              -webkit-box-shadow: 3px 3px 23px 0px rgba(0,0,0,0.75);
-              -moz-box-shadow: 3px 3px 23px 0px rgba(0,0,0,0.75);
-              box-shadow: 3px 3px 23px 0px rgba(0,0,0,0.75);
-            }
-
-            .tableCellHeader {
-              display: flex;
-              padding: 5px;
-              background: lightgray;
-            }
-
-            .tableCell {
-              padding: 5px;
-              text-align: left;
-            }
-          `}
-        </style>
-
-        <Table>
-          <thead>
-            <tr>
-              <td className="tableCellHeader">Files</td>
-            </tr>
-          </thead>
-          <tbody>
-            {fileList.map(v => (
-              <tr>
-                <td className="tableCell">
-                  <a href="">{v}</a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Tooltip>
-    </div>
-  ) : null;
 
 const Portal = class extends Component {
   static async getInitialProps({
@@ -126,11 +56,7 @@ const Portal = class extends Component {
 
     store.dispatch(fetchAction(true));
     store.dispatch(
-      payloadPortal(
-        isServer
-          ? portal
-          : await fetchApi("portal", { clientID, admin })
-      )
+      payloadPortal(isServer ? portal : await fetchApi("portal"))
     );
     store.dispatch(fetchAction(false));
 
@@ -140,14 +66,16 @@ const Portal = class extends Component {
   constructor(props) {
     super(props);
 
+    // TODO Move to redux
     this.state = {
       popupTarget: null,
       popupFileList: []
     };
   }
 
+  // TODO Move to redux
   handleUpload({ target, studyUID }) {
-    const { props: { clientID, admin }} = this;
+    const { props: { payloadPortal, fetchAction } } = this;
 
     // TODO Handle multiple files?
     const { 0: file } = target.files;
@@ -155,29 +83,24 @@ const Portal = class extends Component {
 
     const reader = new FileReader();
     reader.onload = ({ target: { result } = {} }) => {
+      // TODO Handle as single action?
+      fetchAction(true);
       socketApi("uploadPut", { studyUID, name, data: result })
-        .then(v => {
-          console.log('uploadPut', clientID, admin)
-          fetchApi("portal", { clientID, admin })
-        }).catch(e => {
+        .then(async v => {
+          console.log("File pushed", name);
+          payloadPortal(await fetchApi("portal"));
+          fetchAction(false);
+        })
+        .catch(e => {
           console.log(e);
+          fetchAction(false);
         });
-
-      // TODO wrap in socket function
-      // const socket = io();
-      // socket.emit(
-      //   "uploadPut",
-      //   { studyUID, name, data: result },
-      //   () => {
-      //     console.log("socket done");
-      //     // TODO Call payload action to refresh list
-      //   }
-      // );
     };
 
     reader.readAsDataURL(file);
   }
 
+  // TODO Move to redux
   popupOpen({ target, fileList = [] }) {
     this.setState({
       popupTarget: target,
@@ -185,9 +108,9 @@ const Portal = class extends Component {
     });
   }
 
+  // TODO Move to redux
   popupToggle() {
     this.setState({
-      // popupOpen: !this.state.popupOpen,
       popupTarget: null
     });
   }
@@ -275,13 +198,12 @@ const Portal = class extends Component {
                   />
                 </ButtonGroup>
               ),
-              video: (
-                <Button
-                  disabled={!videoExists}
-                  onClick={() => setVideo(studyUID)}
-                >
+              video: videoExists ? (
+                <Button onClick={() => setVideo(studyUID)}>
                   Video
                 </Button>
+              ) : (
+                "No Video"
               )
             };
           }
@@ -350,7 +272,7 @@ const Portal = class extends Component {
           {...tableSettings}
         />
         <VideoModal />
-        <ToolTipPopUp
+        <TooltipPopup
           popupTarget={popupTarget}
           fileList={popupFileList}
           toggle={() => this.popupToggle()}

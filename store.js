@@ -4,8 +4,10 @@ import thunk from 'redux-thunk';
 import * as reducers from './reducers';
 
 const enhancer = compose(
+  // TODO Add wrapper for logging middleware to detect server
   process.env.NODE_ENV !== "production" && !process.env.LOCAL
     ? applyMiddleware(thunk, createLogger())
+    // ? applyMiddleware(thunk)
     : applyMiddleware(thunk)
 );
 

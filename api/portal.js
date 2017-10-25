@@ -1,3 +1,3 @@
 import queryPortal from '../query/portal';
 
-export default async ({ clientID, admin }) => await queryPortal({ clientID, admin })
+export default async ({ user: { id: clientID = 0, admin =  false }}) => await queryPortal({ clientID, admin })

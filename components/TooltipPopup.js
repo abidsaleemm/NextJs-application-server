@@ -27,7 +27,7 @@ export default ({
               background: white;
               color: black;
               border-radius: 5px;
-              width: 200px;
+              min-width: 200px;
               padding: 5px;
               -webkit-box-shadow: 3px 3px 23px 0px rgba(0, 0, 0, 0.75);
               -moz-box-shadow: 3px 3px 23px 0px rgba(0, 0, 0, 0.75);

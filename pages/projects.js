@@ -50,16 +50,16 @@ class ProjectsListing extends Component {
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
       ({
-        uploadDateTime,
         studyUID,
         status = "",
         ...project
       }) => ({
         ...project,
-        uploadDateTime: uploadDateTime ? new Date(uploadDateTime).toISOString() : '',
+        status,
+        tableBackground: status === "None" ? undefined : 'rgba(48, 121, 198, 0.1)',
         action: (
           <div>
-            {status === "" ? (
+            {status === "None" ? (
               // TODO Create as Button dropdown
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>

@@ -13,14 +13,19 @@ export default async () => {
         projectsList.find(({ studyUID }) => study.studyUID === studyUID) || {};
 
       const client = await getClientName({ clientID });
+      const status = getStatusName(parseInt(project.status) || 0);
 
+      const { uploadDateTime } = study;
+      
       return {
         ...study,
         client,
-        status: project ? getStatusName(project.status) : ""
+        status,
+        uploadDateTime: uploadDateTime ? new Date(uploadDateTime).toISOString() : ''
       };
     })
   );
 
+  
   return projects;
 };

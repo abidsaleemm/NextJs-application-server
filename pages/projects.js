@@ -100,7 +100,6 @@ class ProjectsListing extends Component {
       })
     );
 
-    console.log('tableDataEnhanced', tableDataEnhanced)
     return (
       <div className="projects">
         <style jsx>

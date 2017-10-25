@@ -1,10 +1,9 @@
 {
   "name": "multusserver",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "author": "Warren Goble <warren@hack.expert>",
   "scripts": {
-    "start": "node ./loader.js",
     "azure": "npm run dev",
     "local": "cross-env LOCAL=true npm run dev",
     "dev": "cross-env NODE_ENV=dev node ./loader.js",

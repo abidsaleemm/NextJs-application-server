@@ -50,13 +50,13 @@ class ProjectsListing extends Component {
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
       ({
-        uploadDateTime = "",
+        uploadDateTime,
         studyUID,
         status = "",
         ...project
       }) => ({
         ...project,
-        uploadDateTime: new Date(uploadDateTime).toISOString(),
+        uploadDateTime: uploadDateTime ? new Date(uploadDateTime).toISOString() : '',
         action: (
           <div>
             {status === "" ? (
@@ -100,6 +100,7 @@ class ProjectsListing extends Component {
       })
     );
 
+    console.log('tableDataEnhanced', tableDataEnhanced)
     return (
       <div className="projects">
         <style jsx>

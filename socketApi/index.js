@@ -1,11 +1,16 @@
-import socketio from 'socket.io';
-import projectState from './projectState';
-import selectSeries from './selectSeries';
-import selectStudy from './selectStudy';
-import renderFrame from './renderFrame';
-import renderDone from './renderDone';
-import renderAudio from './renderAudio';
-import { queryProject } from '../projects';
+import socketio from "socket.io";
+import dataUriToBuffer from 'data-uri-to-buffer';
+
+// TODO Move into actions directory
+import projectState from "./projectState";
+import selectSeries from "./selectSeries";
+import selectStudy from "./selectStudy";
+import renderFrame from "./renderFrame";
+import renderDone from "./renderDone";
+import renderAudio from "./renderAudio";
+
+import { queryProject } from "../projects";
+import { put as uploadPut } from '../upload';
 
 // TODO Works but clean this up somehow
 const socketActions = {
@@ -14,23 +19,31 @@ const socketActions = {
   selectStudy,
   renderFrame,
   renderDone,
-  renderAudio,
+  renderAudio
 };
 
 // TODO Handle internal state changes
 // Implement Redux?
-export default ({ server, passport, sessionMiddleWare = () => {} }) => {
+export default ({
+  server,
+  passport,
+  sessionMiddleWare = () => {}
+}) => {
   const io = socketio.listen(server);
 
   // Pass down session from passportjs
-  io.use((socket, next) => sessionMiddleWare(socket.request, {}, next));
+  io.use((socket, next) =>
+    sessionMiddleWare(socket.request, {}, next)
+  );
 
   // Handle socket connections
   io.on("connection", socket => {
     console.log("Connection " + socket.id);
 
-    const { request: { session: { passport: { user } = {} } = {} } = {} } = socket;
-    console.log('Socket user', user);
+    const {
+      request: { session: { passport: { user } = {} } = {} } = {}
+    } = socket;
+    console.log("Socket user", user);
 
     // This validates user session
     // TODO Might be a more clean way to handle this
@@ -38,13 +51,21 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       return;
     }
 
-    // This is used for the frontend of the application
+    // Non redux based actions
+    socket.on("uploadPut", async ({ studyUID, name, data }, done) => {
+      const decoded = dataUriToBuffer(data);
+
+      uploadPut({ studyUID, name, data: decoded });
+      done("back");
+    });
+
+    // This is used for the frontend of the application which uses redux socket.io middleware
     socket.on("action", async ({ type, ...action }) => {
       const parseType = type.replace(/^(server\/)/, ""); // TODO Do we really need this. Can just leave in and rename functions?
       console.log("action.type", parseType);
 
       // TODO additional security check here for user at some point
-      const { [parseType]: socketAction = () => { } } = socketActions;
+      const { [parseType]: socketAction = () => {} } = socketActions;
 
       // TODO Handle with a return value instead
       await socketAction({ socket, action });

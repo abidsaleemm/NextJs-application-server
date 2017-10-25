@@ -12,7 +12,7 @@ import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
 import TooltipPopup from "../components/TooltipPopup";
 
-// TODO Move this to a action?
+// TODO Move this to a action wrap actions from getInitialProps?
 import fetchApi from "../helpers/fetchApi";
 
 // TODO Move to separate file?
@@ -60,6 +60,7 @@ const Portal = class extends Component {
     store.dispatch(fetchAction(false));
   }
 
+  // TODO Remove handle using redux portalSettings or portal?
   constructor(props) {
     super(props);
 
@@ -72,7 +73,7 @@ const Portal = class extends Component {
 
   // TODO Move to redux action?
   handleUpload({ target, studyUID }) {
-    const { props: { uploadPut = () => {} } }  = this;
+    const { props: { uploadPut = () => {} } } = this;
 
     // TODO Handle multiple files?
     const { 0: file } = target.files;
@@ -114,7 +115,7 @@ const Portal = class extends Component {
       state: { popupTarget, popupFileList }
     } = this;
 
-    // TODO Move this to prop mapping instead
+    // TODO Move this to prop mapping instead and remove from component class?
     const tableHeaderEnhanced = admin
       ? {
           client: { title: "Client", sort: true },
@@ -122,6 +123,7 @@ const Portal = class extends Component {
         }
       : tableHeader;
 
+    // TODO Move this to prop mapping instead and remove from component class?
     const tableDataEnhanced = tableData.map(
       ({
         studyUID,

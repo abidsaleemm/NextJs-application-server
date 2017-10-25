@@ -39,7 +39,8 @@ export const videoSave = async ({ studyUID, readStream }) => {
 export const videoLoad = async ({ studyUID }) =>
     blobService.createReadStream(container, studyUID, (err, result) => {
         if (err) {
-            return reject(err);
+          console.log(err)
+          return;
         }
 
         console.log(`Video blob loaded ${result.contentLength} bytes.`, studyUID);

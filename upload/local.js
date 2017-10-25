@@ -11,11 +11,6 @@ export const checkExists = ({ studyUID }) => {
   if (fs.existsSync(pathUploads) === false) {
     fs.mkdirSync(pathUploads);
   }
-
-  // const studyDir = `${pathUploads}/${studyUID}`;
-  // if (fs.existsSync(studyDir) === false) {
-  //   fs.mkdirSync(studyDir);
-  // }
 };
 
 export const list = async ({ studyUID }) => {
@@ -25,10 +20,7 @@ export const list = async ({ studyUID }) => {
   const studyDir = `${pathUploads}/${studyUID}`;
   
   if (fs.existsSync(studyDir) !== false) {
-    // console.log('studyDir', studyDir);
-    // Do something
     const files = fs.readdirSync(studyDir);
-    // console.log('files', files);
     return files;
   }
 
@@ -37,9 +29,19 @@ export const list = async ({ studyUID }) => {
 
 export const get = async ({ studyUID, file }) => {
   checkExists({ studyUID });
+
+  const studyDir = `${pathUploads}/${studyUID}`;
+  if (fs.existsSync(studyDir) === false) {
+    fs.mkdirSync(studyDir);
+  }
+
+  const filePath = `${pathUploads}/${studyUID}/${file}`;
+  if (fs.existsSync(filePath)) {
+    return fs.createReadStream(filePath);
+  }
 };
 
-export const put = async ({ studyUID, name, data }) => {
+export const put = ({ studyUID, name, stream }) => new Promise((resolve, reject) => {
   checkExists({ studyUID });
 
   const studyDir = `${pathUploads}/${studyUID}`;
@@ -47,11 +49,15 @@ export const put = async ({ studyUID, name, data }) => {
     fs.mkdirSync(studyDir);
   }
 
-  fs.writeFileSync(`${studyDir}/${name}`, data);
+  const writeStream = fs.createWriteStream(`${studyDir}/${name}`);
+  stream.pipe(writeStream);
+  stream.on('end', () => resolve());
+  stream.on('error', () => reject());
+});
 
-  console.log("upload written", name);
-};
-
+// TODO Get this working with admin account
 export const del = async ({ studyUID, file }) => {
   checkExists({ studyUID });
+
+  
 };

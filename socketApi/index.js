@@ -1,5 +1,6 @@
 import socketio from "socket.io";
 import dataUriToBuffer from 'data-uri-to-buffer';
+import { Readable } from 'stream';
 
 // TODO Move into actions directory
 import projectState from "./projectState";
@@ -54,8 +55,12 @@ export default ({
     // Non redux based actions
     socket.on("uploadPut", async ({ studyUID, name, data }, done) => {
       const decoded = dataUriToBuffer(data);
+      
+      const stream = new Readable;
+      stream.push(decoded);
+      stream.push(null);
 
-      uploadPut({ studyUID, name, data: decoded });
+      await uploadPut({ studyUID, name, stream });
       done("back");
     });
 

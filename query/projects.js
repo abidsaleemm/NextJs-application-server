@@ -15,13 +15,10 @@ export default async () => {
       const { name: client } = await getClientInfo({ clientID });
       const status = getStatusName(parseInt(project.status) || 0);
 
-      const { uploadDateTime } = study;
-
       return {
         ...study,
         client,
         status,
-        uploadDateTime: uploadDateTime ? new Date(uploadDateTime).toISOString() : ''
       };
     })
   );

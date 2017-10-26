@@ -37,8 +37,8 @@ export const getUser = async ({ username, password }) =>
   users.find(user => user.username === username && user.password === password);
 
 export const getClientInfo = async ({ clientID = 0 }) =>
-  (({ name, address, city, state, country }) => 
-    ({ name, address, city, state, country }))
+  (({ name, address, city, state, country, zip }) => 
+    ({ name, address, city, state, country, zip }))
       (users.find(user => user.id == clientID && user.client));
 
 // TODO should only be for admins

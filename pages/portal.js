@@ -9,7 +9,7 @@ import selectProjectList from "../selectors/selectProjectList";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
-import TooltipPopup from "../components/TooltipPopup";
+import UploadFilePopup from "../components/UploadFilePopup";
 
 // TODO Move this to a action wrap actions from getInitialProps?
 import fetchApi from "../helpers/fetchApi";
@@ -66,7 +66,7 @@ const Portal = class extends Component {
     // TODO Move to redux?
     this.state = {
       popupTarget: null,
-      popupStudyUID: ''
+      popupStudyUID: ""
     };
   }
 
@@ -112,10 +112,7 @@ const Portal = class extends Component {
         setVideo = () => {},
         uploadDel = () => {}
       },
-      state: { 
-        popupTarget, 
-        popupStudyUID 
-      }
+      state: { popupTarget, popupStudyUID }
     } = this;
 
     // TODO Move this to prop mapping instead and remove from component class?
@@ -158,7 +155,7 @@ const Portal = class extends Component {
                       onClick={() =>
                         this.popupOpen({
                           studyUID,
-                          target: popoverID,
+                          target: popoverID
                           // fileList: uploadedFiles
                         })}
                     >
@@ -224,10 +221,13 @@ const Portal = class extends Component {
     );
 
     // Query the study from tableData
-    let study; 
-    const ret = tableData.some(({ studies = [] }) => 
-      (study = studies.find(({ studyUID = '' }) => 
-        studyUID === popupStudyUID)) !== undefined);
+    let study;
+    const ret = tableData.some(
+      ({ studies = [] }) =>
+        (study = studies.find(
+          ({ studyUID = "" }) => studyUID === popupStudyUID
+        )) !== undefined
+    );
     const { uploadedFiles = [] } = study || {};
 
     return (
@@ -270,13 +270,14 @@ const Portal = class extends Component {
           {...tableSettings}
         />
         <VideoModal />
-        <TooltipPopup
+        <UploadFilePopup
           popupTarget={popupTarget}
           fileList={uploadedFiles}
           toggle={() => this.popupToggle()}
           studyUID={popupStudyUID}
-          onDelete={(props) => {
-            uploadDel(props).then(v => { /// TODO using promise with thunk
+          onDelete={props => {
+            uploadDel(props).then(v => {
+              /// TODO using promise with thunk
               if (uploadedFiles.length <= 1) {
                 this.setState({ popupTarget: null });
               }

@@ -66,7 +66,6 @@ const Portal = class extends Component {
     // TODO Move to redux?
     this.state = {
       popupTarget: null,
-      popupFileList: [],
       popupStudyUID: ''
     };
   }
@@ -87,10 +86,9 @@ const Portal = class extends Component {
   }
 
   // TODO Move to redux action?
-  popupOpen({ target, fileList = [], studyUID }) {
+  popupOpen({ target, studyUID }) {
     this.setState({
       popupTarget: target,
-      popupFileList: fileList,
       popupStudyUID: studyUID
     });
   }
@@ -111,9 +109,13 @@ const Portal = class extends Component {
         tableSubHeader = {},
         admin = false,
         setPortalSettings = () => {},
-        setVideo = () => {}
+        setVideo = () => {},
+        uploadDel = () => {}
       },
-      state: { popupTarget, popupFileList, popupStudyUID }
+      state: { 
+        popupTarget, 
+        popupStudyUID 
+      }
     } = this;
 
     // TODO Move this to prop mapping instead and remove from component class?
@@ -157,7 +159,7 @@ const Portal = class extends Component {
                         this.popupOpen({
                           studyUID,
                           target: popoverID,
-                          fileList: uploadedFiles
+                          // fileList: uploadedFiles
                         })}
                     >
                       {uploadedFiles.length}
@@ -221,6 +223,13 @@ const Portal = class extends Component {
       }
     );
 
+    // Query the study from tableData
+    let study; 
+    const ret = tableData.some(({ studies = [] }) => 
+      (study = studies.find(({ studyUID = '' }) => 
+        studyUID === popupStudyUID)) !== undefined);
+    const { uploadedFiles = [] } = study || {};
+
     return (
       <div className="portal">
         <style jsx>
@@ -263,9 +272,16 @@ const Portal = class extends Component {
         <VideoModal />
         <TooltipPopup
           popupTarget={popupTarget}
-          fileList={popupFileList}
+          fileList={uploadedFiles}
           toggle={() => this.popupToggle()}
           studyUID={popupStudyUID}
+          onDelete={(props) => {
+            uploadDel(props).then(v => { /// TODO using promise with thunk
+              if (uploadedFiles.length <= 1) {
+                this.setState({ popupTarget: null });
+              }
+            });
+          }}
         />
       </div>
     );

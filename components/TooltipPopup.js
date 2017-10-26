@@ -1,10 +1,12 @@
 import { Table, Tooltip } from "reactstrap";
+import CheckConfirm from "./CheckConfirm";
 
 export default ({
   popupTarget = null,
   fileList = [],
   toggle = () => {},
-  studyUID = ""
+  studyUID = "",
+  onDelete = () => {}
 }) =>
   popupTarget !== null ? (
     <div>
@@ -41,12 +43,14 @@ export default ({
             }
 
             .tableCell {
-              padding: 5px;
+              display: flex;
+              justify-content: space-between;
+              padding: 0px;
+              min-height: 24px;
               text-align: left;
             }
           `}
         </style>
-
         <Table hover>
           <thead>
             <tr>
@@ -63,6 +67,7 @@ export default ({
                   >
                     {name}
                   </a>
+                  <CheckConfirm onConfirm={() => { onDelete({ studyUID, name }) }}/>
                 </td>
               </tr>
             ))}

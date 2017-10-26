@@ -79,5 +79,20 @@ export const put = async ({ studyUID, name, stream }) => {
   });
 };
 
-// TODO Get this working with admin account
-export const del = async ({ studyUID, file }) => {};
+export const del = async ({ studyUID, name }) => {
+  await createContainerIfNotExists({ name: containerName });
+  await new Promise((resolve, reject) => {
+    blobService.deleteBlob(
+      containerName,
+      `${studyUID}/${name}`,
+      (error, result) => {
+        if (error) {
+          console.log("error del", error);
+          return reject(error);
+        }
+
+        resolve();
+      }
+    );
+  });
+};

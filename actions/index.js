@@ -12,4 +12,6 @@ export { default as setProjectsSettings } from "./setProjectsSettings";
 export { default as toggleSidebar } from "./toggleSidebar";
 
 export { default as videoRender } from './videoRender'; 
+
 export { default as uploadPut } from './uploadPut';
+export { default as uploadDel } from './uploadDel';

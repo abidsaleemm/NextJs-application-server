@@ -25,13 +25,15 @@ export const getUser = async ({ username = '', password }) => {
     return false;
 }
 
-export const getClientName = async ({ clientID = 0 }) => {
+export const getClientInfo = async ({ clientID = 0 }) => {
     const query = new azure.TableQuery().where('id eq ?', clientID);
-    const { 0: { name = '' } = {} } = await queryTable({ tableService, query, tableName });
-    return name;
+    const { 0: { name = '', address = '', city = '', state = '', country = '' } = {} } = 
+      await queryTable({ tableService, query, tableName });
+
+    return { name, address, city, state, country };
 }
 
-// TODO should only be for admins
+// TODO should only be for admins?
 export const getClients = async () => 
     await queryTable({ 
         tableService, 

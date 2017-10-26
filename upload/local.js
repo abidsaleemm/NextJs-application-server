@@ -56,8 +56,20 @@ export const put = ({ studyUID, name, stream }) => new Promise((resolve, reject)
 });
 
 // TODO Get this working with admin account
-export const del = async ({ studyUID, file }) => {
+export const del = async ({ studyUID, name }) => {
   checkExists({ studyUID });
 
+  const studyDir = `${pathUploads}/${studyUID}`;
+  if (fs.existsSync(studyDir) === false) {
+    fs.mkdirSync(studyDir);
+  }
+
+  const filePath = `${pathUploads}/${studyUID}/${name}`;
+
+  try {
+    fs.unlinkSync(filePath);
+  } catch (e) {
+    console.log(e)
+  }
 
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import R from "ramda";
+import * as R from 'ramda';
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
 import { videoExists } from "../video";

@@ -1,4 +1,4 @@
-import R from "ramda";
+import * as R from 'ramda';
 import { createSelector } from "reselect";
 
 // TODO Handle this through settings instead

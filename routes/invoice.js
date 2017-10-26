@@ -43,7 +43,8 @@ export default ({ server, app }) => {
       address: clientAddress,
       city: clientCity,
       state: clientState,
-      country: clientCountry
+      country: clientCountry,
+      zip: clientZip
     } = await getClientInfo({ clientID });
 
     /*

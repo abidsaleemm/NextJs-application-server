@@ -6,6 +6,10 @@ import Loader from '../containers/loader'; // TODO Requires a store. Should prob
 // TODO This should be an action?
 import fetchApi from "../helpers/fetchApi";
 
+// TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
+// Embed in DOM
+const { STAGING } = 'undefined' !== typeof window ? window.env : process.env
+
 const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props =>
     <div className="root">
         <style jsx global>
@@ -22,6 +26,7 @@ const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props 
         {nav ? <Nav {...props} /> : null}
         {loader ? <Loader {...props} /> : null}
         <WrappedComponent {...props} />
+        <script dangerouslySetInnerHTML={{ __html: `env = {}; env.STAGING = '${STAGING}';`}}/>
     </div>
 
 export default (WrappedComponent, ...params) => class extends Component {

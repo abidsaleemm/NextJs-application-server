@@ -3,3 +3,4 @@ export { default as projects } from './projects';
 export { default as projectDetail } from './projectDetail';
 export { default as userType } from './userType';
 export { default as portal } from './portal';
+export { default as uploadDel } from "./uploadDel";

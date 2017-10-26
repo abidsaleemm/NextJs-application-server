@@ -3,7 +3,7 @@ import R from "ramda";
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
 import { videoExists } from "../video";
-import { getClientName } from "../authUsers";
+import { getClientInfo } from "../authUsers";
 import getStatusName from "../helpers/getStatusName";
 import { list as uploadList } from "../upload";
 
@@ -33,7 +33,7 @@ export default async ({ clientID = 0, admin = false }) => {
           studyUID,
           status: getStatusName(status || 0),
           videoExists: await videoExists({ studyUID }),
-          client: await getClientName({ clientID }),
+          client: (({ name }) => name)(await getClientInfo({ clientID })),
           uploadedFiles: await uploadList({ studyUID })
         })
       )

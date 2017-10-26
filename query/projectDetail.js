@@ -5,7 +5,7 @@ import {
     setProjectSnapshot,
 } from '../projects';
 import createProject from '../projects/createProject';
-import { getClientName } from "../authUsers";
+import { getClientInfo } from "../authUsers";
 
 export default async ({ studyUID }) => {
     const { clientID = 0, ...study } = await getStudy({ studyUID });
@@ -25,6 +25,6 @@ export default async ({ studyUID }) => {
         ...project, 
         ...study, 
         studyUID, 
-        client: await getClientName({ clientID })
+        client: (({ name }) => name)(await getClientInfo({ clientID }))
     };
 }

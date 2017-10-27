@@ -53,7 +53,7 @@ export default class extends Component {
           `}
         </style>
         {confirmed ? (
-          <Tooltip placement="top" isOpen="true" target={toolTipID}>
+          <Tooltip placement="top" isOpen={true} target={toolTipID}>
             Click Again to Confirm
           </Tooltip>
         ) : null}

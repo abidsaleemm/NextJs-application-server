@@ -9,49 +9,50 @@ export default props => {
     <div className="root">
       <style jsx>
         {`
-            .root {
-                padding: 5px ;
-                background: white;
-                display: flex;
-                position: relative;
-                width: 100%;
-                height: 100%;
-                flex-direction: row;
-            }
+          .root {
+            padding: 5px;
+            background: white;
+            display: flex;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            flex-direction: row;
+          }
 
-            .root button:hover {
-                cursor: pointer;
-            }
-            .input {
-                height: 30px;
-                border: none;
-                box-shadow: none;
-                width: 100%;
-                flex: 0 1 100%;
-            }
-            .input:focus {
-                outline: none;
-            }
-            .input:focus {
-                outline: none;
-            }
-            .clearButton {
-                flex: 1 0 30px;
-                background: none;
-                right: 5px;
-                line-height: 0;
-                width: 30px;
-                height: 30px;
-                border: none;
-                justify-content: center;
-                align-items: center;
-                padding: 0;
-                border-radius: 900px;
-            }
-            .clearButton:focus {
-                background: #EFEFEF;
-                outline: none;
-            }
+          .root button:hover {
+            cursor: pointer;
+          }
+
+          .input {
+            height: 30px;
+            border: none;
+            box-shadow: none;
+            width: 100%;
+            padding-right: 30px;
+          }
+
+          .input:focus {
+            outline: none;
+          }
+
+          .clearButton {
+            position: absolute;
+            background: none;
+            right: 5px;
+            line-height: 0;
+            width: 30px;
+            height: 30px;
+            border: none;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            border-radius: 900px;
+          }
+
+          .clearButton:focus {
+            background: #efefef;
+            outline: none;
+          }
         `}
       </style>
 
@@ -63,10 +64,7 @@ export default props => {
         onChange={onChange}
       />
       {shouldShowClear ? (
-        <button
-          className="clearButton"
-          onClick={onClear}
-        >
+        <button className="clearButton" onClick={onClear}>
           <svg
             fill="#000000"
             height="24"

@@ -66,10 +66,11 @@ export default ({
 
     // This is used for the frontend of the application which uses redux socket.io middleware
     socket.on("action", async ({ type, ...action }) => {
+      
       const parseType = type.replace(/^(server\/)/, ""); // TODO Do we really need this. Can just leave in and rename functions?
       console.log("action.type", parseType);
 
-      // TODO additional security check here for user at some point
+      // TODO additional security check here for user at some point?
       const { [parseType]: socketAction = () => {} } = socketActions;
 
       // TODO Handle with a return value instead

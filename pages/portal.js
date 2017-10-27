@@ -46,9 +46,7 @@ const Portal = class extends Component {
     store,
     isServer,
     userId: clientID,
-    admin,
     query: { portal = {} } = {},
-    ...props
   }) {
     const { payloadPortal, fetchAction } = actions;
 
@@ -71,6 +69,7 @@ const Portal = class extends Component {
   }
 
   // TODO Move to redux action?
+  // Moving to seperate components
   handleUpload({ target, studyUID }) {
     const { props: { uploadPut = () => {} } } = this;
 

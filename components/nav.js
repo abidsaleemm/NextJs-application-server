@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import classNames from "classnames";
 
 const RenderUser = () => (
   <div
@@ -58,13 +57,9 @@ export default ({ client, admin = false }) => (
           background: ${ staging ? 'red' : '#3079c6' };
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
-
-        .navStaging {
-          background: red;
-        }
       `}
     </style>
-    <Nav className={classNames({ nav: true, navStaging: staging })}>
+    <Nav className="nav">
       <Link href="/auth/logout">
         <a className="buttonLink">Logout</a>
       </Link>

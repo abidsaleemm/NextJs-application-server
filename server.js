@@ -8,7 +8,6 @@ import https from "https";
 import fs from "fs";
 import proxy from "http-proxy-middleware";
 import auth from "./auth";
-import api from "./api";
 import routes from "./routes";
 import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
@@ -62,13 +61,13 @@ app.prepare().then(() => {
   } else {
     // Used for local testing.
     server.use(
-      "/static/interface",
+      "/static/interface", // TODO Change name from interface to editor
       authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8081",
           changeOrigin: true,
-          pathRewrite: { "^/static/interface": "/" }
+          pathRewrite: { "^/static/interface": "/" } // TODO Change name from interface to editor
         })(req, res)
     );
 

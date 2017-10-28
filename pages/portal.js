@@ -12,7 +12,7 @@ import VideoModal from "../containers/videoModal";
 import UploadFilePopup from "../components/UploadFilePopup";
 
 // TODO Move this to a action wrap actions from getInitialProps?
-import fetchApi from "../helpers/fetchApi";
+// import fetchApi from "../helpers/fetchApi";
 
 // TODO Move to separate file?
 const CellTableWrapper = (array, key) => (
@@ -45,16 +45,29 @@ const Portal = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    userId: clientID,
-    query: { portal = {} } = {},
+    // userId: clientID,
+    query: { portalList = {} } = {}
   }) {
-    const { payloadPortal, fetchAction } = actions;
+    const { payloadPortal } = actions;
+    // const { fetchPagePortal } = actions;
 
-    store.dispatch(fetchAction(true));
-    store.dispatch(
-      payloadPortal(isServer ? portal : await fetchApi("portal"))
-    );
-    store.dispatch(fetchAction(false));
+    isServer
+      ? store.dispatch(
+          payloadPortal({
+            portalList
+          })
+        )
+      : store.dispatch({ type: "server/pagePortal" });
+
+    // if (!isServer) {
+    //   store.dispatch(({ type: 'server/pagePortal' }));
+    // }
+
+    // store.dispatch(fetchAction(true));
+    // store.dispatch(
+    //   payloadPortal(isServer ? portal : await fetchApi("portal"))
+    // );
+    // store.dispatch(fetchAction(false));
   }
 
   // TODO Remove handle using redux portalSettings or portal?
@@ -289,7 +302,7 @@ const Portal = class extends Component {
 };
 
 const mapStateToProps = ({
-  portal: { projects = [] },
+  portal: { portalList = [] },
   portalSettings = {}
 }) => ({
   tableHeader: {
@@ -305,7 +318,7 @@ const mapStateToProps = ({
   },
   tableSettings: portalSettings,
   tableData: selectProjectList({
-    projects,
+    projects: portalList,
     settings: portalSettings
   })
 });

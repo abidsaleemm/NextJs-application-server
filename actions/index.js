@@ -15,3 +15,5 @@ export { default as videoRender } from './videoRender';
 
 export { default as uploadPut } from './uploadPut';
 export { default as uploadDel } from './uploadDel';
+
+export { default as setUser } from './setUser';

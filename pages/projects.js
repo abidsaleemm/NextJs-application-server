@@ -16,25 +16,41 @@ import TableList from "../components/tableList";
 import selectProjectList from "../selectors/selectProjectList";
 
 // TODO Move this to a action?
-import fetchApi from "../helpers/fetchApi";
+// import fetchApi from "../helpers/fetchApi";
 
 class ProjectsListing extends Component {
   static async getInitialProps({
-    req = {},
+    // req = {},
     store,
     isServer,
     query: { projects = [] } = {}
   }) {
-    const { payloadProjects, fetchAction } = actions;
+    // console.log("projects", projects);
+    const { payloadProjects } = actions;
 
     // TODO Create wrapper for this so single action for payloads
-    store.dispatch(fetchAction(true));
-    store.dispatch(
-      payloadProjects(
-        isServer ? projects : await fetchApi("projects")
-      )
-    );
-    store.dispatch(fetchAction(false));
+    // store.dispatch(fetchAction(true));
+    // store.dispatch(
+    // payloadProjects(
+    // isServer ? projects : await fetchApi("projects")
+    // )
+    // );
+    // store.dispatch(fetchAction(false));
+
+    // store.dispatch({ type: 'server/pageProjects' });
+    // const { } = ;
+
+    isServer
+      ? store.dispatch(payloadProjects({ projects }))
+      : store.dispatch({
+          type: "server/pageProjects"
+        });
+
+    // return {
+    //   projects: isServer
+    //     ? projects
+    //     : store.dispatch({ type: "server/pageProjects" })
+    // };
   }
 
   render() {
@@ -49,14 +65,11 @@ class ProjectsListing extends Component {
 
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
-      ({
-        studyUID,
-        status = "",
-        ...project
-      }) => ({
+      ({ studyUID, status = "", ...project }) => ({
         ...project,
         status,
-        tableBackground: status === "None" ? undefined : 'rgba(48, 121, 198, 0.1)',
+        tableBackground:
+          status === "None" ? undefined : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
             {status === "None" ? (

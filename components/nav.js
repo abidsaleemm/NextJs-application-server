@@ -42,7 +42,9 @@ const RenderAdmin = () => (
 const { STAGING: staging = false } =
   "undefined" !== typeof window ? window.env : process.env;
 
-export default ({ client, admin = false }) => (
+export default ({ user: { client = false, admin = false } = {}, ...props }) => {
+// console.log("props", props);
+return (
   <div>
     <style jsx global>
       {`
@@ -73,3 +75,4 @@ export default ({ client, admin = false }) => (
     </Nav>
   </div>
 );
+}

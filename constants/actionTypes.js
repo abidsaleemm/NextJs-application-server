@@ -9,13 +9,13 @@ export const PROJECTDETAIL_SET_STATUS = "PROJECTDETAIL_SET_STATUS";
 // Settings
 export const PORTAL_SET_SETTINGS = "PORTAL_SET_SETTINGS";
 export const PROJECTS_SET_SETTINGS = "PROJECTS_SET_SETTINGS";
-export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+export const TOGGLE_SIDEBAR_SETTINGS = "TOGGLE_SIDEBAR_SETTINGS";
 
 // Globals
 export const PAGE_LOADING = "PAGE_LOADING";
 export const FETCHING = "FETCHING";
 export const VIDEO_SET = "VIDEO_SET";
-export const VIDEO_RENDER = "VIDEO_RENDER" // Used for tracking window. 
+export const VIDEO_RENDER = "VIDEO_RENDER" // Used for tracking window.
 
 export const USER_SET = 'USER_SET';
 export const ROUTE = 'ROUTE';

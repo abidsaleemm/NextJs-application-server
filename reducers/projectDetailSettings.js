@@ -1,4 +1,4 @@
-import { TOGGLE_SIDEBAR } from "../constants/actionTypes";
+import { TOGGLE_SIDEBAR_SETTINGS} from "../constants/actionTypes";
 
 export const initialState = {
   projects: []
@@ -7,7 +7,7 @@ export const initialState = {
 export default (state = { sidebarIsOpen: true }, { type }) => {
   const { sidebarIsOpen, ...rest } = state;
   switch (type) {
-    case TOGGLE_SIDEBAR:
+    case TOGGLE_SIDEBAR_SETTINGS:
       return {
         ...rest,
         sidebarIsOpen: !sidebarIsOpen

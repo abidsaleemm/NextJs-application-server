@@ -8,6 +8,7 @@ import { createLogger } from "redux-logger";
 import createSocketIoMiddleware from "redux-socket.io";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
+import persistSettings from './middleware/persistSettings'
 import * as reducers from "./reducers";
 import route from './middleware/route';
 
@@ -19,9 +20,9 @@ const socketIoMiddleware = createSocketIoMiddleware(
 const enhancer = compose(
   "undefined" !== typeof window
     ? process.env.NODE_ENV !== "production"
-      ? applyMiddleware(thunk, route, createLogger(), socketIoMiddleware)
-      : applyMiddleware(thunk, route, socketIoMiddleware)
-    : applyMiddleware(thunk, route, socketIoMiddleware)
+      ? applyMiddleware(thunk, route, createLogger(), socketIoMiddleware, persistSettings)
+      : applyMiddleware(thunk, route, socketIoMiddleware, persistSettings)
+    : applyMiddleware(thunk, route, socketIoMiddleware, persistSettings)
 );
 
 export const initStore = (initialState = {}) => {

@@ -15,42 +15,19 @@ import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import selectProjectList from "../selectors/selectProjectList";
 
-// TODO Move this to a action?
-// import fetchApi from "../helpers/fetchApi";
-
 class ProjectsListing extends Component {
   static async getInitialProps({
-    // req = {},
     store,
     isServer,
     query: { projects = [] } = {}
   }) {
-    // console.log("projects", projects);
     const { payloadProjects } = actions;
-
-    // TODO Create wrapper for this so single action for payloads
-    // store.dispatch(fetchAction(true));
-    // store.dispatch(
-    // payloadProjects(
-    // isServer ? projects : await fetchApi("projects")
-    // )
-    // );
-    // store.dispatch(fetchAction(false));
-
-    // store.dispatch({ type: 'server/pageProjects' });
-    // const { } = ;
 
     isServer
       ? store.dispatch(payloadProjects({ projects }))
       : store.dispatch({
           type: "server/pageProjects"
         });
-
-    // return {
-    //   projects: isServer
-    //     ? projects
-    //     : store.dispatch({ type: "server/pageProjects" })
-    // };
   }
 
   render() {

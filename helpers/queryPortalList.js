@@ -32,8 +32,8 @@ const reducePatients = studies =>
     };
   });
 
-export default async ({ clientID } = {}) => {
-  const studies = await queryProjectsList({ clientID });
+export default async ({ clientID, admin } = {}) => {
+  const studies = await queryProjectsList({ clientID, admin });
   return reducePatients(
     await Promise.all(
       studies.map(async ({ studyUID, ...props }) => ({

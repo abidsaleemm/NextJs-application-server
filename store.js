@@ -11,16 +11,15 @@ import thunk from "redux-thunk";
 import * as reducers from "./reducers";
 
 const socketIoMiddleware = createSocketIoMiddleware(
-  io("http://localhost:3000"),
+  // io("http://localhost:3000"),
+  // io(),
+  "undefined" !== typeof window ? io() : io("http://localhost:3000"),
   "server/"
 );
 
 const enhancer = compose(
-  // TODO Add wrapper for logging middleware to detect server
-  process.env.NODE_ENV !== "production" && !process.env.LOCAL
-    ? applyMiddleware(thunk, createLogger(), socketIoMiddleware)
-    : // ? applyMiddleware(thunk)
-      applyMiddleware(thunk, socketIoMiddleware)
+  applyMiddleware(thunk, socketIoMiddleware)
+  // applyMiddleware(thunk, createLogger(), socketIoMiddleware)
 );
 
 export const initStore = (initialState = {}) => {

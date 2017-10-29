@@ -5,10 +5,10 @@ export default ({ server, app }) => {
   server.get(
     "/portal",
     authMiddleware(),
-    async ({ ...req, user: { admin = false, client = false, id: clientID }, query }, res) =>
+    async ({ ...req, user: { admin = false, id: clientID }, query }, res) =>
       app.render(req, res, "/portal", {
         ...query,
-        portalList: await queryPortalList({ clientID: admin ? undefined : clientID })
+        portalList: await queryPortalList({ clientID, admin })
       })
   );
 };

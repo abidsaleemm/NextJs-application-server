@@ -1,4 +1,3 @@
-// import queryProjectDetail from "../query/projectDetail";
 import queryProjectDetail from "../helpers/queryProjectDetail";
 import authMiddleware from "../auth/middleware";
 
@@ -13,3 +12,4 @@ export default ({ server, app }) =>
       })
     }
   );
+  

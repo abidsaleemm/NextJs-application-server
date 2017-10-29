@@ -26,6 +26,6 @@ const EntryPage = class extends Component {
 
 export default withRedux(
   initStore,
-  () => {},
+  () => ({}),
   dispatch => bindActionCreators(actions, dispatch)
 )(Wrapper(EntryPage, { nav: false, loader: false }));

@@ -11,8 +11,6 @@ import thunk from "redux-thunk";
 import * as reducers from "./reducers";
 
 const socketIoMiddleware = createSocketIoMiddleware(
-  // io("http://localhost:3000"),
-  // io(),
   "undefined" !== typeof window ? io() : io("http://localhost:3000"),
   "server/"
 );

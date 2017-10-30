@@ -16,8 +16,11 @@ const socketIoMiddleware = createSocketIoMiddleware(
 );
 
 const enhancer = compose(
-  applyMiddleware(thunk, socketIoMiddleware)
-  // applyMiddleware(thunk, createLogger(), socketIoMiddleware)
+  "undefined" !== typeof window
+    ? process.env.ENOV_ENV !== "production"
+      ? applyMiddleware(thunk, createLogger(), socketIoMiddleware)
+      : applyMiddleware(thunk, socketIoMiddleware)
+    : applyMiddleware(thunk, socketIoMiddleware)
 );
 
 export const initStore = (initialState = {}) => {

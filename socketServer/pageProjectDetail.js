@@ -6,7 +6,7 @@ export default async ({
   action: { studyUID = "" },
   user
 }) => {
-  socket.emit("action", fetchAction(true));
+  await socket.emit("action", fetchAction(true));
   const projectDetail = await queryProjectDetail({ studyUID });
   await socket.emit("action", payloadProjectDetail(projectDetail));
   socket.emit("action", fetchAction(false));

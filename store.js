@@ -11,7 +11,7 @@ import thunk from "redux-thunk";
 import * as reducers from "./reducers";
 
 const socketIoMiddleware = createSocketIoMiddleware(
-  "undefined" !== typeof window ? io() : io("http://localhost:3000"),
+  "undefined" !== typeof window ? io() : io("http://localhost:3000"), // TODO This Still works but not clean
   "server/"
 );
 
@@ -26,7 +26,7 @@ const enhancer = compose(
 export const initStore = (initialState = {}) => {
   return createStore(
     combineReducers(reducers),
-    initialState, // TODO Should we use this?
+    initialState,
     enhancer
   );
 };

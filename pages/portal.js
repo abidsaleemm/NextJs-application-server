@@ -288,12 +288,10 @@ const Portal = class extends Component {
           toggle={() => this.popupToggle()}
           studyUID={popupStudyUID}
           onDelete={props => {
-            uploadDel(props).then(v => {
-              /// TODO using promise with thunk
-              if (uploadedFiles.length <= 1) {
-                this.setState({ popupTarget: null });
-              }
-            });
+            uploadDel(props);
+            if (uploadedFiles.length <= 1) {
+              this.setState({ popupTarget: null });
+            }
           }}
         />
       </div>

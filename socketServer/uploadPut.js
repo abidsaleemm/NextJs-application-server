@@ -21,7 +21,4 @@ export default async ({
   console.log("Upload done", name);
 
   pagePortal({ socket, user });
-  //pagePortal
-  // Push payload;
-  // TODO just send updated project query
 };

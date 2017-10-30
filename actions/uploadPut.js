@@ -1,3 +1,6 @@
-export default ({ data, name, studyUID = ''}) => dispatch => {
-  dispatch({ type: 'server/uploadPut', data, name, studyUID });
-};
+export default ({ data, name, studyUID = "" }) => ({
+  type: "server/uploadPut",
+  data,
+  name,
+  studyUID
+});

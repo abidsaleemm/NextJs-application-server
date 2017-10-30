@@ -1,7 +1,6 @@
 import pdfFillForm from "pdf-fill-form";
 import path from "path";
 import authMiddleware from "../auth/middleware";
-import queryProjectDetail from "../query/projectDetail";
 import { getStudiesByPatientID, getStudy } from "../dicom";
 import { getClientInfo } from "../authUsers";
 

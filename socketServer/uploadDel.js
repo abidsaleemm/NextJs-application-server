@@ -1,11 +1,10 @@
 import { del as uploadDel } from "../upload";
+import pagePortal from "./pagePortal";
+import { fetchAction } from "../actions";
 
-// export default async (props) => {
-//   await uploadDel(props);
-//   // setProject({ studyUID, props });
-//   // return props;
-// };
-
-export default async ({ socket, action: props = {}}) => {
+export default async ({ socket, action: props = {}, user }) => {
+  socket.emit("action", fetchAction(true));
   await uploadDel(props);
+
+  pagePortal({ socket, user });
 };

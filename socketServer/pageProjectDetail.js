@@ -1,12 +1,13 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
-import { payloadProjectDetail } from "../actions";
+import { payloadProjectDetail, fetchAction } from "../actions";
 
 export default async ({
   socket,
   action: { studyUID = "" },
   user
 }) => {
+  socket.emit("action", fetchAction(true));
   const projectDetail = await queryProjectDetail({ studyUID });
-  console.log("projectDetail", projectDetail);
-  socket.emit("action", payloadProjectDetail(projectDetail));
+  await socket.emit("action", payloadProjectDetail(projectDetail));
+  socket.emit("action", fetchAction(false));
 };

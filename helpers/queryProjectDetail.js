@@ -1,3 +1,4 @@
+import { getStudy } from '../dicom';
 import {
   getProject,
   getProjectSnapshot

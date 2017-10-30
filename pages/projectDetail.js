@@ -48,8 +48,7 @@ const ProjectDetails = class extends Component {
     const {
       props: {
         // Actions
-        setProjectStatus,
-        setProjectClient,
+        setProjectProps,
         videoRender,
         toggleSidebar,
         // State
@@ -134,7 +133,7 @@ const ProjectDetails = class extends Component {
                         <DropdownMenu>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 1
                               })}
@@ -143,7 +142,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 2
                               })}
@@ -152,7 +151,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 3
                               })}
@@ -161,7 +160,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 4
                               })}

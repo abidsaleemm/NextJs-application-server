@@ -28,7 +28,7 @@ const Wrapper = (
     </style>
     <Styles {...props} />
     {nav ? <Nav {...props} /> : null}
-    {loader ? <Loader {...props} /> : null}
+    <Loader />
     <WrappedComponent {...props} />
     <script
       dangerouslySetInnerHTML={{
@@ -50,10 +50,7 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
       const { setUser } = actions;
 
       if (isServer !== undefined) {
-        const {
-          admin = false,
-          client = false
-        } = isServer
+        const { admin = false, client = false } = isServer
           ? store.dispatch(setUser(user))
           : store.dispatch({ type: "server/getUser" });
 
@@ -61,7 +58,6 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
           ...WrappedComponent.getInitialProps({
             ...props
           })
-          // ...props,
         };
       }
 
@@ -84,10 +80,6 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
     }
   };
 dispatch => bindActionCreators(actions, dispatch);
-// import React, { Component } from "react";
-// import withRedux from "next-redux-wrapper";
-// import { connect } from 'react-redux';
-// import Loader from '../components/loader';
 
 export default (WrappedComponent, ...params) =>
   connect(
@@ -96,9 +88,3 @@ export default (WrappedComponent, ...params) =>
     }),
     dispatch => bindActionCreators(actions, dispatch)
   )(WrapperEnhanced(WrappedComponent, ...params));
-
-// import { bindActionCreators } from "redux";
-// import { Button, ButtonGroup, Table } from "reactstrap";
-// import { initStore } from "../store";
-// import * as actions from "../actions";
-// import selectProjectList from "../selectors/selectProjectList";

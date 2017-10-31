@@ -49,8 +49,10 @@ export default (data, { bypassData = false, path } = {}) => {
         image.getCols() *
         image.getNumberOfFrames() *
         (image.getBitsAllocated() / 8);
-      const imageData = image.getPixelDataBytes();
-      const pixelData = new Int16Array(imageData);
+      const imageData = new Int16Array(image.getPixelDataBytes());
+      const pixelData = new Array(size)
+        .fill(0)
+        .map((v, i) => imageData[i]);
 
       return { ...tags, pixelData };
     }

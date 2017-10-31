@@ -1,17 +1,33 @@
-import { combineReducers, compose, createStore, applyMiddleware } from 'redux';
-import { createLogger } from 'redux-logger';
-import thunk from 'redux-thunk';
-import * as reducers from './reducers';
+import {
+  combineReducers,
+  compose,
+  createStore,
+  applyMiddleware
+} from "redux";
+import { createLogger } from "redux-logger";
+import createSocketIoMiddleware from "redux-socket.io";
+import io from "socket.io-client";
+import thunk from "redux-thunk";
+import * as reducers from "./reducers";
+import route from './middleware/route';
+
+const socketIoMiddleware = createSocketIoMiddleware(
+  "undefined" !== typeof window ? io() : io("http://localhost:3000"), // TODO This Still works but not clean
+  "server/"
+);
 
 const enhancer = compose(
-  process.env.NODE_ENV !== "production" && !process.env.LOCAL
-    ? applyMiddleware(thunk, createLogger())
-    : applyMiddleware(thunk)
+  "undefined" !== typeof window
+    ? process.env.NODE_ENV !== "production"
+      ? applyMiddleware(thunk, route, createLogger(), socketIoMiddleware)
+      : applyMiddleware(thunk, route, socketIoMiddleware)
+    : applyMiddleware(thunk, route, socketIoMiddleware)
 );
 
 export const initStore = (initialState = {}) => {
-	return createStore(
-		combineReducers(reducers),
-		initialState, // TODO Should we use this?
-		enhancer);
-}
+  return createStore(
+    combineReducers(reducers),
+    initialState,
+    enhancer
+  );
+};

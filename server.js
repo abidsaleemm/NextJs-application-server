@@ -8,7 +8,6 @@ import https from "https";
 import fs from "fs";
 import proxy from "http-proxy-middleware";
 import auth from "./auth";
-import api from "./api";
 import routes from "./routes";
 import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
@@ -19,6 +18,7 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+// TODO Use a better adapter style
 const sessionStoreLocal = () => {
   console.log("Using session-file-store");
 
@@ -26,6 +26,7 @@ const sessionStoreLocal = () => {
   return new FileStore({ path: "./sessiondb" });
 };
 
+// TODO Use a better adapter style
 const sessionStoreAzure = () => {
   console.log("Using azure-session");
   return require("./auth/azure-session.js")(expressSession).create();
@@ -37,6 +38,7 @@ app.prepare().then(() => {
   const sessionMiddleWare = expressSession({
     // TODO using NODE_ENV == dev instead?
     store: process.env.LOCAL
+    // TODO Use a better adapter style
       ? sessionStoreLocal() // Used for local testing
       : sessionStoreAzure(),
     secret: "session_secret",
@@ -63,13 +65,13 @@ app.prepare().then(() => {
   } else {
     // Used for local testing.
     server.use(
-      "/static/interface",
+      "/static/interface", // TODO Change name from interface to editor
       authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8081",
           changeOrigin: true,
-          pathRewrite: { "^/static/interface": "/" }
+          pathRewrite: { "^/static/interface": "/" } // TODO Change name from interface to editor
         })(req, res)
     );
 

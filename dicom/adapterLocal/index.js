@@ -5,7 +5,7 @@ import parseRaw from '../parseRaw';
 export let series = {};
 export let studies = {};
 export let images = {};
-export const path = process.env.LOCAL_PATH || '../backup/test'; // TODO Make this an env var or arg. Modify this to point to your local DICOM files
+export const path = process.env.DICOM_PATH || '../backup/test'; // TODO Make this an env var or arg. Modify this to point to your local DICOM files
 
 // Export API calls
 export { default as getStudies } from './getStudies';
@@ -49,7 +49,7 @@ export { default as getStudiesByPatientID } from './getStudiesByPatientID';
                     imageNumber,
                     instanceUID,
                     pixelData,
-                } = parseRaw(data);
+                } = parseRaw(data, { bypassData: true });
 
                 if (studyUID === undefined || seriesUID === undefined || instanceUID === undefined) {
                     next();

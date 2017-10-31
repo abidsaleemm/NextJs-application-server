@@ -1,4 +1,4 @@
-import queryProjectDetail from "../query/projectDetail";
+import queryProjectDetail from "../helpers/queryProjectDetail";
 import authMiddleware from "../auth/middleware";
 
 export default ({ server, app }) =>
@@ -6,11 +6,10 @@ export default ({ server, app }) =>
     "/projectDetail",
     authMiddleware(),
     async ({ ...req, query: { ...query, studyUID = "" } = {} }, res) => {
-      
-      // TODO Create a project here from template
       return app.render(req, res, "/projectDetail", {
         ...query,
         projectDetail: await queryProjectDetail({ studyUID })
       })
     }
   );
+  

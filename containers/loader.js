@@ -1,11 +1,9 @@
-import { connect } from 'react-redux';
-import Loader from '../components/loader';
+import { connect } from "react-redux";
+import Loader from "../components/loader";
 
 export default connect(
-  ({
-    fetching = false,
-  }) => ({
-    fetching,
+  ({ fetching = false }) => ({
+    fetching
   }),
-  () => ({}),
+  () => ({})
 )(Loader);

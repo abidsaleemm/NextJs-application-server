@@ -1,16 +1,14 @@
 import authMiddleware from "../auth/middleware";
-import queryPortal from "../query/portal";
+import queryPortalList from "../helpers/queryPortalList";
 
 export default ({ server, app }) => {
   server.get(
     "/portal",
     authMiddleware(),
-    async ({ ...req, user: { admin = false, client = false, id: clientID }, query }, res) =>
+    async ({ ...req, user: { admin = false, id: clientID }, query }, res) =>
       app.render(req, res, "/portal", {
         ...query,
-        portal: await queryPortal({ clientID, admin })
+        portalList: await queryPortalList({ clientID, admin })
       })
   );
-
-
 };

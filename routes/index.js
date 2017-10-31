@@ -1,15 +1,17 @@
-import api from './api';
-import projects from './projects';
-import projectDetail from './projectDetail';
-import portal from './portal';
-import invoice from './invoice';
-import video from './video';
+import projects from "./projects";
+import projectDetail from "./projectDetail";
+import portal from "./portal";
+import invoice from "./invoice";
+import video from "./video";
+import uploadGet from "./uploadGet";
 
-export default (props) => {
-    api(props);
-    projects(props);
-    projectDetail(props);
-    portal(props);
-    invoice(props);
-    video(props);
+export default props => {
+  // Pages
+  projects(props);
+  projectDetail(props);
+  portal(props);
+  // Requests
+  invoice(props);
+  video(props);
+  uploadGet(props);
 };

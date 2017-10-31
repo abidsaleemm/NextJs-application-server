@@ -16,11 +16,9 @@ export default props => {
     onSort = () => {}
   } = props;
 
-  return (
-    <div className="root">
+  return <div className="root">
       <style jsx>
-        {`
-          .root {
+        {`.root {
             display: flex;
             flex-direction: column;
             width: 100%;
@@ -62,6 +60,7 @@ export default props => {
             height: 0.25em;
             background: #1bf;
           }
+
           .headerTab {
             display: flex;
             justify-content: space-between;
@@ -74,11 +73,12 @@ export default props => {
           }
 
           .dataCell {
+            white-space: nowrap;
             padding: 0 3 0 3;
             margin: 0;
             vertical-align: middle;
-            height: 50px;
-            min-height: 50px;
+            height: 0.25em;
+            min-height: 0.25em;
           }
 
           .arrow {
@@ -95,35 +95,41 @@ export default props => {
 
           .arrow--up {
             transform: rotate(180deg);
-          }
-        `}
+          }`}
       </style>
       <Table hover>
         <thead>
           <tr>
-            {Object.entries(
-              header
-            ).map(([id, { title = "", sort = false }]) => (
-              <th
-                className={`
+            {Object.entries(header).map(
+              ([id, { title = "", sort = false }]) => (
+                <th
+                  className={`
                   ${sort ? "headerCell" : "headerCellDisabled"} 
                   ${id === sortKey ? "headerCell--active" : null}
                   `}
-                key={`${title}-${id}`}
-                onClick={() => onSort(id)}
-              >
-                <div className="headerTab">
-                  {title}
-                  {id === sortKey && sort ? (
-                    <div className={`arrow ${sortDesc ? "arrow--up" : null}`} />
-                  ) : null}
-                </div>
-              </th>
-            ))}
+                  key={`tableList-${title}-${id}`}
+                  onClick={() => onSort(id)}
+                >
+                  <div className="headerTab">
+                    {title}
+                    {id === sortKey && sort ? (
+                      <div
+                        className={`arrow ${sortDesc
+                          ? "arrow--up"
+                          : null}`}
+                      />
+                    ) : null}
+                  </div>
+                </th>
+              )
+            )}
           </tr>
           <tr className="fieldColor">
             {Object.entries(header).map(([id, { sort }]) => (
-              <td className="fieldFilter" key={`${id}-filter`}>
+              <td
+                className="fieldFilter"
+                key={`tableList-${id}-filter`}
+              >
                 {filter[id] !== undefined ? (
                   <SearchInput
                     type="text"
@@ -139,9 +145,9 @@ export default props => {
           </tr>
         </thead>
         <tbody>
-          {data.map(dataProps => (
+          {data.map(({ tableBackground, ...dataProps }, i) => (
             <tr
-              key={uuid()}
+              key={`tableList-tableRow-${i}`}
               onClick={() => onRowClick(dataProps)}
             >
               {Object.entries(header)
@@ -151,12 +157,19 @@ export default props => {
                   data: dataProps[id]
                 }))
                 .map(({ id, data, type, title, action }) => {
-                  return <td className="dataCell">{data !== undefined ? data : null}</td>;
+                  return (
+                    <td
+                      key={`tableList-tableCell-${id}-${title}`}
+                      className="dataCell"
+                      style={tableBackground ? { background: tableBackground } : {}}
+                    >
+                      {data !== undefined ? data : null}
+                    </td>
+                  );
                 })}
             </tr>
           ))}
         </tbody>
       </Table>
-    </div>
-  );
+    </div>;
 };

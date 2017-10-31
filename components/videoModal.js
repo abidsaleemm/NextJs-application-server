@@ -9,8 +9,6 @@ export default ({
 		<div className={show ? 'overlay' : 'isHidden'}>
 			<style jsx>
 			{`
-			@import "~video-react/styles/scss/video-react";
-
 			.isHidden { display: none; }
 			
 			.buttonClose {

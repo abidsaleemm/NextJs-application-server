@@ -25,10 +25,8 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 
 // TODO Move these to different Area?
+// Remove this and hardcode in render method for now
 import getStatusName from "../helpers/getStatusName";
-
-// TODO Move this to an action?
-import fetchApi from "../helpers/fetchApi";
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -36,23 +34,21 @@ const ProjectDetails = class extends Component {
     isServer,
     query: { projectDetail = {}, studyUID = "" }
   }) {
-    const { fetchAction, payloadProjectDetail } = actions;
+    const { payloadProjectDetail } = actions;
 
-    store.dispatch(fetchAction(true));
-    store.dispatch(
-      payloadProjectDetail(
-        isServer ? projectDetail : await fetchApi("projectDetail", { studyUID })
-      )
-    );
-    store.dispatch(fetchAction(false));
+    isServer
+      ? store.dispatch(payloadProjectDetail(projectDetail))
+      : store.dispatch({
+          type: "server/pageProjectDetail",
+          studyUID
+        });
   }
 
   render() {
     const {
       props: {
         // Actions
-        setProjectStatus,
-        setProjectClient,
+        setProjectProps,
         videoRender,
         toggleSidebar,
         // State
@@ -64,7 +60,7 @@ const ProjectDetails = class extends Component {
         modality,
         location,
         status = 0,
-        client = '',
+        client = ""
       }
     } = this;
 
@@ -137,7 +133,7 @@ const ProjectDetails = class extends Component {
                         <DropdownMenu>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 1
                               })}
@@ -146,7 +142,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 2
                               })}
@@ -155,7 +151,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 3
                               })}
@@ -164,7 +160,7 @@ const ProjectDetails = class extends Component {
                           </DropdownItem>
                           <DropdownItem
                             onClick={() =>
-                              setProjectStatus({
+                              setProjectProps({
                                 studyUID,
                                 status: 4
                               })}
@@ -236,8 +232,11 @@ const mapStateToProps = ({
   projectDetail,
   projectDetailSettings: { sidebarIsOpen }
 }) => ({ ...projectDetail, sidebarIsOpen });
-const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(actions, dispatch);
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(
-  Wrapper(ProjectDetails)
-);
+export default withRedux(
+  initStore,
+  mapStateToProps,
+  mapDispatchToProps
+)(Wrapper(ProjectDetails));

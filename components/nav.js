@@ -56,7 +56,7 @@ return (
         }
 
         .nav {
-          background: ${ staging ? 'red' : '#3079c6' };
+          background: ${ staging ? '#b7632a' : '#3079c6' };
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
       `}

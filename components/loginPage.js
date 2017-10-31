@@ -20,7 +20,7 @@ export default ({ error = "" }) => (
     <style jsx>
       {`
         .root {
-          background-color: ${ staging ? 'red' : '#3079c6' };
+          background-color: ${ staging ? '#e88834' : '#3079c6' };
           height: 100vh;
         }
 

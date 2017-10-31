@@ -24,3 +24,4 @@ package-lock.json
 
 *.tmp
 *.lock
+build/config.gypi

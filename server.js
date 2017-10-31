@@ -36,6 +36,7 @@ app.prepare().then(() => {
   const server = express();
   server.disable("x-powered-by"); //x-powered-by disable form headers
   const sessionMiddleWare = expressSession({
+    // TODO using NODE_ENV == dev instead?
     store: process.env.LOCAL
     // TODO Use a better adapter style
       ? sessionStoreLocal() // Used for local testing

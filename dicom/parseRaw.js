@@ -1,6 +1,8 @@
 import dicomParser from "dicom-parser/build/built";
+// issue-73
+import { Series, Utils } from "daikon";
 
-export default (data, { bypassData = false } = {}) => {
+export default (data, { bypassData = false, path } = {}) => {
   try {
     const dataSet = dicomParser.parseDicom(data);
     const tags = {
@@ -35,52 +37,20 @@ export default (data, { bypassData = false } = {}) => {
       highBit: dataSet.uint16("x00280102")
     };
 
-    // BitArray.fromBuffer(buffer)
-
-    // BitsAllocated : 16
-    // BitsStored : 16
-    // HighBit : 15
-    // PixelRepresentation : 1
-    // PixelPaddingValue : 0
-
-    // BitsAllocated : 16
-    // BitsStored : 12
-    // HighBit : 11
-    // PixelRepresentation : 1
-    // SmallestImagePixelValue : -93
-    // LargestImagePixelValue : 1577
-    // BurnedInAnnotation : "NO"
-    // WindowCenter : "583"
-    // WindowWidth : "1167"
-
     const pixelDataElement = dataSet.elements.x7fe00010;
 
     if (pixelDataElement !== undefined && bypassData === false) {
-      const dataPixels = new Uint8Array(
-        data.slice(pixelDataElement.dataOffset),
-        pixelDataElement.length
+      const image = Series.parseImage(
+        new DataView(Utils.toArrayBuffer(data))
       );
 
-      // convert to standard array
-      // console.log('size', size, rows, cols)
-      const { rows = 0, columns = 0 } = tags;
-      const size = rows * columns;
-      
-      const { bitsAllocated, bitsStored, highBit } = tags;
-
-      // bitsAllocated: dataSet.uint16("x00280100"),
-      // bitsStored: dataSet.uint16("x00280101"),
-      // highBit: dataSet.uint16("x00280102")
-
-      // console.log("bits", bitsAllocated, bitsStored, highBit);
-
-      const pixelData = [];
-
-      // console.log("dataPixels", dataPixels, size);
-      for (let i = 0, i2 = 0; i < size; i += 1, i2 += 2) {
-        pixelData.push(0);
-        // pixelData.push(dataPixels[i2] + dataPixels[i2 + 1] * 256);
-      }
+      const size =
+        image.getRows() *
+        image.getCols() *
+        image.getNumberOfFrames() *
+        (image.getBitsAllocated() / 8);
+      const imageData = image.getPixelDataBytes();
+      const pixelData = new Int16Array(imageData);
 
       return { ...tags, pixelData };
     }

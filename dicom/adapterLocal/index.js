@@ -49,7 +49,7 @@ export { default as getStudiesByPatientID } from './getStudiesByPatientID';
                     imageNumber,
                     instanceUID,
                     pixelData,
-                } = parseRaw(data, { bypassData: true });
+                } = parseRaw(data, { bypassData: true, path: newPath });
 
                 if (studyUID === undefined || seriesUID === undefined || instanceUID === undefined) {
                     next();

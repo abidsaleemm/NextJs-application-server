@@ -9,6 +9,7 @@ import createSocketIoMiddleware from "redux-socket.io";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
 import * as reducers from "./reducers";
+import route from './middleware/route';
 
 const socketIoMiddleware = createSocketIoMiddleware(
   "undefined" !== typeof window ? io() : io("http://localhost:3000"), // TODO This Still works but not clean
@@ -18,9 +19,9 @@ const socketIoMiddleware = createSocketIoMiddleware(
 const enhancer = compose(
   "undefined" !== typeof window
     ? process.env.NODE_ENV !== "production"
-      ? applyMiddleware(thunk, createLogger(), socketIoMiddleware)
-      : applyMiddleware(thunk, socketIoMiddleware)
-    : applyMiddleware(thunk, socketIoMiddleware)
+      ? applyMiddleware(thunk, route, createLogger(), socketIoMiddleware)
+      : applyMiddleware(thunk, route, socketIoMiddleware)
+    : applyMiddleware(thunk, route, socketIoMiddleware)
 );
 
 export const initStore = (initialState = {}) => {

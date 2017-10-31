@@ -36,7 +36,8 @@ class ProjectsListing extends Component {
         tableData = [],
         tableHeader = {},
         tableSettings = {},
-        setProjectsSettings = () => {}
+        setProjectsSettings = () => {},
+        createProject = () => {}
       } = {}
     } = this;
 
@@ -55,20 +56,12 @@ class ProjectsListing extends Component {
                 <DropdownToggle caret>Create</DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem
-                    onClick={() =>
-                      Router.push({
-                        pathname: "/projectDetail",
-                        query: { studyUID }
-                      })}
+                    onClick={() => createProject({ studyUID })}
                   >
                     Spine Lumbar
                   </DropdownItem>
                   <DropdownItem
-                    onClick={() =>
-                      Router.push({
-                        pathname: "/projectDetail",
-                        query: { studyUID }
-                      })}
+                    onClick={() => createProject({ studyUID })}
                   >
                     Spine Cervical
                   </DropdownItem>

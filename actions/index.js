@@ -17,3 +17,5 @@ export { default as uploadPut } from './uploadPut';
 export { default as uploadDel } from './uploadDel';
 
 export { default as setUser } from './setUser';
+export { default as route } from './route';
+export { default as createProject } from './createProject';

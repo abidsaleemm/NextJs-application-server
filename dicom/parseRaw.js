@@ -66,9 +66,17 @@ export default (data, { bypassData = false } = {}) => {
       const { rows = 0, columns = 0 } = tags;
       const size = rows * columns;
       
-      
+      const { bitsAllocated, bitsStored, highBit } = tags;
+
+      // bitsAllocated: dataSet.uint16("x00280100"),
+      // bitsStored: dataSet.uint16("x00280101"),
+      // highBit: dataSet.uint16("x00280102")
+
+      // console.log("bits", bitsAllocated, bitsStored, highBit);
+
       const pixelData = [];
 
+      // console.log("dataPixels", dataPixels, size);
       for (let i = 0, i2 = 0; i < size; i += 1, i2 += 2) {
         pixelData.push(0);
         // pixelData.push(dataPixels[i2] + dataPixels[i2 + 1] * 256);
@@ -79,7 +87,7 @@ export default (data, { bypassData = false } = {}) => {
 
     return { ...tags };
   } catch (e) {
-    // console.log('DICOM error', data)
+    // console.log('parseDicom error', e)
     return {};
   }
 };

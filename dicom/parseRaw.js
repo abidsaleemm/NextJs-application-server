@@ -40,7 +40,8 @@ export default (data, { bypassData = false, path } = {}) => {
     const pixelDataElement = dataSet.elements.x7fe00010;
 
     if (pixelDataElement !== undefined && bypassData === false) {
-      console.log('loading image')
+      const startTime = new Date();
+
       const image = Series.parseImage(
         new DataView(Utils.toArrayBuffer(data))
       );
@@ -55,14 +56,19 @@ export default (data, { bypassData = false, path } = {}) => {
         .fill(0)
         .map((v, i) => imageData[i]);
 
-        console.log('loading Done')
+      const endTime = new Date();
+
+      console.log(
+        "loading Done",
+        (endTime.getTime() - startTime.getTime()) / 1000
+      );
 
       return { ...tags, pixelData };
     }
 
     return { ...tags };
   } catch (e) {
-    // console.log('parseDicom error', e)
+    console.log("parseDicom error", e);
     return {};
   }
 };

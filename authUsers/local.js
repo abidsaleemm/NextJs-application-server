@@ -26,20 +26,28 @@ const users = [
     phone: "+1 234-789-4555"
   },
   {
-    name: "Test User",
-    username: "user@test.com",
+    name: "Tharon",
+    username: "tharonica@gmail.com",
     password: "test91a",
-    id: 5
+    id: 6,
+    admin: true
   }
 ];
 
 export const getUser = async ({ username, password }) =>
-  users.find(user => user.username === username && user.password === password);
+  users.find(
+    user => user.username === username && user.password === password
+  );
 
 export const getClientInfo = async ({ clientID = 0 }) =>
-  (({ name, address, city, state, country, zip }) => 
-    ({ name, address, city, state, country, zip }))
-      (users.find(user => user.id == clientID && user.client));
+  (({ name, address, city, state, country, zip }) => ({
+    name,
+    address,
+    city,
+    state,
+    country,
+    zip
+  }))(users.find(user => user.id == clientID && user.client));
 
 // TODO should only be for admins
 export const getClients = async () => {

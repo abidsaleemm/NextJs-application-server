@@ -40,6 +40,7 @@ export default (data, { bypassData = false, path } = {}) => {
     const pixelDataElement = dataSet.elements.x7fe00010;
 
     if (pixelDataElement !== undefined && bypassData === false) {
+      console.log('loading image')
       const image = Series.parseImage(
         new DataView(Utils.toArrayBuffer(data))
       );
@@ -53,6 +54,8 @@ export default (data, { bypassData = false, path } = {}) => {
       const pixelData = new Array(size)
         .fill(0)
         .map((v, i) => imageData[i]);
+
+        console.log('loading Done')
 
       return { ...tags, pixelData };
     }

@@ -1,5 +1,6 @@
 import { getProjectSnapshot } from "../projects";
-import { getSeries, getImages } from "../dicom";
+import { getSeries, getImages, getImageData } from "../dicom";
+import selectSeries from "./selectSeries";
 
 export default async ({ socket, action }) => {
   const { studyUID } = action;
@@ -15,35 +16,20 @@ export default async ({ socket, action }) => {
   const dicomSeries = await getSeries({ studyUID });
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
-  await Promise.all([
-    new Promise(async resolve => {
-      await socket.emit("action", {
-        type: "PROJECT_PAYLOAD",
-        project: {
-          selectedSeries: firstSeriesUID,
-          ...project,
-          dicomSeries
-        }
-      });
-      resolve();
-    }),
-    new Promise(async resolve => {
-      if (dicomSeries.length > 0) {
-        const { selectedSeries = firstSeriesUID } = project;
-        const volume = await getImages({ seriesUID: selectedSeries });
+  await socket.emit("action", {
+    type: "PROJECT_PAYLOAD",
+    project: {
+      selectedSeries: firstSeriesUID,
+      ...project,
+      dicomSeries
+    }
+  });
 
-        await socket.emit("action", {
-          type: "VOLUME_SET",
-          volume
-        });
-
-        resolve();
-        return;
-      }
-
-      resolve();
-    })
-  ]);
-
-  socket.emit('action', { type: 'SPINNER_TOGGLE', toggle: false });
+  if (dicomSeries.length > 0) {
+    const { selectedSeries = firstSeriesUID } = project;
+    await selectSeries({
+      socket,
+      action: { seriesUID: selectedSeries }
+    });
+  }
 };

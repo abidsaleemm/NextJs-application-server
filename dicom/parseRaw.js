@@ -68,7 +68,6 @@ export default (data, { bypassData = false, path } = {}) => {
 
     return { ...tags };
   } catch (e) {
-    console.log("parseDicom error", e);
     return {};
   }
 };

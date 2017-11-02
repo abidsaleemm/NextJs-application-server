@@ -25,11 +25,14 @@ export default async ({ socket, action }) => {
     }
   });
 
+  const { slice: { location = 0 } = {} } = project;
+
+  console.log();
   if (dicomSeries.length > 0) {
     const { selectedSeries = firstSeriesUID } = project;
     await selectSeries({
       socket,
-      action: { seriesUID: selectedSeries }
+      action: { seriesUID: selectedSeries, location }
     });
   }
 };

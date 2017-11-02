@@ -6,7 +6,7 @@ export default ({ server, app }) =>
     // TODO Should authMiddleware deal with studyUID checking?
     const { query: { id, name } = {} } = req;
 
-    res.setHeader("Content-Disposition", `inline; filename=${name}`);
+    res.setHeader("Content-Disposition", `inline; filename="${name}"`);
 
     const stream = await uploadGet({ studyUID: id, name });
     if (stream) {

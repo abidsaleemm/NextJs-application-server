@@ -95,13 +95,15 @@ export default ({ server, app }) => {
 
     const fileName = `${name} - ${patientName}`;
 
+    console.log('fileName', fileName);
+
     res.setHeader("Content-Transfer-Encoding", "binary");
     res.setHeader("Content-Encoding", "none");
     res.setHeader("Content-Type", "application/pdf");
     res.setHeader("Content-Length", result.length);
     res.setHeader(
       "Content-Disposition",
-      `inline; filename=${fileName}.pdf`
+      `inline; filename="${fileName}.pdf"`
     );
     res.status(200).end(result, "binary");
   });

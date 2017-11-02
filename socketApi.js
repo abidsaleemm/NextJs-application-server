@@ -1,4 +1,4 @@
-import socketio from "socket.io";
+import Server from "socket.io";
 import * as server from "./socketServer";
 import * as editor from "./socketEditor";
 
@@ -13,7 +13,15 @@ export default ({
   passport,
   sessionMiddleWare = () => {}
 }) => {
+  const socketio = new Server({
+    pingTimeout: 120000,
+    transports: ["websocket"],
+    pingInterval: 10000
+  });
+  
   const io = socketio.listen(server);
+
+  console.log("socketio", socketio);
 
   // Pass down session from passportjs
   io.use((socket, next) =>
@@ -37,10 +45,16 @@ export default ({
 
     socket.on("action", async ({ type = "", ...action }) => {
       const [prefix, parseType] = type.split("/"); // TODO Could break if action name contains more /
-      const { [prefix]: { [parseType]: actionHandler = () => {} } = {} } = actionHandlers;
+      const {
+        [prefix]: { [parseType]: actionHandler = () => {} } = {}
+      } = actionHandlers;
 
-      console.log('action', prefix, parseType);
-      await actionHandler({ socket, action: { ...action, type }, user });
+      console.log("action", prefix, parseType);
+      await actionHandler({
+        socket,
+        action: { ...action, type },
+        user
+      });
     });
 
     socket.on("disconnect", error => {

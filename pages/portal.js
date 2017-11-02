@@ -168,7 +168,6 @@ const Portal = class extends Component {
                         this.popupOpen({
                           studyUID,
                           target: popoverID
-                          // fileList: uploadedFiles
                         })}
                     >
                       {uploadedFiles.length}

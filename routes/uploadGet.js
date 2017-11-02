@@ -6,8 +6,7 @@ export default ({ server, app }) =>
     // TODO Should authMiddleware deal with studyUID checking?
     const { query: { id, name } = {} } = req;
 
-    // TODO clean up type? Seems to work fine without this header
-    // res.setHeader("Content-Type", "video/mp4");
+    res.setHeader("Content-Disposition", `inline; filename=${name}`);
 
     const stream = await uploadGet({ studyUID: id, name });
     if (stream) {

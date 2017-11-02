@@ -168,6 +168,15 @@ const ProjectDetails = class extends Component {
                           >
                             {getStatusName(4)}
                           </DropdownItem>
+                          <DropdownItem
+                            onClick={() =>
+                              setProjectProps({
+                                studyUID,
+                                status: 5
+                              })}
+                          >
+                            {getStatusName(5)}
+                          </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
                     </td>

@@ -60,7 +60,8 @@ const ProjectDetails = class extends Component {
         modality,
         location,
         status = 0,
-        client = ""
+        client = "",
+        uploadedFiles = []
       }
     } = this;
 
@@ -194,6 +195,29 @@ const ProjectDetails = class extends Component {
                 </tbody>
               </Table>
             </Card>
+            <div>
+              <Table hover>
+                <thead>
+                  <tr>
+                    <td>Files</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {uploadedFiles.map((name, i) => (
+                    <tr key={`attached-files-${i}`}>
+                      <td>
+                        <a
+                          href={`/uploadGet/?id=${studyUID}&name=${name}`}
+                          target="_UploadPreview"
+                        >
+                          {name}
+                        </a>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
             <div>
               <div>Data functions</div>
               <div>

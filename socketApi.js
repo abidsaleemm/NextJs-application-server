@@ -16,9 +16,9 @@ export default ({
   const socketio = new Server({
     pingTimeout: 120000,
     transports: ["websocket"],
-    pingInterval: 10000
+    pingInterval: 30000
   });
-  
+
   const io = socketio.listen(server);
 
   console.log("socketio", socketio);

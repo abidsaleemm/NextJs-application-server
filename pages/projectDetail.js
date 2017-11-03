@@ -51,6 +51,7 @@ const ProjectDetails = class extends Component {
         setProjectProps,
         videoRender,
         toggleSidebar,
+        resetProject,
         // State
         sidebarIsOpen,
         studyUID,
@@ -232,7 +233,12 @@ const ProjectDetails = class extends Component {
               <div>
                 <Button>Import</Button>
                 <Button>Export</Button>
-                <Button color="danger">Delete</Button>
+                <Button
+                  color="danger"
+                  onClick={() => resetProject({ studyUID })}
+                >
+                  Reset
+                </Button>
               </div>
             </div>
             <div>

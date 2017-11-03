@@ -10,9 +10,10 @@ export default async ({ instanceUID }) => {
 
   if (path) {
     return await new Promise(resolve =>
-      fs.readFile(`${root}/${path}`, (error, data) =>
-        resolve(parseRaw(data, { path }))
-      )
+      fs.readFile(`${root}/${path}`, (error, data) => {
+        const { pixelData } = parseRaw(data, { path });
+        return resolve(pixelData);
+      })
     );
   }
 };

@@ -25,6 +25,10 @@ export default async ({ studyUID = "_", payload = {} }) => {
 
   // Query last snapshot and merge
   const lastSnapshot = await getProjectSnapshot({ studyUID }) || {};
+  if (!lastSnapshot) {
+    return; // Bailout
+  }
+
   const mergedPayload = {
     ...lastSnapshot,
     ...payload,

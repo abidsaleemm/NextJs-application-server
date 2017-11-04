@@ -13,7 +13,9 @@ export default async ({ socket, action }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = await getSeries({ studyUID });
+  const dicomSeries = (await getSeries({ studyUID })).filter(
+    ({ seriesName }) => seriesName !== undefined
+  );
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
   await socket.emit("action", {

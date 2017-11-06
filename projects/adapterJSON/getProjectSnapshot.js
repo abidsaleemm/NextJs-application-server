@@ -1,11 +1,11 @@
 import fs from "fs";
 import low from "lowdb";
-import FileSync from 'lowdb/adapters/FileSync';
+import FileSync from "lowdb/adapters/FileSync";
 
-import { checkExists, path } from './index';
+import { checkExists, path } from "./index";
 
 // TODO Add functionality to index prev snapshots?
-export default async ({ studyUID = '' }) => {
+export default async ({ studyUID = "" }) => {
   checkExists();
   if (path === undefined) return;
 
@@ -13,15 +13,23 @@ export default async ({ studyUID = '' }) => {
 
   db.defaults({ projects: [] }).write();
 
-  const project = db.get("projects").find({ studyUID: studyUID }).value();
+  const project = db
+    .get("projects")
+    .find({ studyUID: studyUID })
+    .value();
 
   if (project !== undefined) {
     const { snapshot: snapShotUID } = project;
     if (snapShotUID === undefined) return; // No Snapshot.  First value?
 
-    const data = fs.readFileSync(`${path}/snapshots/${snapShotUID}.json`);
-
-    return JSON.parse(data);
+    try {
+      const data = fs.readFileSync(
+        `${path}/snapshots/${snapShotUID}.json`
+      );
+      return JSON.parse(data);
+    } catch (e) {
+      return;
+    }
   } else {
     return;
   }

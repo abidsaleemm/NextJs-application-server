@@ -54,7 +54,20 @@ export {
           checksum,
           imageNumber,
           instanceUID,
-          pixelData
+          pixelData,
+          bitsAllocated,
+          bitsStored,
+          highbit,
+          columns,
+          rows,
+          // imageNumber,
+          imageOrientation,
+          imagePosition,
+          pixelAspectRatio,
+          pixelSpacing,
+          sliceThickness,
+          windowCenter,
+          windowWidth
         } = parseRaw(data, { bypassData: true, path: newPath });
 
         if (
@@ -103,7 +116,21 @@ export {
             studyUID,
             instanceUID,
             patientID,
-            location
+            location,
+            instanceUID,
+            bitsAllocated,
+            bitsStored,
+            highbit,
+            columns,
+            rows,
+            // imageNumber,
+            imageOrientation,
+            imagePosition,
+            pixelAspectRatio,
+            pixelSpacing,
+            sliceThickness,
+            windowCenter,
+            windowWidth
           }
         };
 

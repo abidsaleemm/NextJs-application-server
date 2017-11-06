@@ -21,8 +21,6 @@ export default ({
 
   const io = socketio.listen(server);
 
-  console.log("socketio", socketio);
-
   // Pass down session from passportjs
   io.use((socket, next) =>
     sessionMiddleWare(socket.request, {}, next)
@@ -35,7 +33,6 @@ export default ({
     const {
       request: { session: { passport: { user } = {} } = {} } = {}
     } = socket;
-    console.log("Socket user", user);
 
     // This validates user session
     // TODO Might be a more clean way to handle this

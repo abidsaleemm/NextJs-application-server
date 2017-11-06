@@ -11,17 +11,27 @@ import {
   Button,
   FormText
 } from "reactstrap";
+import classNames from "classnames";
 
 // TODO Might be a hack but works well was not able to solve solution
-const { STAGING: staging = false } = 'undefined' !== typeof window ? window.env : process.env;
+// const { STAGING: staging = false } = 'undefined' !== typeof window ? window.env : process.env;
 
-export default ({ error = "" }) => (
-  <section className="root">
+export default ({ error = "", staging = false }) => (
+  <section
+    className={classNames({
+      root: true,
+      staging
+    })}
+  >
     <style jsx>
       {`
         .root {
-          background-color: ${ staging ? '#e88834' : '#3079c6' };
+          background-color: #3079c6;
           height: 100vh;
+        }
+
+        .staging {
+          background-color: #e88834;
         }
 
         .login_box {

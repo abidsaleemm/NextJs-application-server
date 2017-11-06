@@ -12,7 +12,7 @@ export default async ({ socket, action: { studyUID } = {} }) => {
 
   console.log("Resetting project to default", studyUID);
 
-  await socket.emit("action", fetchAction(true));
+  await socket.emit("action", fetchAction(true)); // TODO move to client
 
   const project = createProject({ studyUID }); // TODO Add function to create default from existing
   await setProjectSnapshot({

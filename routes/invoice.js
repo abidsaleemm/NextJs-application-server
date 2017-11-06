@@ -40,7 +40,6 @@ export default ({ server, app }) => {
       referringPhysicianName
     } = study;
 
-    console.log (study);
     const dates = patientBirthDate.split ('-');
     const birthDay = dates[2];
     const birthMonth = dates[1];
@@ -82,8 +81,8 @@ export default ({ server, app }) => {
       // pt_zip: "85224",
       // pt_AreaCode: "520",
       // pt_phone: "555-5555",
-      sex: patientSex === "Male" ? "male" : "female",
-      ins_sex: patientSex === "Male" ? "male" : "female",
+      sex: patientSex.toLowerCase(),
+      ins_sex: patientSex.toLowerCase(),
       rel_to_ins: "spouse",
       employment: "no",
       pt_accident: "yes",

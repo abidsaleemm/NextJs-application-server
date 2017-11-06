@@ -34,9 +34,24 @@ export default ({ server, app }) => {
       patientName,
       patientBirthDate,
       patientSex,
-      clientID = 0
+      clientID = 0,
+      patientAge,
+      studyDate,
+      referringPhysicianName
     } = study;
 
+    console.log (study);
+    const dates = patientBirthDate.split ('-');
+    const birthDay = dates[2];
+    const birthMonth = dates[1];
+    const birthYear = dates[0];
+
+    const studyDates = studyDate.split ('-');
+    const studyDay = studyDates[2];
+    const studyMonth = studyDates[1];
+    const studyYear = studyDates[0];
+
+    const clientInfo = await getClientInfo ({ clientID });
     const {
       name: clientName,
       address: clientAddress,
@@ -44,8 +59,9 @@ export default ({ server, app }) => {
       state: clientState,
       country: clientCountry,
       zip: clientZip
-    } = await getClientInfo({ clientID });
+    } = clientInfo;
 
+    console.log (clientInfo);
     /*
      * TODO: These values are hard coded until we add these fields
      * to the user project model. At that time we might consider making
@@ -66,7 +82,8 @@ export default ({ server, app }) => {
       // pt_zip: "85224",
       // pt_AreaCode: "520",
       // pt_phone: "555-5555",
-      sex: patientSex,
+      sex: patientSex === "Male" ? "male" : "female",
+      ins_sex: patientSex === "Male" ? "male" : "female",
       rel_to_ins: "spouse",
       employment: "no",
       pt_accident: "yes",
@@ -74,19 +91,23 @@ export default ({ server, app }) => {
       pt_signature: "SIGNATURE ON FILE",
       ins_name: patientName,
       // ins_street: "Same",
-      ins_dob_mm: "01",
-      ins_dob_dd: "01",
-      ins_dod_yy: "77",
+      ins_dob_mm: birthMonth,
+      ins_dob_dd: birthDay,
+      ins_dob_yy: birthYear,
+      birth_mm: birthMonth,
+      birth_dd: birthDay,
+      birth_yy: birthYear,
       ins_signature: "SIGNATURE ON FILE",
       add_claim_info: "MEDICAL RECORDS ATTACHED",
-      sv1_mm_from: "08",
-      sv1_dd_from: "22",
-      sv1_yy_from: "17",
+      sv1_mm_from: studyMonth,
+      sv1_dd_from: studyDay,
+      sv1_yy_from: studyYear,
       place1: "76377",
       ch1: "500.00",
       tax_id: "593784049",
       ssn: taxEIN,
-      t_charge: "500.00"
+      t_charge: "500.00",
+      ref_physician: referringPhysicianName
     };
 
     const result = await pdfFillForm.write(templateFile, pdfDetails, {

@@ -21,13 +21,17 @@ class ProjectsListing extends Component {
     isServer,
     query: { projects = [] } = {}
   }) {
-    const { payloadProjects } = actions;
+    const { payloadProjects, fetchAction } = actions;
 
-    isServer
-      ? store.dispatch(payloadProjects({ projects }))
-      : store.dispatch({
-          type: "server/pageProjects"
-        });
+    if (isServer) {
+      store.dispatch(payloadProjects({ projects }));
+      return;
+    }
+
+    store.dispatch(fetchAction(true));
+    store.dispatch({
+      type: "server/pageProjects"
+    });
   }
 
   render() {

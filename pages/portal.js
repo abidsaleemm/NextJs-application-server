@@ -48,26 +48,20 @@ const Portal = class extends Component {
     // userId: clientID,
     query: { portalList = {} } = {}
   }) {
-    const { payloadPortal } = actions;
-    // const { fetchPagePortal } = actions;
+    const { payloadPortal, fetchAction } = actions;
 
-    isServer
-      ? store.dispatch(
-          payloadPortal({
-            portalList
-          })
-        )
-      : store.dispatch({ type: "server/pagePortal" });
+    if (isServer) {
+      store.dispatch(
+        payloadPortal({
+          portalList
+        })
+      );
 
-    // if (!isServer) {
-    //   store.dispatch(({ type: 'server/pagePortal' }));
-    // }
+      return;
+    }
 
-    // store.dispatch(fetchAction(true));
-    // store.dispatch(
-    //   payloadPortal(isServer ? portal : await fetchApi("portal"))
-    // );
-    // store.dispatch(fetchAction(false));
+    store.dispatch(fetchAction(true));
+    store.dispatch({ type: "server/pagePortal" });
   }
 
   // TODO Remove handle using redux portalSettings or portal?

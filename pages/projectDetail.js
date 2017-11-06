@@ -34,14 +34,18 @@ const ProjectDetails = class extends Component {
     isServer,
     query: { projectDetail = {}, studyUID = "" }
   }) {
-    const { payloadProjectDetail } = actions;
+    const { payloadProjectDetail, fetchAction } = actions;
 
-    isServer
-      ? store.dispatch(payloadProjectDetail(projectDetail))
-      : store.dispatch({
-          type: "server/pageProjectDetail",
-          studyUID
-        });
+    if (isServer) {
+      store.dispatch(payloadProjectDetail(projectDetail));
+      return;
+    }
+
+    store.dispatch(fetchAction(true));
+    store.dispatch({
+      type: "server/pageProjectDetail",
+      studyUID
+    });
   }
 
   render() {

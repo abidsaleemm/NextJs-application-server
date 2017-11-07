@@ -23,6 +23,7 @@ import { bindActionCreators } from "redux";
 import { initStore } from "..//store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
+import UploadButton from '../components/UploadButton';
 
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
@@ -56,6 +57,7 @@ const ProjectDetails = class extends Component {
         videoRender,
         toggleSidebar,
         resetProject,
+        handleProjectImport,
         // State
         sidebarIsOpen,
         studyUID,
@@ -234,10 +236,19 @@ const ProjectDetails = class extends Component {
             </div>
             <div>
               <div>Data functions</div>
-              <div>
-                <Button>Import</Button>
-                <Button>Export</Button>
+              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+
+                <UploadButton style={{ width: "100%"}} studyUID={studyUID} handleUpload={handleProjectImport} label="Import" />
+                <a
+                style={{ width: "100%"}}
+                className="btn btn-secondary"
+                target="_projectExport"
+                href={`/export/?studyUID=${studyUID}`}
+              >
+                Export
+              </a>
                 <Button
+                  style={{ width: "100%"}}
                   color="danger"
                   onClick={() => resetProject({ studyUID })}
                 >
@@ -246,15 +257,7 @@ const ProjectDetails = class extends Component {
               </div>
             </div>
             <div>
-              <div>
-                <b>Defaults</b>
-              </div>
-              <div>
-                <Input />
-                <Button>Create</Button>
-                <Button>Create From File</Button>
-              </div>
-              <Table>No Defaults</Table>
+              
             </div>
           </div>
         </Sidebar>
@@ -283,3 +286,17 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
+
+/*
+
+<div>
+                <b>Defaults</b>
+              </div>
+              <div>
+                <Input />
+                <Button>Create</Button>
+                <Button>Create From File</Button>
+              </div>
+              <Table>No Defaults</Table>
+
+              */

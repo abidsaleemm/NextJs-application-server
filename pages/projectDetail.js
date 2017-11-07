@@ -109,6 +109,13 @@ const ProjectDetails = class extends Component {
               display: flex;
               justify-content: space-around;
             }
+
+            .dataDefaults {
+              display: flex;
+              justify-content: space-around;
+              width: 100%;
+              align-items: middle;
+            }
           `}
         </style>
         <Sidebar
@@ -239,6 +246,7 @@ const ProjectDetails = class extends Component {
                 </tbody>
               </Table>
             </div>
+            <hr />
             <div>
               <div>Data functions</div>
               <div className="dataFunctions">
@@ -263,6 +271,29 @@ const ProjectDetails = class extends Component {
                 >
                   Reset
                 </Button>
+              </div>
+            </div>
+            <hr />
+            <div className="dataDefaults">
+              <div>Set Default</div>
+              <div>
+                <UncontrolledDropdown
+                  style={{ width: "100%" }}
+                  color="danger"
+                >
+                  <DropdownToggle
+                    caret
+                    color="danger"
+                    style={{ width: "100%" }}
+                  >
+                    Select Default
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={() => {}}>
+                      Lumbar Spine
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
               </div>
             </div>
             <div />
@@ -295,6 +326,14 @@ export default withRedux(
 )(Wrapper(ProjectDetails));
 
 /*
+ <Button
+                  style={{ width: "100%" }}
+                  color="danger"
+                  onClick={() => resetProject({ studyUID })}
+                >
+                  Reset
+                </Button>
+
 
 <div>
                 <b>Defaults</b>

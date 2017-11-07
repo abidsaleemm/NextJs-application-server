@@ -4,6 +4,7 @@ import portal from "./portal";
 import invoice from "./invoice";
 import video from "./video";
 import uploadGet from "./uploadGet";
+import projectExport from './projectExport';
 
 export default props => {
   // Pages
@@ -14,4 +15,5 @@ export default props => {
   invoice(props);
   video(props);
   uploadGet(props);
+  projectExport(props);
 };

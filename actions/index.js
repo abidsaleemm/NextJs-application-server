@@ -24,3 +24,4 @@ export { default as setUser } from "./setUser";
 export { default as route } from "./route";
 export { default as createProject } from "./createProject";
 export { default as resetProject } from "./resetProject";
+export { default as handleUpload } from "./handleUpload";

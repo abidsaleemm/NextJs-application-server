@@ -10,9 +10,7 @@ import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
 import UploadFilePopup from "../components/UploadFilePopup";
-
-// TODO Move this to a action wrap actions from getInitialProps?
-// import fetchApi from "../helpers/fetchApi";
+import UploadButton from "../components/UploadButton";
 
 // TODO Move to separate file?
 const CellTableWrapper = (array, key) => (
@@ -76,22 +74,6 @@ const Portal = class extends Component {
   }
 
   // TODO Move to redux action?
-  // Moving to seperate components
-  handleUpload({ target, studyUID }) {
-    const { props: { uploadPut = () => {} } } = this;
-
-    // TODO Handle multiple files?
-    const { 0: file } = target.files;
-    const name = file.name;
-
-    const reader = new FileReader();
-    reader.onload = ({ target: { result } = {} }) =>
-      uploadPut({ data: result, name, studyUID });
-
-    reader.readAsDataURL(file);
-  }
-
-  // TODO Move to redux action?
   popupOpen({ target, studyUID }) {
     this.setState({
       popupTarget: target,
@@ -116,7 +98,8 @@ const Portal = class extends Component {
         admin = false,
         setPortalSettings = () => {},
         setVideo = () => {},
-        uploadDel = () => {}
+        uploadDel = () => {},
+        handleUpload = () => {}
       },
       state: { popupTarget, popupStudyUID }
     } = this;
@@ -167,27 +150,10 @@ const Portal = class extends Component {
                       {uploadedFiles.length}
                     </Button>
                   ) : null}
-                  <label
-                    htmlFor={id}
-                    style={{ padding: 0, margin: 0 }}
-                  >
-                    <div
-                      className="btn btn-secondary"
-                      style={
-                        uploadedFiles.length > 0
-                          ? { borderRadius: "0 5px 5px 0" }
-                          : {}
-                      }
-                    >
-                      Upload File
-                    </div>
-                  </label>
-                  <input
-                    style={{ display: "none" }}
-                    id={id}
-                    type="file"
-                    onChange={({ target }) =>
-                      this.handleUpload({ target, studyUID })}
+                  <UploadButton
+                    studyUID={studyUID}
+                    hasFiles={uploadedFiles.length > 0}
+                    handleUpload={handleUpload}
                   />
                 </ButtonGroup>
               ),

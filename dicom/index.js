@@ -13,7 +13,7 @@ const transform = ({
   studyDate = "",
   patientBirthDate = "",
   uploadDateTime,
-  referringPhysicianName,
+  referringPhysicianName = "",
   ...study
 }) => ({
   ...Object.entries(study).reduce(

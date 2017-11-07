@@ -59,7 +59,6 @@ export default ({ server, app }) => {
       zip: clientZip = ""
     } = clientInfo;
 
-    console.log(clientInfo);
     /*
      * TODO: These values are hard coded until we add these fields
      * to the user project model. At that time we might consider making

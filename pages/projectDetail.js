@@ -23,7 +23,7 @@ import { bindActionCreators } from "redux";
 import { initStore } from "..//store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
-import UploadButton from '../components/UploadButton';
+import UploadButton from "../components/UploadButton";
 
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
@@ -103,6 +103,11 @@ const ProjectDetails = class extends Component {
               width: 100%;
               height: 100%;
               background: lightGray;
+            }
+
+            .dataFunctions {
+              display: flex;
+              justify-content: space-around;
             }
           `}
         </style>
@@ -236,19 +241,23 @@ const ProjectDetails = class extends Component {
             </div>
             <div>
               <div>Data functions</div>
-              <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-
-                <UploadButton style={{ width: "100%"}} studyUID={studyUID} handleUpload={handleProjectImport} label="Import" />
+              <div className="dataFunctions">
+                <UploadButton
+                  style={{ width: "100%" }}
+                  studyUID={studyUID}
+                  handleUpload={handleProjectImport}
+                  label="Import"
+                />
                 <a
-                style={{ width: "100%"}}
-                className="btn btn-secondary"
-                target="_projectExport"
-                href={`/export/?studyUID=${studyUID}`}
-              >
-                Export
-              </a>
+                  style={{ width: "100%" }}
+                  className="btn btn-secondary"
+                  target="_projectExport"
+                  href={`/export/?studyUID=${studyUID}`}
+                >
+                  Export
+                </a>
                 <Button
-                  style={{ width: "100%"}}
+                  style={{ width: "100%" }}
                   color="danger"
                   onClick={() => resetProject({ studyUID })}
                 >
@@ -256,9 +265,7 @@ const ProjectDetails = class extends Component {
                 </Button>
               </div>
             </div>
-            <div>
-              
-            </div>
+            <div />
           </div>
         </Sidebar>
         <iframe

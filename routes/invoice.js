@@ -31,36 +31,35 @@ export default ({ server, app }) => {
 
     const study = await getStudy({ studyUID: firstStudy });
     const {
-      patientName,
-      patientBirthDate,
-      patientSex,
+      patientName = "",
+      patientBirthDate = "",
+      patientSex = "",
       clientID = 0,
-      patientAge,
-      studyDate,
-      referringPhysicianName
+      studyDate = "",
+      referringPhysicianName = ""
     } = study;
 
-    const dates = patientBirthDate.split ('-');
+    const dates = patientBirthDate.split("-");
     const birthDay = dates[2];
     const birthMonth = dates[1];
     const birthYear = dates[0];
 
-    const studyDates = studyDate.split ('-');
+    const studyDates = studyDate.split("-");
     const studyDay = studyDates[2];
     const studyMonth = studyDates[1];
     const studyYear = studyDates[0];
 
-    const clientInfo = await getClientInfo ({ clientID });
+    const clientInfo = await getClientInfo({ clientID });
     const {
-      name: clientName,
-      address: clientAddress,
-      city: clientCity,
-      state: clientState,
-      country: clientCountry,
-      zip: clientZip
+      name: clientName = "",
+      address: clientAddress = "",
+      city: clientCity = "",
+      state: clientState = "",
+      country: clientCountry = "",
+      zip: clientZip = ""
     } = clientInfo;
 
-    console.log (clientInfo);
+    console.log(clientInfo);
     /*
      * TODO: These values are hard coded until we add these fields
      * to the user project model. At that time we might consider making
@@ -115,7 +114,7 @@ export default ({ server, app }) => {
 
     const fileName = `${name} - ${patientName}`;
 
-    console.log('fileName', fileName);
+    console.log("fileName", fileName);
 
     res.setHeader("Content-Transfer-Encoding", "binary");
     res.setHeader("Content-Encoding", "none");

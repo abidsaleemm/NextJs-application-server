@@ -1,7 +1,10 @@
 import fs from "fs";
+
+// TODO Root should be imported from some sort of location used for all local adapters
 export const pathProjects = "./projectsLocal";
 export const pathUploads = "./projectsLocal/uploads";
 
+// TODO Should be some sort of reusable imported function
 // Add paths if doesn't exist
 export const checkExists = ({ studyUID }) => {
   if (fs.existsSync(pathProjects) === false) {

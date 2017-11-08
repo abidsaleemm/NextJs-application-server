@@ -1,32 +1,30 @@
 import fs from "fs";
 import low from "lowdb";
-import FileSync from 'lowdb/adapters/FileSync';
-import { checkExists, path } from './index';
+import FileSync from "lowdb/adapters/FileSync";
+import { path } from "./index";
 
-export default async ({ studyUID = '', props = {} }) => {
-    checkExists();
-    if (path === undefined) return;
+export default async ({ studyUID = "", props = {} }) => {
+  if (path === undefined) return;
 
-    const db = low(new FileSync(`${path}/projects.json`));
-    db.defaults({ projects: [] }).write();
+  const db = low(new FileSync(`${path}/projects.json`));
+  db.defaults({ projects: [] }).write();
 
-    const find = db
-        .get("projects")
-        .find({ studyUID })
-        .value();
+  const find = db
+    .get("projects")
+    .find({ studyUID })
+    .value();
 
-    if (find === undefined) {
-        db
-            .get("projects")
-            .push({ studyUID, ...props })
-            .write();
-        return;
-    }
-
+  if (find === undefined) {
     db
-        .get("projects")
-        .find({ studyUID })
-        .assign(props)
-        .write()
-};
+      .get("projects")
+      .push({ studyUID, ...props })
+      .write();
+    return;
+  }
 
+  db
+    .get("projects")
+    .find({ studyUID })
+    .assign(props)
+    .write();
+};

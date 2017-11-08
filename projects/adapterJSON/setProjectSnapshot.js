@@ -1,18 +1,18 @@
 import fs from "fs";
 import low from "lowdb";
-import FileSync from 'lowdb/adapters/FileSync';
+import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
-import getProjectSnapshot from './getProjectSnapshot';
-import { checkExists, path } from './index';
+import getProjectSnapshot from "./getProjectSnapshot";
+import { path } from "./index";
 
 export default async ({ studyUID = "_", payload = {} }) => {
-  checkExists(); // TODO Wrap this in high order function
   if (path === undefined) return;
 
-  // TODO Reuseable?  
+  // TODO Reuseable?
   const db = low(new FileSync(`${path}/projects.json`));
   db.defaults({ projects: [] }).write();
-  const ret = db.get("projects")
+  const ret = db
+    .get("projects")
     .find({ studyUID: studyUID })
     .value();
 
@@ -24,14 +24,14 @@ export default async ({ studyUID = "_", payload = {} }) => {
   const snapShotUID = uuid();
 
   // Query last snapshot and merge
-  const lastSnapshot = await getProjectSnapshot({ studyUID }) || {};
+  const lastSnapshot = (await getProjectSnapshot({ studyUID })) || {};
   if (!lastSnapshot) {
     return; // Bailout
   }
 
   const mergedPayload = {
     ...lastSnapshot,
-    ...payload,
+    ...payload
   };
 
   fs.writeFileSync(
@@ -43,18 +43,18 @@ export default async ({ studyUID = "_", payload = {} }) => {
     .get("projects")
     .find({ studyUID })
     .assign({ snapshot: snapShotUID })
-    .write()
+    .write();
 
-  const snapshots = db
-    .get("projects")
-    .find({ studyUID })
-    .get('snapshots')
-    .value() || [];
+  const snapshots =
+    db
+      .get("projects")
+      .find({ studyUID })
+      .get("snapshots")
+      .value() || [];
 
   db
     .get("projects")
     .find({ studyUID })
     .assign({ snapshots: [...snapshots, snapShotUID] })
-    .write()
-
+    .write();
 };

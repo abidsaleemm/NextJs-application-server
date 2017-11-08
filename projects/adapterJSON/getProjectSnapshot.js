@@ -2,11 +2,10 @@ import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 
-import { checkExists, path } from "./index";
+import { path } from "./index";
 
 // TODO Add functionality to index prev snapshots?
 export default async ({ studyUID = "" }) => {
-  checkExists();
   if (path === undefined) return;
 
   const db = low(new FileSync(`${path}/projects.json`));

@@ -29,8 +29,8 @@ export default async ({ socket, action }) => {
 
   const { slice: { location = 0 } = {} } = project;
 
-  console.log();
   if (dicomSeries.length > 0) {
+    // TODO Make sure selectedSeries name matches or else just use the first
     const { selectedSeries = firstSeriesUID } = project;
     await selectSeries({
       socket,

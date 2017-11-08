@@ -35,7 +35,7 @@ export default ({
     } = socket;
 
     // This validates user session
-    // TODO Might be a more clean way to handle this
+    // TODO Might be a more clean way to handle this.  Can use middleware?
     if (user === undefined) {
       return;
     }
@@ -46,9 +46,24 @@ export default ({
         [prefix]: { [parseType]: actionHandler = () => {} } = {}
       } = actionHandlers;
 
-      console.log("action", prefix, parseType);
+      // TODO This is kinda a hack but works well for now.  If from the editor join a room.
+      if (prefix === "editor") {
+        const { studyUID } = action;
+        if (studyUID) {
+          const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
+          await new Promise(resolve => {
+            socket.join(roomName, () => {
+              console.log("socket joined room", roomName);
+              resolve();
+            });
+          });
+        }
+      }
+
+      console.log("action", prefix, parseType, socket.id);
       await actionHandler({
         socket,
+        io,
         action: { ...action, type },
         user
       });

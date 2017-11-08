@@ -47,14 +47,14 @@ class ProjectsListing extends Component {
 
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
-      ({ studyUID, status = "", ...project }) => ({
+      ({ studyUID, status, statusName, ...project }) => ({
         ...project,
-        status,
+        status: statusName,
         tableBackground:
-          status === "None" ? undefined : "rgba(48, 121, 198, 0.1)",
+          status ? undefined : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
-            {status === "None" ? (
+            {!status ? (
               // TODO Create as Button dropdown
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>

@@ -33,6 +33,8 @@ export default async ({
     payload
   });
 
+  socket.emit("action", fetchAction(false));
+
   clientSockets.forEach(async clientSocket => {
     const { rooms, id } = clientSocket;
     clientSocket.emit("action", {

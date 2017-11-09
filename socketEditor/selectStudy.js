@@ -18,20 +18,27 @@ export default async ({ socket, action }) => {
   );
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
+  const { selectedSeries: projectSelectedSeries } = project;
+
+  const selectedSeries = dicomSeries.some(
+    ({ seriesUID }) => seriesUID === projectSelectedSeries
+  )
+    ? projectSelectedSeries
+    : firstSeriesUID;
+
   await socket.emit("action", {
     type: "PROJECT_PAYLOAD",
     project: {
-      selectedSeries: firstSeriesUID,
       ...project,
-      dicomSeries
+      selectedSeries,
+      dicomSeries,
+      studyUID,
     }
   });
 
   const { slice: { location = 0 } = {} } = project;
 
   if (dicomSeries.length > 0) {
-    // TODO Make sure selectedSeries name matches or else just use the first
-    const { selectedSeries = firstSeriesUID } = project;
     await selectSeries({
       socket,
       action: { seriesUID: selectedSeries, location }

@@ -14,7 +14,7 @@ export default async ({ studyUID = "" }) => {
     .value();
 
   if (project !== undefined) {
-    const { status = 0 } = project;
-    return { studyUID, status };
+    const { status = 0, defaultName } = project;
+    return { studyUID, status, defaultName };
   }
 };

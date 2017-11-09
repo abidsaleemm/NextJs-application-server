@@ -126,6 +126,7 @@ const mapStateToProps = ({
   tableHeader: {
     action: { title: "", sort: false },
     status: { title: "Status", sort: true },
+    defaultName: { title: "Default", sort: true },
     patientName: { title: "Patient Name", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },

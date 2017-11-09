@@ -74,7 +74,8 @@ const ProjectDetails = class extends Component {
         status = 0,
         client = "",
         uploadedFiles = [],
-        defaultList = []
+        defaultList = [],
+        defaultName = ""
       }
     } = this;
 
@@ -290,17 +291,15 @@ const ProjectDetails = class extends Component {
                 style={{ width: "100%" }}
                 color="danger"
               >
-                <DropdownToggle
-                  caret
-                  style={{ width: "100%" }}
-                >
-                  Select Default
+                <DropdownToggle caret style={{ width: "100%" }}>
+                  {defaultName}
                 </DropdownToggle>
                 <DropdownMenu right>
                   {defaultList.map(defaultName => (
                     <DropdownItem
                       key={`default-${defaultName}`}
-                      onClick={() => {}}
+                      onClick={() =>
+                        setProjectProps({ studyUID, defaultName })}
                     >
                       {defaultName}
                     </DropdownItem>

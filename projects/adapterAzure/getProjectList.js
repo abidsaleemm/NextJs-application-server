@@ -1,11 +1,16 @@
-import queryTableAll from '../../helpers/azure/queryTableAll';
-import { tableService, tableName, createTable } from './';
+import queryTableAll from "../../helpers/azure/queryTableAll";
+import { tableService, tableName, createTable } from "./";
 
 export default async () => {
-    await createTable();
+  await createTable();
 
-    const values = await queryTableAll({ tableService, tableName });
+  const values = await queryTableAll({ tableService, tableName });
 
-    return values.map(({ RowKey: studyUID, status = 0 }) => 
-        ({ studyUID, status }));
+  return values.map(
+    ({ RowKey: studyUID, status = 0, defaultName }) => ({
+      studyUID,
+      status,
+      defaultName
+    })
+  );
 };

@@ -5,10 +5,11 @@ import getProjectSnapshot from "./getProjectSnapshot";
 import getProjectList from "./getProjectList";
 import setProjectSnapshot from "./setProjectSnapshot";
 import setProject from "./setProject";
+import destroyProject from "./destroyProject";
 
 // TODO Root path should be global and imported for all local adapters
 export const path = "./projectsLocal";
-const snapshotDir = `${path}/snapshots`;
+export const snapshotDir = `${path}/snapshots`;
 
 // TODO this should be some sort of reusable function under helpers
 // Add path if doesn't exist
@@ -42,5 +43,9 @@ module.exports = {
   setProject: async props => {
     checkExists();
     return await setProject(props);
+  },
+  destroyProject: async props => {
+    checkExists();
+    return await destroyProject(props);
   }
 };

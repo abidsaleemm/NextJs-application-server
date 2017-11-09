@@ -1,5 +1,10 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
-import { payloadProjectDetail, fetchAction } from "../actions";
+import {
+  payloadProjectDetail,
+  setDefaultList,
+  fetchAction
+} from "../actions";
+import { getDefaultList } from "../defaults";
 
 export default async ({
   socket,
@@ -7,6 +12,9 @@ export default async ({
   user
 }) => {
   const projectDetail = await queryProjectDetail({ studyUID });
+  const defaults = await getDefaultList();
+
   await socket.emit("action", payloadProjectDetail(projectDetail));
+  await socket.emit("action", setDefaultList(defaults));
   socket.emit("action", fetchAction(false));
 };

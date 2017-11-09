@@ -19,12 +19,13 @@ class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projects = [] } = {}
+    query: { projects = [], defaultList = [] } = {}
   }) {
-    const { payloadProjects, fetchAction } = actions;
+    const { payloadProjects, fetchAction, setDefaultList } = actions;
 
     if (isServer) {
       store.dispatch(payloadProjects({ projects }));
+      store.dispatch(setDefaultList(defaultList));
       return;
     }
 
@@ -37,9 +38,12 @@ class ProjectsListing extends Component {
   render() {
     const {
       props: {
+        // State
         tableData = [],
         tableHeader = {},
         tableSettings = {},
+        defaultList = [],
+        // Actions
         setProjectsSettings = () => {},
         createProject = () => {}
       } = {}
@@ -50,8 +54,9 @@ class ProjectsListing extends Component {
       ({ studyUID, status, statusName, ...project }) => ({
         ...project,
         status: statusName,
-        tableBackground:
-          status ? undefined : "rgba(48, 121, 198, 0.1)",
+        tableBackground: status
+          ? undefined
+          : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
             {!status ? (
@@ -59,16 +64,15 @@ class ProjectsListing extends Component {
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem
-                    onClick={() => createProject({ studyUID })}
-                  >
-                    Spine Lumbar
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => createProject({ studyUID })}
-                  >
-                    Spine Cervical
-                  </DropdownItem>
+                  {defaultList.map(defaultName => (
+                    <DropdownItem
+                      key={`dropdown-default-${defaultName}`}
+                      onClick={() =>
+                        createProject({ studyUID, defaultName })}
+                    >
+                      {defaultName}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
@@ -78,6 +82,7 @@ class ProjectsListing extends Component {
                     pathname: "/projectDetail",
                     query: { studyUID }
                   })}
+                color="success"
               >
                 Edit
               </Button>
@@ -115,6 +120,7 @@ class ProjectsListing extends Component {
 
 const mapStateToProps = ({
   projectsSettings,
+  defaultList,
   projects: { projects }
 }) => ({
   tableHeader: {
@@ -132,7 +138,8 @@ const mapStateToProps = ({
   tableData: selectProjectList({
     projects,
     settings: projectsSettings
-  })
+  }),
+  defaultList
 });
 
 const mapDispatchToProps = dispatch =>

@@ -33,12 +33,17 @@ const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projectDetail = {}, studyUID = "" }
+    query: { projectDetail = {}, defaultList = [], studyUID = "" }
   }) {
-    const { payloadProjectDetail, fetchAction } = actions;
+    const {
+      payloadProjectDetail,
+      setDefaultList,
+      fetchAction
+    } = actions;
 
     if (isServer) {
       store.dispatch(payloadProjectDetail(projectDetail));
+      store.dispatch(setDefaultList(defaultList));
       return;
     }
 
@@ -68,7 +73,8 @@ const ProjectDetails = class extends Component {
         location,
         status = 0,
         client = "",
-        uploadedFiles = []
+        uploadedFiles = [],
+        defaultList = []
       }
     } = this;
 
@@ -112,9 +118,13 @@ const ProjectDetails = class extends Component {
 
             .dataDefaults {
               display: flex;
-              justify-content: space-around;
               width: 100%;
-              align-items: middle;
+              white-space: nowrap;
+              align-items: center;
+            }
+
+            .dataDefaultsLabel {
+              padding-right: 5px;
             }
           `}
         </style>
@@ -275,26 +285,28 @@ const ProjectDetails = class extends Component {
             </div>
             <hr />
             <div className="dataDefaults">
-              <div>Set Default</div>
-              <div>
-                <UncontrolledDropdown
+              <div className="dataDefaultsLabel">Set Default</div>
+              <UncontrolledDropdown
+                style={{ width: "100%" }}
+                color="danger"
+              >
+                <DropdownToggle
+                  caret
                   style={{ width: "100%" }}
-                  color="danger"
                 >
-                  <DropdownToggle
-                    caret
-                    color="danger"
-                    style={{ width: "100%" }}
-                  >
-                    Select Default
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem onClick={() => {}}>
-                      Lumbar Spine
+                  Select Default
+                </DropdownToggle>
+                <DropdownMenu right>
+                  {defaultList.map(defaultName => (
+                    <DropdownItem
+                      key={`default-${defaultName}`}
+                      onClick={() => {}}
+                    >
+                      {defaultName}
                     </DropdownItem>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </div>
+                  ))}
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </div>
             <div />
           </div>
@@ -314,8 +326,10 @@ const ProjectDetails = class extends Component {
 
 const mapStateToProps = ({
   projectDetail,
+  defaultList,
   projectDetailSettings: { sidebarIsOpen }
-}) => ({ ...projectDetail, sidebarIsOpen });
+}) => ({ ...projectDetail, sidebarIsOpen, defaultList });
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
@@ -324,25 +338,3 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
-
-/*
- <Button
-                  style={{ width: "100%" }}
-                  color="danger"
-                  onClick={() => resetProject({ studyUID })}
-                >
-                  Reset
-                </Button>
-
-
-<div>
-                <b>Defaults</b>
-              </div>
-              <div>
-                <Input />
-                <Button>Create</Button>
-                <Button>Create From File</Button>
-              </div>
-              <Table>No Defaults</Table>
-
-              */

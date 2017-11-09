@@ -64,6 +64,7 @@ const ProjectDetails = class extends Component {
         toggleSidebar,
         resetProject,
         handleProjectImport,
+        destroyProject,
         // State
         sidebarIsOpen,
         studyUID,
@@ -288,9 +289,7 @@ const ProjectDetails = class extends Component {
                   style={{ width: "100%" }}
                   color="warning"
                   message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
-                  onConfirm={() => {
-                    console.log("TODO delete project");
-                  }}
+                  onConfirm={() => destroyProject({ studyUID })}
                 >
                   Destroy
                 </ButtonConfirm>

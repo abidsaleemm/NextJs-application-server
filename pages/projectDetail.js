@@ -24,6 +24,7 @@ import { initStore } from "..//store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
+import ButtonConfirm from "../components/ButtonConfirm";
 
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
@@ -275,13 +276,24 @@ const ProjectDetails = class extends Component {
                 >
                   Export
                 </a>
-                <Button
+                <ButtonConfirm
                   style={{ width: "100%" }}
-                  color="danger"
-                  onClick={() => resetProject({ studyUID })}
+                  color="warning"
+                  message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
+                  onConfirm={() => resetProject({ studyUID })}
                 >
                   Reset
-                </Button>
+                </ButtonConfirm>
+                <ButtonConfirm
+                  style={{ width: "100%" }}
+                  color="warning"
+                  message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
+                  onConfirm={() => {
+                    console.log("TODO delete project");
+                  }}
+                >
+                  Destroy
+                </ButtonConfirm>
               </div>
             </div>
             <hr />
@@ -337,3 +349,14 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
+
+/*
+     <Button
+                  style={{ width: "100%" }}
+                  color="danger"
+                  onClick={() => resetProject({ studyUID })}
+                >
+                  Reset
+                </Button>
+
+                */

@@ -30,17 +30,24 @@ export default async ({
 
   await setProjectSnapshot({
     studyUID,
-    payload
+    payload: {
+      ...payload,
+      studyUID
+    }
   });
 
-  socket.emit("action", fetchAction(false));
+  await Promise.all(
+    clientSockets.map(async clientSocket => {
+      clientSocket.emit("action", {
+        type: "SPINNER_TOGGLE",
+        toggle: true
+      });
+      await selectStudy({
+        socket: clientSocket,
+        action: { studyUID }
+      });
+    })
+  );
 
-  clientSockets.forEach(async clientSocket => {
-    const { rooms, id } = clientSocket;
-    clientSocket.emit("action", {
-      type: "SPINNER_TOGGLE",
-      toggle: true
-    });
-    await selectStudy({ socket: clientSocket, action: { studyUID } });
-  });
+  await socket.emit("action", fetchAction(false));
 };

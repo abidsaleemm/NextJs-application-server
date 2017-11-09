@@ -7,4 +7,5 @@ export { default as uploadDel } from "./uploadDel";
 export { default as uploadPut } from "./uploadPut";
 export { default as createProject } from "./createProject";
 export { default as resetProject } from "./resetProject";
+export { default as destroyProject } from "./destroyProject";
 export { default as projectImport } from "./projectImport";

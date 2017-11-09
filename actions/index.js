@@ -27,3 +27,4 @@ export { default as handleUpload } from "./handleUpload";
 export {
   default as handleProjectImport
 } from "./handleProjectImport";
+export { default as setDefaultList } from "./setDefaultList";

@@ -183,7 +183,7 @@ const Portal = class extends Component {
           ),
           studies: CellTableWrapper(studiesEnhanced, "studyName"),
           studyDate: CellTableWrapper(studiesEnhanced, "studyDate"),
-          status: CellTableWrapper(studiesEnhanced, "status"),
+          statusName: CellTableWrapper(studiesEnhanced, "statusName"),
           location: CellTableWrapper(studiesEnhanced, "location"),
           upload: CellTableWrapper(studiesEnhanced, "upload"),
           video: CellTableWrapper(studiesEnhanced, "video")
@@ -268,7 +268,7 @@ const mapStateToProps = ({
     invoice: { title: "Invoice", sort: false },
     studies: { title: "Studies", sort: false },
     studyDate: { title: "Study Date", sort: false },
-    status: { title: "Status", sort: true },
+    statusName: { title: "Status", sort: true },
     location: { title: "Imaging Center", sort: false },
     upload: { title: "Attach Files", sort: false },
     video: { title: "Video", sort: false }

@@ -24,6 +24,7 @@ const reducePatients = studies =>
           studyName,
           studyDate,
           status,
+          statusName: getStatusName(status || 0),
           location,
           client,
           videoExists,

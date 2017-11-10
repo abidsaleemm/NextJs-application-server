@@ -51,12 +51,16 @@ export default ({
         const { studyUID } = action;
         if (studyUID) {
           const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
-          await new Promise(resolve => {
-            socket.join(roomName, () => {
-              console.log("socket joined room", roomName);
-              resolve();
+          const { rooms = {} } = socket;
+
+          if (!Object.keys(rooms).some(v => v === roomName)) {
+            await new Promise(resolve => {
+              socket.join(roomName, () => {
+                console.log("socket joined room", roomName);
+                resolve();
+              });
             });
-          });
+          }
         }
       }
 

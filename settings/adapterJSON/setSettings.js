@@ -1,11 +1,12 @@
 import low from 'lowdb';
 import FileSync from'lowdb/adapters/FileSync';
 import settingsStore from 'settingsStore';
+import { users } from '../../authUsers/local';
 const adapter = new FileSync('./settings/adapterJSON/db.json');
 const db = low(adapter);
 const store = settingsStore();
 const init = store.getState();
-const getUsers = ["5", "4", "3", "2", "1"]
+const getUsers = users.map(user => user.id);
 
 // Set default state
 db.defaults(getUsers.reduce((acc, user) => (

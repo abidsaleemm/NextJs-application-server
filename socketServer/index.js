@@ -6,3 +6,4 @@ export { default as getUser } from "./getUser";
 export { default as uploadDel } from "./uploadDel";
 export { default as uploadPut } from "./uploadPut";
 export { default as createProject } from "./createProject";
+export { default as setSettings } from "./setSettings";

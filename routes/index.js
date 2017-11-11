@@ -1,4 +1,3 @@
-import api from './api';
 import projects from './projects';
 import projectDetail from './projectDetail';
 import portal from './portal';
@@ -7,7 +6,6 @@ import video from './video';
 import uploadGet from './uploadGet';
 
 export default (props) => {
-    api(props);
     projects(props);
     projectDetail(props);
     portal(props);

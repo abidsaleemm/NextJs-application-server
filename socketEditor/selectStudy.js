@@ -14,8 +14,9 @@ export default async ({ socket, action }) => {
   }
 
   const dicomSeries = (await getSeries({ studyUID })).filter(
-    ({ seriesName }) => seriesName !== undefined
+    ({ seriesName }) => seriesName !== undefined && seriesName !== null
   );
+  
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
   const { selectedSeries: projectSelectedSeries } = project;

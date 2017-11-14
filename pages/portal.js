@@ -46,18 +46,17 @@ const Portal = class extends Component {
     store,
     isServer,
     // userId: clientID,
-    query: { portalList = {} } = {}
+    query: { portalList = {}, portalSettings = {} } = {}
   }) {
-    const { payloadPortal } = actions;
+    const { payloadPortal, setPortalSettings } = actions;
     // const { fetchPagePortal } = actions;
 
-    isServer
-      ? store.dispatch(
-          payloadPortal({
-            portalList
-          })
-        )
-      : store.dispatch({ type: "server/pagePortal" });
+    if (isServer) {
+      store.dispatch(payloadPortal({portalList}))
+      store.dispatch(setPortalSettings(portalSettings))
+    }
+
+    store.dispatch({ type: "server/pagePortal" });
 
     // if (!isServer) {
     //   store.dispatch(({ type: 'server/pagePortal' }));

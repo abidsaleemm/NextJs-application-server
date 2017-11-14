@@ -32,16 +32,18 @@ const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projectDetail = {}, studyUID = "" }
+    query: { projectDetail = {}, projectDetailSettings, studyUID = "" }
   }) {
-    const { payloadProjectDetail } = actions;
+    const { payloadProjectDetail, setPortalSettings } = actions;
 
-    isServer
-      ? store.dispatch(payloadProjectDetail(projectDetail))
-      : store.dispatch({
-          type: "server/pageProjectDetail",
-          studyUID
-        });
+    if (isServer) {
+      store.dispatch(payloadProjectDetail(projectDetail))
+      store.dispatch(setProjectSettings(projectDetailSettings))
+    }
+    store.dispatch({
+      type: "server/pageProjectDetail",
+      studyUID
+    });
   }
 
   render() {

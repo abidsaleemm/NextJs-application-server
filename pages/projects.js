@@ -19,15 +19,17 @@ class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projects = [] } = {}
+    query: { projects = [], projectsSettings = {} } = {}
   }) {
-    const { payloadProjects } = actions;
+    const { payloadProjects, setProjectsSettings } = actions;
 
-    isServer
-      ? store.dispatch(payloadProjects({ projects }))
-      : store.dispatch({
-          type: "server/pageProjects"
-        });
+    if (isServer) {
+      store.dispatch(payloadProjects({ projects }))
+      store.dispatch(setProjectsSettings(projectsSettings))
+    }
+    store.dispatch({
+      type: "server/pageProjects"
+    });
   }
 
   render() {

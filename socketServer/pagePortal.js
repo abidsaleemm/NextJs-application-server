@@ -1,5 +1,6 @@
 import queryPortalList from "../helpers/queryPortalList";
-import { payloadPortal, fetchAction } from "../actions";
+import { getSettings } from '../settings/adapterJSON/setSettings';
+import { payloadPortal, fetchAction, setPortalSettings } from "../actions";
 
 export default async ({
   socket,
@@ -13,5 +14,7 @@ export default async ({
       portalList
     })
   );
+  const settings = getSettings(clientID).portalSettings;
+  await socket.emit("action", setPortalSettings(settings));
   socket.emit("action", fetchAction(false));
 };

@@ -67,9 +67,10 @@ export default class extends Component {
             .content {
               width: 100%;
               background: white;
-              overflow: hidden;
+              overflow-x: scroll;
               height: 100%;
               transition: all 0.2s ease;
+              padding: 10px;
             }
 
             .toggleContainer {

@@ -1,6 +1,5 @@
-import { setSettings } from '../settings/adapterJSON/setSettings';
+import { setSettings } from "../authUsers";
 
-export default async ({ socket, user, action }) => {
-  setSettings(user.id, action.action);
-  socket.emit();
+export default async ({ socket, user: { id } = {}, action }) => {
+  setSettings(id, action.action);
 };

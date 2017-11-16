@@ -6,7 +6,7 @@ import {
   setProjectDetailSettings
 } from "../actions";
 import { getDefaultList } from "../defaults";
-import { getSettings } from "../settings/adapterJSON/setSettings";
+import { getSettings } from "../authUsers";
 
 export default async ({
   socket,
@@ -15,11 +15,14 @@ export default async ({
 }) => {
   const projectDetail = await queryProjectDetail({ studyUID });
   const defaults = await getDefaultList();
-  const settings = getSettings(clientID).projectDetailSettings;
+  const { projectDetailSettings } = await getSettings(clientID);
 
   await socket.emit("action", payloadProjectDetail(projectDetail));
   await socket.emit("action", setDefaultList(defaults));
-  await socket.emit("action", setProjectDetailSettings(settings));
+  await socket.emit(
+    "action",
+    setProjectDetailSettings(projectDetailSettings)
+  );
 
   socket.emit("action", fetchAction(false));
 };

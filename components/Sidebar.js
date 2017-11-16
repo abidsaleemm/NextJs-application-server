@@ -16,6 +16,8 @@ export default class extends Component {
   }
 
   handleShowToggle() {
+    console.log("handleShowToggle");
+
     this.setState({ shouldShowToggle: true });
     setTimeout(
       () => this.setState({ shouldShowToggle: false }),
@@ -43,7 +45,8 @@ export default class extends Component {
         width: sidebarWidth
       },
       content: {
-        opacity: contentOpacity
+        opacity: contentOpacity,
+        pointerEvents: isOpen ? "auto" : "none"
       },
       toggle: {
         right: toggleIn,
@@ -66,7 +69,7 @@ export default class extends Component {
               display: flex;
               width: 0;
               background: white;
-              z-index: 2;
+              z-index: 3;
               position: relative;
               height: 100%;
               transition: all 0.05s ease;
@@ -74,9 +77,8 @@ export default class extends Component {
 
             .content {
               width: 100%;
+              overflow-y: auto;
               background: white;
-              overflow: auto;
-              height: 100%;
               transition: all 0.2s ease;
               padding: 10px;
             }
@@ -94,7 +96,7 @@ export default class extends Component {
             .toggleOverlay {
               position: absolute;
               height: 100%;
-              z-index: -2;
+              z-index: 2;
               pointer-events: auto;
             }
 

@@ -9,7 +9,7 @@ import Loader from "../containers/loader"; // TODO Requires a store. Should prob
 // TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
 // Embed in DOM
 const { STAGING } =
-  ("undefined" !== typeof window ? window.env : process.env) || false
+  ("undefined" !== typeof window ? window.env : process.env) || false;
 
 const Wrapper = (
   WrappedComponent,
@@ -23,6 +23,7 @@ const Wrapper = (
           flex-direction: column;
           width: 100vw;
           height: 100vh;
+          overflow: hidden;
         }
       `}
     </style>
@@ -32,7 +33,9 @@ const Wrapper = (
     <WrappedComponent {...props} />
     <script
       dangerouslySetInnerHTML={{
-        __html: `env = {}; ${STAGING ? "env.STAGING = true;" : "env.STAGING = false;"} `
+        __html: `env = {}; ${STAGING
+          ? "env.STAGING = true;"
+          : "env.STAGING = false;"} `
       }}
     />
   </div>

@@ -43,7 +43,7 @@ const ProjectDetails = class extends Component {
     const {
       payloadProjectDetail,
       setDefaultList,
-      setProjectSettings,
+      setProjectDetailSettings,
       fetchAction
     } = actions;
 
@@ -51,7 +51,7 @@ const ProjectDetails = class extends Component {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadProjectDetail(projectDetail));
       store.dispatch(setDefaultList(defaultList));
-      store.dispatch(setProjectSettings(projectDetailSettings));
+      store.dispatch(setProjectDetailSettings(projectDetailSettings));
       return;
     }
 

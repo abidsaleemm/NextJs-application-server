@@ -5,27 +5,35 @@ export default class extends Component {
   static defaultProps = {
     toggleSidebar: () => {},
     width: 400,
-    isOpen: true,
-  }
+    isOpen: true
+  };
 
   constructor(props) {
     super(props);
     this.state = {
-      shouldShowToggle: false,
+      shouldShowToggle: false
     };
   }
 
   handleShowToggle() {
     this.setState({ shouldShowToggle: true });
-    setTimeout(() => this.setState({ shouldShowToggle: false }), 2000);
+    setTimeout(
+      () => this.setState({ shouldShowToggle: false }),
+      2000
+    );
   }
 
   render() {
-    const { props: { toggleSidebar, isOpen, children, width }, state: { shouldShowToggle } } = this;
+    const {
+      props: { toggleSidebar, isOpen, children, width },
+      state: { shouldShowToggle }
+    } = this;
     const toggleWidth = 30;
     const toggleIn = shouldShowToggle ? `${-toggleWidth}px` : "3px";
     const triggerWidth = 10;
-    const overlayIn = !shouldShowToggle ? `${-triggerWidth}px` : "-0px";
+    const overlayIn = !shouldShowToggle
+      ? `${-triggerWidth}px`
+      : "-0px";
     const iconTransform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     const contentOpacity = isOpen ? "1" : "0";
     const sidebarWidth = isOpen ? `${width}px` : "0px";
@@ -67,7 +75,7 @@ export default class extends Component {
             .content {
               width: 100%;
               background: white;
-              overflow-x: scroll;
+              overflow: auto;
               height: 100%;
               transition: all 0.2s ease;
               padding: 10px;
@@ -116,11 +124,11 @@ export default class extends Component {
           style={dynamicStyle.toggleOverlay}
         />
         <div className="toggleContainer" style={dynamicStyle.toggle}>
-          <div
-            onClick={ toggleSidebar }
-            className="toggle"
-          >
-            <span style={dynamicStyle.toggleIcon} className="toggleIcon">
+          <div onClick={toggleSidebar} className="toggle">
+            <span
+              style={dynamicStyle.toggleIcon}
+              className="toggleIcon"
+            >
               <ArrowIcon color="black" size="30" />
             </span>
           </div>

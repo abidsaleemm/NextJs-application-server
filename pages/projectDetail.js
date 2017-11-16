@@ -104,7 +104,6 @@ const ProjectDetails = class extends Component {
 
             .projectDetailLeft {
               width: 100%;
-              height: 100%;
               margin-bottom: 50px;
             }
 
@@ -368,14 +367,3 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
-
-/*
-     <Button
-                  style={{ width: "100%" }}
-                  color="danger"
-                  onClick={() => resetProject({ studyUID })}
-                >
-                  Reset
-                </Button>
-
-                */

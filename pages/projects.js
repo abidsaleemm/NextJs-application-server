@@ -19,14 +19,28 @@ class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projects = [], projectsSettings = {} } = {}
+    query: {
+      projects = [],
+      defaultList = [],
+      projectsSettings = {}
+    } = {}
   }) {
-    const { payloadProjects, setProjectsSettings } = actions;
+    const {
+      payloadProjects,
+      fetchAction,
+      setDefaultList,
+      setProjectsSettings
+    } = actions;
 
     if (isServer) {
-      store.dispatch(payloadProjects({ projects }))
-      store.dispatch(setProjectsSettings(projectsSettings))
+      // TODO Should we wrap these in single action?
+      store.dispatch(payloadProjects({ projects }));
+      store.dispatch(setDefaultList(defaultList));
+      store.dispatch(setProjectsSettings(projectsSettings));
+      return;
     }
+
+    store.dispatch(fetchAction(true));
     store.dispatch({
       type: "server/pageProjects"
     });
@@ -35,9 +49,12 @@ class ProjectsListing extends Component {
   render() {
     const {
       props: {
+        // State
         tableData = [],
         tableHeader = {},
         tableSettings = {},
+        defaultList = [],
+        // Actions
         setProjectsSettings = () => {},
         createProject = () => {}
       } = {}
@@ -45,28 +62,28 @@ class ProjectsListing extends Component {
 
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
-      ({ studyUID, status = "", ...project }) => ({
+      ({ studyUID, status, statusName, ...project }) => ({
         ...project,
-        status,
-        tableBackground:
-          status === "None" ? undefined : "rgba(48, 121, 198, 0.1)",
+        status: statusName,
+        tableBackground: status
+          ? undefined
+          : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
-            {status === "None" ? (
+            {!status ? (
               // TODO Create as Button dropdown
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem
-                    onClick={() => createProject({ studyUID })}
-                  >
-                    Spine Lumbar
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => createProject({ studyUID })}
-                  >
-                    Spine Cervical
-                  </DropdownItem>
+                  {defaultList.map(defaultName => (
+                    <DropdownItem
+                      key={`dropdown-default-${defaultName}`}
+                      onClick={() =>
+                        createProject({ studyUID, defaultName })}
+                    >
+                      {defaultName}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (
@@ -76,6 +93,7 @@ class ProjectsListing extends Component {
                     pathname: "/projectDetail",
                     query: { studyUID }
                   })}
+                color="success"
               >
                 Edit
               </Button>
@@ -113,11 +131,13 @@ class ProjectsListing extends Component {
 
 const mapStateToProps = ({
   projectsSettings,
+  defaultList,
   projects: { projects }
 }) => ({
   tableHeader: {
     action: { title: "", sort: false },
     status: { title: "Status", sort: true },
+    defaultName: { title: "Default", sort: true },
     patientName: { title: "Patient Name", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },
@@ -130,7 +150,8 @@ const mapStateToProps = ({
   tableData: selectProjectList({
     projects,
     settings: projectsSettings
-  })
+  }),
+  defaultList
 });
 
 const mapDispatchToProps = dispatch =>

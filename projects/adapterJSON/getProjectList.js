@@ -1,11 +1,10 @@
 import fs from "fs";
 import low from "lowdb";
-import FileSync from 'lowdb/adapters/FileSync';
+import FileSync from "lowdb/adapters/FileSync";
 
-import { checkExists, path } from './index';
+import { path } from "./index";
 
-export default  async () => {
-  checkExists();
+export default async () => {
   if (path === undefined) return;
 
   const db = low(new FileSync(`${path}/projects.json`));
@@ -13,5 +12,9 @@ export default  async () => {
   const projects = db.get("projects").value();
 
   // Strip unused props
-  return projects.map(({ studyUID, status }) => ({ studyUID, status }));
+  return projects.map(({ studyUID, status, defaultName }) => ({
+    studyUID,
+    status,
+    defaultName
+  }));
 };

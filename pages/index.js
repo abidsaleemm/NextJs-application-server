@@ -8,19 +8,18 @@ import LoginPage from "../components/loginPage";
 
 const EntryPage = class extends Component {
   static async getInitialProps(props) {
-    const { req: { session: { sessionFlash } = {} } = {} } = props;
+    const { req: { session = {} } = {} } = props;
+    const { sessionFlash } = session;
 
-    if (sessionFlash !== undefined) {
-      //   session.sessionFlash = undefined;
-      return { ...props, sessionFlash };
-    }
-
-    return props;
+    return { sessionFlash };
   }
 
   render() {
-    const { props = {} } = this;
-    return <LoginPage {...props} />;
+    const {
+      props: { staging, sessionFlash: { error } = {} } = {}
+    } = this;
+
+    return <LoginPage staging={staging} error={error} />;
   }
 };
 

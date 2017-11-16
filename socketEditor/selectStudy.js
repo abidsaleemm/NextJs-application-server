@@ -13,23 +13,33 @@ export default async ({ socket, action }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = await getSeries({ studyUID });
+  const dicomSeries = (await getSeries({ studyUID })).filter(
+    ({ seriesName }) => seriesName !== undefined && seriesName !== null
+  );
+  
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
+
+  const { selectedSeries: projectSelectedSeries } = project;
+
+  const selectedSeries = dicomSeries.some(
+    ({ seriesUID }) => seriesUID === projectSelectedSeries
+  )
+    ? projectSelectedSeries
+    : firstSeriesUID;
 
   await socket.emit("action", {
     type: "PROJECT_PAYLOAD",
     project: {
-      selectedSeries: firstSeriesUID,
       ...project,
-      dicomSeries
+      selectedSeries,
+      dicomSeries,
+      studyUID,
     }
   });
 
   const { slice: { location = 0 } = {} } = project;
 
-  console.log();
   if (dicomSeries.length > 0) {
-    const { selectedSeries = firstSeriesUID } = project;
     await selectSeries({
       socket,
       action: { seriesUID: selectedSeries, location }

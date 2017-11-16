@@ -21,8 +21,6 @@ export default ({
 
   const io = socketio.listen(server);
 
-  console.log("socketio", socketio);
-
   // Pass down session from passportjs
   io.use((socket, next) =>
     sessionMiddleWare(socket.request, {}, next)
@@ -35,10 +33,9 @@ export default ({
     const {
       request: { session: { passport: { user } = {} } = {} } = {}
     } = socket;
-    console.log("Socket user", user);
 
     // This validates user session
-    // TODO Might be a more clean way to handle this
+    // TODO Might be a more clean way to handle this.  Can use middleware?
     if (user === undefined) {
       return;
     }
@@ -49,9 +46,28 @@ export default ({
         [prefix]: { [parseType]: actionHandler = () => {} } = {}
       } = actionHandlers;
 
-      console.log("action", prefix, parseType);
+      // TODO This is kinda a hack but works well for now.  If from the editor join a room.
+      if (prefix === "editor") {
+        const { studyUID } = action;
+        if (studyUID) {
+          const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
+          const { rooms = {} } = socket;
+
+          if (!Object.keys(rooms).some(v => v === roomName)) {
+            await new Promise(resolve => {
+              socket.join(roomName, () => {
+                console.log("socket joined room", roomName);
+                resolve();
+              });
+            });
+          }
+        }
+      }
+
+      console.log("action", prefix, parseType, socket.id);
       await actionHandler({
         socket,
+        io,
         action: { ...action, type },
         user
       });

@@ -1,18 +1,19 @@
-import { 
+import {
   PAYLOAD_PROJECTDETAIL,
   PROJECTDETAIL_SET_CLIENT,
-  PROJECTDETAIL_SET_STATUS,
+  PROJECTDETAIL_SET_STATUS
 } from "../constants/actionTypes";
 
 export const initialState = {
   status: 0,
   client: 0,
-  studyName: '',
-  studyDate: '',
-  patientName: '',
-  patientID: '',
-  modality: '',
-  location: '',
+  studyName: "",
+  studyDate: "",
+  patientName: "",
+  patientID: "",
+  modality: "",
+  location: "",
+  defaultName: ""
 };
 
 export default (
@@ -23,10 +24,13 @@ export default (
     case PAYLOAD_PROJECTDETAIL:
       return {
         ...state,
-        ...projectDetail,
+        ...projectDetail
       };
-    case PROJECTDETAIL_SET_CLIENT: return { ...state, client };
-    case PROJECTDETAIL_SET_STATUS: return { ...state, status };
-    default: return state;
+    case PROJECTDETAIL_SET_CLIENT:
+      return { ...state, client };
+    case PROJECTDETAIL_SET_STATUS:
+      return { ...state, status };
+    default:
+      return state;
   }
 };

@@ -23,6 +23,8 @@ import { bindActionCreators } from "redux";
 import { initStore } from "..//store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
+import UploadButton from "../components/UploadButton";
+import ButtonConfirm from "../components/ButtonConfirm";
 
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
@@ -32,14 +34,23 @@ const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projectDetail = {}, projectDetailSettings, studyUID = "" }
+    query: { projectDetail = {}, defaultList = [], studyUID = "" }
   }) {
-    const { payloadProjectDetail, setPortalSettings } = actions;
+    const {
+      payloadProjectDetail,
+      setDefaultList,
+      setProjectSettings,
+      fetchAction
+    } = actions;
 
     if (isServer) {
-      store.dispatch(payloadProjectDetail(projectDetail))
-      store.dispatch(setProjectSettings(projectDetailSettings))
+      store.dispatch(payloadProjectDetail(projectDetail));
+      store.dispatch(setDefaultList(defaultList));
+      store.dispatch(setProjectSettings(projectDetailSettings));
+      return;
     }
+
+    store.dispatch(fetchAction(true));
     store.dispatch({
       type: "server/pageProjectDetail",
       studyUID
@@ -53,6 +64,9 @@ const ProjectDetails = class extends Component {
         setProjectProps,
         videoRender,
         toggleSidebar,
+        resetProject,
+        handleProjectImport,
+        destroyProject,
         // State
         sidebarIsOpen,
         studyUID,
@@ -63,7 +77,9 @@ const ProjectDetails = class extends Component {
         location,
         status = 0,
         client = "",
-        uploadedFiles = []
+        uploadedFiles = [],
+        defaultList = [],
+        defaultName = ""
       }
     } = this;
 
@@ -98,6 +114,22 @@ const ProjectDetails = class extends Component {
               width: 100%;
               height: 100%;
               background: lightGray;
+            }
+
+            .dataFunctions {
+              display: flex;
+              justify-content: space-around;
+            }
+
+            .dataDefaults {
+              display: flex;
+              width: 100%;
+              white-space: nowrap;
+              align-items: center;
+            }
+
+            .dataDefaultsLabel {
+              padding-right: 5px;
             }
           `}
         </style>
@@ -170,6 +202,15 @@ const ProjectDetails = class extends Component {
                           >
                             {getStatusName(4)}
                           </DropdownItem>
+                          <DropdownItem
+                            onClick={() =>
+                              setProjectProps({
+                                studyUID,
+                                status: 5
+                              })}
+                          >
+                            {getStatusName(5)}
+                          </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
                     </td>
@@ -220,25 +261,66 @@ const ProjectDetails = class extends Component {
                 </tbody>
               </Table>
             </div>
+            <hr />
             <div>
               <div>Data functions</div>
-              <div>
-                <Button>Import</Button>
-                <Button>Export</Button>
-                <Button color="danger">Delete</Button>
+              <div className="dataFunctions">
+                <UploadButton
+                  style={{ width: "100%" }}
+                  studyUID={studyUID}
+                  handleUpload={handleProjectImport}
+                  label="Import"
+                />
+                <a
+                  style={{ width: "100%" }}
+                  className="btn btn-secondary"
+                  target="_projectExport"
+                  href={`/export/?studyUID=${studyUID}`}
+                >
+                  Export
+                </a>
+                <ButtonConfirm
+                  style={{ width: "100%" }}
+                  color="warning"
+                  message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
+                  onConfirm={() => resetProject({ studyUID })}
+                >
+                  Reset
+                </ButtonConfirm>
+                <ButtonConfirm
+                  style={{ width: "100%" }}
+                  color="warning"
+                  message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
+                  onConfirm={() => destroyProject({ studyUID })}
+                >
+                  Destroy
+                </ButtonConfirm>
               </div>
             </div>
-            <div>
-              <div>
-                <b>Defaults</b>
-              </div>
-              <div>
-                <Input />
-                <Button>Create</Button>
-                <Button>Create From File</Button>
-              </div>
-              <Table>No Defaults</Table>
+            <hr />
+            <div className="dataDefaults">
+              <div className="dataDefaultsLabel">Set Default</div>
+              <UncontrolledDropdown
+                style={{ width: "100%" }}
+                color="danger"
+              >
+                <DropdownToggle caret style={{ width: "100%" }}>
+                  {defaultName}
+                </DropdownToggle>
+                <DropdownMenu right>
+                  {defaultList.map(defaultName => (
+                    <DropdownItem
+                      key={`default-${defaultName}`}
+                      onClick={() =>
+                        setProjectProps({ studyUID, defaultName })}
+                    >
+                      {defaultName}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </div>
+            <div />
           </div>
         </Sidebar>
         <iframe
@@ -256,8 +338,10 @@ const ProjectDetails = class extends Component {
 
 const mapStateToProps = ({
   projectDetail,
+  defaultList,
   projectDetailSettings: { sidebarIsOpen }
-}) => ({ ...projectDetail, sidebarIsOpen });
+}) => ({ ...projectDetail, sidebarIsOpen, defaultList });
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
@@ -266,3 +350,14 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
+
+/*
+     <Button
+                  style={{ width: "100%" }}
+                  color="danger"
+                  onClick={() => resetProject({ studyUID })}
+                >
+                  Reset
+                </Button>
+
+                */

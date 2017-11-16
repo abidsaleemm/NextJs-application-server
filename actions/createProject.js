@@ -1,4 +1,5 @@
-export default ({ studyUID }) => ({
+export default ({ studyUID, defaultName }) => ({
   type: "server/createProject",
-  studyUID
+  studyUID,
+  defaultName
 });

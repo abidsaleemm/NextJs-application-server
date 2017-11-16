@@ -21,13 +21,14 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         async (
           [
             { studyUID, clientID = 0, ...study },
-            { status = 0, ...project } = {}
+            { status, ...project } = {}
           ]
         ) => ({
           ...project,
           ...study,
           studyUID,
-          status: getStatusName(status || 0),
+          statusName: getStatusName(status || 0),
+          status: status,
           client: (({ name }) => name)(
             await getClientInfo({ clientID })
           )

@@ -9,7 +9,7 @@ import Loader from "../containers/loader"; // TODO Requires a store. Should prob
 // TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
 // Embed in DOM
 const { STAGING } =
-  "undefined" !== typeof window ? window.env : process.env;
+  ("undefined" !== typeof window ? window.env : process.env) || false
 
 const Wrapper = (
   WrappedComponent,
@@ -32,7 +32,7 @@ const Wrapper = (
     <WrappedComponent {...props} />
     <script
       dangerouslySetInnerHTML={{
-        __html: `env = {}; ${STAGING ? "env.STAGING = true;" : ""} `
+        __html: `env = {}; ${STAGING ? "env.STAGING = true;" : "env.STAGING = false;"} `
       }}
     />
   </div>
@@ -53,16 +53,12 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
         const { admin = false, client = false } = isServer
           ? store.dispatch(setUser(user))
           : store.dispatch({ type: "server/getUser" });
-
-        return {
-          ...WrappedComponent.getInitialProps({
-            ...props
-          })
-        };
       }
 
-      // Defaults to log in page
-      return WrappedComponent.getInitialProps(props);
+      return {
+        ...(await WrappedComponent.getInitialProps(props)),
+        staging: STAGING
+      };
     };
 
     constructor(props) {

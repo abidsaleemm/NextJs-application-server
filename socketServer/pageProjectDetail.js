@@ -1,16 +1,25 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
-import { getSettings } from '../settings/adapterJSON/setSettings';
-import { payloadProjectDetail, fetchAction, setProjectDetailSettings} from "../actions";
+import {
+  payloadProjectDetail,
+  setDefaultList,
+  fetchAction,
+  setProjectDetailSettings
+} from "../actions";
+import { getDefaultList } from "../defaults";
+import { getSettings } from "../settings/adapterJSON/setSettings";
 
 export default async ({
   socket,
   action: { studyUID = "" },
   user: { id: clientID }
 }) => {
-  await socket.emit("action", fetchAction(true));
   const projectDetail = await queryProjectDetail({ studyUID });
-  await socket.emit("action", payloadProjectDetail(projectDetail));
+  const defaults = await getDefaultList();
   const settings = getSettings(clientID).projectDetailSettings;
+
+  await socket.emit("action", payloadProjectDetail(projectDetail));
+  await socket.emit("action", setDefaultList(defaults));
   await socket.emit("action", setProjectDetailSettings(settings));
+
   socket.emit("action", fetchAction(false));
 };

@@ -10,9 +10,7 @@ import Wrapper from "../hoc/wrapper";
 import TableList from "../components/tableList";
 import VideoModal from "../containers/videoModal";
 import UploadFilePopup from "../components/UploadFilePopup";
-
-// TODO Move this to a action wrap actions from getInitialProps?
-// import fetchApi from "../helpers/fetchApi";
+import UploadButton from "../components/UploadButton";
 
 // TODO Move to separate file?
 const CellTableWrapper = (array, key) => (
@@ -48,25 +46,16 @@ const Portal = class extends Component {
     // userId: clientID,
     query: { portalList = {}, portalSettings = {} } = {}
   }) {
-    const { payloadPortal, setPortalSettings } = actions;
-    // const { fetchPagePortal } = actions;
+    const { payloadPortal, setPortalSettings, fetchAction } = actions;
 
     if (isServer) {
-      store.dispatch(payloadPortal({portalList}))
-      store.dispatch(setPortalSettings(portalSettings))
+      store.dispatch(payloadPortal({ portalList }));
+      store.dispatch(setPortalSettings(portalSettings));
+      return;
     }
 
+    store.dispatch(fetchAction(true));
     store.dispatch({ type: "server/pagePortal" });
-
-    // if (!isServer) {
-    //   store.dispatch(({ type: 'server/pagePortal' }));
-    // }
-
-    // store.dispatch(fetchAction(true));
-    // store.dispatch(
-    //   payloadPortal(isServer ? portal : await fetchApi("portal"))
-    // );
-    // store.dispatch(fetchAction(false));
   }
 
   // TODO Remove handle using redux portalSettings or portal?
@@ -78,22 +67,6 @@ const Portal = class extends Component {
       popupTarget: null,
       popupStudyUID: ""
     };
-  }
-
-  // TODO Move to redux action?
-  // Moving to seperate components
-  handleUpload({ target, studyUID }) {
-    const { props: { uploadPut = () => {} } } = this;
-
-    // TODO Handle multiple files?
-    const { 0: file } = target.files;
-    const name = file.name;
-
-    const reader = new FileReader();
-    reader.onload = ({ target: { result } = {} }) =>
-      uploadPut({ data: result, name, studyUID });
-
-    reader.readAsDataURL(file);
   }
 
   // TODO Move to redux action?
@@ -121,7 +94,8 @@ const Portal = class extends Component {
         admin = false,
         setPortalSettings = () => {},
         setVideo = () => {},
-        uploadDel = () => {}
+        uploadDel = () => {},
+        handleUpload = () => {}
       },
       state: { popupTarget, popupStudyUID }
     } = this;
@@ -172,27 +146,10 @@ const Portal = class extends Component {
                       {uploadedFiles.length}
                     </Button>
                   ) : null}
-                  <label
-                    htmlFor={id}
-                    style={{ padding: 0, margin: 0 }}
-                  >
-                    <div
-                      className="btn btn-secondary"
-                      style={
-                        uploadedFiles.length > 0
-                          ? { borderRadius: "0 5px 5px 0" }
-                          : {}
-                      }
-                    >
-                      Upload File
-                    </div>
-                  </label>
-                  <input
-                    style={{ display: "none" }}
-                    id={id}
-                    type="file"
-                    onChange={({ target }) =>
-                      this.handleUpload({ target, studyUID })}
+                  <UploadButton
+                    studyUID={studyUID}
+                    hasFiles={uploadedFiles.length > 0}
+                    handleUpload={handleUpload}
                   />
                 </ButtonGroup>
               ),
@@ -222,7 +179,7 @@ const Portal = class extends Component {
           ),
           studies: CellTableWrapper(studiesEnhanced, "studyName"),
           studyDate: CellTableWrapper(studiesEnhanced, "studyDate"),
-          status: CellTableWrapper(studiesEnhanced, "status"),
+          statusName: CellTableWrapper(studiesEnhanced, "statusName"),
           location: CellTableWrapper(studiesEnhanced, "location"),
           upload: CellTableWrapper(studiesEnhanced, "upload"),
           video: CellTableWrapper(studiesEnhanced, "video")
@@ -307,7 +264,7 @@ const mapStateToProps = ({
     invoice: { title: "Invoice", sort: false },
     studies: { title: "Studies", sort: false },
     studyDate: { title: "Study Date", sort: false },
-    status: { title: "Status", sort: true },
+    statusName: { title: "Status", sort: true },
     location: { title: "Imaging Center", sort: false },
     upload: { title: "Attach Files", sort: false },
     video: { title: "Video", sort: false }

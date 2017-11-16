@@ -13,13 +13,15 @@ const transform = ({
   studyDate = "",
   patientBirthDate = "",
   uploadDateTime,
+  referringPhysicianName = "",
   ...study
 }) => ({
   ...Object.entries(study).reduce(
     (a, [k, v]) => ({ ...a, [k]: v === undefined ? "" : v }),
     {}
   ),
-  patientName: patientName.replace(/\^/g, " "),
+  patientName: patientName.replace(/\^/g, " ").trim(),
+  referringPhysicianName: referringPhysicianName.replace (/\^/g, " ").trim(),
   studyDate: parseDate(studyDate),
   patientBirthDate: parseDate(patientBirthDate),
   uploadDateTime: dateFormat(new Date(uploadDateTime), "isoDate")

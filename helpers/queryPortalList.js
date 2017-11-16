@@ -4,7 +4,7 @@ import queryProjectsList from "./queryProjectsList";
 import getStatusName from "./getStatusName";
 
 import { videoExists } from "../video";
-import { getClientInfo } from "../authUsers";
+import { getUserProps } from "../authUsers";
 import { list as uploadList } from "../upload";
 
 const reducePatients = studies =>

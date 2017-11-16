@@ -1,6 +1,6 @@
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
-import { getClientInfo } from "../authUsers";
+import { getUserProps } from "../authUsers";
 import getStatusName from "../helpers/getStatusName";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
@@ -23,16 +23,20 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             { studyUID, clientID = 0, ...study },
             { status, ...project } = {}
           ]
-        ) => ({
-          ...project,
-          ...study,
-          studyUID,
-          statusName: getStatusName(status || 0),
-          status: status,
-          client: (({ name }) => name)(
-            await getClientInfo({ clientID })
-          )
-        })
+        ) => {
+          const { name: client } = await getUserProps(clientID, [
+            "name"
+          ]);
+
+          return {
+            ...project,
+            ...study,
+            studyUID,
+            client,
+            statusName: getStatusName(status || 0),
+            status: status
+          };
+        }
       )
   );
 };

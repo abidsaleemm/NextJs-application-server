@@ -84,22 +84,6 @@ export const getUser = async ({ username = "", password = "" }) => {
     : undefined;
 };
 
-// TODO Get user props
-export const getClientInfo = async ({ clientID = 0 }) =>
-  (({ name, address, city, state, country, zip }) => ({
-    name,
-    address,
-    city,
-    state,
-    country,
-    zip
-  }))(
-    db
-      .get("users")
-      .find({ id: clientID })
-      .value()
-  );
-
 // TODO should only be for admins
 // Do we need this at all?
 export const getClients = async () => {

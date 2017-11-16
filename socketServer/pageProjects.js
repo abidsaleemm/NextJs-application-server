@@ -6,12 +6,14 @@ import {
   setProjectsSettings
 } from "../actions";
 import { getDefaultList } from "../defaults";
-import { getSettings } from "../authUsers";
+import { getUserProps } from "../authUsers";
 
 export default async ({ socket, user: { admin, id } }) => {
   const projects = await queryProjectsList({ admin });
   const defaults = await getDefaultList();
-  const { projectsSettings } = await getSettings(id);
+  const { projectsSettings } = await getUserProps(id, [
+    "projectsSettings"
+  ]);
 
   await socket.emit("action", payloadProjects({ projects }));
   await socket.emit("action", setDefaultList(defaults));

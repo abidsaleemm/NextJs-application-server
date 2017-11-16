@@ -1,5 +1,5 @@
-import { setSettings } from "../authUsers";
+import { setUserProps } from "../authUsers";
 
 export default async ({ socket, user: { id } = {}, action }) => {
-  setSettings(id, action.action);
+  setUserProps(id, action.action);
 };

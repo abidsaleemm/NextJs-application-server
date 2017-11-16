@@ -1,6 +1,9 @@
 import azure from "azure-storage";
 import bcrypt from "bcryptjs";
 import queryTable from "../helpers/azure/queryTable";
+import mapStringifyJSON from "../helpers/mapStringifyJSON";
+import mapParseJSON from "../helpers/mapParseJSON";
+
 // Using reusable table service
 import { tableService } from "../projects/adapterAzure/";
 
@@ -45,19 +48,11 @@ export const getClientInfo = async ({ clientID = 0 }) => {
   return { name, address, city, state, country, zip };
 };
 
-// TODO should only be for admins?
-export const getClients = async () =>
-  await queryTable({
-    tableService,
-    query: new azure.TableQuery().where("client eq ?", true),
-    tableName
-  });
-
-export const setSettings = async (id = 0, settings = {}) => {
+export const setUserProps = async (id = 0, props = {}) => {
   const updatedTask = {
     PartitionKey: id,
     RowKey: id,
-    settings: JSON.stringify(settings)
+    ...mapStringifyJSON(props)
   };
 
   // TODO Reusable should move to helper area?
@@ -75,17 +70,24 @@ export const setSettings = async (id = 0, settings = {}) => {
   });
 };
 
-export const getSettings = async (id = 0) => {
-  const query = new azure.TableQuery().where("id eq ?", parseInt(id));
-  const [{ settings = "{}" } = {}] = await queryTable({
+export const getUserProps = async (id = 0, props = []) => {
+  const query = new azure.TableQuery()
+    .select(props)
+    .where("id eq ?", parseInt(id));
+  const [user] = await queryTable({
     tableService,
     query,
     tableName
   });
 
-  try {
-    return JSON.parse(settings);
-  } catch (e) {
-    return {};
-  }
+  return mapParseJSON(user);
 };
+
+// TODO should only be for admins?
+// Maybe create a more reusable function such as getUserList
+export const getClients = async () =>
+  await queryTable({
+    tableService,
+    query: new azure.TableQuery().where("client eq ?", true),
+    tableName
+  });

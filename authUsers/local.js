@@ -1,6 +1,7 @@
 import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
+import filterProps from "../helpers/filterProps";
 
 export const defaultUsers = [
   {
@@ -52,21 +53,22 @@ checkExists();
 const db = low(new FileSync(pathUsers));
 db.defaults({ users: defaultUsers }).write();
 
-export const setSettings = async (id = 0, settings = {}) => {
+export const setUserProps = async (id = 0, props = {}) => {
   db
     .get("users")
     .find({ id: id })
-    .assign({ settings: settings })
+    .assign(props)
     .write();
 };
 
-export const getSettings = async (id = 0) => {
-  const { settings = {} } = db
+// props - array of keys
+export const getUserProps = async (id = 0, props = []) => {
+  const user = db
     .get("users")
     .find({ id: id })
     .value();
 
-  return settings;
+  return filterProps(props)(user);
 };
 
 export const getUser = async ({ username = "", password = "" }) => {
@@ -82,6 +84,7 @@ export const getUser = async ({ username = "", password = "" }) => {
     : undefined;
 };
 
+// TODO Get user props
 export const getClientInfo = async ({ clientID = 0 }) =>
   (({ name, address, city, state, country, zip }) => ({
     name,

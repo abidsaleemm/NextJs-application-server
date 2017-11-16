@@ -44,17 +44,14 @@ const Portal = class extends Component {
     store,
     isServer,
     // userId: clientID,
-    query: { portalList = {} } = {}
+    query: { portalList = {}, portalSettings = {} } = {}
   }) {
-    const { payloadPortal, fetchAction } = actions;
+    const { payloadPortal, setPortalSettings, fetchAction } = actions;
 
     if (isServer) {
-      store.dispatch(
-        payloadPortal({
-          portalList
-        })
-      );
-
+      // TODO Should we wrap these in single action?
+      store.dispatch(payloadPortal({ portalList }));
+      store.dispatch(setPortalSettings(portalSettings));
       return;
     }
 

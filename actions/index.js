@@ -3,13 +3,20 @@ export {
   default as payloadProjectDetail
 } from "./payloadProjectDetail";
 export { default as payloadPortal } from "./payloadPortal";
+
 export { default as setProjectProps } from "./setProjectProps";
 export { default as fetchAction } from "./fetchAction";
 export { default as setVideo } from "./setVideo";
+
+// Settings
 export { default as setPortalSettings } from "./setPortalSettings";
 export {
   default as setProjectsSettings
 } from "./setProjectsSettings";
+export {
+  default as setProjectDetailSettings
+} from "./setProjectDetailSettings";
+
 export { default as toggleSidebar } from "./toggleSidebar";
 export { default as videoRender } from "./videoRender";
 export { default as uploadDel } from "./uploadDel";

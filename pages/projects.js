@@ -19,13 +19,24 @@ class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projects = [], defaultList = [] } = {}
+    query: {
+      projects = [],
+      defaultList = [],
+      projectsSettings = {}
+    } = {}
   }) {
-    const { payloadProjects, fetchAction, setDefaultList } = actions;
+    const {
+      payloadProjects,
+      fetchAction,
+      setDefaultList,
+      setProjectsSettings
+    } = actions;
 
     if (isServer) {
+      // TODO Should we wrap these in single action?
       store.dispatch(payloadProjects({ projects }));
       store.dispatch(setDefaultList(defaultList));
+      store.dispatch(setProjectsSettings(projectsSettings));
       return;
     }
 

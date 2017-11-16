@@ -1,23 +1,27 @@
-const users = [
+import fs from "fs";
+import low from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
+
+export const defaultUsers = [
   {
+    id: 1,
     name: "Warren Goble",
     username: "warren@hack.expert",
     password: "test91a",
-    id: 1, // TODO update to
     admin: true
   },
   {
+    id: 2,
     name: "Sandeep Shah",
     username: "hisandeepshah@gmail.com",
     password: "test91a",
-    id: 2,
     admin: true
   },
   {
+    id: 4,
     name: "NHF",
     username: "user@nhf.com",
     password: "test91a",
-    id: 4,
     client: true,
     address: "6781 Hollywood Blvd",
     city: "Los Angeles",
@@ -26,18 +30,57 @@ const users = [
     phone: "+1 234-789-4555"
   },
   {
+    id: 6,
     name: "Tharon",
     username: "tharonica@gmail.com",
     password: "test91a",
-    id: 6,
     admin: true
   }
 ];
 
-export const getUser = async ({ username, password }) =>
-  users.find(
-    user => user.username === username && user.password === password
-  );
+export const path = "./projectsLocal";
+export const pathUsers = `${path}/users.json`;
+
+// TODO this should be some sort of reusable function under helpers
+export const checkExists = () => {
+  if (fs.existsSync(path) === false) {
+    fs.mkdirSync(path);
+  }
+};
+
+checkExists();
+const db = low(new FileSync(pathUsers));
+db.defaults({ users: defaultUsers }).write();
+
+export const setSettings = async (id = 0, settings = {}) => {
+  db
+    .get("users")
+    .find({ id: id })
+    .assign({ settings: settings })
+    .write();
+};
+
+export const getSettings = async (id = 0) => {
+  const { settings = {} } = db
+    .get("users")
+    .find({ id: id })
+    .value();
+
+  return settings;
+};
+
+export const getUser = async ({ username = "", password = "" }) => {
+  const user = db
+    .get("users")
+    .find({ username: username })
+    .value();
+
+  const { password: passwordTest = "" } = user;
+  return password.toLocaleLowerCase() ===
+    passwordTest.toLocaleLowerCase()
+    ? user
+    : undefined;
+};
 
 export const getClientInfo = async ({ clientID = 0 }) =>
   (({ name, address, city, state, country, zip }) => ({
@@ -47,11 +90,41 @@ export const getClientInfo = async ({ clientID = 0 }) =>
     state,
     country,
     zip
-  }))(users.find(user => user.id == clientID && user.client));
+  }))(
+    db
+      .get("users")
+      .find({ id: clientID })
+      .value()
+    // users.find(user => user.id == clientID && user.client)
+  );
 
 // TODO should only be for admins
+// Do we need this at all?
 export const getClients = async () => {
   return users
     .filter(({ client }) => client !== undefined)
     .map(({ id, name }) => ({ id, name }));
 };
+
+// import low from "lowdb";
+// import FileSync from "lowdb/adapters/FileSync";
+// import settingsStore from "settingsStore";
+// import { users } from "../../authUsers/local";
+// const adapter = new FileSync("./settings/adapterJSON/db.json");
+// const db = low(adapter);
+// const store = settingsStore();
+// const init = store.getState();
+// const getUsers = users.map(user => user.id);
+
+// // Set default state
+// db
+//   .defaults(
+//     getUsers.reduce((acc, user) => ({ ...acc, [user]: init }), {})
+//   )
+//   .write();
+
+// export const setSettings = (userId, settings) => {
+//   db.set(userId, settings).write();
+// };
+
+// export const getSettings = userId => db.get(userId).value();

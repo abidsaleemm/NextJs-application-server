@@ -3,7 +3,6 @@ import {
   Container,
   Row,
   Col,
-  Card,
   CardBlock,
   CardTitle,
   CardSubtitle,
@@ -113,7 +112,7 @@ const ProjectDetails = class extends Component {
 
             .projectDetailLeft {
               width: 100%;
-              height: 100%;
+              margin-bottom: 50px;
             }
 
             .projectDetailRight {
@@ -122,9 +121,25 @@ const ProjectDetails = class extends Component {
               background: lightGray;
             }
 
-            .dataFunctions {
+            .Sidebar-header {
+              margin-bottom: 30px;
+            }
+
+            .RenderVideo {
+              margin-bottom: 10px;
+            }
+
+            .dataFunctionGroup {
               display: flex;
               justify-content: space-around;
+            }
+
+            .dataFunction {
+              margin-right: 10px;
+            }
+
+            .dataFunction:last-child {
+              margin-right: 0;
             }
 
             .dataDefaults {
@@ -145,23 +160,23 @@ const ProjectDetails = class extends Component {
           width={400}
         >
           <div className="projectDetailLeft">
-            <Card>
-              <CardBlock>
+            <div>
+              <div className="Sidebar-header">
                 <CardTitle>Project Details</CardTitle>
                 <CardSubtitle>{patientName}</CardSubtitle>
-              </CardBlock>
-              <br />
-              <Button
-                onClick={() =>
-                  window.open(
-                    `/static/render/?p=${studyUID}`,
-                    windowName,
-                    windowSettings
-                  )}
-              >
-                Render Video
-              </Button>
-              <br />
+              </div>
+              <div className="RenderVideo">
+                <Button
+                  onClick={() =>
+                    window.open(
+                      `/static/render/?p=${studyUID}`,
+                      windowName,
+                      windowSettings
+                    )}
+                >
+                  Render Video
+                </Button>
+              </div>
               <Table>
                 <tbody>
                   <tr>
@@ -243,7 +258,7 @@ const ProjectDetails = class extends Component {
                   </tr>
                 </tbody>
               </Table>
-            </Card>
+            </div>
             <div>
               <Table hover>
                 <thead>
@@ -270,37 +285,41 @@ const ProjectDetails = class extends Component {
             <hr />
             <div>
               <div>Data functions</div>
-              <div className="dataFunctions">
-                <UploadButton
-                  style={{ width: "100%" }}
-                  studyUID={studyUID}
-                  handleUpload={handleProjectImport}
-                  label="Import"
-                />
-                <a
-                  style={{ width: "100%" }}
-                  className="btn btn-secondary"
-                  target="_projectExport"
-                  href={`/export/?studyUID=${studyUID}`}
-                >
-                  Export
-                </a>
-                <ButtonConfirm
-                  style={{ width: "100%" }}
-                  color="warning"
-                  message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
-                  onConfirm={() => resetProject({ studyUID })}
-                >
-                  Reset
-                </ButtonConfirm>
-                <ButtonConfirm
-                  style={{ width: "100%" }}
-                  color="warning"
-                  message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
-                  onConfirm={() => destroyProject({ studyUID })}
-                >
-                  Destroy
-                </ButtonConfirm>
+              <div className="dataFunctionGroup">
+                <div className="dataFunction">
+                  <UploadButton
+                    studyUID={studyUID}
+                    handleUpload={handleProjectImport}
+                    label="Import"
+                  />
+                </div>
+                <div className="dataFunction">
+                  <a
+                    className="btn btn-secondary"
+                    target="_projectExport"
+                    href={`/export/?studyUID=${studyUID}`}
+                  >
+                    Export
+                  </a>
+                </div>
+                <div className="dataFunction">
+                  <ButtonConfirm
+                    color="warning"
+                    message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
+                    onConfirm={() => resetProject({ studyUID })}
+                  >
+                    Reset
+                  </ButtonConfirm>
+                </div>
+                <div className="dataFunction">
+                  <ButtonConfirm
+                    color="warning"
+                    message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
+                    onConfirm={() => destroyProject({ studyUID })}
+                  >
+                    Destroy
+                  </ButtonConfirm>
+                </div>
               </div>
             </div>
             <hr />
@@ -356,14 +375,3 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));
-
-/*
-     <Button
-                  style={{ width: "100%" }}
-                  color="danger"
-                  onClick={() => resetProject({ studyUID })}
-                >
-                  Reset
-                </Button>
-
-                */

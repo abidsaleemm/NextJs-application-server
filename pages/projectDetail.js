@@ -34,7 +34,12 @@ const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { projectDetail = {}, defaultList = [], studyUID = "" }
+    query: {
+      projectDetail = {},
+      projectDetailSettings = {},
+      defaultList = [],
+      studyUID = ""
+    }
   }) {
     const {
       payloadProjectDetail,
@@ -44,6 +49,7 @@ const ProjectDetails = class extends Component {
     } = actions;
 
     if (isServer) {
+      // TODO Should we wrap these in single action?
       store.dispatch(payloadProjectDetail(projectDetail));
       store.dispatch(setDefaultList(defaultList));
       store.dispatch(setProjectSettings(projectDetailSettings));

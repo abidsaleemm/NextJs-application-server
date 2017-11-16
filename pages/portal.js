@@ -49,6 +49,7 @@ const Portal = class extends Component {
     const { payloadPortal, setPortalSettings, fetchAction } = actions;
 
     if (isServer) {
+      // TODO Should we wrap these in single action?
       store.dispatch(payloadPortal({ portalList }));
       store.dispatch(setPortalSettings(portalSettings));
       return;

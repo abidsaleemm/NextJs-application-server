@@ -1,7 +1,7 @@
 import authMiddleware from "../auth/middleware";
 import queryProjectsList from "../helpers/queryProjectsList";
 import { getDefaultList } from "../defaults";
-import { getSettings } from "../settings/adapterJSON/setSettings";
+import { getSettings } from "../authUsers";
 
 export default ({ server, app }) =>
   server.get("/projects", authMiddleware(), async (req, res) => {
@@ -10,7 +10,9 @@ export default ({ server, app }) =>
     app.render(req, res, "/projects", {
       ...req.query,
       projects: await queryProjectsList({ admin }),
-      projectsSettings: getSettings(id).projectsSettings,
+      projectsSettings: (({ projectsSettings }) => projectsSettings)(
+        await getSettings(id)
+      ),
       defaultList: await getDefaultList()
     });
   });

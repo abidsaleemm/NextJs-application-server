@@ -1,5 +1,5 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
-import { getSettings } from '../settings/adapterJSON/setSettings';
+import { getSettings } from '../authUsers';
 import authMiddleware from "../auth/middleware";
 import { getDefaultList } from '../defaults';
 
@@ -11,7 +11,7 @@ export default ({ server, app }) =>
       return app.render(req, res, "/projectDetail", {
         ...query,
         projectDetail: await queryProjectDetail({ studyUID }),
-        projectSettings: getSettings(clientID).projectDetailSettings,
+        projectDetailSettings: (({ projectDetailSettings }) => projectDetailSettings)(await getSettings(clientID)),
         defaultList: await getDefaultList(),
       })
     }

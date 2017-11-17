@@ -1,16 +1,18 @@
-import * as R from "ramda";
+import shallowDiff from "shallow-diff";
+import filterProps from "../helpers/filterProps";
 
 export default store => next => action => {
-  const filterWithKeys = pred =>
-    R.pipe(R.toPairs, R.filter(R.apply(pred)), R.fromPairs);
+  const { type } = action;
+  const prevState = store.getState();
+  const result = next(action);
+  const currentState = store.getState();
 
-  const matchSettings = (key, val) => /Settings$/.test(key);
-
-  let result = next(action);
   if (/SETTINGS$/.test(action.type)) {
+    const { updated } = shallowDiff(prevState, currentState);
+    const action = filterProps(updated)(currentState);
     store.dispatch({
       type: "server/setSettings",
-      action: filterWithKeys(matchSettings)(store.getState())
+      action
     });
   }
 

@@ -42,6 +42,10 @@ export default ({ error = "", staging = false }) => (
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
           -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
           padding: 30px 15px;
+          border-radius: 10px;
+          -webkit-border-radius: 10px;
+          -moz-border-radius: 10px;
+          margin-top: 25vmin;
         }
 
         .login_form h1 {
@@ -49,6 +53,7 @@ export default ({ error = "", staging = false }) => (
           font-size: 25px;
           font-weight: 700;
           margin: 0px 0px 30px 0px;
+          text-align: center;
         }
         .login_form input {
           background: transparent none repeat scroll 0 0;
@@ -137,7 +142,7 @@ export default ({ error = "", staging = false }) => (
       <Row>
         <div className="login_box">
           <div className="login_form">
-            <h1 className="text-center">Multus</h1>
+            <h1 className="text-center">MULTUS</h1>
             <Alert color="danger" hidden={!error}>
               <strong>{error}</strong>
             </Alert>
@@ -163,7 +168,7 @@ export default ({ error = "", staging = false }) => (
                     placeholder="Password"
                   />
                 </FormGroup>
-                <Button className="login_btn" type="submit">
+                <Button color="primary" className="login_btn" type="submit">
                   Sign In
                 </Button>
               </Form>

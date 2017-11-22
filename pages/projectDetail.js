@@ -92,7 +92,9 @@ const ProjectDetails = class extends Component {
     const windowName = "renderWindow";
     const width = 1920 / 2; // TODO Add a few different presets
     const height = 1080 / 2;
-    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
+    const windowSettings = `width=${width},height=${
+      height
+    },resizable=false,toolbar=false,status=false`;
 
     return (
       <div
@@ -172,7 +174,8 @@ const ProjectDetails = class extends Component {
                       `/static/render/?p=${studyUID}`,
                       windowName,
                       windowSettings
-                    )}
+                    )
+                  }
                 >
                   Render Video
                 </Button>
@@ -192,7 +195,8 @@ const ProjectDetails = class extends Component {
                               setProjectProps({
                                 studyUID,
                                 status: 1
-                              })}
+                              })
+                            }
                           >
                             {getStatusName(1)}
                           </DropdownItem>
@@ -201,7 +205,8 @@ const ProjectDetails = class extends Component {
                               setProjectProps({
                                 studyUID,
                                 status: 2
-                              })}
+                              })
+                            }
                           >
                             {getStatusName(2)}
                           </DropdownItem>
@@ -210,7 +215,8 @@ const ProjectDetails = class extends Component {
                               setProjectProps({
                                 studyUID,
                                 status: 3
-                              })}
+                              })
+                            }
                           >
                             {getStatusName(3)}
                           </DropdownItem>
@@ -219,7 +225,8 @@ const ProjectDetails = class extends Component {
                               setProjectProps({
                                 studyUID,
                                 status: 4
-                              })}
+                              })
+                            }
                           >
                             {getStatusName(4)}
                           </DropdownItem>
@@ -228,7 +235,8 @@ const ProjectDetails = class extends Component {
                               setProjectProps({
                                 studyUID,
                                 status: 5
-                              })}
+                              })
+                            }
                           >
                             {getStatusName(5)}
                           </DropdownItem>
@@ -271,7 +279,9 @@ const ProjectDetails = class extends Component {
                     <tr key={`attached-files-${i}`}>
                       <td>
                         <a
-                          href={`/uploadGet/?id=${studyUID}&name=${name}`}
+                          href={`/uploadGet/?id=${studyUID}&name=${
+                            name
+                          }`}
                           target="_UploadPreview"
                         >
                           {name}
@@ -304,6 +314,7 @@ const ProjectDetails = class extends Component {
                 </div>
                 <div className="dataFunction">
                   <ButtonConfirm
+                    tipID="resetButton"
                     color="warning"
                     message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
                     onConfirm={() => resetProject({ studyUID })}
@@ -313,6 +324,7 @@ const ProjectDetails = class extends Component {
                 </div>
                 <div className="dataFunction">
                   <ButtonConfirm
+                    tipID="destroyButton"
                     color="warning"
                     message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
                     onConfirm={() => destroyProject({ studyUID })}
@@ -337,7 +349,8 @@ const ProjectDetails = class extends Component {
                     <DropdownItem
                       key={`default-${defaultName}`}
                       onClick={() =>
-                        setProjectProps({ studyUID, defaultName })}
+                        setProjectProps({ studyUID, defaultName })
+                      }
                     >
                       {defaultName}
                     </DropdownItem>

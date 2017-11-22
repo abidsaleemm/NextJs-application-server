@@ -33,11 +33,15 @@ export default class extends Component {
         children,
         message,
         onConfirm = () => {},
+        tipID,
         ...props
       } = {}
     } = this;
 
-    const toolTipID = uuid();
+    const toolTipID = tipID
+      ? `toolTipID-${tipID}`
+      : `toolTipID-${uuid()}`;
+
     const toolTipMessage = message
       ? message
       : "Click Again to Confirm";
@@ -58,7 +62,8 @@ export default class extends Component {
             this.setState({
               mouseOver: false,
               confirmed: false
-            })}
+            })
+          }
           onClick={() => this.handleClick()}
         >
           {confirmed ? "Confirm" : children}

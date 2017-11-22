@@ -18,6 +18,10 @@ const Wrapper = (
   <div className="root">
     <style jsx global>
       {`
+        @import url('https://fonts.googleapis.com/css?family=Muli');
+        *{
+          font-family: Muli;
+        }
         .root {
           display: flex;
           flex-direction: column;

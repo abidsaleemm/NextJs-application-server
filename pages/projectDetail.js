@@ -90,11 +90,9 @@ const ProjectDetails = class extends Component {
 
     // TODO Used for render video will be removed in the future
     const windowName = "renderWindow";
-    const width = 1920; // TODO Add a few different presets
-    const height = 1080;
-    const windowSettings = `width=${width},height=${
-      height
-    },resizable=false,toolbar=false,status=false`;
+    const width = 1920 / 2; // TODO Add a few different presets
+    const height = 1080 / 2;
+    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
 
     return (
       <div
@@ -279,9 +277,7 @@ const ProjectDetails = class extends Component {
                     <tr key={`attached-files-${i}`}>
                       <td>
                         <a
-                          href={`/uploadGet/?id=${studyUID}&name=${
-                            name
-                          }`}
+                          href={`/uploadGet/?id=${studyUID}&name=${name}`}
                           target="_UploadPreview"
                         >
                           {name}

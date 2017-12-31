@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
-import { Button, ButtonGroup, Table } from "reactstrap";
+import { Button, ButtonGroup, Table, Input } from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import selectProjectList from "../selectors/selectProjectList";
@@ -95,6 +95,7 @@ const Portal = class extends Component {
         admin = false,
         setPortalSettings = () => {},
         setVideo = () => {},
+        setMetaData = () => {},
         uploadDel = () => {},
         handleUpload = () => {}
       },
@@ -132,6 +133,17 @@ const Portal = class extends Component {
 
             return {
               ...study,
+              multusID: (
+                <Input
+                  placeholder=""
+                  onChange={({ target: { value = "" } }) => {
+                    setMetaData({
+                      studyUID,
+                      props: { multusID: value }
+                    });
+                  }}
+                />
+              ),
               upload: (
                 <ButtonGroup>
                   {uploadedFiles.length > 0 ? (
@@ -142,7 +154,8 @@ const Portal = class extends Component {
                         this.popupOpen({
                           studyUID,
                           target: popoverID
-                        })}
+                        })
+                      }
                     >
                       {uploadedFiles.length}
                     </Button>
@@ -179,6 +192,7 @@ const Portal = class extends Component {
             </a>
           ),
           studies: CellTableWrapper(studiesEnhanced, "studyName"),
+          multusID: CellTableWrapper(studiesEnhanced, "multusID"),
           studyDate: CellTableWrapper(studiesEnhanced, "studyDate"),
           statusName: CellTableWrapper(studiesEnhanced, "statusName"),
           location: CellTableWrapper(studiesEnhanced, "location"),
@@ -234,7 +248,8 @@ const Portal = class extends Component {
           onFilter={([k, v]) =>
             setPortalSettings({
               filter: { [k]: v }
-            })}
+            })
+          }
           {...tableSettings}
         />
         <VideoModal />
@@ -262,13 +277,16 @@ const mapStateToProps = ({
   tableHeader: {
     patientName: { title: "Patient Name", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
-    invoice: { title: "Invoice", sort: false },
+    // invoice: { title: "Invoice", sort: false },
     studies: { title: "Studies", sort: false },
-    studyDate: { title: "Study Date", sort: false },
+    multusID: { title: "Multus ID", sort: true },
+    studyDate: { title: "Study Date", sort: true },
     statusName: { title: "Status", sort: true },
     location: { title: "Imaging Center", sort: false },
-    upload: { title: "Attach Files", sort: false },
-    video: { title: "Video", sort: false }
+    upload: { title: "Attach Records", sort: false },
+    // TODO Create Download button for all files
+    video: { title: "Video", sort: false },
+    download: { title: "Download", sort: false }
   },
   tableSettings: portalSettings,
   tableData: selectProjectList({

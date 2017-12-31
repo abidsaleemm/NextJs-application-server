@@ -78,10 +78,7 @@ const ProjectDetails = class extends Component {
         studyName,
         patientName,
         studyDate,
-        modality,
-        location,
         status = 0,
-        client = "",
         uploadedFiles = [],
         defaultList = [],
         defaultName = ""
@@ -249,18 +246,6 @@ const ProjectDetails = class extends Component {
                   <tr>
                     <th scope="row">Study Date</th>
                     <td>{studyDate}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Modality</th>
-                    <td>{modality}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Location</th>
-                    <td>{location}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Client</th>
-                    <td>{client}</td>
                   </tr>
                 </tbody>
               </Table>

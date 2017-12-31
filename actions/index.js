@@ -30,3 +30,4 @@ export {
 } from "./handleProjectImport";
 export { default as setDefaultList } from "./setDefaultList";
 export { default as destroyProject } from "./destroyProject";
+export { default as setMetaData } from "./setMetaData";

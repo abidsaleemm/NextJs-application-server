@@ -81,7 +81,8 @@ const ProjectDetails = class extends Component {
         status = 0,
         uploadedFiles = [],
         defaultList = [],
-        defaultName = ""
+        defaultName = "",
+        user: { admin = false }
       }
     } = this;
 
@@ -274,47 +275,49 @@ const ProjectDetails = class extends Component {
               </Table>
             </div>
             <hr />
-            <div>
-              <div>Data functions</div>
-              <div className="dataFunctionGroup">
-                <div className="dataFunction">
-                  <UploadButton
-                    studyUID={studyUID}
-                    handleUpload={handleProjectImport}
-                    label="Import"
-                  />
-                </div>
-                <div className="dataFunction">
-                  <a
-                    className="btn btn-secondary"
-                    target="_projectExport"
-                    href={`/export/?studyUID=${studyUID}`}
-                  >
-                    Export
-                  </a>
-                </div>
-                <div className="dataFunction">
-                  <ButtonConfirm
-                    tipID="resetButton"
-                    color="warning"
-                    message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
-                    onConfirm={() => resetProject({ studyUID })}
-                  >
-                    Reset
-                  </ButtonConfirm>
-                </div>
-                <div className="dataFunction">
-                  <ButtonConfirm
-                    tipID="destroyButton"
-                    color="warning"
-                    message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
-                    onConfirm={() => destroyProject({ studyUID })}
-                  >
-                    Destroy
-                  </ButtonConfirm>
+            {admin ? (
+              <div>
+                <div>Data functions</div>
+                <div className="dataFunctionGroup">
+                  <div className="dataFunction">
+                    <UploadButton
+                      studyUID={studyUID}
+                      handleUpload={handleProjectImport}
+                      label="Import"
+                    />
+                  </div>
+                  <div className="dataFunction">
+                    <a
+                      className="btn btn-secondary"
+                      target="_projectExport"
+                      href={`/export/?studyUID=${studyUID}`}
+                    >
+                      Export
+                    </a>
+                  </div>
+                  <div className="dataFunction">
+                    <ButtonConfirm
+                      tipID="resetButton"
+                      color="warning"
+                      message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
+                      onConfirm={() => resetProject({ studyUID })}
+                    >
+                      Reset
+                    </ButtonConfirm>
+                  </div>
+                  <div className="dataFunction">
+                    <ButtonConfirm
+                      tipID="destroyButton"
+                      color="warning"
+                      message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
+                      onConfirm={() => destroyProject({ studyUID })}
+                    >
+                      Destroy
+                    </ButtonConfirm>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : null}
             <hr />
             <div className="dataDefaults">
               <div className="dataDefaultsLabel">Set Default</div>

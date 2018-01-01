@@ -6,9 +6,10 @@ export const initialState = {
     client: "",
     patientBirthDate: "",
     patientAddress: "",
+    multusID: ""
   },
-  sortKey: "patientName",
-  sortDesc: false,
+  sortKey: "multusID",
+  sortDesc: false
 };
 
 export default (
@@ -23,7 +24,9 @@ export default (
         sortKey: sortKey !== undefined ? sortKey : state.sortKey,
         sortDesc:
           sortKey !== undefined
-            ? state.sortKey === sortKey ? !state.sortDesc : state.sortDesc
+            ? state.sortKey === sortKey
+              ? !state.sortDesc
+              : state.sortDesc
             : state.sortDesc,
         ...settings,
         // Merge filters if any

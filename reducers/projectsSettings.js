@@ -9,7 +9,8 @@ const initialState = {
     modality: "",
     location: "",
     client: "",
-    uploadDateTime: ""
+    uploadDateTime: "",
+    multusID: ""
   },
   sortKey: "status",
   sortDesc: false

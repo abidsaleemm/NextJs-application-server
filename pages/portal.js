@@ -126,6 +126,7 @@ const Portal = class extends Component {
             studyUID,
             videoExists,
             uploadedFiles = [],
+            multusID = '',
             ...study
           }) => {
             const id = `file-upload-${studyUID}`;
@@ -136,6 +137,7 @@ const Portal = class extends Component {
               multusID: (
                 <Input
                   placeholder=""
+                  defaultValue={multusID}
                   onChange={({ target: { value = "" } }) => {
                     setMetaData({
                       studyUID,

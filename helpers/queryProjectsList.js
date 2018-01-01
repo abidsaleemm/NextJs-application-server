@@ -1,6 +1,7 @@
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
 import { getUserProps } from "../authUsers";
+import { getMetaData } from "../metaData";
 import getStatusName from "../helpers/getStatusName";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
@@ -18,21 +19,22 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         )
       ])
       .map(
-        async (
-          [
-            { studyUID, clientID = 0, ...study },
-            { status, ...project } = {}
-          ]
-        ) => {
+        async ([
+          { studyUID, clientID = 0, ...study },
+          { status, ...project } = {}
+        ]) => {
           const { name: client } = await getUserProps(clientID, [
             "name"
           ]);
+
+          const { multusID } = await getMetaData({ studyUID });
 
           return {
             ...project,
             ...study,
             studyUID,
             client,
+            multusID,
             statusName: getStatusName(status || 0),
             status: status
           };

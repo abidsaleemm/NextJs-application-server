@@ -126,7 +126,7 @@ const Portal = class extends Component {
             studyUID,
             videoExists,
             uploadedFiles = [],
-            multusID = '',
+            multusID = "",
             ...study
           }) => {
             const id = `file-upload-${studyUID}`;
@@ -138,6 +138,9 @@ const Portal = class extends Component {
                 <Input
                   placeholder=""
                   defaultValue={multusID}
+                  style={
+                    multusID === "" ? { background: "#ff8989" } : {}
+                  }
                   onChange={({ target: { value = "" } }) => {
                     setMetaData({
                       studyUID,
@@ -279,7 +282,6 @@ const mapStateToProps = ({
   tableHeader: {
     patientName: { title: "Patient Name", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
-    // invoice: { title: "Invoice", sort: false },
     studies: { title: "Studies", sort: false },
     multusID: { title: "Multus ID", sort: true },
     studyDate: { title: "Study Date", sort: true },

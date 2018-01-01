@@ -76,7 +76,8 @@ const ProjectDetails = class extends Component {
         sidebarIsOpen,
         studyUID,
         studyName,
-        patientName,
+        multusID,
+        // patientName,
         studyDate,
         status = 0,
         uploadedFiles = [],
@@ -161,7 +162,7 @@ const ProjectDetails = class extends Component {
             <div>
               <div className="Sidebar-header">
                 <CardTitle>Project Details</CardTitle>
-                <CardSubtitle>{patientName}</CardSubtitle>
+                <CardSubtitle>{multusID}</CardSubtitle>
               </div>
               <div className="RenderVideo">
                 <Button

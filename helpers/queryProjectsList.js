@@ -27,7 +27,7 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             "name"
           ]);
 
-          const { multusID } = await getMetaData({ studyUID });
+          const { multusID = "" } = await getMetaData({ studyUID });
 
           return {
             ...project,
@@ -36,7 +36,7 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             client,
             multusID,
             statusName: getStatusName(status || 0),
-            status: status
+            status: status || ''
           };
         }
       )

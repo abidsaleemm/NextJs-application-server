@@ -1,39 +1,48 @@
 import fs from "fs";
+import low from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
 
 // TODO Should be some sort of global import
 const rootPath = "projectsLocal";
-const savePath = "projectsLocal/metaData";
+
+const dbPath = `${rootPath}/metaData.json`;
 
 // TODO this should be some sort of reusable function under helpers
-// Add path if doesn't exist
+// Add path if doesn't exist.  Make this more upper scope
 const checkExists = () => {
   if (fs.existsSync(rootPath) === false) {
     fs.mkdirSync(rootPath);
   }
-
-  if (fs.existsSync(savePath) === false) {
-    fs.mkdirSync(savePath);
-  }
 };
 
+checkExists();
+const db = low(new FileSync(dbPath));
+db.defaults({ data: [] }).write();
+
 export const setMetaData = async ({ studyUID, props = {} }) => {
-  checkExists();
-
   if (studyUID) {
-    console.log("props", props);
+    const find = db.get("data").find({ studyUID }).value();
+    if (find) {
+      db
+        .get("data")
+        .find({ studyUID })
+        .assign(props)
+        .write();
+    } else {
+      db
+        .get("data")
+        .push({ studyUID, ...props })
+        .write();
+    }
   }
-
-  // try {
-  // const data = fs.readFileSync(`${savePath}/${name}.json`);
-  // return JSON.parse(data);
-  // } catch (e) {
-  //   console.log("error", e);
-  // }
 };
 
 export const getMetaData = async ({ studyUID }) => {
-  checkExists();
+  // Add a post
+  const value = db
+    .get("data")
+    .find({ studyUID })
+    .value();
 
-  // const list = fs.readdirSync(savePath);
-  // return list.map((v = "") => v.substring(0, v.lastIndexOf(".")));
+  return value || {};
 };

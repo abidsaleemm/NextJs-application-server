@@ -79,7 +79,8 @@ class ProjectsListing extends Component {
                     <DropdownItem
                       key={`dropdown-default-${defaultName}`}
                       onClick={() =>
-                        createProject({ studyUID, defaultName })}
+                        createProject({ studyUID, defaultName })
+                      }
                     >
                       {defaultName}
                     </DropdownItem>
@@ -92,7 +93,8 @@ class ProjectsListing extends Component {
                   Router.push({
                     pathname: "/projectDetail",
                     query: { studyUID }
-                  })}
+                  })
+                }
                 color="success"
               >
                 Edit
@@ -121,13 +123,21 @@ class ProjectsListing extends Component {
           header={tableHeader}
           onSort={k => setProjectsSettings({ sortKey: k })}
           onFilter={([k, v]) =>
-            setProjectsSettings({ filter: { [k]: v } })}
+            setProjectsSettings({ filter: { [k]: v } })
+          }
           {...tableSettings}
         />
       </div>
     );
   }
 }
+
+// TODO Possibly use other header values for admin users.  Might not be needed.
+// defaultName: { title: "Default", sort: true },
+// patientName: { title: "Patient Name", sort: true },
+// modality: { title: "Modality", sort: true },
+// location: { title: "Location", sort: true },
+// client: { title: "Client", sort: true },
 
 const mapStateToProps = ({
   projectsSettings,
@@ -136,14 +146,10 @@ const mapStateToProps = ({
 }) => ({
   tableHeader: {
     action: { title: "", sort: false },
+    multusID: { title: "Multus ID", sort: true },
     status: { title: "Status", sort: true },
-    defaultName: { title: "Default", sort: true },
-    patientName: { title: "Patient Name", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },
-    modality: { title: "Modality", sort: true },
-    location: { title: "Location", sort: true },
-    client: { title: "Client", sort: true },
     uploadDateTime: { title: "Date Uploaded", sort: true }
   },
   tableSettings: projectsSettings,

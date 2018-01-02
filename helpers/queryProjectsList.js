@@ -1,7 +1,7 @@
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
 import { getUserProps } from "../authUsers";
-import { getProject } from '../projects';
+import { getProject } from "../projects";
 import getStatusName from "../helpers/getStatusName";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
@@ -9,14 +9,20 @@ export default async ({ clientID = 0, admin = false } = {}) => {
   const projects = await getProjectList();
   const studies = await getStudies();
 
+  console.log("projects", projects);
+
   return await Promise.all(
-    studies
-      .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
-      .map(study => [
-        study,
-        projects.find(
-          ({ studyUID = "" }) => study.studyUID === studyUID
-        )
+    projects
+      .filter(
+        ({ multusID }) => multusID !== undefined && multusID !== ""
+      )
+      // TODO Add better permissions for this
+      // .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
+      .map(project => [
+        studies.find(
+          ({ studyUID = "" }) => project.studyUID === studyUID
+        ),
+        project
       ])
       .map(
         async ([
@@ -27,7 +33,8 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             "name"
           ]);
 
-          const { multusID = "" } = await getProject({ studyUID }) || {};
+          const { multusID = "" } =
+            (await getProject({ studyUID })) || {};
 
           return {
             ...project,
@@ -36,7 +43,7 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             client,
             multusID,
             statusName: getStatusName(status || 0),
-            status: status || ''
+            status: status || ""
           };
         }
       )

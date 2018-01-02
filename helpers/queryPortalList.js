@@ -4,6 +4,11 @@ import getStatusName from "./getStatusName";
 import { videoExists } from "../video";
 import { getUserProps } from "../authUsers";
 import { list as uploadList } from "../upload";
+import { getStudies } from "../dicom";
+import { getProject, getProjectList } from "../projects";
+// import { getUserProps } from "../authUsers";
+// import { getProject } from '../projects';
+// import getStatusName from "../helpers/getStatusName";
 
 const reducePatients = studies =>
   R.uniqWith((a, b) => a.patientName === b.patientName)(studies).map(
@@ -32,8 +37,52 @@ const reducePatients = studies =>
     }
   );
 
+const getStudiesList = async ({
+  clientID = 0,
+  admin = false
+} = {}) => {
+  // TODO Do query directly getProjectList instead of filtering with javascript
+  const projects = await getProjectList();
+  const studies = await getStudies();
+
+  return await Promise.all(
+    studies
+      .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
+      .map(study => [
+        study,
+        projects.find(
+          ({ studyUID = "" }) => study.studyUID === studyUID
+        )
+      ])
+      .map(
+        async ([
+          { studyUID, clientID = 0, ...study },
+          { status, ...project } = {}
+        ]) => {
+          const { name: client } = await getUserProps(clientID, [
+            "name"
+          ]);
+
+          const { multusID = "" } =
+            (await getProject({ studyUID })) || {};
+
+          return {
+            ...project,
+            ...study,
+            studyUID,
+            client,
+            multusID,
+            statusName: getStatusName(status || 0),
+            status: status || ""
+          };
+        }
+      )
+  );
+};
+
 export default async ({ clientID, admin } = {}) => {
-  const studies = await queryProjectsList({ clientID, admin });
+  const studies = await getStudiesList({ clientID, admin });
+
   return reducePatients(
     await Promise.all(
       studies.map(async ({ studyUID, ...props }) => {

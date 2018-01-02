@@ -4,6 +4,7 @@ import FileSync from "lowdb/adapters/FileSync";
 
 import { path } from "./index";
 
+// TODO Messy and duplicate code might want to map getProject.
 export default async () => {
   if (path === undefined) return;
 
@@ -12,9 +13,10 @@ export default async () => {
   const projects = db.get("projects").value();
 
   // Strip unused props
-  return projects.map(({ studyUID, status, defaultName }) => ({
+  return projects.map(({ studyUID, status, defaultName, multusID }) => ({
     studyUID,
     status,
-    defaultName
+    defaultName,
+    multusID
   }));
 };

@@ -1,7 +1,7 @@
 import { getStudies } from "../dicom";
 import { getProjectList } from "../projects";
 import { getUserProps } from "../authUsers";
-import { getMetaData } from "../metaData";
+import { getProject } from '../projects';
 import getStatusName from "../helpers/getStatusName";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
@@ -27,7 +27,7 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             "name"
           ]);
 
-          const { multusID = "" } = await getMetaData({ studyUID });
+          const { multusID = "" } = await getProject({ studyUID }) || {};
 
           return {
             ...project,

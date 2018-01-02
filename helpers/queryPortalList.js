@@ -1,12 +1,9 @@
 import * as R from "ramda";
-
 import queryProjectsList from "./queryProjectsList";
 import getStatusName from "./getStatusName";
-
 import { videoExists } from "../video";
 import { getUserProps } from "../authUsers";
 import { list as uploadList } from "../upload";
-// import { getMetaData } from "../metaData";
 
 const reducePatients = studies =>
   R.uniqWith((a, b) => a.patientName === b.patientName)(studies).map(

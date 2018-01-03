@@ -7,13 +7,5 @@ export default async ({
   action: { studyUID, props } = {},
   user: { id: clientID, admin } = {}
 }) => {
-  await setProject({ studyUID, props });
-  const portalList = await queryPortalList({ clientID, admin });
-
-  await socket.emit(
-    "action",
-    payloadPortal({
-      portalList
-    })
-  );
+  setProject({ studyUID, props });
 };

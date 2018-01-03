@@ -137,7 +137,6 @@ const Portal = class extends Component {
               multusID: (
                 <Input
                   placeholder=""
-                  defaultValue={multusID}
                   value={multusID}
                   style={
                     multusID === "" ? { background: "#ff8989" } : {}

@@ -9,8 +9,6 @@ export default async ({ clientID = 0, admin = false } = {}) => {
   const projects = await getProjectList();
   const studies = await getStudies();
 
-  console.log("projects", projects);
-
   return await Promise.all(
     projects
       .filter(

@@ -6,9 +6,6 @@ import { getUserProps } from "../authUsers";
 import { list as uploadList } from "../upload";
 import { getStudies } from "../dicom";
 import { getProject, getProjectList } from "../projects";
-// import { getUserProps } from "../authUsers";
-// import { getProject } from '../projects';
-// import getStatusName from "../helpers/getStatusName";
 
 const reducePatients = studies =>
   R.uniqWith((a, b) => a.patientName === b.patientName)(studies).map(
@@ -21,7 +18,7 @@ const reducePatients = studies =>
         studies: studies
           .filter(v => v.patientID === patientID)
           .map(({ // TODO Refactor to remove unused props?
-            studyUID, studyName, studyDate, status, location, client, videoExists, uploadedFiles, multusID }) => ({
+            studyUID, studyName, studyDate, status, location, client, videoExists, uploadedFiles, multusID, uploadDateTime, modality }) => ({
             studyUID,
             studyName,
             studyDate,
@@ -31,7 +28,9 @@ const reducePatients = studies =>
             client,
             videoExists,
             uploadedFiles,
-            multusID
+            multusID,
+            uploadDateTime,
+            modality
           }))
       };
     }

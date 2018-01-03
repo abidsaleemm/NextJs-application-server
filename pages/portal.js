@@ -200,7 +200,12 @@ const Portal = class extends Component {
           multusID: CellTableWrapper(studiesEnhanced, "multusID"),
           studyDate: CellTableWrapper(studiesEnhanced, "studyDate"),
           statusName: CellTableWrapper(studiesEnhanced, "statusName"),
+          // modality: CellTableWrapper(studiesEnhanced, "modality"),
           location: CellTableWrapper(studiesEnhanced, "location"),
+          uploadDateTime: CellTableWrapper(
+            studiesEnhanced,
+            "uploadDateTime"
+          ),
           upload: CellTableWrapper(studiesEnhanced, "upload"),
           video: CellTableWrapper(studiesEnhanced, "video")
         };
@@ -286,11 +291,13 @@ const mapStateToProps = ({
     multusID: { title: "Multus ID", sort: true },
     studyDate: { title: "Study Date", sort: true },
     statusName: { title: "Status", sort: true },
+    // modality: { title: "Modality", sort: true },
     location: { title: "Imaging Center", sort: false },
+    uploadDateTime: { title: "Date Uploaded", sort: false },
     upload: { title: "Attach Records", sort: false },
     // TODO Create Download button for all files
-    video: { title: "Video", sort: false },
-    download: { title: "Download", sort: false }
+    video: { title: "Download", sort: false },
+    // download: { title: "Download", sort: false }
   },
   tableSettings: portalSettings,
   tableData: selectProjectList({

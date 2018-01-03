@@ -3,8 +3,8 @@ import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import { path } from "./index";
 
-export default async ({ studyUID = "", props = {} }) => {
-  if (path === undefined) return;
+export default async ({ studyUID, props = {} }) => {
+  if (path === undefined || !studyUID) return;
 
   const db = low(new FileSync(`${path}/projects.json`));
   db.defaults({ projects: [] }).write();

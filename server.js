@@ -108,8 +108,8 @@ app.prepare().then(() => {
 
     // If not dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync("certs/privkey1.pem"), // Uses Certbot mount archive
-      cert: fs.readFileSync("certs/fullchain1.pem")
+      key: fs.readFileSync("certs/privkey2.pem"), // Uses Certbot mount archive
+      cert: fs.readFileSync("certs/fullchain2.pem")
     };
 
     const serverHttp = https.createServer(options, server).listen(port, () => {

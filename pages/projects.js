@@ -75,6 +75,14 @@ class ProjectsListing extends Component {
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>
                 <DropdownMenu>
+                  <DropdownItem
+                    key={`dropdown-default-none`}
+                    onClick={() =>
+                      createProject({ studyUID })
+                    }
+                  >
+                    None
+                  </DropdownItem>
                   {defaultList.map(defaultName => (
                     <DropdownItem
                       key={`dropdown-default-${defaultName}`}

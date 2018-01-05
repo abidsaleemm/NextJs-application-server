@@ -1,6 +1,6 @@
 import { getProject } from "../projects";
 import { getDefault } from "../defaults";
-import createProject from '../projects/createProject';
+import createProject from "../projects/createProject";
 
 export default async ({ socket, action }) => {
   const { props = {}, func, studyUID } = action;
@@ -8,12 +8,11 @@ export default async ({ socket, action }) => {
   // TODO Get default for studyUID
   const project = await getProject({ studyUID });
   if (project) {
-    const { defaultName } = project;
-    // const defaultState = await getDefault({ name: defaultName });
-    // TODO If no default build props from base models
-    // defaultName
-
-    const defaultState = createProject({ studyUID });
+    const { defaultName = "" } = project;
+    const defaultState =
+      defaultName !== ""
+        ? await getDefault({ name: defaultName })
+        : createProject({ studyUID });
 
     if (defaultState) {
       const actualFunction = new Function(

@@ -327,9 +327,17 @@ const ProjectDetails = class extends Component {
                 color="danger"
               >
                 <DropdownToggle caret style={{ width: "100%" }}>
-                  {defaultName}
+                  {defaultName === "" ? "None" : defaultName}
                 </DropdownToggle>
                 <DropdownMenu right>
+                  <DropdownItem
+                    key={`default-none`}
+                    onClick={() =>
+                      setProjectProps({ studyUID, defaultName: "" })
+                    }
+                  >
+                    None
+                  </DropdownItem>
                   {defaultList.map(defaultName => (
                     <DropdownItem
                       key={`default-${defaultName}`}

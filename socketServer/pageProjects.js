@@ -8,7 +8,7 @@ import {
 import { getDefaultList } from "../defaults";
 import { getUserProps } from "../authUsers";
 
-export default async ({ socket, user: { admin, id } }) => {
+export default async ({ socket, user: { admin, id } = {}}) => {
   const projects = await queryProjectsList({ admin });
   const defaults = await getDefaultList();
   const { projectsSettings } = await getUserProps(id, [

@@ -11,7 +11,7 @@ import { getUserProps } from "../authUsers";
 export default async ({
   socket,
   action: { studyUID = "" },
-  user: { id: clientID }
+  user: { id: clientID } = {}
 }) => {
   const projectDetail = await queryProjectDetail({ studyUID });
   const defaults = await getDefaultList();

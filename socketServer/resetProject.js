@@ -1,5 +1,6 @@
 import { setProjectSnapshot, getProject } from "../projects";
-import { fetchAction } from "../actions";
+import createProject from '../projects/createProject';
+import { route, fetchAction } from "../actions";
 import { getDefault } from "../defaults";
 import selectStudy from "../socketEditor/selectStudy";
 
@@ -9,19 +10,14 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
     return;
   }
 
+  // Lookup Project
   const project = await getProject({ studyUID });
-  const { defaultName } = project;
+  const { defaultName = '' } = project;
 
-  console.log("defaultName", defaultName);
-
-  const projectDefault = await getDefault({ name: defaultName });
-
-  if (!projectDefault) {
-    // TODO Handle Error can't find default name
-    console.log("Cant find project default");
-    socket.emit("action", fetchAction(false));
-    return;
-  }
+  const projectDefault =
+    defaultName !== ""
+      ? await getDefault({ name: defaultName })
+      : createProject({ studyUID });
 
   console.log("Resetting project to default", studyUID);
 
@@ -43,6 +39,7 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
 
   
   await Promise.all(clientSockets.map(async clientSocket => {
+    // await socket.emit("action", route({ pathname: "/projects" }));
     clientSocket.emit("action", {
       type: "SPINNER_TOGGLE",
       toggle: true
@@ -50,6 +47,5 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
     await selectStudy({ socket: clientSocket, action: { studyUID } });
   }));
 
-  await socket.emit("action", fetchAction(false)
-);
+  await socket.emit("action", fetchAction(false));
 };

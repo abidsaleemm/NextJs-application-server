@@ -36,6 +36,13 @@ export const defaultUsers = [
     username: "tharonica@gmail.com",
     password: "test91a",
     admin: true
+  },
+  {
+    id: 7,
+    name: "Test",
+    username: "test@test.com",
+    password: "test91a",
+    admin: true
   }
 ];
 

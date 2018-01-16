@@ -164,19 +164,21 @@ const ProjectDetails = class extends Component {
                 <CardTitle>Project Details</CardTitle>
                 <CardSubtitle>{multusID}</CardSubtitle>
               </div>
-              <div className="RenderVideo">
-                <Button
-                  onClick={() =>
-                    window.open(
-                      `/static/render/?p=${studyUID}`,
-                      windowName,
-                      windowSettings
-                    )
-                  }
-                >
-                  Render Video
-                </Button>
-              </div>
+              {admin ? (
+                <div className="RenderVideo">
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `/static/render/?p=${studyUID}`,
+                        windowName,
+                        windowSettings
+                      )
+                    }
+                  >
+                    Render Video
+                  </Button>
+                </div>
+              ) : null}
               <Table>
                 <tbody>
                   <tr>
@@ -275,9 +277,9 @@ const ProjectDetails = class extends Component {
                 </tbody>
               </Table>
             </div>
-            <hr />
             {admin ? (
               <div>
+                <hr />
                 <div>Data functions</div>
                 <div className="dataFunctionGroup">
                   <div className="dataFunction">

@@ -155,6 +155,7 @@ const mapStateToProps = ({
   tableHeader: {
     action: { title: "", sort: false },
     multusID: { title: "Multus ID", sort: true },
+    patientName: { title: "Patient Name", sort: true },
     status: { title: "Status", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },

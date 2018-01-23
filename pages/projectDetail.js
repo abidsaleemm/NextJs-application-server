@@ -89,8 +89,10 @@ const ProjectDetails = class extends Component {
 
     // TODO Used for render video will be removed in the future
     const windowName = "renderWindow";
-    const width = 1920 / 2; // TODO Add a few different presets
-    const height = 1080 / 2;
+    // const width = 1920 / 2; // TODO Add a few different presets
+    // const height = 1080 / 2;
+    const width = 1920;
+    const height = 1080;
     const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
 
     return (

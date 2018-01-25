@@ -85,8 +85,13 @@ const importVertebra = ({ name: objectName, center }) => {
     }
 
     // Build mirror list
-    const mirrorList = vertices.reduce((a, v, i) => {
+    const mirrorList = vertices.reduce((a = [], v, i) => {
       if (v[0] === 0) {
+        return a;
+      }
+
+      // Skip matches
+      if (a.some(([vi1, vi2]) => vi1 === i || vi2 === i)) {
         return a;
       }
 
@@ -108,7 +113,7 @@ const importVertebra = ({ name: objectName, center }) => {
         return a;
       }
 
-      return !mirrorList.some(([i2]) => i2 === i)
+      return !mirrorList.some(([i1, i2]) => i1 === i || i2 === i)
         ? [...a, { i, v }]
         : a;
     }, []);

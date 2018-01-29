@@ -167,21 +167,19 @@ const ProjectDetails = class extends Component {
                 <CardTitle>Project Details</CardTitle>
                 <CardSubtitle>{patientName}</CardSubtitle>
               </div>
-              {admin ? (
-                <div className="RenderVideo">
-                  <Button
-                    onClick={() =>
-                      window.open(
-                        `/static/render/?p=${studyUID}`,
-                        windowName,
-                        windowSettings
-                      )
-                    }
-                  >
-                    Render Video
-                  </Button>
-                </div>
-              ) : null}
+              <div className="RenderVideo">
+                <Button
+                  onClick={() =>
+                    window.open(
+                      `/static/render/?p=${studyUID}`,
+                      windowName,
+                      windowSettings
+                    )
+                  }
+                >
+                  Render Video
+                </Button>
+              </div>
               <Table>
                 <tbody>
                   <tr>
@@ -285,50 +283,48 @@ const ProjectDetails = class extends Component {
                 </tbody>
               </Table>
             </div>
-            {admin ? (
-              <div>
-                <hr />
-                <div>Data functions</div>
-                <div className="dataFunctionGroup">
-                  <div className="dataFunction">
-                    <UploadButton
-                      studyUID={studyUID}
-                      handleUpload={handleProjectImport}
-                      label="Import"
-                    />
-                  </div>
-                  <div className="dataFunction">
-                    <a
-                      className="btn btn-secondary"
-                      target="_projectExport"
-                      href={`/export/?studyUID=${studyUID}`}
-                    >
-                      Export
-                    </a>
-                  </div>
-                  <div className="dataFunction">
-                    <ButtonConfirm
-                      tipID="resetButton"
-                      color="warning"
-                      message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
-                      onConfirm={() => resetProject({ studyUID })}
-                    >
-                      Reset
-                    </ButtonConfirm>
-                  </div>
-                  <div className="dataFunction">
-                    <ButtonConfirm
-                      tipID="destroyButton"
-                      color="warning"
-                      message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
-                      onConfirm={() => destroyProject({ studyUID })}
-                    >
-                      Destroy
-                    </ButtonConfirm>
-                  </div>
+            <div>
+              <hr />
+              <div>Data functions</div>
+              <div className="dataFunctionGroup">
+                <div className="dataFunction">
+                  <UploadButton
+                    studyUID={studyUID}
+                    handleUpload={handleProjectImport}
+                    label="Import"
+                  />
+                </div>
+                <div className="dataFunction">
+                  <a
+                    className="btn btn-secondary"
+                    target="_projectExport"
+                    href={`/export/?studyUID=${studyUID}`}
+                  >
+                    Export
+                  </a>
+                </div>
+                <div className="dataFunction">
+                  <ButtonConfirm
+                    tipID="resetButton"
+                    color="warning"
+                    message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
+                    onConfirm={() => resetProject({ studyUID })}
+                  >
+                    Reset
+                  </ButtonConfirm>
+                </div>
+                <div className="dataFunction">
+                  <ButtonConfirm
+                    tipID="destroyButton"
+                    color="warning"
+                    message="You are about to destroy a project and all it's snapshots.  This action can't be undone. Please confirm."
+                    onConfirm={() => destroyProject({ studyUID })}
+                  >
+                    Destroy
+                  </ButtonConfirm>
                 </div>
               </div>
-            ) : null}
+            </div>
             <hr />
             <div className="dataDefaults">
               <div className="dataDefaultsLabel">Set Default</div>

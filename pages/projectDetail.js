@@ -78,6 +78,7 @@ const ProjectDetails = class extends Component {
         studyName,
         // multusID,
         patientName,
+        patientBirthDate,
         studyDate,
         status = 0,
         uploadedFiles = [],
@@ -245,6 +246,11 @@ const ProjectDetails = class extends Component {
                       </UncontrolledDropdown>
                     </td>
                   </tr>
+                  <tr>
+                    <th scope="row">Patient DOB</th>
+                    <td>{patientBirthDate}</td>
+                  </tr>
+
                   <tr>
                     <th scope="row">Study Name</th>
                     <td>{studyName}</td>

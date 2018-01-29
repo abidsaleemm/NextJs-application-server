@@ -21,7 +21,6 @@ const filterByKey = (key, query) =>
 export default createSelector(
   [({ projects }) => projects, ({ settings }) => settings],
   (projects, { filter, filterFunc, sortKey, sortDesc }) => {
-    console.log("projects", projects);
     const filteredList = list =>
       R.reduce(
         (acc, [key, query]) => filterByKey(key, query)(acc),

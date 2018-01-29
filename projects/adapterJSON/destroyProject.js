@@ -28,7 +28,14 @@ export default async ({ studyUID }) => {
 
     db
       .get("projects")
-      .remove({ studyUID: studyUID })
+      .find({ studyUID: studyUID })
+      .assign({ snapshot: undefined, snapshots: [] })
       .write();
+
+    // TODO Keep project table but remove all snapshots
+    // db
+    //   .get("projects")
+    //   .remove({ studyUID: studyUID })
+    //   .write();
   }
 };

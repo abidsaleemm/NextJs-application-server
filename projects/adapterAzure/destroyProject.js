@@ -33,20 +33,21 @@ export default async ({ studyUID }) => {
     );
   });
 
+  // TODO Keep project table but remove all snapshots
   // Remove from table view
-  await new Promise((resolve, reject) => {
-    const task = {
-      RowKey: studyUID,
-      PartitionKey: studyUID
-    };
+  // await new Promise((resolve, reject) => {
+  //   const task = {
+  //     RowKey: studyUID,
+  //     PartitionKey: studyUID
+  //   };
 
-    tableService.deleteEntity(tableName, task, (error, response) => {
-      if (error) {
-        console.log("error destroyProject table", error);
-        return reject(error);
-      }
+  //   tableService.deleteEntity(tableName, task, (error, response) => {
+  //     if (error) {
+  //       console.log("error destroyProject table", error);
+  //       return reject(error);
+  //     }
 
-      resolve(response);
-    });
-  });
+  //     resolve(response);
+  //   });
+  // });
 };

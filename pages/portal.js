@@ -120,17 +120,19 @@ const Portal = class extends Component {
         client,
         patientBirthDate,
         studies = []
-      }) => {
+      }, j) => {
         const studiesEnhanced = studies.map(
-          ({
-            studyUID,
-            videoExists,
-            uploadedFiles = [],
-            multusID = "",
-            ...study
-          }) => {
-            const id = `file-upload-${studyUID}`;
-            const popoverID = `file-popover-${studyUID}`;
+          (
+            {
+              studyUID,
+              videoExists,
+              uploadedFiles = [],
+              multusID = "",
+              ...study
+            },
+            i
+          ) => {
+            const popoverID = `file-popover-${j}-${i}`;
 
             return {
               ...study,
@@ -296,7 +298,7 @@ const mapStateToProps = ({
     uploadDateTime: { title: "Date Uploaded", sort: false },
     upload: { title: "Attach Records", sort: false },
     // TODO Create Download button for all files
-    video: { title: "Download", sort: false },
+    video: { title: "Download", sort: false }
     // download: { title: "Download", sort: false }
   },
   tableSettings: portalSettings,

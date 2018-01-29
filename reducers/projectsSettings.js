@@ -4,6 +4,7 @@ const initialState = {
   filter: {
     status: "", // TODO Change type later
     patientName: "",
+    patientBirthDate: "",
     studyName: "",
     studyDate: "", // TODO Change type later
     modality: "",

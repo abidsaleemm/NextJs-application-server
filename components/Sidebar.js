@@ -16,8 +16,6 @@ export default class extends Component {
   }
 
   handleShowToggle() {
-    console.log("handleShowToggle");
-
     this.setState({ shouldShowToggle: true });
     setTimeout(
       () => this.setState({ shouldShowToggle: false }),

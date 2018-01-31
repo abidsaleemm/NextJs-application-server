@@ -84,6 +84,7 @@ const ProjectDetails = class extends Component {
         uploadedFiles = [],
         defaultList = [],
         defaultName = "",
+        location,
         user: { admin = false }
       }
     } = this;
@@ -165,7 +166,6 @@ const ProjectDetails = class extends Component {
             <div>
               <div className="Sidebar-header">
                 <CardTitle>Project Details</CardTitle>
-                <CardSubtitle>{patientName}</CardSubtitle>
               </div>
               <div className="RenderVideo">
                 <Button
@@ -245,6 +245,10 @@ const ProjectDetails = class extends Component {
                     </td>
                   </tr>
                   <tr>
+                  <th scope="row">Patient Name</th>
+                    <td>{patientName}</td>
+                  </tr>
+                  <tr>
                     <th scope="row">Patient DOB</th>
                     <td>{patientBirthDate}</td>
                   </tr>
@@ -256,6 +260,10 @@ const ProjectDetails = class extends Component {
                   <tr>
                     <th scope="row">Study Date</th>
                     <td>{studyDate}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Facility</th>
+                    <td>{location}</td>
                   </tr>
                 </tbody>
               </Table>

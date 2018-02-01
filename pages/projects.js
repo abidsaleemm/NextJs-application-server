@@ -156,6 +156,7 @@ const mapStateToProps = ({
     action: { title: "", sort: false },
     patientName: { title: "Patient Name", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
+    location: { title: "Facility", sort: true },
     status: { title: "Status", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },

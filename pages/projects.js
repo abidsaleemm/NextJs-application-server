@@ -66,8 +66,8 @@ class ProjectsListing extends Component {
         ...project,
         status: statusName,
         tableBackground: status
-          ? undefined
-          : "rgba(48, 121, 198, 0.1)",
+          ? status === 2 ?  "rgba(171, 235, 198, 0.2)" : undefined
+           : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
             {!status ? (

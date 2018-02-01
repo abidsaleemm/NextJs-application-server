@@ -8,8 +8,6 @@ export default ({
   studyUID = "",
   onDelete = () => {}
 }) => {
-console.log('popupTarget', popupTarget);
-
   return popupTarget ? (
     <Tooltip
       placement="left"

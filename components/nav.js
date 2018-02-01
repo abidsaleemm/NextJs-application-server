@@ -42,37 +42,47 @@ const RenderAdmin = () => (
 const { STAGING: staging = false } =
   "undefined" !== typeof window ? window.env : process.env;
 
-export default ({ user: { client = false, admin = false } = {}, ...props }) => {
-// console.log("props", props);
-return (
-  <div>
-    <style jsx global>
-      {`
-        .buttonLink {
-          margin: 10px;
-          cursor: pointer;
-          color: white;
-          display: inline-block;
-        }
+export default ({
+  user: { client = false, admin = false } = {},
+  ...props
+}) => {
+  // console.log("props", props);
+  return (
+    <div>
+      <style jsx global>
+        {`
+          .buttonLink {
+            margin: 10px;
+            cursor: pointer;
+            color: white;
+            display: inline-block;
+          }
 
-        .nav {
-          background: ${ staging ? '#b7632a' : '#3079c6' };
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-      `}
-    </style>
-    <Nav className="nav">
-      <Link href="/auth/logout" replace>
-        <a className="buttonLink">Logout</a>
-      </Link>
-      {admin ? (
-        <RenderAdmin />
-      ) : client === true ? (
-        <RenderClient />
-      ) : (
-        <RenderUser />
-      )}
-    </Nav>
-  </div>
-);
-}
+          .nav {
+            background: ${staging ? "#b7632a" : "#3079c6"};
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          }
+        `}
+      </style>
+      <Nav className="nav">
+        <Link href="/auth/logout" replace>
+          <a
+            className="buttonLink"
+            onClick={() => {
+              window.location = '"/auth/logout"';
+            }}
+          >
+            Logout
+          </a>
+        </Link>
+        {admin ? (
+          <RenderAdmin />
+        ) : client === true ? (
+          <RenderClient />
+        ) : (
+          <RenderUser />
+        )}
+      </Nav>
+    </div>
+  );
+};

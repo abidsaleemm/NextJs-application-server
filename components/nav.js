@@ -62,7 +62,7 @@ return (
       `}
     </style>
     <Nav className="nav">
-      <Link href="/auth/logout">
+      <Link href="/auth/logout" replace>
         <a className="buttonLink">Logout</a>
       </Link>
       {admin ? (

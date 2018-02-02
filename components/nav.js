@@ -46,7 +46,6 @@ export default ({
   user: { client = false, admin = false } = {},
   ...props
 }) => {
-  // console.log("props", props);
   return (
     <div>
       <style jsx global>
@@ -65,9 +64,16 @@ export default ({
         `}
       </style>
       <Nav className="nav">
-        <Link href="/auth/logout">
-          <a className="buttonLink">Logout 1</a>
-        </Link>
+        <div
+          className="buttonLink"
+          onClick={() =>
+            Router.push({
+              pathname: "/auth/logout"
+            })
+          }
+        >
+          Logout
+        </div>
         {admin ? (
           <RenderAdmin />
         ) : client === true ? (
@@ -79,11 +85,3 @@ export default ({
     </div>
   );
 };
-
-/*
-<div className="buttonLink" onClick={() => Router.push({
-              pathname: "/auth/logout"
-            })}>
-          Logout
-        </div>
-        */

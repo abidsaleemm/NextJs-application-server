@@ -85,7 +85,7 @@ class ProjectsListing extends Component {
                     key={`dropdown-default-none`}
                     onClick={() => createProject({ studyUID })}
                   >
-                    None
+                    Base
                   </DropdownItem>
                   {defaultList.map(defaultName => (
                     <DropdownItem

@@ -1,8 +1,8 @@
 import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-
 import { path } from "./index";
+import hasProjectSnapshots from "./hasProjectSnapshots";
 
 // TODO Messy and duplicate code might want to map getProject.
 export default async () => {
@@ -13,10 +13,15 @@ export default async () => {
   const projects = db.get("projects").value();
 
   // Strip unused props
-  return projects.map(({ studyUID, status, defaultName, multusID }) => ({
-    studyUID,
-    status,
-    defaultName,
-    multusID
-  }));
+  return Promise.all(
+    projects.map(
+      async ({ studyUID, status, defaultName, multusID }) => ({
+        studyUID,
+        status,
+        defaultName,
+        multusID,
+        hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
+      })
+    )
+  );
 };

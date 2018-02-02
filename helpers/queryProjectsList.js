@@ -24,14 +24,6 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         project
       ])
       .filter(([study]) => study !== undefined)
-      // .filter(([{ studyUID }, project]) => {
-      //   console.log("project", project);
-
-      //   const uploaded = await uploadList({ studyUID })
-
-      //   return true;
-      //   // uploadedFiles.length > 0
-      // })
       .map(
         async ([
           { studyUID, clientID = 0, ...study } = {},

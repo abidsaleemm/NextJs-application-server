@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Link from "next/link";
 import Router from "next/router";
 import { Nav, NavItem, NavLink } from "reactstrap";
 
@@ -65,16 +64,16 @@ export default ({
         `}
       </style>
       <Nav className="nav">
-        <Link href="/auth/logout" replace>
-          <a
-            className="buttonLink"
-            onClick={() => {
-              window.location = '"/auth/logout"';
-            }}
-          >
-            Logout
-          </a>
-        </Link>
+        <div
+          className="buttonLink"
+          onClick={() =>
+            Router.push({
+              pathname: "/auth/logout"
+            })
+          }
+        >
+          Logout
+        </div>
         {admin ? (
           <RenderAdmin />
         ) : client === true ? (

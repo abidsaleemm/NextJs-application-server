@@ -9,12 +9,12 @@ export default async ({ clientID = 0, admin = false } = {}) => {
   const projects = await getProjectList();
   const studies = await getStudies();
 
-  return await Promise.all(
+  const ret = await Promise.all(
     projects
       .filter(
         ({ multusID }) => multusID !== undefined && multusID !== ""
       )
-      // TODO Add better permissions for this
+      // TODO Add better permissions for this?
       // .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
       .map(project => [
         studies.find(
@@ -22,9 +22,10 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         ),
         project
       ])
+      .filter(study => study !== undefined)
       .map(
         async ([
-          { studyUID, clientID = 0, ...study },
+          { studyUID, clientID = 0, ...study } = {},
           { status, ...project } = {}
         ]) => {
           const { name: client } = await getUserProps(clientID, [
@@ -41,9 +42,12 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             client,
             multusID,
             statusName: getStatusName(status || 0),
-            status: status || ""
+            status: status || 0
           };
         }
       )
   );
+
+  console.log("projects", ret);
+  return ret;
 };

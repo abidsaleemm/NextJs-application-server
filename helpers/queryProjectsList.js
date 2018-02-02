@@ -3,6 +3,7 @@ import { getProjectList } from "../projects";
 import { getUserProps } from "../authUsers";
 import { getProject } from "../projects";
 import getStatusName from "../helpers/getStatusName";
+import { list as uploadList } from "../upload";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
   // TODO Do query directly getProjectList instead of filtering with javascript
@@ -22,7 +23,15 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         ),
         project
       ])
-      .filter(study => study !== undefined)
+      .filter(([study]) => study !== undefined)
+      // .filter(([{ studyUID }, project]) => {
+      //   console.log("project", project);
+
+      //   const uploaded = await uploadList({ studyUID })
+
+      //   return true;
+      //   // uploadedFiles.length > 0
+      // })
       .map(
         async ([
           { studyUID, clientID = 0, ...study } = {},
@@ -31,6 +40,8 @@ export default async ({ clientID = 0, admin = false } = {}) => {
           const { name: client } = await getUserProps(clientID, [
             "name"
           ]);
+
+          const uploadedList = await uploadList({ studyUID });
 
           const { multusID = "" } =
             (await getProject({ studyUID })) || {};
@@ -42,12 +53,14 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             client,
             multusID,
             statusName: getStatusName(status || 0),
-            status: status || 0
+            status: status || 0,
+            uploadedList
           };
         }
       )
   );
 
-  console.log("projects", ret);
-  return ret;
+  return ret.filter(
+    ({ uploadedList = [] }) => uploadedList.length > 0
+  );
 };

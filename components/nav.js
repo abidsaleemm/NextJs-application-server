@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Router from "next/router";
 import { Nav, NavItem, NavLink } from "reactstrap";
+import Link from "next/link";
 
 const RenderUser = () => (
   <div
@@ -64,16 +65,9 @@ export default ({
         `}
       </style>
       <Nav className="nav">
-        <div
-          className="buttonLink"
-          onClick={() =>
-            Router.push({
-              pathname: "/auth/logout"
-            })
-          }
-        >
-          Logout
-        </div>
+        <Link href="/auth/logout">
+          <a className="buttonLink">Logout 1</a>
+        </Link>
         {admin ? (
           <RenderAdmin />
         ) : client === true ? (
@@ -85,3 +79,11 @@ export default ({
     </div>
   );
 };
+
+/*
+<div className="buttonLink" onClick={() => Router.push({
+              pathname: "/auth/logout"
+            })}>
+          Logout
+        </div>
+        */

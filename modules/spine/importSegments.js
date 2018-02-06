@@ -17,11 +17,17 @@ export default () => {
       ((name.search('.L') !== -1) ||
       (name.search('.R') !== -1));
 
-    // Set default values
-    const radius = nerveRoot ?
-    { x: 0.08 * 50, y: 0.10 * 50 } : { x: 0.11 * 50, y: 0.15 * 50 };
-    const radiusTail = nerveRoot ?
-    { x: 0.08 * 50, y: 0.10 * 50} : { x: 0.11 * 50, y: 0.15 * 50 };
+    // // Set default values
+    // const radius = nerveRoot ?
+    // { x: 0.08 * 50, y: 0.10 * 50 } : { x: 0.11 * 50, y: 0.15 * 50 };
+    // const radiusTail = nerveRoot ?
+    // { x: 0.08 * 50, y: 0.10 * 50} : { x: 0.11 * 50, y: 0.15 * 50 };
+
+    // Using 8 point array
+    const radius = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(8).fill(0.11 * 50);
+    const radiusTail = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(8).fill(0.11 * 50);
+
+    // TODO Should padding also be array?
     const padding = nerveRoot ? 0.12 * 50 : 0.12 * 50;
     const paddingTail = nerveRoot ? 0.2 * 50 : 0.26 * 50;
     const angle = 0;

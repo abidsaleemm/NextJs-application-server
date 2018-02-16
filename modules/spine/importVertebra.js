@@ -3,7 +3,8 @@ import fs from "fs";
 import sortVertexGroups from "./sortVertexGroups";
 
 export default (segments = []) =>
-  segments.map(segment => importVertebra(segment));
+  segments
+    .map(segment => importVertebra(segment));
 
 // issue-65
 const importVertebra = ({ name: objectName, center }) => {

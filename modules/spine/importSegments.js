@@ -1,8 +1,10 @@
 import fs from 'fs';
 
+const spinePathName = 'SpinePath';
+const filePath = `modules/spine/models/${spinePathName}.json`;
+const numRadiusSegments = 16;
+
 export default () => {
-  const spinePathName = 'SpinePath';
-  const filePath = `modules/spine/models/${spinePathName}.json`;
   const data = fs.readFileSync(filePath);
   let retObj = {};
   if (data) {
@@ -18,8 +20,8 @@ export default () => {
       (name.search('.R') !== -1));
 
     // Using 8 point array
-    const radius = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(8).fill(0.11 * 50);
-    const radiusTail = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(8).fill(0.11 * 50);
+    const radius = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(numRadiusSegments).fill(0.11 * 50);
+    const radiusTail = nerveRoot ? new Array(8).fill(0.08 * 50) : new Array(numRadiusSegments).fill(0.11 * 50);
 
     // TODO Should padding also be array?
     const padding = nerveRoot ? 0.12 * 50 : 0.12 * 50;

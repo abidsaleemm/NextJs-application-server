@@ -23,6 +23,7 @@ export default props => {
             flex-direction: column;
             width: 100%;
             height: 100%;
+            overflow: auto;
           }
           .fieldFilter {
             padding: 0.4em;

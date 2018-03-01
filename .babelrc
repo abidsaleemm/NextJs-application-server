@@ -8,18 +8,25 @@
           "modules": "commonjs",
           "useBuiltIns": true,
           "debug": true
-        },
-        "forceAllTransforms": true
+        }
       }
     ],
-    "stage-0",
-    "stage-3",
     "next/babel",
     "react"
   ],
   "plugins": [
     "styled-jsx/babel",
     "transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": ["."],
+        "alias": {
+          "styles": "./styles"
+        },
+        "cwd": "babelrc"
+      }
+    ],
     [
       "wrap-in-js",
       {

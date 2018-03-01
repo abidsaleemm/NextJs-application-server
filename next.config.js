@@ -12,6 +12,12 @@ module.exports = {
       );
     }
 
+    config.plugins.push(
+        new webpack.DefinePlugin({
+          "process.env.STAGING": JSON.stringify("STAGING")
+        })
+      );
+
     config.module.rules.push(
       {
         test: /\.(css|scss)/,

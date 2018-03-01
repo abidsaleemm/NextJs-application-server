@@ -1,9 +1,14 @@
 {
   "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ],
     "next/babel",
-    "es2015",
-    "stage-0",
-    "stage-3",
     "react"
   ],
   "plugins": [
@@ -12,9 +17,7 @@
     [
       "module-resolver",
       {
-        "root": [
-          "."
-        ],
+        "root": ["."],
         "alias": {
           "styles": "./styles"
         },
@@ -24,10 +27,7 @@
     [
       "wrap-in-js",
       {
-        "extensions": [
-          "css$",
-          "scss$"
-        ]
+        "extensions": ["css$", "scss$"]
       }
     ]
   ]

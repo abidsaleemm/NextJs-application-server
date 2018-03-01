@@ -15,7 +15,8 @@ import authMiddleware from "./auth/middleware";
 const flash = require("connect-flash");
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+
+const app = next({ dev: false });
 const handle = app.getRequestHandler();
 
 // TODO Use a better adapter style
@@ -92,8 +93,8 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  // Resolved to a single variable dev that refers whether environment is dev or not
-  if (!dev) {
+  // 
+  if (!process.env.LOCAL && !dev) {
     // Handle port 80 redirect if portal.multusmedical.com
     http
       .createServer((req, res) => {

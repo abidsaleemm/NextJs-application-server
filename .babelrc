@@ -15,8 +15,8 @@
     "react"
   ],
   "plugins": [
-    "styled-jsx/babel",
     "transform-runtime",
+    "styled-jsx/babel",
     [
       "wrap-in-js",
       {

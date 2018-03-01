@@ -5,7 +5,9 @@
       {
         "targets": {
           "node": "current",
-          "modules": false
+          "modules": false,
+          "useBuiltIns": true,
+          "debug": true
         }
       }
     ],
@@ -15,16 +17,6 @@
   "plugins": [
     "styled-jsx/babel",
     "transform-runtime",
-    [
-      "module-resolver",
-      {
-        "root": ["."],
-        "alias": {
-          "styles": "./styles"
-        },
-        "cwd": "babelrc"
-      }
-    ],
     [
       "wrap-in-js",
       {

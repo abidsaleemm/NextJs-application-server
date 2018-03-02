@@ -22,7 +22,7 @@ jobs:
             docker push multus/application-server
   deploy-staging:
     docker:
-      - image: circleci/node
+      - image: docker:17.05.0-ce-git
     working_directory: ~/repo
     steps:
       - checkout

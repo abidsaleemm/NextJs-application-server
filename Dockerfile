@@ -1,4 +1,4 @@
-FROM node:stretch
+FROM node:8/stretch
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
@@ -8,7 +8,7 @@ RUN mkdir -p /usr/src/certs
 
 WORKDIR /usr/src
 
-# Setup Poppler for handling PDF server functions. Also set up ffmpeg to handle video rendering.
+# Setup ffmpeg to handle video rendering.
 RUN apt-get update
 RUN apt-get install ffmpeg -y
 

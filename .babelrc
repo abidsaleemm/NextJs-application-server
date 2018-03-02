@@ -4,8 +4,7 @@
       "env",
       {
         "targets": {
-          "node": "8",
-          "loose": true,
+          "node": "9",
           "browsers": [
             "last 2 Chrome versions",
             "last 2 Firefox versions"

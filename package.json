@@ -15,7 +15,6 @@
     "azure-storage": "^2.8.0",
     "babel-plugin-css-modules-transform": "^1.5.0",
     "babel-plugin-module-resolver": "^3.1.0",
-    "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
     "babel-plugin-wrap-in-js": "^1.1.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",

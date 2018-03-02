@@ -17,7 +17,6 @@
   ],
   "plugins": [
     "styled-jsx/babel",
-    "transform-runtime",
     [
       "module-resolver",
       {

@@ -26,13 +26,13 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: 
-          name: Downloading Artifacts
-          command: |
-            curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
-            npm i wget-improved
-            node ./.circleci/artifacts.js
-            rm artifacts.json
+      # - run: 
+      #     name: Downloading Artifacts
+      #     command: |
+      #       curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
+      #       npm i wget-improved
+      #       node ./.circleci/artifacts.js
+      #       rm artifacts.json
       - setup_remote_docker
       - run:
           name: Deploying Staging

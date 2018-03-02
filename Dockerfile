@@ -1,4 +1,5 @@
-FROM node:9.6.1-stretch
+FROM node:stretch
+# 8.9.4-stretch
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
@@ -17,8 +18,10 @@ RUN npm install yarn -g
 
 # Bundle app source
 COPY . /usr/src/
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
+# RUN yarn install
+# RUN yarn build
 
 EXPOSE 3000
 EXPOSE 3001

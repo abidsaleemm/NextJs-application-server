@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "autoprefixer": "^8.0.0",
-    "axios": "^0.18.0",
     "azure-storage": "^2.8.0",
     "babel-plugin-css-modules-transform": "^1.5.0",
     "babel-plugin-module-resolver": "^3.1.0",
@@ -45,7 +44,6 @@
     "normalize.css": "^8.0.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "pdf-fill-form": "^4.0.0",
     "postcss-easy-import": "^3.0.0",
     "postcss-loader": "^2.1.1",
     "ramda": "^0.25.0",
@@ -56,7 +54,6 @@
     "react-addons-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",
     "react-icons": "^2.2.7",
-    "react-pdf-js": "^3.0.7",
     "react-player": "^1.2.1",
     "react-redux": "^5.0.7",
     "reactstrap": "^5.0.0-alpha.3",

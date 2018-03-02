@@ -1,4 +1,4 @@
-FROM node:8/stretch
+FROM node:9.6.1-stretch
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

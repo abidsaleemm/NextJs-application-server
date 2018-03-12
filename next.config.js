@@ -5,10 +5,10 @@ const webpack = require("webpack");
 module.exports = {
   webpack: (config, { dev }) => {
     if (dev) {
-        // new webpack.DefinePlugin({
-        //   NODE_ENV: JSON.stringify("dev"),
-        //   // "process.env.NODE_ENV": JSON.stringify("dev")
-        // })
+        new webpack.DefinePlugin({
+          // NODE_ENV: JSON.stringify("dev"),
+          "process.env.NODE_ENV": JSON.stringify("dev")
+        })
     }
 
     config.module.rules.push(

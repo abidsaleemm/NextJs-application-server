@@ -16,7 +16,7 @@ const flash = require("connect-flash");
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== "production";
 
-const app = next({ dev: false });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // TODO Use a better adapter style
@@ -39,8 +39,8 @@ app.prepare().then(() => {
   const sessionMiddleWare = expressSession({
     // TODO using NODE_ENV == dev instead?
     store: process.env.LOCAL
-    // TODO Use a better adapter style
-      ? sessionStoreLocal() // Used for local testing
+      ? // TODO Use a better adapter style
+        sessionStoreLocal() // Used for local testing
       : sessionStoreAzure(),
     secret: "session_secret",
     key: "express.sid",
@@ -93,12 +93,14 @@ app.prepare().then(() => {
     return handle(req, res);
   });
 
-  // 
+  //
   if (!process.env.LOCAL && !dev) {
     // Handle port 80 redirect if portal.multusmedical.com
     http
       .createServer((req, res) => {
-        const { headers: { host = "portal.multusmedical.com" } = {} } = req;
+        const {
+          headers: { host = "portal.multusmedical.com" } = {}
+        } = req;
 
         res.writeHead(301, { Location: `https://${host}` });
         res.end();
@@ -113,15 +115,25 @@ app.prepare().then(() => {
       cert: fs.readFileSync("certs/fullchain2.pem")
     };
 
-    const serverHttp = https.createServer(options, server).listen(port, () => {
-      console.log(`SSL listening on *:${port}`);
-      const io = socketApi({ server: serverHttp, passport, sessionMiddleWare });
-    });
+    const serverHttp = https
+      .createServer(options, server)
+      .listen(port, () => {
+        console.log(`SSL listening on *:${port}`);
+        const io = socketApi({
+          server: serverHttp,
+          passport,
+          sessionMiddleWare
+        });
+      });
   } else {
     // Used for local development
     const serverHttp = server.listen(port, () => {
       console.log(`Listening on *:${port}`);
-      const io = socketApi({ server: serverHttp, passport, sessionMiddleWare });
+      const io = socketApi({
+        server: serverHttp,
+        passport,
+        sessionMiddleWare
+      });
     });
   }
 });

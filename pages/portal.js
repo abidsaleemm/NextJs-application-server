@@ -187,8 +187,8 @@ const Portal = class extends Component {
 
         return {
           client,
-          patientName,
           patientBirthDate,
+          patientName: `${patientName} (${patientID})`,
           invoice: (
             <a
               className="btn btn-secondary"

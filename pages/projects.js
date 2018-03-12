@@ -67,9 +67,12 @@ class ProjectsListing extends Component {
         status,
         statusName,
         hasProjectSnapshots,
+        patientID,
+        patientName,
         ...project
       }) => ({
         ...project,
+        patientName: `${patientName} (${patientID})`,
         status: statusName,
         tableBackground: status
           ? status === 2 ? "rgba(171, 235, 198, 0.2)" : undefined

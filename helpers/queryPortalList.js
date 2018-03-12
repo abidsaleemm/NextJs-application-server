@@ -8,7 +8,7 @@ import { getStudies } from "../dicom";
 import { getProject, getProjectList } from "../projects";
 
 const reducePatients = studies =>
-  R.uniqWith((a, b) => a.patientName === b.patientName)(studies).map(
+  R.uniqWith((a, b) => a.patientID === b.patientID)(studies).map(
     ({ client, patientName, patientID, patientBirthDate }) => {
       return {
         client,

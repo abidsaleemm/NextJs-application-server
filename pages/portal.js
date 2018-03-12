@@ -294,8 +294,8 @@ const mapStateToProps = ({
     studyDate: { title: "Study Date", sort: true },
     statusName: { title: "Status", sort: true },
     // modality: { title: "Modality", sort: true },
-    location: { title: "Imaging Center", sort: false },
-    uploadDateTime: { title: "Date Uploaded", sort: false },
+    location: { title: "Imaging Center", sort: true },
+    uploadDateTime: { title: "Date Uploaded", sort: true },
     upload: { title: "Attach Records", sort: false },
     // TODO Create Download button for all files
     video: { title: "Download", sort: false }

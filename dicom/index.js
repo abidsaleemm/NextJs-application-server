@@ -2,10 +2,14 @@ import dateFormat from "dateformat";
 
 // TODO Propose to move this to indexer and store directly in DB
 const parseDate = date => {
-  const year = date.substring(0, 4);
-  const month = date.substring(4, 6);
-  const day = date.substring(6, 8);
-  return `${year}-${month}-${day}`;
+  try {
+    const year = date.substring(0, 4);
+    const month = date.substring(4, 6);
+    const day = date.substring(6, 8);
+    return `${year}-${month}-${day}`;
+  } catch (e) {
+    return "";
+  }
 };
 
 const transform = ({
@@ -21,10 +25,18 @@ const transform = ({
     {}
   ),
   patientName: patientName.replace(/\^/g, " ").trim(),
-  referringPhysicianName: referringPhysicianName.replace (/\^/g, " ").trim(),
+  referringPhysicianName: referringPhysicianName
+    .replace(/\^/g, " ")
+    .trim(),
   studyDate: parseDate(studyDate),
   patientBirthDate: parseDate(patientBirthDate),
-  uploadDateTime: dateFormat(new Date(uploadDateTime), "isoDate")
+  uploadDateTime: (() => {
+    try {
+      return dateFormat(new Date(uploadDateTime), "isoDate");
+    } catch (e) {
+      return "";
+    }
+  })()
 });
 
 module.exports = (({ getStudies, getStudy, ...adapter }) => ({

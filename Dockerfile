@@ -13,14 +13,14 @@ RUN apt-get update
 RUN apt-get install ffmpeg -y
 
 RUN npm install pm2 -g
-RUN npm install yarn -g
+# RUN npm install yarn -g
 
 # Bundle app source
 COPY . /usr/src/
-# RUN npm install
-# RUN npm run build
-RUN yarn install
-RUN yarn build
+RUN npm install
+RUN npm run build
+# RUN yarn install
+# RUN yarn build
 
 EXPOSE 3000
 EXPOSE 3001

@@ -19,6 +19,6 @@ export default async ({ socket, action }) => {
     );
 
     // Send Action back to start render of next frame
-    socket.emit("action", { type: "CAPTURE_FRAME_DONE" });
+    socket.emit("action", { type: "CAPTURE_FRAME_DONE", index: index + numFrames });
   }
 };

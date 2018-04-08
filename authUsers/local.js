@@ -98,3 +98,24 @@ export const getClients = async () => {
     .filter(({ client }) => client !== undefined)
     .map(({ id, name }) => ({ id, name }));
 };
+
+//Should we... use helpers for these? filter out passwords here?
+export const getUsers = () => {
+  return db.get("users");
+};
+
+export const deleteUser = id => {
+  db
+    .get("users")
+    .remove({ id })
+    .write()
+    .then(console.log(id, "delete User"));
+};
+
+export const createUser = user => {
+  db
+    .get("users")
+    .push(user)
+    .write()
+    .then(console.log(user, "create User"));
+};

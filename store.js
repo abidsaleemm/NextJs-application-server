@@ -9,6 +9,7 @@ import createSocketIoMiddleware from "redux-socket.io";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
 import persistSettings from "./middleware/persistSettings";
+import userListAPI from "./middleware/userListAPI";
 import * as reducers from "./reducers";
 import route from "./middleware/route";
 
@@ -23,6 +24,7 @@ const enhancer = compose(
       ? applyMiddleware(
           thunk,
           persistSettings,
+          userListAPI,
           route,
           createLogger(),
           socketIoMiddleware
@@ -30,12 +32,14 @@ const enhancer = compose(
       : applyMiddleware(
           thunk,
           persistSettings,
+          userListAPI,
           route,
           socketIoMiddleware
         )
     : applyMiddleware(
         thunk,
         persistSettings,
+        userListAPI,
         route,
         socketIoMiddleware
       )

@@ -1,9 +1,10 @@
 export const PAYLOAD_PROJECTS = "PAYLOAD_PROJECTS";
 export const PAYLOAD_PROJECTDETAIL = "PAYLOAD_PROJECTDETAIL";
 export const PAYLOAD_PORTAL = "PAYLOAD_PORTAL";
+export const PAYLOAD_USERS = "PAYLOAD_USERS";
 
 // Portal
-export const PORTAL_UPDATE_STUDY = "PORTAL_UPDATE_STUDY"; 
+export const PORTAL_UPDATE_STUDY = "PORTAL_UPDATE_STUDY";
 
 // TODO Create a single action for this
 export const PROJECTDETAIL_SET_CLIENT = "PROJECTDETAIL_SET_CLIENT";
@@ -12,7 +13,8 @@ export const PROJECTDETAIL_SET_STATUS = "PROJECTDETAIL_SET_STATUS";
 // Settings
 export const PORTAL_SET_SETTINGS = "PORTAL_SET_SETTINGS";
 export const PROJECTS_SET_SETTINGS = "PROJECTS_SET_SETTINGS";
-export const PROJECTDETAIL_SET_SETTINGS = "PROJECTDETAIL_SET_SETTINGS";
+export const PROJECTDETAIL_SET_SETTINGS =
+  "PROJECTDETAIL_SET_SETTINGS";
 export const TOGGLE_SIDEBAR_SETTINGS = "TOGGLE_SIDEBAR_SETTINGS";
 
 // Globals
@@ -21,7 +23,12 @@ export const FETCHING = "FETCHING";
 export const VIDEO_SET = "VIDEO_SET";
 export const VIDEO_RENDER = "VIDEO_RENDER"; // Used for tracking window.
 
+//Users
+export const DELETE_USER = "DELETE_USER";
+export const CREATE_USER = "CREATE_USER";
+export const EDIT_USER = "EDIT USER";
 export const USER_SET = "USER_SET";
+
 export const ROUTE = "ROUTE";
 
 // Defaults

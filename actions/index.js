@@ -3,6 +3,7 @@ export {
   default as payloadProjectDetail
 } from "./payloadProjectDetail";
 export { default as payloadPortal } from "./payloadPortal";
+export { default as payloadUsers } from "./payloadUsers";
 
 export { default as setProjectProps } from "./setProjectProps";
 export { default as fetchAction } from "./fetchAction";
@@ -31,3 +32,7 @@ export {
 export { default as setDefaultList } from "./setDefaultList";
 export { default as destroyProject } from "./destroyProject";
 export { default as setMetaData } from "./setMetaData";
+//Users
+export { default as deleteUser } from "./deleteUser";
+export { default as createUser } from "./createUser";
+export { default as editUser } from "./editUser";

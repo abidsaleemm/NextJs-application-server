@@ -77,8 +77,6 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
 
     render() {
       const { Enhanced, props } = this;
-      // console.log('props', props);
-
       return <Enhanced {...props} />;
     }
   };

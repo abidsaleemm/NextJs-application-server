@@ -1,28 +1,27 @@
 import React, { Component } from "react";
 import Router from "next/router";
 import { Nav, NavItem, NavLink } from "reactstrap";
-import Link from "next/link";
 
 const RenderUser = () => (
-  <div
+  <li
     className="buttonLink"
     onClick={() => Router.push({ pathname: "/projects" })}
   >
     Projects
-  </div>
+  </li>
 );
 
 const RenderClient = () => (
-  <div
+  <li
     className="buttonLink"
     onClick={() => Router.push({ pathname: "/portal" })}
   >
     Portal
-  </div>
+  </li>
 );
 
 const RenderAdmin = () => (
-  <div>
+  <li>
     <div
       className="buttonLink"
       onClick={() => Router.push({ pathname: "/projects" })}
@@ -35,7 +34,13 @@ const RenderAdmin = () => (
     >
       Portal
     </div>
-  </div>
+    <div
+      className="buttonLink"
+      onClick={() => Router.push({ pathname: "/users" })}
+    >
+      Users
+    </div>
+  </li>
 );
 
 // TODO Might be a hack but works well was not able to solve solution
@@ -64,7 +69,7 @@ export default ({
         `}
       </style>
       <Nav className="nav">
-        <div
+        <li
           className="buttonLink"
           onClick={() =>
             Router.push({
@@ -73,7 +78,7 @@ export default ({
           }
         >
           Logout
-        </div>
+        </li>
         {admin ? (
           <RenderAdmin />
         ) : client === true ? (

@@ -3,8 +3,7 @@ import fs from "fs";
 import sortVertexGroups from "./sortVertexGroups";
 
 export default (segments = []) =>
-  segments
-    .map(segment => importVertebra(segment));
+  segments.map(segment => importVertebra(segment));
 
 // issue-65
 const importVertebra = ({ name: objectName, center }) => {
@@ -23,10 +22,9 @@ const importVertebra = ({ name: objectName, center }) => {
 
     while (i < len) {
       const fi = [];
+
       fi.push(new Vector2(uvs[i + 2][0], uvs[i + 2][1]));
-
       fi.push(new Vector2(uvs[i + 1][0], uvs[i + 1][1]));
-
       fi.push(new Vector2(uvs[i][0], uvs[i][1]));
 
       faceUvs.push(fi);

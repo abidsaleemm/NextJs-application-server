@@ -9,6 +9,7 @@ export default async ({ socket, action }) => {
   const project = await getProject({ studyUID });
   if (project) {
     const { defaultName = "" } = project;
+
     const defaultState =
       defaultName !== ""
         ? await getDefault({ name: defaultName })

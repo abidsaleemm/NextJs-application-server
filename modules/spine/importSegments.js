@@ -30,8 +30,8 @@ export default () => {
     // Make relative
     if (nerveRoot) {
       center.x = tail.x - parent.center.x;
-      center.y = 0;
-      center.z = 0;
+      center.y = tail.y - parent.center.y;
+      center.z = tail.z - parent.center.z;
     }
 
     // Create node

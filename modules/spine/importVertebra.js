@@ -2,8 +2,37 @@ import { Vector2, Vector3 } from "three";
 import fs from "fs";
 import sortVertexGroups from "./sortVertexGroups";
 
-export default (segments = []) =>
-  segments.map(segment => importVertebra(segment));
+export default (segments = []) => {
+  const vertebraPathName = "VertebraPath";
+  const filePath = `modules/spine/models/${vertebraPathName}.json`;
+
+  const data = fs.readFileSync(filePath);
+  if (data) {
+    const metaData = JSON.parse(data);
+    const { ["C1"]: start } = metaData;
+    const vertebraPath = recurseTree(start, "C1");
+
+    return segments.map(segment => {
+      const { name } = segment;
+      const { tail } = vertebraPath.find(v => v.name === name);
+
+      return importVertebra({ ...segment, center: tail });
+    });
+  }
+};
+
+const recurseTree = (bone, name) => {
+  const { tail, children } = bone;
+  const entries = Object.entries(children);
+
+  let ret = [];
+  if (entries.length > 0) {
+    const [[nameChild, next]] = entries;
+    ret = children ? recurseTree(next, nameChild) : [];
+  }
+
+  return [...ret, { name, tail }];
+};
 
 // issue-65
 const importVertebra = ({ name: objectName, center }) => {
@@ -127,7 +156,6 @@ const importVertebra = ({ name: objectName, center }) => {
 
     return {
       faces: faces.map(([a, b, c]) => ({ a, b, c })),
-      // faceUvs: [faceUvs],
       faceUvs,
       vertices: vertices.map(([x, y, z]) => ({ x, y, z })),
       visible: true,

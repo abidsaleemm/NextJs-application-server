@@ -11,14 +11,19 @@ export default async ({ socket, action }) => {
     console.log("Received frame", session, index);
 
     await Promise.all(
-      new Array(numFrames)
-        .fill()
-        .map((v, i) =>
-          saveImage({ session, index: index + i, data: imageBuffer })
-        )
+      new Array(numFrames).fill().map((v, i) =>
+        saveImage({
+          session,
+          index: index + i,
+          data: imageBuffer
+        })
+      )
     );
 
     // Send Action back to start render of next frame
-    socket.emit("action", { type: "CAPTURE_FRAME_DONE", index: index + numFrames });
+    socket.emit("action", {
+      type: "CAPTURE_FRAME_DONE",
+      index: index + numFrames
+    });
   }
 };

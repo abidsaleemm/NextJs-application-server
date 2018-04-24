@@ -11,27 +11,14 @@ import {
   Button,
   FormText
 } from "reactstrap";
-import classNames from "classnames";
-
-// TODO Might be a hack but works well was not able to solve solution
-// const { STAGING: staging = false } = 'undefined' !== typeof window ? window.env : process.env;
 
 export default ({ error = "", staging = false }) => (
-  <section
-    className={classNames({
-      root: true,
-      staging
-    })}
-  >
+  <section className="root">
     <style jsx>
       {`
         .root {
-          background-color: #3079c6;
+          background-color: ${staging ? "#e88834" : "#3079c6"};
           height: 100vh;
-        }
-
-        .staging {
-          background-color: #e88834;
         }
 
         .login_box {
@@ -168,7 +155,11 @@ export default ({ error = "", staging = false }) => (
                     placeholder="Password"
                   />
                 </FormGroup>
-                <Button color="primary" className="login_btn" type="submit">
+                <Button
+                  color="primary"
+                  className="login_btn"
+                  type="submit"
+                >
                   Sign In
                 </Button>
               </Form>

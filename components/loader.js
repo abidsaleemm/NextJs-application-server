@@ -1,13 +1,14 @@
 import React from "react";
-import classNames from 'classnames';
 
+// display: ${fetching ? "flex" : "none"};
 export default ({ fetching = false }) => (
-  <div className={classNames({ loader: true, fetching })}>
+  <div className="loader">
     <style jsx>
       {`
         .loader {
           position: fixed;
-          display: none;
+          display: flex;
+          visibility: ${fetching ? 'visible' : 'hidden'};
           top: 0;
           left: 0;
           width: 100%;
@@ -17,10 +18,6 @@ export default ({ fetching = false }) => (
           z-index: 999999;
           align-items: center;
           justify-content: center;
-        }
-
-        .fetching {
-          display: flex;
         }
       `}
     </style>

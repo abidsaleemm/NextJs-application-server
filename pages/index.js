@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
-import LoginPage from "../components/loginPage";
+import LoginPage from "../components/LoginPage";
 
 const EntryPage = class extends Component {
   static async getInitialProps(props) {

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
 export default connect(
   ({ fetching = false }) => ({

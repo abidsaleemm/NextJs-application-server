@@ -12,7 +12,7 @@ import {
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
-import TableList from "../components/tableList";
+import TableList from "../components/TableList";
 import selectProjectList from "../selectors/selectProjectList";
 
 class ProjectsListing extends Component {

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../actions";
-import Nav from "../components/nav";
-import Styles from "../components/styles";
-import Loader from "../containers/loader"; // TODO Requires a store. Should probably have a check for this.
+import Nav from "../components/Nav";
+import Styles from "../components/Styles";
+import Loader from "../containers/Loader"; // TODO Requires a store. Should probably have a check for this.
 
 // TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
 // Embed in DOM

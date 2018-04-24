@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ErrorDefault from "next/error";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 
 export default class Error extends Component {
   static getInitialProps({ res, err }) {

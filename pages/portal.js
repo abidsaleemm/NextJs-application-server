@@ -7,7 +7,7 @@ import * as actions from "../actions";
 import selectProjectList from "../selectors/selectProjectList";
 
 import Wrapper from "../hoc/wrapper";
-import TableList from "../components/tableList";
+import TableList from "../components/TableList";
 import VideoModal from "../containers/videoModal";
 import UploadFilePopup from "../components/UploadFilePopup";
 import UploadButton from "../components/UploadButton";

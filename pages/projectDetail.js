@@ -9,6 +9,7 @@ import {
   CardText,
   CardLink,
   Button,
+  ButtonGroup,
   Table,
   DropdownToggle,
   DropdownMenu,
@@ -76,7 +77,6 @@ const ProjectDetails = class extends Component {
         sidebarIsOpen,
         studyUID,
         studyName,
-        // multusID,
         patientName,
         patientBirthDate,
         studyDate,
@@ -91,11 +91,15 @@ const ProjectDetails = class extends Component {
 
     // TODO Used for render video will be removed in the future
     const windowName = "renderWindow";
-    // const width = 1920 / 2; // TODO Add a few different presets
-    // const height = 1080 / 2;
     const width = 1920;
     const height = 1080;
+
     const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
+    const windowSettingsDebug = `width=${parseInt(
+      width / 2
+    )},height=${parseInt(
+      height / 2
+    )},resizable=false,toolbar=false,status=false`;
 
     return (
       <div
@@ -128,7 +132,7 @@ const ProjectDetails = class extends Component {
               margin-bottom: 30px;
             }
 
-            .RenderVideo {
+            .renderButton {
               margin-bottom: 10px;
             }
 
@@ -167,18 +171,32 @@ const ProjectDetails = class extends Component {
               <div className="Sidebar-header">
                 <CardTitle>Project Details</CardTitle>
               </div>
-              <div className="RenderVideo">
-                <Button
-                  onClick={() =>
-                    window.open(
-                      `/static/render/?p=${studyUID}`,
-                      windowName,
-                      windowSettings
-                    )
-                  }
-                >
-                  Render Video
-                </Button>
+              <div className="renderButton">
+                <ButtonGroup>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `/static/render/?p=${studyUID}`,
+                        windowName,
+                        windowSettings
+                      )
+                    }
+                  >
+                    Render Video
+                  </Button>
+                  <Button
+                    color="warning"
+                    onClick={() =>
+                      window.open(
+                        `/static/render/?p=${studyUID}&debug=true`,
+                        windowName,
+                        windowSettingsDebug
+                      )
+                    }
+                  >
+                    Debug
+                  </Button>
+                </ButtonGroup>
               </div>
               <Table>
                 <tbody>
@@ -245,7 +263,7 @@ const ProjectDetails = class extends Component {
                     </td>
                   </tr>
                   <tr>
-                  <th scope="row">Patient Name</th>
+                    <th scope="row">Patient Name</th>
                     <td>{patientName}</td>
                   </tr>
                   <tr>

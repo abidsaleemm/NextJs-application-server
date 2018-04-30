@@ -5,7 +5,6 @@ import {
   getProjectSnapshot
 } from "../projects";
 import { route, fetchAction } from "../actions";
-import { getDefault } from "../defaults";
 
 export default async ({
   socket,

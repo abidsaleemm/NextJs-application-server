@@ -1,5 +1,4 @@
-import { getProject } from "../projects";
-import { getDefault } from "../defaults";
+import { getProject, getProjectSnapshot } from "../projects";
 import createProject from "../projects/createProject";
 
 export default async ({ socket, action }) => {
@@ -8,12 +7,15 @@ export default async ({ socket, action }) => {
   // TODO Get default for studyUID
   const project = await getProject({ studyUID });
   if (project) {
-    const { defaultName = "" } = project;
+    const { defaultStudyUID = "" } = project;
 
-    const defaultState =
-      defaultName !== ""
-        ? await getDefault({ name: defaultName })
-        : createProject({ studyUID });
+    const projectSnapShot = await getProjectSnapshot({
+      studyUID: defaultStudyUID
+    });
+
+    const defaultState = projectSnapShot
+      ? projectSnapShot
+      : createProject({ studyUID });
 
     if (defaultState) {
       const actualFunction = new Function(

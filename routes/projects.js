@@ -1,6 +1,5 @@
 import authMiddleware from "../auth/middleware";
 import queryProjectsList from "../helpers/queryProjectsList";
-import { getDefaultList } from "../defaults";
 import { getUserProps } from "../authUsers";
 
 export default ({ server, app }) =>

@@ -4,7 +4,6 @@ import {
   fetchAction,
   setProjectsSettings
 } from "../actions";
-import { getDefaultList } from "../defaults";
 import { getUserProps } from "../authUsers";
 
 export default async ({ socket, user: { admin, id } = {} }) => {

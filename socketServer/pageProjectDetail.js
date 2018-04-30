@@ -6,7 +6,6 @@ import {
   fetchAction,
   setProjectDetailSettings
 } from "../actions";
-import { getDefaultList } from "../defaults";
 import { getUserProps } from "../authUsers";
 
 export default async ({

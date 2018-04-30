@@ -186,6 +186,10 @@ const ProjectDetails = class extends Component {
             .dataDefaultsLabel {
               padding-right: 5px;
             }
+
+            tr {
+              white-space: nowrap;
+            }
           `}
         </style>
         <Sidebar

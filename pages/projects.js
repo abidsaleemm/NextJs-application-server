@@ -125,13 +125,6 @@ class ProjectsListing extends Component {
   }
 }
 
-// TODO Possibly use other header values for admin users.  Might not be needed.
-// defaultName: { title: "Default", sort: true },
-// patientName: { title: "Patient Name", sort: true },
-// modality: { title: "Modality", sort: true },
-// location: { title: "Location", sort: true },
-// client: { title: "Client", sort: true },
-
 const mapStateToProps = ({
   projectsSettings,
   defaultList,
@@ -141,6 +134,7 @@ const mapStateToProps = ({
     action: { title: "", sort: false },
     multusID: { title: "Multus ID", sort: true },
     patientName: { title: "Patient Name", sort: true },
+    patientSex: { title: "Sex", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
     location: { title: "Facility", sort: true },
     status: { title: "Status", sort: true },

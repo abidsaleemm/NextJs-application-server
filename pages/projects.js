@@ -2,41 +2,29 @@ import React, { Component } from "react";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
-import {
-  Button,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Table
-} from "reactstrap";
+import { Button, Table } from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/TableList";
+import DropDownProjects from "../components/DropDownProjects";
 import selectProjectList from "../selectors/selectProjectList";
 
 class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: {
-      projects = [],
-      defaultList = [],
-      projectsSettings = {}
-    } = {}
+    query: { projects = [], projectsSettings = {} } = {}
   }) {
     const {
       payloadProjects,
       fetchAction,
-      setDefaultList,
       setProjectsSettings
     } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadProjects({ projects }));
-      store.dispatch(setDefaultList(defaultList));
       store.dispatch(setProjectsSettings(projectsSettings));
       return;
     }
@@ -49,13 +37,12 @@ class ProjectsListing extends Component {
 
   render() {
     const {
+      props,
       props: {
-        // State
         tableData = [],
         tableHeader = {},
         tableSettings = {},
         defaultList = [],
-        // Actions
         setProjectsSettings = () => {},
         createProject = () => {}
       } = {}
@@ -87,56 +74,13 @@ class ProjectsListing extends Component {
         action: (
           <div>
             {!hasProjectSnapshots ? (
-              // TODO Create as Button dropdown
-              <UncontrolledDropdown>
-                <DropdownToggle caret>Create</DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem key={`dropdown-default-${studyUID}`}>
-                    <Table>
-                      <tbody>
-                        <tr
-                          onClick={() => createProject({ studyUID })}
-                        >
-                          <td>Base</td>
-                          <td />
-                        </tr>
-                        {self
-                          .filter(
-                            ({ hasProjectSnapshots }) =>
-                              hasProjectSnapshots
-                          )
-                          .map(
-                            ({
-                              studyUID: defaultStudyUID,
-                              patientName,
-                              patientBirthDate
-                            }) => {
-                              const age =
-                                new Date().getFullYear() -
-                                new Date(
-                                  patientBirthDate
-                                ).getFullYear();
-
-                              return (
-                                <tr
-                                  onClick={() => {
-                                    createProject({
-                                      studyUID,
-                                      defaultStudyUID
-                                    });
-                                  }}
-                                >
-                                  <td>{patientName}</td>
-                                  <td>{age}</td>
-                                </tr>
-                              );
-                            }
-                          )}
-                      </tbody>
-                    </Table>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <DropDownProjects
+                studyUID={studyUID}
+                projects={self}
+                onClick={defaultStudyUID => {
+                  createProject({ studyUID, defaultStudyUID });
+                }}
+              />
             ) : (
               <Button
                 onClick={() =>

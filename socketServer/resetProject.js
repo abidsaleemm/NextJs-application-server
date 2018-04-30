@@ -1,7 +1,10 @@
-import { setProjectSnapshot, getProject } from "../projects";
-import createProject from '../projects/createProject';
+import {
+  setProjectSnapshot,
+  getProject,
+  getProjectSnapshot
+} from "../projects";
+import createProject from "../projects/createProject";
 import { route, fetchAction } from "../actions";
-import { getDefault } from "../defaults";
 import selectStudy from "../socketEditor/selectStudy";
 
 export default async ({ socket, io, action: { studyUID } = {} }) => {
@@ -12,12 +15,15 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
 
   // Lookup Project
   const project = await getProject({ studyUID });
-  const { defaultName = '' } = project;
+  const { defaultStudyUID = "" } = project;
 
-  const projectDefault =
-    defaultName !== ""
-      ? await getDefault({ name: defaultName })
-      : createProject({ studyUID });
+  const projectSnapShot = await getProjectSnapshot({
+    studyUID: defaultStudyUID
+  });
+
+  const projectDefault = projectSnapShot
+    ? projectSnapShot
+    : createProject({ studyUID });
 
   console.log("Resetting project to default", studyUID);
 
@@ -31,21 +37,23 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
 
   // TODO This is reusable clean up at some point
   const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
-  const clientSockets = Object.values(
-    io.sockets.sockets
-  ).filter(({ rooms = {} }) =>
-    Object.keys(rooms).some(v => v === roomName)
+  const clientSockets = Object.values(io.sockets.sockets).filter(
+    ({ rooms = {} }) => Object.keys(rooms).some(v => v === roomName)
   );
 
-  
-  await Promise.all(clientSockets.map(async clientSocket => {
-    // await socket.emit("action", route({ pathname: "/projects" }));
-    clientSocket.emit("action", {
-      type: "SPINNER_TOGGLE",
-      toggle: true
-    });
-    await selectStudy({ socket: clientSocket, action: { studyUID } });
-  }));
+  await Promise.all(
+    clientSockets.map(async clientSocket => {
+      // await socket.emit("action", route({ pathname: "/projects" }));
+      clientSocket.emit("action", {
+        type: "SPINNER_TOGGLE",
+        toggle: true
+      });
+      await selectStudy({
+        socket: clientSocket,
+        action: { studyUID }
+      });
+    })
+  );
 
   await socket.emit("action", fetchAction(false));
 };

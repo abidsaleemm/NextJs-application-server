@@ -14,6 +14,4 @@ export default ({ server, app }) =>
       ...req.query,
       projectsSettings,
       projects: await queryProjectsList({ admin }),
-      defaultList: await getDefaultList()
-    });
   });

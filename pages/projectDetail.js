@@ -72,6 +72,7 @@ const ProjectDetails = class extends Component {
         studyName,
         patientName,
         patientBirthDate,
+        patientSex,
         studyDate,
         status = 0,
         uploadedFiles = [],
@@ -108,17 +109,24 @@ const ProjectDetails = class extends Component {
 
     const {
       patientName: defaultPatientName,
-      patientSex: defaultPatientSex
+      patientSex: defaultPatientSex,
+      patientBirthDate: defaultPatientBirthDate
     } = selectedDefaultProject;
+
+    // Setting up defaults
+    // TODO Calculate using current date for now
+    const defaultPatientAge =
+      new Date().getFullYear() -
+      new Date(defaultPatientBirthDate).getFullYear();
+
+    const defaultLabel = selectedDefaultProject
+      ? `${defaultPatientName} - ${defaultPatientAge} - ${defaultPatientSex}`
+      : "None";
 
     // TODO Calculate using current date for now
     const patientAge =
       new Date().getFullYear() -
       new Date(patientBirthDate).getFullYear();
-
-    const defaultLabel = selectedDefaultProject
-      ? `${defaultPatientName} - ${patientAge} - ${defaultPatientSex}`
-      : "None";
 
     return (
       <div
@@ -286,7 +294,15 @@ const ProjectDetails = class extends Component {
                     <td>{patientName}</td>
                   </tr>
                   <tr>
-                    <th scope="row">Patient DOB</th>
+                    <th scope="row">Gender</th>
+                    <td>{patientSex}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Age</th>
+                    <td>{patientAge}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">DOB</th>
                     <td>{patientBirthDate}</td>
                   </tr>
 

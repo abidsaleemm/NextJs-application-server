@@ -10,4 +10,3 @@ export { default as fetching } from "./fetching";
 export { default as videoRoute } from "./videoRoute";
 export { default as user } from "./user";
 export { default as userList } from "./userList";
-export { default as defaultList } from "./defaultList";

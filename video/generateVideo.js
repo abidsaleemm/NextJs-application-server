@@ -1,31 +1,33 @@
-import os from 'os';
-import ffmpeg from 'fluent-ffmpeg';
-import fs from 'fs';
-import { Writer, FileWriter, Reader } from 'wav';
+import os from "os";
+import ffmpeg from "fluent-ffmpeg";
+import fs from "fs";
+import { Writer, FileWriter, Reader } from "wav";
 // import { Readable, Writable } from "stream";
 
-import { format } from './saveAudio'; // TODO Clean up maybe make a audio functional piece?
+import { format } from "./saveAudio"; // TODO Clean up maybe make a audio functional piece?
 
 const fps = 30;
 
-const readWav = ({ filePath }) => new Promise((resolve, reject) => {
-  const file = fs.createReadStream(filePath);
-  const reader = new Reader();
+const readWav = ({ filePath }) =>
+  new Promise((resolve, reject) => {
+    const file = fs.createReadStream(filePath);
+    const reader = new Reader();
 
-  const buffers = [];
-  reader.on("data", chunk => {
-    buffers.push(chunk);
+    const buffers = [];
+    reader.on("data", chunk => {
+      buffers.push(chunk);
+    });
+
+    reader.on("end", () => {
+      const buffer = Buffer.concat(buffers);
+      resolve(buffer);
+    });
+
+    file.pipe(reader);
   });
 
-  reader.on("end", () => {
-    const buffer = Buffer.concat(buffers);
-    resolve(buffer);
-  });
-
-  file.pipe(reader);
-});
-
-export default async ({ session, numberImages = 0 }) => { // TODO Use numberFrames var name instead of numberImages
+export default async ({ session, numberImages = 0 }) => {
+  // TODO Use numberFrames var name instead of numberImages
   const videoPath = `${os.tmpdir()}/${session}/video.mp4`;
   const audioPath = `${os.tmpdir()}/${session}/audio.wav`;
   const audioDir = `${os.tmpdir()}/${session}/audio`;
@@ -34,7 +36,7 @@ export default async ({ session, numberImages = 0 }) => { // TODO Use numberFram
   const files = fs.readdirSync(audioDir);
 
   const frames = files.map(fileName => {
-    const frame = parseInt(fileName.substr(0, fileName.indexOf('.')));
+    const frame = parseInt(fileName.substr(0, fileName.indexOf(".")));
     return { frame, fileName };
   });
 
@@ -45,10 +47,12 @@ export default async ({ session, numberImages = 0 }) => { // TODO Use numberFram
   // Is there a better way to do this functionally?
   for (const audio of frames) {
     const { frame, fileName } = audio;
-    const data = await readWav({ filePath: `${audioDir}/${fileName}` });
+    const data = await readWav({
+      filePath: `${audioDir}/${fileName}`
+    });
     const length = buffers.reduce((a, v) => a + v.length, 0);
     const { byteRate } = format;
-    const diff = parseInt((frame / fps) * byteRate) - length;
+    const diff = parseInt(frame / fps * byteRate) - length;
 
     if (diff > 0) {
       buffers.push(new Buffer(diff % 2 === 0 ? diff : diff + 1)); // Align to even bytes
@@ -58,7 +62,9 @@ export default async ({ session, numberImages = 0 }) => { // TODO Use numberFram
   }
 
   const data = Buffer.concat(buffers);
-  console.log('Writing audio file size=', data.length)
+
+  console.log("Writing audio file size=", data.length);
+  
   writer.write(new Buffer(data));
   writer.end();
 
@@ -67,12 +73,14 @@ export default async ({ session, numberImages = 0 }) => { // TODO Use numberFram
       .addInput(`${os.tmpdir()}/${session}/frames/%04d.png`) // TODO Will break if more than 9999 frames
       .inputFPS(fps)
       .addInput(audioPath)
+      .audioCodec("mp2")
+      .outputOptions(["-vprofile main", "-pix_fmt yuv420p"])
       .fps(fps)
-      .on('end', () => {
+      .on("end", () => {
         resolve();
       })
-      .on('error', (err) => {
-        console.log('error' + err.message);
+      .on("error", err => {
+        console.log("error" + err.message);
         reject(err);
       })
       .save(videoPath);

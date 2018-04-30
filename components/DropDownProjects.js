@@ -7,7 +7,7 @@ import {
   Table
 } from "reactstrap";
 
-const RenderRow = ({ patientName, age }) => (
+const RenderRow = ({ patientName, age = "", sex = "" }) => (
   <div className="tableContainer">
     <style jsx>
       {`
@@ -26,9 +26,9 @@ const RenderRow = ({ patientName, age }) => (
         }
       `}
     </style>
-
     <div className="tablePatientName">{patientName}</div>
     <div className="tablePatientAge">{age}</div>
+    <div className="tablePatientAge">{sex}</div>
   </div>
 );
 
@@ -52,7 +52,8 @@ export default ({
             ({
               studyUID: defaultStudyUID,
               patientName,
-              patientBirthDate
+              patientBirthDate,
+              patientSex
             }) => {
               const age =
                 new Date().getFullYear() -
@@ -63,7 +64,11 @@ export default ({
                   key={`project-list-${defaultStudyUID}`}
                   onClick={() => onClick(defaultStudyUID)}
                 >
-                  <RenderRow patientName={patientName} age={age} />
+                  <RenderRow
+                    patientName={patientName}
+                    age={age}
+                    sex={patientSex}
+                  />
                 </DropdownItem>
               );
             }

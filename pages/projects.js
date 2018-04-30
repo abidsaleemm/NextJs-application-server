@@ -58,12 +58,14 @@ class ProjectsListing extends Component {
           hasProjectSnapshots,
           patientID,
           patientName,
+          patientBirthDate,
           ...project
         },
         i,
         self
       ) => ({
         ...project,
+        patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status: statusName,
         tableBackground: status
@@ -95,7 +97,10 @@ class ProjectsListing extends Component {
               </Button>
             )}
           </div>
-        )
+        ),
+        patientAge:
+          new Date().getFullYear() -
+          new Date(patientBirthDate).getFullYear()
       })
     );
 
@@ -134,7 +139,8 @@ const mapStateToProps = ({
     action: { title: "", sort: false },
     multusID: { title: "Multus ID", sort: true },
     patientName: { title: "Patient Name", sort: true },
-    patientSex: { title: "Sex", sort: true },
+    patientAge: { title: "Age", sort: true },
+    patientSex: { title: "Gender", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
     location: { title: "Facility", sort: true },
     status: { title: "Status", sort: true },

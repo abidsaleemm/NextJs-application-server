@@ -7,7 +7,8 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Table
 } from "reactstrap";
 import { initStore } from "../store";
 import * as actions from "../actions";
@@ -62,20 +63,26 @@ class ProjectsListing extends Component {
 
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
-      ({
-        studyUID,
-        status,
-        statusName,
-        hasProjectSnapshots,
-        patientID,
-        patientName,
-        ...project
-      }) => ({
+      (
+        {
+          studyUID,
+          status,
+          statusName,
+          hasProjectSnapshots,
+          patientID,
+          patientName,
+          ...project
+        },
+        i,
+        self
+      ) => ({
         ...project,
         patientName: `${patientName} (${patientID})`,
         status: statusName,
         tableBackground: status
-          ? status === 2 ? "rgba(171, 235, 198, 0.2)" : undefined
+          ? status === 2
+            ? "rgba(171, 235, 198, 0.2)"
+            : undefined
           : "rgba(48, 121, 198, 0.1)",
         action: (
           <div>
@@ -84,22 +91,50 @@ class ProjectsListing extends Component {
               <UncontrolledDropdown>
                 <DropdownToggle caret>Create</DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem
-                    key={`dropdown-default-none`}
-                    onClick={() => createProject({ studyUID })}
-                  >
-                    Base
+                  <DropdownItem key={`dropdown-default-${studyUID}`}>
+                    <Table>
+                      <tbody>
+                        <tr
+                          onClick={() => createProject({ studyUID })}
+                        >
+                          <td>Base</td>
+                          <td />
+                        </tr>
+                        {self
+                          .filter(
+                            ({ hasProjectSnapshots }) =>
+                              hasProjectSnapshots
+                          )
+                          .map(
+                            ({
+                              studyUID: defaultStudyUID,
+                              patientName,
+                              patientBirthDate
+                            }) => {
+                              const age =
+                                new Date().getFullYear() -
+                                new Date(
+                                  patientBirthDate
+                                ).getFullYear();
+
+                              return (
+                                <tr
+                                  onClick={() => {
+                                    createProject({
+                                      studyUID,
+                                      defaultStudyUID
+                                    });
+                                  }}
+                                >
+                                  <td>{patientName}</td>
+                                  <td>{age}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                      </tbody>
+                    </Table>
                   </DropdownItem>
-                  {defaultList.map(defaultName => (
-                    <DropdownItem
-                      key={`dropdown-default-${defaultName}`}
-                      onClick={() =>
-                        createProject({ studyUID, defaultName })
-                      }
-                    >
-                      {defaultName}
-                    </DropdownItem>
-                  ))}
                 </DropdownMenu>
               </UncontrolledDropdown>
             ) : (

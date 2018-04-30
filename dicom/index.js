@@ -18,6 +18,7 @@ const transform = ({
   patientBirthDate = "",
   uploadDateTime,
   referringPhysicianName = "",
+  patientSex = "",
   ...study
 }) => ({
   ...Object.entries(study).reduce(
@@ -36,7 +37,8 @@ const transform = ({
     } catch (e) {
       return "";
     }
-  })()
+  })(),
+  patientSex: patientSex.substring(0,1),
 });
 
 module.exports = (({ getStudies, getStudy, ...adapter }) => ({

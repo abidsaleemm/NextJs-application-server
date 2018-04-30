@@ -48,6 +48,8 @@ export {
           patientName,
           patientID,
           patientBirthDate,
+          patientSex,
+          //   patientAge,
           modality,
           seriesName,
           seriesUID,
@@ -91,6 +93,7 @@ export {
             patientBirthDate,
             modality,
             location,
+            patientSex,
             uploadDateTime,
             clientID: 4
           }

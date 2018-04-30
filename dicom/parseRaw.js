@@ -31,6 +31,8 @@ export default (data, { bypassData = false, path } = {}) => {
       patientName: dataSet.string("x00100010"),
       patientID: dataSet.string("x00100020"),
       patientBirthDate: dataSet.string("x00100030"),
+      patientSex: dataSet.string("x00100040"),
+      patientAge: dataSet.string("x00101010"),
       // Pixel data tags
       bitsAllocated: dataSet.uint16("x00280100"),
       bitsStored: dataSet.uint16("x00280101"),

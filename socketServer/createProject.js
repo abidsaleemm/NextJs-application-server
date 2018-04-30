@@ -1,26 +1,35 @@
 import createProject from "../projects/createProject";
-import { setProject, setProjectSnapshot } from "../projects";
+import {
+  setProject,
+  setProjectSnapshot,
+  getProjectSnapshot
+} from "../projects";
 import { route, fetchAction } from "../actions";
 import { getDefault } from "../defaults";
 
 export default async ({
   socket,
-  action: { studyUID, defaultName = "" } = {}
+  action: { studyUID, defaultStudyUID = "" } = {}
 }) => {
   if (!studyUID) {
     return;
   }
+
   // TODO check if the project already exists if so just load
-  console.log("Creating new project", studyUID, defaultName);
+  console.log("Creating new project", studyUID, defaultStudyUID);
 
   await socket.emit("action", fetchAction(true));
 
+  // TODO Add better error handling
   const project =
-    defaultName !== ""
-      ? await getDefault({ name: defaultName })
+    defaultStudyUID !== ""
+      ? await getProjectSnapshot({ studyUID: defaultStudyUID })
       : createProject({ studyUID });
 
-  await setProject({ studyUID, props: { defaultName, status: 1 } });
+  await setProject({
+    studyUID,
+    props: { defaultStudyUID, status: 1 }
+  });
   await setProjectSnapshot({ studyUID, payload: project });
 
   await socket.emit(

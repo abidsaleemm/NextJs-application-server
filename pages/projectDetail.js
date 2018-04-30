@@ -100,6 +100,26 @@ const ProjectDetails = class extends Component {
       height / 2
     )},resizable=false,toolbar=false,status=false`;
 
+    const selectedDefaultProject =
+      projects.find(
+        ({ studyUID: testStudyUID }) =>
+          defaultStudyUID === testStudyUID
+      ) || {};
+
+    const {
+      patientName: defaultPatientName,
+      patientSex: defaultPatientSex
+    } = selectedDefaultProject;
+
+    // TODO Calculate using current date for now
+    const patientAge =
+      new Date().getFullYear() -
+      new Date(patientBirthDate).getFullYear();
+
+    const defaultLabel = selectedDefaultProject
+      ? `${defaultPatientName} - ${patientAge} - ${defaultPatientSex}`
+      : "None";
+
     return (
       <div
         className="root"
@@ -354,11 +374,7 @@ const ProjectDetails = class extends Component {
             <div className="dataDefaults">
               <div className="dataDefaultsLabel">Set Default</div>
               <DropDownProjects
-                label={
-                  defaultStudyUID !== ""
-                    ? defaultStudyUID
-                    : "Selected Default"
-                }
+                label={defaultLabel}
                 studyUID={studyUID}
                 projects={projects.filter(
                   ({ studyUID: testStudyUID }) =>

@@ -25,6 +25,7 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
+import DropDownProjects from "../components/DropDownProjects";
 
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
@@ -37,13 +38,13 @@ const ProjectDetails = class extends Component {
     query: {
       projectDetail = {},
       projectDetailSettings = {},
-      defaultList = [],
+      projects = {},
       studyUID = ""
     }
   }) {
     const {
       payloadProjectDetail,
-      setDefaultList,
+      payloadProjects,
       setProjectDetailSettings,
       fetchAction
     } = actions;
@@ -51,7 +52,7 @@ const ProjectDetails = class extends Component {
     if (isServer) {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadProjectDetail(projectDetail));
-      store.dispatch(setDefaultList(defaultList));
+      store.dispatch(payloadProjects({ projects }));
       store.dispatch(setProjectDetailSettings(projectDetailSettings));
       return;
     }
@@ -66,14 +67,6 @@ const ProjectDetails = class extends Component {
   render() {
     const {
       props: {
-        // Actions
-        setProjectProps,
-        videoRender,
-        toggleSidebar,
-        resetProject,
-        handleProjectImport,
-        destroyProject,
-        // State
         sidebarIsOpen,
         studyUID,
         studyName,
@@ -82,10 +75,16 @@ const ProjectDetails = class extends Component {
         studyDate,
         status = 0,
         uploadedFiles = [],
-        defaultList = [],
-        defaultName = "",
+        defaultStudyUID = "",
         location,
-        user: { admin = false }
+        user: { admin = false },
+        projects = [],
+        setProjectProps = () => {},
+        videoRender = () => {},
+        toggleSidebar = () => {},
+        resetProject = () => {},
+        handleProjectImport = () => {},
+        destroyProject = () => {}
       }
     } = this;
 
@@ -354,34 +353,22 @@ const ProjectDetails = class extends Component {
             <hr />
             <div className="dataDefaults">
               <div className="dataDefaultsLabel">Set Default</div>
-              <UncontrolledDropdown
-                style={{ width: "100%" }}
-                color="danger"
-              >
-                <DropdownToggle caret style={{ width: "100%" }}>
-                  {defaultName === "" ? "None" : defaultName}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem
-                    key={`default-none`}
-                    onClick={() =>
-                      setProjectProps({ studyUID, defaultName: "" })
-                    }
-                  >
-                    None
-                  </DropdownItem>
-                  {defaultList.map(defaultName => (
-                    <DropdownItem
-                      key={`default-${defaultName}`}
-                      onClick={() =>
-                        setProjectProps({ studyUID, defaultName })
-                      }
-                    >
-                      {defaultName}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <DropDownProjects
+                label={
+                  defaultStudyUID !== ""
+                    ? defaultStudyUID
+                    : "Selected Default"
+                }
+                studyUID={studyUID}
+                projects={projects.filter(
+                  ({ studyUID: testStudyUID }) =>
+                    studyUID !== testStudyUID
+                )}
+                onClick={defaultStudyUID => {
+                  console.log("onclick default", defaultStudyUID);
+                  setProjectProps({ studyUID, defaultStudyUID });
+                }}
+              />
             </div>
             <div />
           </div>
@@ -401,9 +388,9 @@ const ProjectDetails = class extends Component {
 
 const mapStateToProps = ({
   projectDetail,
-  defaultList,
+  projects: { projects },
   projectDetailSettings: { sidebarIsOpen }
-}) => ({ ...projectDetail, sidebarIsOpen, defaultList });
+}) => ({ ...projectDetail, sidebarIsOpen, projects });
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);

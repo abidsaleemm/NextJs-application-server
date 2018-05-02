@@ -71,6 +71,16 @@ export default props => {
             padding-right: 0.2rem;
           }
 
+          .dataCell {
+            white-space: nowrap;
+            padding: 0 3 0 3;
+            margin: 0;
+            vertical-align: middle;
+            height: 0.25em;
+            min-height: 0.25em;
+            min-width: 20px;
+          }
+
           .arrow {
             display: inline-block;
             position: relative;
@@ -151,16 +161,12 @@ export default props => {
                 .map(({ id, data, type, title, action }) => {
                   return (
                     <td
+                      className="dataCell"
                       key={`tableList-tableCell-${id}-${title}`}
                       style={{
                         ...(tableBackground
                           ? { background: tableBackground }
-                          : {}),
-                        whiteSpace: "nowrap",
-                        padding: "0 3 0 3",
-                        margin: 0,
-                        verticalAlign: "middle",
-                        height: "0.25em"
+                          : {})
                       }}
                     >
                       {data !== undefined ? data : null}

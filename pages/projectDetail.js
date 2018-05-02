@@ -119,9 +119,10 @@ const ProjectDetails = class extends Component {
       new Date().getFullYear() -
       new Date(defaultPatientBirthDate).getFullYear();
 
-    const defaultLabel = selectedDefaultProject
-      ? `${defaultPatientName} - ${defaultPatientAge} - ${defaultPatientSex}`
-      : "None";
+    const defaultLabel =
+    defaultStudyUID !== ""
+        ? `${defaultPatientName} - ${defaultPatientAge} - ${defaultPatientSex}`
+        : "None";
 
     // TODO Calculate using current date for now
     const patientAge =
@@ -400,8 +401,7 @@ const ProjectDetails = class extends Component {
                   ({ studyUID: testStudyUID }) =>
                     studyUID !== testStudyUID
                 )}
-                onClick={defaultStudyUID => {
-                  console.log("onclick default", defaultStudyUID);
+                onClick={(defaultStudyUID = "") => {
                   setProjectProps({ studyUID, defaultStudyUID });
                 }}
               />

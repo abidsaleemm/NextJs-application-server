@@ -43,7 +43,7 @@ export default ({
       <DropdownToggle caret>{label}</DropdownToggle>
       <DropdownMenu>
         <DropdownItem onClick={() => onClick()}>
-          <RenderRow patientName="Base" age="" />
+          <RenderRow patientName="None" age="" />
         </DropdownItem>
 
         {projects

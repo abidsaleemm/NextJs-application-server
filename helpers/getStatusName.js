@@ -5,5 +5,6 @@ export default (status = 0) => ((statusNames = ({
     3: 'Injuries',
     4: 'Review',
     5: 'Done',
+    10: 'Sample'
 })) => 
     statusNames[status])();

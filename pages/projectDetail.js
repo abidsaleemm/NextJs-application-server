@@ -120,7 +120,7 @@ const ProjectDetails = class extends Component {
       new Date(defaultPatientBirthDate).getFullYear();
 
     const defaultLabel =
-    defaultStudyUID !== ""
+      defaultStudyUID !== ""
         ? `${defaultPatientName} - ${defaultPatientAge} - ${defaultPatientSex}`
         : "None";
 
@@ -289,6 +289,16 @@ const ProjectDetails = class extends Component {
                             }
                           >
                             {getStatusName(5)}
+                          </DropdownItem>
+                          <DropdownItem
+                            onClick={() =>
+                              setProjectProps({
+                                studyUID,
+                                status: 10
+                              })
+                            }
+                          >
+                            {getStatusName(10)}
                           </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>

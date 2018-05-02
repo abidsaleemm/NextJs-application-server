@@ -4,6 +4,7 @@ import { getUserProps } from "../authUsers";
 import { getProject } from "../projects";
 import getStatusName from "../helpers/getStatusName";
 import { list as uploadList } from "../upload";
+import { videoExists } from "../video";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
   // TODO Do query directly getProjectList instead of filtering with javascript
@@ -44,9 +45,10 @@ export default async ({ clientID = 0, admin = false } = {}) => {
             studyUID,
             client,
             multusID,
+            uploadedList,
             statusName: getStatusName(status || 0),
             status: status || 0,
-            uploadedList
+            videoExists: await videoExists({ studyUID }),
           };
         }
       )

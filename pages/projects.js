@@ -59,6 +59,7 @@ class ProjectsListing extends Component {
           patientID,
           patientName,
           patientBirthDate,
+          videoExists,
           ...project
         },
         i,
@@ -68,8 +69,9 @@ class ProjectsListing extends Component {
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status: statusName,
-        tableBackground:
-          status === 1
+        tableBackground: videoExists
+          ? "rgba(0, 255, 0, 0.5)"
+          : status === 1
             ? "rgba(255, 0, 0, 0.1)"
             : status === 2
               ? "rgba(255, 255, 0, 0.1)"
@@ -109,7 +111,8 @@ class ProjectsListing extends Component {
         ),
         patientAge:
           new Date().getFullYear() -
-          new Date(patientBirthDate).getFullYear()
+          new Date(patientBirthDate).getFullYear(),
+        videoExists: videoExists ? "Yes" : "No"
       })
     );
 
@@ -147,12 +150,13 @@ const mapStateToProps = ({
   tableHeader: {
     action: { title: "", sort: false },
     multusID: { title: "Multus ID", sort: true },
+    status: { title: "Status", sort: true },
+    videoExists: { title: "Video", sort: true },
     patientName: { title: "Patient Name", sort: true },
     patientAge: { title: "Age", sort: true },
     patientSex: { title: "Gender", sort: true },
     patientBirthDate: { title: "Patient DOB", sort: true },
     location: { title: "Facility", sort: true },
-    status: { title: "Status", sort: true },
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },
     uploadDateTime: { title: "Date Uploaded", sort: true }

@@ -69,21 +69,22 @@ class ProjectsListing extends Component {
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status: statusName,
-        tableBackground: videoExists
-          ? "rgba(0, 255, 0, 0.5)"
-          : status === 1
-            ? "rgba(255, 0, 0, 0.1)"
-            : status === 2
-              ? "rgba(255, 255, 0, 0.1)"
-              : status === 3
-                ? "rgba(255, 255, 0, 0.2)"
-                : status === 4
-                  ? "rgba(0, 255, 0, 0.1)"
-                  : status === 5
-                    ? "rgba(0, 255, 0, 0.2)"
-                    : status === 10
-                      ? "rgba(127, 127, 127, 0.2)"
-                      : "rgba(0, 0, 0, 0.0)",
+        tableBackground:
+          videoExists && status !== 10
+            ? "rgba(0, 255, 0, 0.5)"
+            : status === 1
+              ? "rgba(255, 0, 0, 0.1)"
+              : status === 2
+                ? "rgba(255, 255, 0, 0.1)"
+                : status === 3
+                  ? "rgba(255, 255, 0, 0.2)"
+                  : status === 4
+                    ? "rgba(0, 255, 0, 0.1)"
+                    : status === 5
+                      ? "rgba(0, 255, 0, 0.2)"
+                      : status === 10
+                        ? "rgba(127, 127, 127, 0.2)"
+                        : "rgba(0, 0, 0, 0.0)",
         action: (
           <div>
             {!hasProjectSnapshots ? (

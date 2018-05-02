@@ -6,9 +6,8 @@ import { Series, Utils } from "daikon";
 
 export default (data, { bypassData = false, path } = {}) => {
   try {
-    // const dataSet = dicomParser.parseDicom(data);
-    const dataSet = parseDicom(data);
-
+    const dataSet = dicomParser.parseDicom(data);
+    
     const tags = {
       rows: dataSet.uint16("x00280010"),
       columns: dataSet.uint16("x00280011"),

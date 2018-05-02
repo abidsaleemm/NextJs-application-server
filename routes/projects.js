@@ -7,6 +7,7 @@ export default ({ server, app }) =>
     const {
       user: { admin = false, id }
     } = req;
+
     const { projectsSettings } = await getUserProps(id, [
       "projectsSettings"
     ]);

@@ -18,9 +18,12 @@ const reducePatients = studies =>
         studies: studies
           .filter(v => v.patientID === patientID)
           .map(({ // TODO Refactor to remove unused props?
-            studyUID, studyName, studyDate, status, location, client, videoExists, uploadedFiles, multusID, uploadDateTime, modality }) => ({
+            studyUID, studyName = "", studyDate, status, location, client, videoExists, uploadedFiles, multusID, uploadDateTime, modality }) => ({
             studyUID,
-            studyName,
+            studyName:
+              studyName.length > 20
+                ? studyName.substr(0, 20).concat("...")
+                : studyName, // TODO Trim here. Maybe better place or way?
             studyDate,
             status,
             statusName: getStatusName(status || 0),

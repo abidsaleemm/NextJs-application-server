@@ -16,18 +16,22 @@ export default props => {
     onSort = () => {}
   } = props;
 
-  return <div className="root">
+  return (
+    <div className="root">
       <style jsx>
-        {`.root {
+        {`
+          .root {
             display: flex;
             flex-direction: column;
             width: 100%;
             height: 100%;
             overflow: auto;
           }
+
           .fieldFilter {
             padding: 0.4em;
             border: none;
+            min-width: 100px;
           }
 
           .fieldColor {
@@ -96,7 +100,8 @@ export default props => {
 
           .arrow--up {
             transform: rotate(180deg);
-          }`}
+          }
+        `}
       </style>
       <Table hover>
         <thead>
@@ -115,9 +120,9 @@ export default props => {
                     {title}
                     {id === sortKey && sort ? (
                       <div
-                        className={`arrow ${sortDesc
-                          ? "arrow--up"
-                          : null}`}
+                        className={`arrow ${
+                          sortDesc ? "arrow--up" : null
+                        }`}
                       />
                     ) : null}
                   </div>
@@ -138,7 +143,8 @@ export default props => {
                     value={filter[id]}
                     onClear={() => onFilter([id, ""])}
                     onChange={({ target: { value } = {} }) =>
-                      onFilter([id, value])}
+                      onFilter([id, value])
+                    }
                   />
                 ) : null}
               </td>
@@ -162,7 +168,11 @@ export default props => {
                     <td
                       key={`tableList-tableCell-${id}-${title}`}
                       className="dataCell"
-                      style={tableBackground ? { background: tableBackground } : {}}
+                      style={
+                        tableBackground
+                          ? { background: tableBackground }
+                          : {}
+                      }
                     >
                       {data !== undefined ? data : null}
                     </td>
@@ -172,5 +182,6 @@ export default props => {
           ))}
         </tbody>
       </Table>
-    </div>;
+    </div>
+  );
 };

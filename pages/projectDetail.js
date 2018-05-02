@@ -94,7 +94,7 @@ const ProjectDetails = class extends Component {
     const width = 1920;
     const height = 1080;
 
-    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false`;
+    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
     const windowSettingsDebug = `width=${parseInt(
       width / 2
     )},height=${parseInt(

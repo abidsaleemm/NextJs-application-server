@@ -112,15 +112,18 @@ const Portal = class extends Component {
 
     // TODO Move this to prop mapping instead and remove from component class?
     const tableDataEnhanced = tableData.map(
-      ({
-        studyUID,
-        patientID,
-        videoExists = false,
-        patientName,
-        client,
-        patientBirthDate,
-        studies = []
-      }, j) => {
+      (
+        {
+          studyUID,
+          patientID,
+          videoExists = false,
+          patientName,
+          client,
+          patientBirthDate,
+          studies = []
+        },
+        j
+      ) => {
         const studiesEnhanced = studies.map(
           (
             {
@@ -175,9 +178,12 @@ const Portal = class extends Component {
                 </ButtonGroup>
               ),
               video: videoExists ? (
-                <Button onClick={() => setVideo(studyUID)}>
-                  Video
-                </Button>
+                <a
+                  href={`/video/?id=${studyUID}&patientName=${patientName}`}
+                  target="_videoPreview"
+                >
+                  Download Video
+                </a>
               ) : (
                 "No Video"
               )
@@ -189,15 +195,6 @@ const Portal = class extends Component {
           client,
           patientBirthDate,
           patientName: `${patientName} (${patientID})`,
-          invoice: (
-            <a
-              className="btn btn-secondary"
-              target="_pdfPreview"
-              href={`/invoice/?id=${patientID}`}
-            >
-              View invoice
-            </a>
-          ),
           studies: CellTableWrapper(studiesEnhanced, "studyName"),
           multusID: CellTableWrapper(studiesEnhanced, "multusID"),
           studyDate: CellTableWrapper(studiesEnhanced, "studyDate"),
@@ -316,3 +313,9 @@ export default withRedux(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(Portal));
+
+/*
+<Button onClick={() => setVideo(studyUID)}>
+                  Video
+                </Button>
+                */

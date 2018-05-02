@@ -31,7 +31,6 @@ export default props => {
           .fieldFilter {
             padding: 0.4em;
             border: none;
-            min-width: 100px;
           }
 
           .fieldColor {
@@ -61,7 +60,6 @@ export default props => {
           }
 
           .headerCellSort {
-            width: 100%;
             height: 0.25em;
             background: #1bf;
           }
@@ -71,19 +69,6 @@ export default props => {
             justify-content: space-between;
             align-items: center;
             padding-right: 0.2rem;
-          }
-
-          .dataCellSort {
-            background: #e0f4ff;
-          }
-
-          .dataCell {
-            white-space: nowrap;
-            padding: 0 3 0 3;
-            margin: 0;
-            vertical-align: middle;
-            height: 0.25em;
-            min-height: 0.25em;
           }
 
           .arrow {
@@ -167,12 +152,16 @@ export default props => {
                   return (
                     <td
                       key={`tableList-tableCell-${id}-${title}`}
-                      className="dataCell"
-                      style={
-                        tableBackground
+                      style={{
+                        ...(tableBackground
                           ? { background: tableBackground }
-                          : {}
-                      }
+                          : {}),
+                        whiteSpace: "nowrap",
+                        padding: "0 3 0 3",
+                        margin: 0,
+                        verticalAlign: "middle",
+                        height: "0.25em"
+                      }}
                     >
                       {data !== undefined ? data : null}
                     </td>

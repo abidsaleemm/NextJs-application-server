@@ -18,7 +18,7 @@ const CellTableWrapper = (array, key) => (
     style={{
       margin: 0,
       padding: 0,
-      background: "inherit",
+      background: "rgba(0,0,0,0)",
       height: "100%"
     }}
   >
@@ -26,7 +26,7 @@ const CellTableWrapper = (array, key) => (
       {array.map(({ [key]: value }, i) => (
         <tr
           key={`cell-table-wrapper-${key}-${i}`}
-          style={{ background: "inherit" }}
+          style={{ background: "rgba(0,0,0,0)" }}
         >
           <td
             style={{ margin: 0, padding: 0, verticalAlign: "middle" }}
@@ -192,6 +192,9 @@ const Portal = class extends Component {
         );
 
         return {
+          ...(studies.some(({ videoExists }) => videoExists)
+            ? { tableBackground: "rgba(0,255,0,0.2)" }
+            : {}),
           client,
           patientBirthDate,
           patientName: `${patientName} (${patientID})`,

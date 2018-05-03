@@ -5,7 +5,7 @@ export default async ({ socket, action }) => {
 
   if (session) {
     // Decode png image
-    const output = data.replace(/^data:image\/(png|jpg);base64,/, "");
+    const output = data.replace(/^data:image\/(png|jpeg);base64,/, "");
     const imageBuffer = new Buffer(output, "base64");
 
     console.log("Received frame", session, index);

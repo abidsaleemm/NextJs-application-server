@@ -70,7 +70,7 @@ export default async ({ session, numberImages = 0 }) => {
 
   return new Promise((resolve, reject) => {
     const command = ffmpeg()
-      .addInput(`${os.tmpdir()}/${session}/frames/%04d.png`) // TODO Will break if more than 9999 frames
+      .addInput(`${os.tmpdir()}/${session}/frames/%04d.jpg`) // TODO Will break if more than 9999 frames
       .inputFPS(fps)
       .addInput(audioPath)
       .audioCodec("mp2")

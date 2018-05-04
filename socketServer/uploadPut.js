@@ -1,7 +1,7 @@
 import dataUriToBuffer from "data-uri-to-buffer";
 import { Readable } from "stream";
 import { put as uploadPut } from "../upload";
-import pagePortal from "./pagePortal";
+import pageProjects from "./pageProjects";
 import { fetchAction } from "../actions";
 
 export default async ({
@@ -19,5 +19,5 @@ export default async ({
   await uploadPut({ studyUID, name, stream });
   console.log("Upload done", name);
 
-  pagePortal({ socket, user });
+  pageProjects({ socket, user });
 };

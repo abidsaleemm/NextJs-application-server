@@ -64,7 +64,7 @@ export default async ({ session, numberImages = 0 }) => {
   const data = Buffer.concat(buffers);
 
   console.log("Writing audio file size=", data.length);
-  
+
   writer.write(new Buffer(data));
   writer.end();
 
@@ -74,7 +74,11 @@ export default async ({ session, numberImages = 0 }) => {
       .inputFPS(fps)
       .addInput(audioPath)
       .audioCodec("mp2")
-      .outputOptions(["-vprofile main", "-pix_fmt yuv420p"])
+      .outputOptions([
+        "-vprofile main",
+        "-pix_fmt yuv420p",
+        "-threads 1"
+      ])
       .fps(fps)
       .on("end", () => {
         resolve();

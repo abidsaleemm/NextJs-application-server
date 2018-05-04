@@ -1,13 +1,5 @@
 import React, { Component } from "react";
 import {
-  Container,
-  Row,
-  Col,
-  CardBlock,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  CardLink,
   Button,
   ButtonGroup,
   Table,
@@ -30,6 +22,19 @@ import DropDownProjects from "../components/DropDownProjects";
 // TODO Move these to different Area?
 // Remove this and hardcode in render method for now
 import getStatusName from "../helpers/getStatusName";
+
+// TODO This code is duplicated in projects component.  Please clean up.
+// TODO Used for render video will be removed in the future
+const windowName = "renderWindow";
+const width = 1920;
+const height = 1080;
+
+const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
+const windowSettingsDebug = `width=${parseInt(
+  width / 2
+)},height=${parseInt(
+  height / 2
+)},resizable=false,toolbar=false,status=false`;
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -88,18 +93,6 @@ const ProjectDetails = class extends Component {
         destroyProject = () => {}
       }
     } = this;
-
-    // TODO Used for render video will be removed in the future
-    const windowName = "renderWindow";
-    const width = 1920;
-    const height = 1080;
-
-    const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-    const windowSettingsDebug = `width=${parseInt(
-      width / 2
-    )},height=${parseInt(
-      height / 2
-    )},resizable=false,toolbar=false,status=false`;
 
     const selectedDefaultProject =
       projects.find(
@@ -200,9 +193,7 @@ const ProjectDetails = class extends Component {
         >
           <div className="projectDetailLeft">
             <div>
-              <div className="Sidebar-header">
-                <CardTitle>Project Details</CardTitle>
-              </div>
+              <div className="Sidebar-header">Project Details</div>
               <div className="renderButton">
                 <ButtonGroup>
                   <Button

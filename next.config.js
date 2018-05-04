@@ -5,6 +5,7 @@ const webpack = require("webpack");
 module.exports = {
   webpack: (config, { dev }) => {
     if (dev) {
+        // TODO Push plugin?
         new webpack.DefinePlugin({
           // NODE_ENV: JSON.stringify("dev"),
           "process.env.NODE_ENV": JSON.stringify("dev")

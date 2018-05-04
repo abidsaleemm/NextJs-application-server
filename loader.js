@@ -8,8 +8,7 @@ require("@babel/register")({
         }
       }
     ]
-  ],
-  plugins: [["transform-define", { "process.env.STAGING": "true" }]]
+  ]
 });
 require("@babel/polyfill");
 

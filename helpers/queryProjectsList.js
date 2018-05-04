@@ -12,29 +12,24 @@ export default async ({ clientID = 0, admin = false } = {}) => {
   const studies = await getStudies();
 
   const ret = await Promise.all(
-    projects
-      .filter(
-        ({ multusID }) => multusID !== undefined && multusID !== ""
-      )
+    studies
       // TODO Add better permissions for this?
       // .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
-      .map(project => [
-        studies.find(
-          ({ studyUID = "" }) => project.studyUID === studyUID
-        ),
-        project
+      .map(study => [
+        study,
+        projects.find(
+          ({ studyUID = "" }) => study.studyUID === studyUID
+        )
       ])
       .filter(([study]) => study !== undefined)
       .map(
         async ([
-          { studyUID, clientID = 0, ...study } = {},
+          { studyUID, studyName, clientID = 0, ...study } = {},
           { status, ...project } = {}
         ]) => {
           const { name: client } = await getUserProps(clientID, [
             "name"
           ]);
-
-          const uploadedList = await uploadList({ studyUID });
 
           const { multusID = "" } =
             (await getProject({ studyUID })) || {};
@@ -42,19 +37,22 @@ export default async ({ clientID = 0, admin = false } = {}) => {
           return {
             ...project,
             ...study,
+            studyName:
+              studyName.length > 20
+                ? studyName.substr(0, 20).concat("...")
+                : studyName, // TODO Trim here. Maybe better place or way?
             studyUID,
             client,
             multusID,
-            uploadedList,
             statusName: getStatusName(status || 0),
             status: status || 0,
             videoExists: await videoExists({ studyUID }),
+            uploadedFiles: await uploadList({ studyUID })
           };
         }
       )
   );
 
-  return ret.filter(
-    ({ uploadedList = [] }) => uploadedList.length > 0
-  );
+  console.log("ret", ret.length);
+  return ret;
 };

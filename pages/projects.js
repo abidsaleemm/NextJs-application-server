@@ -56,8 +56,6 @@ class ProjectsListing extends Component {
       } = {}
     } = this;
 
-    console.log("tableData", tableData);
-
     // TODO Should this be moved?
     const tableDataEnhanced = tableData.map(
       (
@@ -131,7 +129,7 @@ class ProjectsListing extends Component {
                 }
 
                 .renderTextEncoding {
-                  color: yellow;
+                  color: #b8860b;
                 }
 
                 margin-left: 7px;
@@ -170,8 +168,10 @@ class ProjectsListing extends Component {
               </a>
             ) : encoding !== null ? (
               <div className="renderTextEncoding">
-                Encoding ({new Date() - new Date(encoding)} min.
-                elapsed)})
+                Encoding ({Math.floor(
+                  (new Date() - new Date(encoding)) / 1000 / 60
+                )}{" "}
+                min. elapsed)
               </div>
             ) : (
               <div className="renderText">No</div>

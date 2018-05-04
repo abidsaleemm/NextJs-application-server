@@ -191,20 +191,20 @@ class ProjectsListing extends Component {
                 </ButtonConfirm>
               ) : null}
             </ButtonGroup>
-            {videoExists ? (
-              <a
-                href={`/video/?id=${studyUID}&patientName=${patientName}`}
-                target="_videoPreview"
-              >
-                Download
-              </a>
-            ) : encoding !== null ? (
+            {encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(
                   (new Date() - new Date(encoding)) / 1000 / 60
                 )}{" "}
                 min. elapsed)
               </div>
+            ) : videoExists ? (
+              <a
+                href={`/video/?id=${studyUID}&patientName=${patientName}`}
+                target="_videoPreview"
+              >
+                Download
+              </a>
             ) : (
               <div className="renderText">No</div>
             )}

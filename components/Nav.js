@@ -11,14 +11,14 @@ const RenderUser = () => (
   </li>
 );
 
-const RenderClient = () => (
-  <li
-    className="buttonLink"
-    onClick={() => Router.push({ pathname: "/portal" })}
-  >
-    Portal
-  </li>
-);
+// const RenderClient = () => (
+//   <li
+//     className="buttonLink"
+//     onClick={() => Router.push({ pathname: "/portal" })}
+//   >
+//     Portal
+//   </li>
+// );
 
 const RenderAdmin = () => (
   <li>
@@ -27,12 +27,6 @@ const RenderAdmin = () => (
       onClick={() => Router.push({ pathname: "/projects" })}
     >
       Projects
-    </div>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/portal" })}
-    >
-      Portal
     </div>
     <div
       className="buttonLink"
@@ -79,13 +73,7 @@ export default ({
         >
           Logout
         </li>
-        {admin ? (
-          <RenderAdmin />
-        ) : client === true ? (
-          <RenderClient />
-        ) : (
-          <RenderUser />
-        )}
+        {admin ? <RenderAdmin /> : <RenderUser />}
       </Nav>
     </div>
   );

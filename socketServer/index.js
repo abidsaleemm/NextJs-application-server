@@ -14,3 +14,4 @@ export { default as destroyProject } from "./destroyProject";
 export { default as projectImport } from "./projectImport";
 export { default as setSettings } from "./setSettings";
 export { default as setMetaData } from "./setMetaData";
+export { default as videoDelete } from "./videoDelete";

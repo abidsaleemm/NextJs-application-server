@@ -20,6 +20,7 @@ export {
 
 export { default as toggleSidebar } from "./toggleSidebar";
 export { default as videoRender } from "./videoRender";
+export { default as videoDelete } from "./videoDelete";
 export { default as uploadDel } from "./uploadDel";
 export { default as setUser } from "./setUser";
 export { default as route } from "./route";

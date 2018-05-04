@@ -1,22 +1,34 @@
-import {
-  generateVideo,
-  cleanup,
-  videoSave,
-} from '../video';
+import { generateVideo, cleanup, videoSave } from "../video";
+import { setProject } from "../projects";
 
 export default async ({ socket, action }) => {
-  const { session, numberImages = 0, studyUID = '' } = action;
-  
+  const { session, numberImages = 0, studyUID = "" } = action;
+
   if (session) {
-    console.log('Capture done. Generating video.', studyUID);
-    const ret = await generateVideo({ session, numberImages });
+    console.log("Capture done. Generating video.", studyUID);
 
-    console.log('Saving Video.');
-    await videoSave({ studyUID, session }); 
+    await setProject({
+      studyUID,
+      props: { encoding: new Date().toString() }
+    });
 
-    console.log('Video saved cleaning up resources.');
-    await cleanup({ session });
+    try {
+      const ret = await generateVideo({ session, numberImages });
 
-    console.log('Video done.');
+      console.log("Saving Video.");
+      await videoSave({ studyUID, session });
+
+      console.log("Video saved cleaning up resources.");
+      await cleanup({ session });
+
+      console.log("Video done.");
+    } catch (e) {
+      console.log("Video error.", e);
+    }
+
+    setProject({
+      studyUID,
+      props: { encoding: null }
+    });
   }
 };

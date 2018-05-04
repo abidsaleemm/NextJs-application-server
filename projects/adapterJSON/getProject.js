@@ -1,6 +1,7 @@
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import { path } from "./index";
+import hasProjectSnapshots from "./hasProjectSnapshots";
 
 export default async ({ studyUID = "" }) => {
   if (path === undefined) return;
@@ -14,7 +15,19 @@ export default async ({ studyUID = "" }) => {
     .value();
 
   if (project !== undefined) {
-    const { status = 0, defaultStudyUID, multusID } = project;
-    return { studyUID, status, defaultStudyUID, multusID };
+    const {
+      status = 0,
+      defaultStudyUID,
+      multusID,
+      encoding
+    } = project;
+    return {
+      studyUID,
+      status,
+      defaultStudyUID,
+      multusID,
+      encoding,
+      hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
+    };
   }
 };

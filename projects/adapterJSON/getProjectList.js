@@ -15,11 +15,12 @@ export default async () => {
   // Strip unused props
   return Promise.all(
     projects.map(
-      async ({ studyUID, status, defaultName, multusID }) => ({
+      async ({ studyUID, status, defaultName, multusID, encoding }) => ({
         studyUID,
         status,
         defaultName,
         multusID,
+        encoding,
         hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
       })
     )

@@ -14,12 +14,14 @@ export default async () => {
         RowKey: studyUID,
         status = 0,
         defaultName,
-        multusID
+        multusID,
+        encoding
       }) => ({
         studyUID,
         status,
         defaultName,
         multusID,
+        encoding,
         hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
       })
     )

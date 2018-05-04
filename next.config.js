@@ -1,17 +1,8 @@
 const path = require("path");
 const glob = require("glob");
-const webpack = require("webpack");
 
 module.exports = {
   webpack: (config, { dev }) => {
-    if (dev) {
-        // TODO Push plugin?
-        new webpack.DefinePlugin({
-          // NODE_ENV: JSON.stringify("dev"),
-          "process.env.NODE_ENV": JSON.stringify("dev")
-        })
-    }
-
     config.module.rules.push(
       {
         test: /\.(css|scss)/,
@@ -22,12 +13,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["babel-loader", "raw-loader", "postcss-loader"]
+        use: ["raw-loader", "postcss-loader"]
       },
       {
         test: /\.s(a|c)ss$/,
         use: [
-          "babel-loader",
           "raw-loader",
           "postcss-loader",
           {

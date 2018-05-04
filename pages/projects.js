@@ -10,6 +10,8 @@ import TableList from "../components/TableList";
 import DropDownProjects from "../components/DropDownProjects";
 import selectProjectList from "../selectors/selectProjectList";
 import ButtonConfirm from "../components/ButtonConfirm";
+import UploadFilePopup from "../components/UploadFilePopup";
+import UploadButton from "../components/UploadButton";
 
 // TODO This code is duplicated in projectDetail.  Please clean up.
 const windowName = "renderWindow";
@@ -42,6 +44,32 @@ class ProjectsListing extends Component {
     });
   }
 
+  // TODO Remove handle using redux portalSettings or portal?
+  constructor(props) {
+    super(props);
+
+    // TODO Move to redux?
+    this.state = {
+      popupTarget: null,
+      popupStudyUID: ""
+    };
+  }
+
+  // TODO Move to redux action?
+  popupOpen({ target, studyUID }) {
+    this.setState({
+      popupTarget: target,
+      popupStudyUID: studyUID
+    });
+  }
+
+  // TODO Move to redux action?
+  popupToggle() {
+    this.setState({
+      popupTarget: null
+    });
+  }
+
   render() {
     const {
       props,
@@ -52,8 +80,11 @@ class ProjectsListing extends Component {
         defaultList = [],
         setProjectsSettings = () => {},
         createProject = () => {},
-        videoDelete = () => {}
-      } = {}
+        videoDelete = () => {},
+        uploadDel = () => {},
+        handleUpload = () => {}
+      } = {},
+      state: { popupTarget, popupStudyUID }
     } = this;
 
     // TODO Should this be moved?
@@ -69,6 +100,7 @@ class ProjectsListing extends Component {
           patientBirthDate,
           videoExists,
           encoding = null,
+          uploadedFiles = [],
           ...project
         },
         i,
@@ -177,9 +209,39 @@ class ProjectsListing extends Component {
               <div className="renderText">No</div>
             )}
           </div>
+        ),
+        upload: (
+          <ButtonGroup>
+            {uploadedFiles.length > 0 ? (
+              <Button
+                id={`file-popover-${i}`}
+                color="success"
+                onClick={() =>
+                  this.popupOpen({
+                    studyUID,
+                    target: `file-popover-${i}`
+                  })
+                }
+              >
+                {uploadedFiles.length}
+              </Button>
+            ) : null}
+            <UploadButton
+              studyUID={studyUID}
+              hasFiles={uploadedFiles.length > 0}
+              handleUpload={handleUpload}
+            />
+          </ButtonGroup>
         )
       })
     );
+
+    // Query the study from tableData
+    const study = tableData.find(
+      ({ studyUID = "" }) => studyUID === popupStudyUID
+    );
+
+    const { uploadedFiles = [] } = study || {};
 
     return (
       <div className="projects">
@@ -201,6 +263,18 @@ class ProjectsListing extends Component {
             setProjectsSettings({ filter: { [k]: v } })
           }
           {...tableSettings}
+        />
+        <UploadFilePopup
+          popupTarget={popupTarget}
+          fileList={uploadedFiles}
+          toggle={() => this.popupToggle()}
+          studyUID={popupStudyUID}
+          onDelete={props => {
+            uploadDel(props);
+            if (uploadedFiles.length <= 1) {
+              this.setState({ popupTarget: null });
+            }
+          }}
         />
       </div>
     );
@@ -224,7 +298,8 @@ const mapStateToProps = ({
     studyName: { title: "Study Name", sort: true },
     studyDate: { title: "Study Date", sort: true },
     location: { title: "Facility", sort: true },
-    uploadDateTime: { title: "Date Uploaded", sort: true }
+    uploadDateTime: { title: "Date Uploaded", sort: true },
+    upload: { title: "Attach Records", sort: false }
   },
   tableSettings: projectsSettings,
   tableData: selectProjectList({

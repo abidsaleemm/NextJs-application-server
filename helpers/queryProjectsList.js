@@ -55,6 +55,5 @@ export default async ({ clientID = 0, admin = false } = {}) => {
       )
   );
 
-  console.log("ret", ret.length);
   return ret;
 };

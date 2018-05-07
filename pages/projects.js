@@ -12,6 +12,7 @@ import selectProjectList from "../selectors/selectProjectList";
 import ButtonConfirm from "../components/ButtonConfirm";
 import UploadFilePopup from "../components/UploadFilePopup";
 import UploadButton from "../components/UploadButton";
+import Status from "../components/Status";
 
 // TODO This code is duplicated in projectDetail.  Please clean up.
 const windowName = "renderWindow";
@@ -109,7 +110,7 @@ class ProjectsListing extends Component {
         ...project,
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
-        status: statusName,
+        status: <Status {...{ ...props, status, studyUID }} />,
         tableBackground:
           status === 1
             ? "rgba(255, 0, 0, 0.1)"

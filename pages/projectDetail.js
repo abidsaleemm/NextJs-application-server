@@ -10,6 +10,7 @@ import {
   Input
 } from "reactstrap";
 import Sidebar from "../components/Sidebar";
+import Status from "../components/Status";
 import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
 import { initStore } from "..//store";
@@ -18,10 +19,6 @@ import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
 import DropDownProjects from "../components/DropDownProjects";
-
-// TODO Move these to different Area?
-// Remove this and hardcode in render method for now
-import getStatusName from "../helpers/getStatusName";
 
 // TODO This code is duplicated in projects component.  Please clean up.
 // TODO Used for render video will be removed in the future
@@ -71,6 +68,7 @@ const ProjectDetails = class extends Component {
 
   render() {
     const {
+      props,
       props: {
         sidebarIsOpen,
         studyUID,
@@ -226,73 +224,7 @@ const ProjectDetails = class extends Component {
                   <tr>
                     <th scope="row">Status</th>
                     <td>
-                      <UncontrolledDropdown>
-                        <DropdownToggle caret>
-                          {getStatusName(status)}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 1
-                              })
-                            }
-                          >
-                            {getStatusName(1)}
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 2
-                              })
-                            }
-                          >
-                            {getStatusName(2)}
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 3
-                              })
-                            }
-                          >
-                            {getStatusName(3)}
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 4
-                              })
-                            }
-                          >
-                            {getStatusName(4)}
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 5
-                              })
-                            }
-                          >
-                            {getStatusName(5)}
-                          </DropdownItem>
-                          <DropdownItem
-                            onClick={() =>
-                              setProjectProps({
-                                studyUID,
-                                status: 10
-                              })
-                            }
-                          >
-                            {getStatusName(10)}
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledDropdown>
+                      <Status {...props} />
                     </td>
                   </tr>
                   <tr>

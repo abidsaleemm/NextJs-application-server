@@ -19,7 +19,8 @@ export default async ({ studyUID = "" }) => {
       status = 0,
       defaultStudyUID,
       multusID,
-      encoding
+      encoding,
+      deleted
     } = project;
     return {
       studyUID,
@@ -27,6 +28,7 @@ export default async ({ studyUID = "" }) => {
       defaultStudyUID,
       multusID,
       encoding,
+      deleted,
       hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
     };
   }

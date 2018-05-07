@@ -13,7 +13,13 @@ export default async ({ studyUID = "" }) => {
 
   if (project.length > 0) {
     const {
-      0: { status = 0, defaultStudyUID, multusID, encoding } = {}
+      0: {
+        status = 0,
+        defaultStudyUID,
+        multusID,
+        encoding,
+        deleted
+      } = {}
     } = project;
     return {
       studyUID,
@@ -21,6 +27,7 @@ export default async ({ studyUID = "" }) => {
       defaultStudyUID,
       multusID,
       encoding,
+      deleted,
       hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
     };
   }

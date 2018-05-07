@@ -8,8 +8,10 @@ import { videoExists } from "../video";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
   // TODO Do query directly getProjectList instead of filtering with javascript
-  const projects = await getProjectList();
-  const studies = await getStudies();
+  const [projects, studies] = await Promise.all([
+    getProjectList(),
+    getStudies()
+  ]);
 
   const ret = await Promise.all(
     studies

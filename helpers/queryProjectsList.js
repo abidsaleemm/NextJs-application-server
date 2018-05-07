@@ -23,7 +23,10 @@ export default async ({ clientID = 0, admin = false } = {}) => {
           ({ studyUID = "" }) => study.studyUID === studyUID
         )
       ])
-      .filter(([study]) => study !== undefined)
+      .filter(
+        ([study, { deleted = false} = {}]) =>
+          study !== undefined && deleted !== true
+      )
       .map(
         async ([
           { studyUID, studyName, clientID = 0, ...study } = {},

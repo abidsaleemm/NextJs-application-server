@@ -16,7 +16,7 @@ export default async ({
   });
 
   // Send selected image first
-  const { [location]: {instanceUID} = {} } = imageList;
+  const { [location]: { instanceUID } = {} } = imageList;
 
   if (instanceUID) {
     const data = await getImageData({ instanceUID });
@@ -29,7 +29,7 @@ export default async ({
   }
 
   socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
-  
+
   // Push slice Data in background
   imageList.map(async ({ instanceUID }, i) => {
     if (i === location) {

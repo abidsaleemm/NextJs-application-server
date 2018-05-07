@@ -1,5 +1,4 @@
-import fs from "fs";
-import { path as root, images } from "./";
+import { images } from "./";
 import parseRaw from "../parseRaw";
 
 export default async ({ seriesUID }) => {
@@ -38,5 +37,5 @@ export default async ({ seriesUID }) => {
         windowCenter,
         windowWidth
       })
-    ); // Strip
+    );
 };

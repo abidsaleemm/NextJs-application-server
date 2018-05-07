@@ -11,15 +11,6 @@ const RenderUser = () => (
   </li>
 );
 
-// const RenderClient = () => (
-//   <li
-//     className="buttonLink"
-//     onClick={() => Router.push({ pathname: "/portal" })}
-//   >
-//     Portal
-//   </li>
-// );
-
 const RenderAdmin = () => (
   <li>
     <div
@@ -46,8 +37,8 @@ export default ({
   ...props
 }) => {
   return (
-    <div>
-      <style jsx global>
+    <div className="root">
+      <style jsx>
         {`
           .buttonLink {
             margin: 10px;

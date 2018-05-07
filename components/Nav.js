@@ -37,8 +37,8 @@ export default ({
   ...props
 }) => {
   return (
-    <div className="root">
-      <style jsx>
+    <div>
+      <style jsx global>
         {`
           .buttonLink {
             margin: 10px;

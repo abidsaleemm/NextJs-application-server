@@ -20,6 +20,15 @@ const width = 1920;
 const height = 1080;
 const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
 
+// TODO Move this to a different file
+const RemoveButton = () => (
+  <img
+    width={20}
+    whight={20}
+    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF7SURBVGhD7dnBboJAEMZx7u2zeGmxB5uYAL7/a8iVpde2OzCfYsMCwiw7TeafbGIsZfsrK5o1syzLsqw9q8/nV34Yre/L4YUfxsmV71Vb5HVTfXzyU+LRudsyv7oqL/kp2QjhiuNXWx5//EQuBoYRDc1Bc4ljHhEYspghAqPD+Ln5kG3ReqVLPZzgPmQwY4jb8EtZ7DXTXN5OwYk2YiYRMZbwDKZZM+HuCCSJSYZAEpjkCLQFowaB1mDUIdAzGLUItASjHoGmMfTu/PdTAcaym8OuTf/Xx4ZCBFqOUYxAPSa0lPwHQf8z9QiK/sjwa6Ib+iH91fjnS2s5AsNj/N2Of11HUwheZuHbrxbM9JXol9DsMakxSxB86PyxqTDPIJA6zBoEUoPZgkDJMRIIlAwjiUC7Y2IgEJ/bBc8thZnZoNuEQDOYq9gGHe3BjmyZiiDQGEZ0yxQ9YmQRaIiJgkCEoUsdA4E6TJHX0RAo+pcwvj2+TLIsy7Kse1n2C9LWR7iAvc9TAAAAAElFTkSuQmCC"
+  />
+);
+
 class ProjectsListing extends Component {
   static async getInitialProps({
     store,
@@ -83,7 +92,8 @@ class ProjectsListing extends Component {
         createProject = () => {},
         videoDelete = () => {},
         uploadDel = () => {},
-        handleUpload = () => {}
+        handleUpload = () => {},
+        setProjectProps = () => {}
       } = {},
       state: { popupTarget, popupStudyUID }
     } = this;
@@ -126,7 +136,7 @@ class ProjectsListing extends Component {
                       ? "rgba(127, 127, 127, 0.2)"
                       : "rgba(0, 0, 0, 0.0)",
         action: (
-          <div>
+          <ButtonGroup>
             {!hasProjectSnapshots ? (
               <DropDownProjects
                 studyUID={studyUID}
@@ -148,7 +158,20 @@ class ProjectsListing extends Component {
                 Edit
               </Button>
             )}
-          </div>
+            <ButtonConfirm
+              className="buttonGroupRight"
+              tipID="removeProject"
+              color="warning"
+              message="You are about to remove an uploaded project . Please confirm."
+              onConfirm={() => {
+                console.log("removing project");
+                setProjectProps({ studyUID, deleted: true });
+              }}
+              style={{ borderRadius: "0 5px 5px 0" }}
+            >
+              <RemoveButton />
+            </ButtonConfirm>
+          </ButtonGroup>
         ),
         patientAge:
           new Date().getFullYear() -
@@ -187,8 +210,9 @@ class ProjectsListing extends Component {
                   color="warning"
                   message="You are about to delete a rendered video from this case.  This action can't be undone. Please confirm."
                   onConfirm={() => videoDelete({ studyUID })}
+                  style={{ borderRadius: "0 5px 5px 0" }}
                 >
-                  D
+                  <RemoveButton />
                 </ButtonConfirm>
               ) : null}
             </ButtonGroup>

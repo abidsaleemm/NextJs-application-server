@@ -34,6 +34,7 @@ export default class extends Component {
         message,
         onConfirm = () => {},
         tipID,
+        style,
         ...props
       } = {}
     } = this;
@@ -65,6 +66,7 @@ export default class extends Component {
             })
           }
           onClick={() => this.handleClick()}
+          style={style}
         >
           {confirmed ? "Confirm" : children}
         </Button>

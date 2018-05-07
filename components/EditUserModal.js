@@ -46,7 +46,6 @@ export class CreateUserModal extends Component {
   renderConfirmPassword = () => {
     const { password: statePassword } = this.state;
     const { user: { password: propsPassword } } = this.props;
-    console.log("passwords", propsPassword, statePassword);
 
     return propsPassword !== statePassword ? (
       <FormGroup>

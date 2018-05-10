@@ -216,7 +216,7 @@ class ProjectsListing extends Component {
                 </ButtonConfirm>
               ) : null}
             </ButtonGroup>
-            {encoding !== "" ? (
+            {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(
                   (new Date() - new Date(encoding)) / 1000 / 60

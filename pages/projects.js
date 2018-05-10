@@ -110,7 +110,7 @@ class ProjectsListing extends Component {
           patientName,
           patientBirthDate,
           videoExists,
-          encoding = null,
+          encoding = "",
           uploadedFiles = [],
           ...project
         },
@@ -216,7 +216,7 @@ class ProjectsListing extends Component {
                 </ButtonConfirm>
               ) : null}
             </ButtonGroup>
-            {encoding !== null ? (
+            {encoding !== "" ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(
                   (new Date() - new Date(encoding)) / 1000 / 60

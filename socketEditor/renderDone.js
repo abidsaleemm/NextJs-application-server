@@ -28,7 +28,7 @@ export default async ({ socket, action }) => {
 
     setProject({
       studyUID,
-      props: { encoding: null }
+      props: { encoding: '' }
     });
   }
 };

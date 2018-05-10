@@ -23,6 +23,9 @@ export default props => {
           .root {
             display: flex;
             flex-direction: column;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
           }
 
           .fieldFilter {
@@ -69,7 +72,6 @@ export default props => {
           }
 
           .dataCell {
-            white-space: nowrap;
             padding: 0 3 0 3;
             margin: 0;
             vertical-align: middle;

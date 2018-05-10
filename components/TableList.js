@@ -23,9 +23,6 @@ export default props => {
           .root {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
           }
 
           .fieldFilter {

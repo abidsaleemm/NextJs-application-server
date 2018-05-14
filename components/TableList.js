@@ -42,6 +42,7 @@ export default props => {
             cursor: pointer;
             border: none;
             user-select: none;
+            min-width: 1em;
           }
 
           .headerCellDisabled {
@@ -68,7 +69,7 @@ export default props => {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-right: 0.2rem;
+            padding-right: 0.2em;
           }
 
           .dataCell {

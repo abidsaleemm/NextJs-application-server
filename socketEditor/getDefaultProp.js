@@ -17,6 +17,12 @@ export default async ({ socket, action }) => {
       ? projectSnapShot
       : createProject({ studyUID });
 
+    // TODO Babel here?
+    // const { code } = require("@babel/core").transform(
+    //   func
+    // );
+    // console.log("code", code);
+
     if (defaultState) {
       const actualFunction = new Function(
         `return (${func.toString()})`

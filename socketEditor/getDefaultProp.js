@@ -21,6 +21,7 @@ export default async ({ socket, action }) => {
       const actualFunction = new Function(
         `return (${func.toString()})`
       )();
+
       actualFunction(socket, defaultState, props);
     }
   }

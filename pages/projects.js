@@ -311,7 +311,7 @@ const mapStateToProps = ({
 }) => ({
   tableHeader: {
     action: { title: "", sort: false },
-    multusID: { title: "Multus ID", sort: true },
+    // multusID: { title: "Multus ID", sort: true }, // TODO Maybe only for admins in future?
     status: { title: "Status", sort: true },
     videoOptions: { title: "Rendered", sort: false },
     patientName: { title: "Patient Name", sort: true },

@@ -42,7 +42,7 @@ export default props => {
             cursor: pointer;
             border: none;
             user-select: none;
-            min-width: 1em;
+            min-width: 1.5em;
           }
 
           .headerCellDisabled {

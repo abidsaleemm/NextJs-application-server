@@ -27,9 +27,11 @@ export default class extends Component {
   }
 
   render() {
-    const { state: { confirmed = false, mouseOver = false } } = this;
+    const {
+      state: { confirmed = false, mouseOver = false }
+    } = this;
 
-    const toolTipID = uuid();
+    const toolTipID = "tooltip-file-upload";
 
     return (
       <div id={toolTipID}>
@@ -52,12 +54,13 @@ export default class extends Component {
             }
           `}
         </style>
-        {confirmed ? (
-          <Tooltip placement="top" isOpen={true} target={toolTipID}>
-            Click Again to Confirm
-          </Tooltip>
-        ) : null}
-
+        <Tooltip
+          placement="top"
+          isOpen={confirmed}
+          target={toolTipID}
+        >
+          Click Again to Confirm
+        </Tooltip>
         <svg
           className="checkButton"
           fill="#000000"
@@ -70,14 +73,17 @@ export default class extends Component {
             this.setState({
               mouseOver: false,
               confirmed: false
-            })}
+            })
+          }
           onClick={() => this.handleClick()}
         >
           <path
             className={
               confirmed
                 ? "checkBoxConfirmed"
-                : mouseOver ? "checkBoxHover" : "checkBox"
+                : mouseOver
+                  ? "checkBoxHover"
+                  : "checkBox"
             }
             d="M0 0h24v24H0z"
             stroke="black"

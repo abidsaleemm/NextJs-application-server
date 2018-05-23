@@ -1,13 +1,10 @@
 import { Component } from "react";
-// import withRedux from "next-redux-wrapper";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button } from "reactstrap";
 import EditIcon from "react-icons/lib/md/edit";
 import DeleteIcon from "react-icons/lib/md/delete";
-
 import Wrapper from "../hoc/wrapper";
-// import { initStore } from "../store";
 import * as actions from "../actions";
 import MediaCardIdentity from "../components/MediaCardIdentity";
 import MediaCardHeader from "../components/MediaCardHeader";
@@ -129,8 +126,6 @@ const mapStateToProps = ({ userList }) => ({ userList });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default connect(
-  //   initStore,
-  mapStateToProps,
-  mapDispatchToProps
-)(Wrapper(Users));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  Wrapper(Users)
+);

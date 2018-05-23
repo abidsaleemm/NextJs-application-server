@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-// import withRedux from "next-redux-wrapper";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import { Button, ButtonGroup } from "reactstrap";
-// import { initStore } from "../store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/TableList";
@@ -336,8 +334,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default connect(
-//   initStore,
-  mapStateToProps,
-  mapDispatchToProps
-)(Wrapper(ProjectsListing));
+export default connect(mapStateToProps, mapDispatchToProps)(
+  Wrapper(ProjectsListing)
+);

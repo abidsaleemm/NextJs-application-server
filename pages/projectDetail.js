@@ -11,9 +11,10 @@ import {
 } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
-import withRedux from "next-redux-wrapper";
+import { connect } from "react-redux";
+// import withRedux from "next-redux-wrapper";
 import { bindActionCreators } from "redux";
-import { initStore } from "..//store";
+// import { initStore } from "..//store";
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
@@ -364,8 +365,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default withRedux(
-  initStore,
+export default connect(
+  //   initStore,
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectDetails));

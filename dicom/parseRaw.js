@@ -1,5 +1,4 @@
 import dicomParser from "dicom-parser/build/built";
-// import dicomParser from 'dicom-parser';
 
 // issue-73
 import { Series, Utils } from "daikon";
@@ -7,7 +6,7 @@ import { Series, Utils } from "daikon";
 export default (data, { bypassData = false, path } = {}) => {
   try {
     const dataSet = dicomParser.parseDicom(data);
-    
+
     const tags = {
       rows: dataSet.uint16("x00280010"),
       columns: dataSet.uint16("x00280011"),

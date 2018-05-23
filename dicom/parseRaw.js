@@ -45,7 +45,7 @@ export default (data, { bypassData = false, path } = {}) => {
 
     if (pixelDataElement !== undefined && bypassData === false) {
       const startTime = new Date();
-
+      
       const image = Series.parseImage(
         new DataView(Utils.toArrayBuffer(data))
       );

@@ -313,13 +313,17 @@ const mapStateToProps = ({
     // multusID: { title: "Multus ID", sort: true }, // TODO Maybe only for admins in future?
     status: { title: "Status", sort: true },
     videoOptions: { title: "Rendered", sort: false },
-    patientName: { title: "Patient Name", sort: true },
+    patientName: { title: "Patient Name", sort: true, filter: true },
     patientAge: { title: "Age", sort: true },
     patientSex: { title: "Gender", sort: true },
-    patientBirthDate: { title: "Patient DOB", sort: true },
-    studyName: { title: "Study Name", sort: true },
+    patientBirthDate: {
+      title: "Patient DOB",
+      sort: true,
+      filter: true
+    },
+    studyName: { title: "Study Name", sort: true, filter: true },
     studyDate: { title: "Study Date", sort: true },
-    location: { title: "Facility", sort: true },
+    location: { title: "Facility", sort: true, filter: true },
     uploadDateTime: { title: "Date Uploaded", sort: true },
     upload: { title: "Attach Records", sort: false }
   },

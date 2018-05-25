@@ -126,24 +126,26 @@ export default props => {
             )}
           </tr>
           <tr className="fieldColor">
-            {Object.entries(header).map(([id, { filter }]) => (
-              <td
-                className="fieldFilter"
-                key={`tableList-${id}-filter`}
-              >
-                {!filter ? null : filter[id] !== undefined ? (
-                  <SearchInput
-                    type="text"
-                    name={`filter-${id}`}
-                    value={filter[id]}
-                    onClear={() => onFilter([id, ""])}
-                    onChange={({ target: { value } = {} }) =>
-                      onFilter([id, value])
-                    }
-                  />
-                ) : null}
-              </td>
-            ))}
+            {Object.entries(header).map(
+              ([id, { filter: filterProp = false }]) => (
+                <td
+                  className="fieldFilter"
+                  key={`tableList-${id}-filter`}
+                >
+                  {!filterProp ? null : filter[id] !== undefined ? (
+                    <SearchInput
+                      type="text"
+                      name={`filter-${id}`}
+                      value={filter[id]}
+                      onClear={() => onFilter([id, ""])}
+                      onChange={({ target: { value } = {} }) =>
+                        onFilter([id, value])
+                      }
+                    />
+                  ) : null}
+                </td>
+              )
+            )}
           </tr>
         </thead>
         <tbody>

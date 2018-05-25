@@ -8,15 +8,13 @@ import { videoExists } from "../video";
 
 export default async ({ clientID = 0, admin = false } = {}) => {
   // TODO Do query directly getProjectList instead of filtering with javascript
-  const [projects, studies] = await Promise.all([
+  const [projects = [], studies = []] = await Promise.all([
     getProjectList(),
     getStudies()
   ]);
 
   const ret = await Promise.all(
     studies
-      // TODO Add better permissions for this?
-      // .filter(study => (admin ? true : study.clientID == clientID)) // TODO fix typing or query directly using table storage?
       .map(study => [
         study,
         projects.find(
@@ -24,12 +22,12 @@ export default async ({ clientID = 0, admin = false } = {}) => {
         )
       ])
       .filter(
-        ([study, { deleted = false} = {}]) =>
+        ([study, { deleted = false } = {}]) =>
           study !== undefined && deleted !== true
       )
       .map(
         async ([
-          { studyUID, studyName, clientID = 0, ...study } = {},
+          { studyUID, studyName = "", clientID = 0, ...study } = {},
           { status, ...project } = {}
         ]) => {
           const { name: client } = await getUserProps(clientID, [

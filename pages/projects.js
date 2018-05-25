@@ -272,6 +272,7 @@ class ProjectsListing extends Component {
         <style jsx>
           {`
             .projects {
+              display: flex;
               width: 100%;
               height: 100%;
             }

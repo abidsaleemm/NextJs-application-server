@@ -126,12 +126,12 @@ export default props => {
             )}
           </tr>
           <tr className="fieldColor">
-            {Object.entries(header).map(([id, { sort }]) => (
+            {Object.entries(header).map(([id, { filter }]) => (
               <td
                 className="fieldFilter"
                 key={`tableList-${id}-filter`}
               >
-                {filter[id] !== undefined ? (
+                {!filter ? null : filter[id] !== undefined ? (
                   <SearchInput
                     type="text"
                     name={`filter-${id}`}

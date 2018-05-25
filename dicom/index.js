@@ -20,26 +20,31 @@ const transform = ({
   referringPhysicianName = "",
   patientSex = "",
   ...study
-}) => ({
-  ...Object.entries(study).reduce(
-    (a, [k, v]) => ({ ...a, [k]: v === undefined ? "" : v }),
-    {}
-  ),
-  patientName: patientName.replace(/\^/g, " ").trim(),
-  referringPhysicianName: referringPhysicianName
-    .replace(/\^/g, " ")
-    .trim(),
-  studyDate: parseDate(studyDate),
-  patientBirthDate: parseDate(patientBirthDate),
-  uploadDateTime: (() => {
-    try {
-      return dateFormat(new Date(uploadDateTime), "isoDate");
-    } catch (e) {
-      return "";
-    }
-  })(),
-  patientSex: patientSex.substring(0,1),
-});
+}) => {
+  return {
+    ...Object.entries(study).reduce(
+      (a, [k, v]) => ({ ...a, [k]: v === undefined ? "" : v }),
+      {}
+    ),
+    patientName: patientName.replace(/\^/g, " ").trim(),
+    referringPhysicianName: referringPhysicianName
+      .replace(/\^/g, " ")
+      .trim(),
+    studyDate: parseDate(studyDate),
+    patientBirthDate:
+      patientBirthDate !== ""
+        ? parseDate(patientBirthDate)
+        : undefined,
+    uploadDateTime: (() => {
+      try {
+        return dateFormat(new Date(uploadDateTime), "isoDate");
+      } catch (e) {
+        return "";
+      }
+    })(),
+    patientSex: patientSex.substring(0, 1)
+  };
+};
 
 module.exports = (({ getStudies, getStudy, ...adapter }) => ({
   ...adapter,

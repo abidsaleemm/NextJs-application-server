@@ -31,6 +31,7 @@ export default props => {
           .fieldFilter {
             padding: 0.4em;
             border: none;
+            min-width: 1em;
           }
 
           .fieldColor {

@@ -9,19 +9,12 @@ export default async ({ socket, action }) => {
   if (project) {
     const { defaultStudyUID = "" } = project;
 
-    const projectSnapShot = await getProjectSnapshot({
-      studyUID: defaultStudyUID
-    });
-
-    const defaultState = projectSnapShot
-      ? projectSnapShot
-      : createProject({ studyUID });
-
-    // TODO Babel here?
-    // const { code } = require("@babel/core").transform(
-    //   func
-    // );
-    // console.log("code", code);
+    const defaultState =
+      defaultStudyUID !== ""
+        ? await getProjectSnapshot({
+            studyUID: defaultStudyUID
+          })
+        : createProject({ studyUID });
 
     if (defaultState) {
       const actualFunction = new Function(

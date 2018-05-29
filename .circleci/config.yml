@@ -2,7 +2,7 @@ version: 2
 jobs:
   deploy-production:
     docker:
-      - image: circleci/node # TODO is there better image to use?
+      - image: circleci/node
     working_directory: ~/repo
     steps:
       - checkout

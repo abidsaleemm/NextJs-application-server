@@ -68,6 +68,7 @@ export const getUserProps = async (id = 0, props = []) => {
 };
 
 // TODO should only be for admins?
+// TODO We probably don't need this anymore?
 // Maybe create a more reusable function such as getUserList
 export const getClients = async () =>
   await queryTable({

@@ -65,14 +65,6 @@ export const getUser = async ({ username = "", password = "" }) => {
     : undefined;
 };
 
-// TODO should only be for admins
-// Do we need this at all?
-// export const getClients = async () => {
-//   return users
-//     .filter(({ client }) => client !== undefined)
-//     .map(({ id, name }) => ({ id, name }));
-// };
-
 //Should we... use helpers for these? filter out passwords here?
 export const getUsers = () => {
   return db.get("users");

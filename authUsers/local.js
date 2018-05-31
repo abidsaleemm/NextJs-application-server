@@ -12,32 +12,6 @@ export const defaultUsers = [
     admin: true
   },
   {
-    id: 2,
-    name: "Sandeep Shah",
-    username: "hisandeepshah@gmail.com",
-    password: "test91a",
-    admin: true
-  },
-  {
-    id: 4,
-    name: "NHF",
-    username: "user@nhf.com",
-    password: "test91a",
-    client: true,
-    address: "6781 Hollywood Blvd",
-    city: "Los Angeles",
-    state: "California",
-    zip: "90028",
-    phone: "+1 234-789-4555"
-  },
-  {
-    id: 6,
-    name: "Tharon",
-    username: "tharonica@gmail.com",
-    password: "test91a",
-    admin: true
-  },
-  {
     id: 7,
     name: "Test",
     username: "test@test.com",
@@ -93,11 +67,11 @@ export const getUser = async ({ username = "", password = "" }) => {
 
 // TODO should only be for admins
 // Do we need this at all?
-export const getClients = async () => {
-  return users
-    .filter(({ client }) => client !== undefined)
-    .map(({ id, name }) => ({ id, name }));
-};
+// export const getClients = async () => {
+//   return users
+//     .filter(({ client }) => client !== undefined)
+//     .map(({ id, name }) => ({ id, name }));
+// };
 
 //Should we... use helpers for these? filter out passwords here?
 export const getUsers = () => {

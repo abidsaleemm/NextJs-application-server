@@ -11,10 +11,10 @@ import { getUserProps } from "../authUsers";
 export default async ({
   socket,
   action: { studyUID = "" },
-  user: { id: clientID, admin = false } = {}
+  user: { id: userID, admin = false } = {}
 }) => {
   const projectDetail = await queryProjectDetail({ studyUID });
-  const { projectDetailSettings } = await getUserProps(clientID, [
+  const { projectDetailSettings } = await getUserProps(userID, [
     "projectDetailSettings"
   ]);
 

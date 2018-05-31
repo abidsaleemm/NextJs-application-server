@@ -41,8 +41,6 @@ export default server => {
           return next(loginErr);
         }
 
-        if (req.user.client) return res.redirect("/portal");
-
         return res.redirect("/projects");
       });
     })(req, res, next);

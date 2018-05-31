@@ -7,7 +7,6 @@ export const PAYLOAD_USERS = "PAYLOAD_USERS";
 export const PORTAL_UPDATE_STUDY = "PORTAL_UPDATE_STUDY";
 
 // TODO Create a single action for this
-export const PROJECTDETAIL_SET_CLIENT = "PROJECTDETAIL_SET_CLIENT";
 export const PROJECTDETAIL_SET_STATUS = "PROJECTDETAIL_SET_STATUS";
 
 // Settings

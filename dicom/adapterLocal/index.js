@@ -95,7 +95,6 @@ export {
             location,
             patientSex,
             uploadDateTime,
-            clientID: 4
           }
         };
 

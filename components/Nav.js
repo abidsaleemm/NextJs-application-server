@@ -32,10 +32,7 @@ const RenderAdmin = () => (
 const { STAGING: staging = false } =
   "undefined" !== typeof window ? window.env : process.env;
 
-export default ({
-  user: { client = false, admin = false, name } = {},
-  ...props
-}) => {
+export default ({ user: { admin = false, name } = {}, ...props }) => {
   return (
     <div>
       <style jsx global>

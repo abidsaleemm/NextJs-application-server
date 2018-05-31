@@ -18,8 +18,8 @@ const Wrapper = (
   <div className="root">
     <style jsx global>
       {`
-        @import url('https://fonts.googleapis.com/css?family=Muli');
-        *{
+        @import url("https://fonts.googleapis.com/css?family=Muli");
+        * {
           font-family: Muli;
         }
         .root {
@@ -37,9 +37,9 @@ const Wrapper = (
     <WrappedComponent {...props} />
     <script
       dangerouslySetInnerHTML={{
-        __html: `env = {}; ${STAGING
-          ? "env.STAGING = true;"
-          : "env.STAGING = false;"} `
+        __html: `env = {}; ${
+          STAGING ? "env.STAGING = true;" : "env.STAGING = false;"
+        } `
       }}
     />
   </div>
@@ -57,7 +57,7 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
       const { setUser } = actions;
 
       if (isServer !== undefined) {
-        const { admin = false, client = false } = isServer
+        const { admin = false } = isServer
           ? store.dispatch(setUser(user))
           : store.dispatch({ type: "server/getUser" });
       }

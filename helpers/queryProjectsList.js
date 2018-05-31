@@ -6,7 +6,7 @@ import getStatusName from "../helpers/getStatusName";
 import { list as uploadList } from "../upload";
 import { videoExists } from "../video";
 
-export default async ({ clientID = 0, admin = false } = {}) => {
+export default async ({ admin = false } = {}) => {
   // TODO Do query directly getProjectList instead of filtering with javascript
   const [projects = [], studies = []] = await Promise.all([
     getProjectList(),
@@ -27,13 +27,9 @@ export default async ({ clientID = 0, admin = false } = {}) => {
       )
       .map(
         async ([
-          { studyUID, studyName = "", clientID = 0, ...study } = {},
+          { studyUID, studyName = "", ...study } = {},
           { status, ...project } = {}
         ]) => {
-          const { name: client } = await getUserProps(clientID, [
-            "name"
-          ]);
-
           const { multusID = "" } =
             (await getProject({ studyUID })) || {};
 
@@ -45,7 +41,6 @@ export default async ({ clientID = 0, admin = false } = {}) => {
                 ? studyName.substr(0, 20).concat("...")
                 : studyName, // TODO Trim here. Maybe better place or way?
             studyUID,
-            client,
             multusID,
             statusName: getStatusName(status || 0),
             status: status || 0,

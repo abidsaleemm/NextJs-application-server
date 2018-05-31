@@ -4,7 +4,7 @@ import { payloadPortal } from "../actions";
 export default async ({
   socket,
   action: { studyUID, props } = {},
-  user: { id: clientID, admin } = {}
+  user: { admin } = {}
 }) => {
   setProject({ studyUID, props });
 };

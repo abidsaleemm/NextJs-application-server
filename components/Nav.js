@@ -33,7 +33,7 @@ const { STAGING: staging = false } =
   "undefined" !== typeof window ? window.env : process.env;
 
 export default ({
-  user: { client = false, admin = false } = {},
+  user: { client = false, admin = false, name } = {},
   ...props
 }) => {
   return (
@@ -48,8 +48,13 @@ export default ({
           }
 
           .nav {
+            display: flex;
             background: ${staging ? "#b7632a" : "#3079c6"};
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          }
+
+          .navName {
+            align-self: center;
           }
         `}
       </style>
@@ -65,6 +70,7 @@ export default ({
           Logout
         </li>
         {admin ? <RenderAdmin /> : <RenderUser />}
+        <div className="navName">{`Welcome ${name}`}</div>
       </Nav>
     </div>
   );

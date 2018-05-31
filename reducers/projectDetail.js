@@ -1,12 +1,10 @@
 import {
   PAYLOAD_PROJECTDETAIL,
-  PROJECTDETAIL_SET_CLIENT,
   PROJECTDETAIL_SET_STATUS
 } from "../constants/actionTypes";
 
 export const initialState = {
   status: 0,
-  client: 0,
   studyName: "",
   studyDate: "",
   patientName: "",
@@ -18,7 +16,7 @@ export const initialState = {
 
 export default (
   state = initialState,
-  { type, projectDetail = {}, client = 0, status = 0 }
+  { type, projectDetail = {}, status = 0 }
 ) => {
   switch (type) {
     case PAYLOAD_PROJECTDETAIL:
@@ -26,8 +24,6 @@ export default (
         ...state,
         ...projectDetail
       };
-    case PROJECTDETAIL_SET_CLIENT:
-      return { ...state, client };
     case PROJECTDETAIL_SET_STATUS:
       return { ...state, status };
     default:

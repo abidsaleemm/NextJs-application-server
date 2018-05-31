@@ -9,7 +9,6 @@ const initialState = {
     studyDate: "", // TODO Change type later
     modality: "",
     location: "",
-    client: "",
     uploadDateTime: "",
     multusID: ""
   },

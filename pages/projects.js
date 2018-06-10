@@ -111,6 +111,7 @@ class ProjectsListing extends Component {
           videoExists,
           encoding = "",
           uploadedFiles = [],
+          sample = false,
           ...project
         },
         i,
@@ -258,6 +259,31 @@ class ProjectsListing extends Component {
                 handleUpload={handleUpload}
               />
             </ButtonGroup>
+          ),
+          sample: (
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-around"
+              }}
+            >
+              <input
+                type="checkbox"
+                onChange={({ target: { value } }) => {
+                  setProjectProps({
+                    studyUID,
+                    sample: value === "on"
+                  });
+                }}
+                checked={sample === true}
+                style={{
+                  alignSelf: "center",
+                  width: "20px",
+                  height: "20px"
+                }}
+              />
+            </div>
           )
         };
       }
@@ -316,6 +342,7 @@ const mapStateToProps = ({
     action: { title: "", sort: false },
     // multusID: { title: "Multus ID", sort: true }, // TODO Maybe only for admins in future?
     status: { title: "Status", sort: true },
+    sample: { title: "Sample", sort: true },
     videoOptions: { title: "Rendered", sort: false },
     patientName: { title: "Patient Name", sort: true, filter: true },
     patientAge: { title: "Age", sort: true },
@@ -342,6 +369,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  Wrapper(ProjectsListing)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wrapper(ProjectsListing));

@@ -21,7 +21,8 @@ export default async () => {
         defaultName,
         multusID,
         encoding,
-        deleted
+        deleted,
+        sample
       }) => ({
         studyUID,
         status,
@@ -29,6 +30,7 @@ export default async () => {
         multusID,
         encoding,
         deleted,
+        sample,
         hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
       })
     )

@@ -57,20 +57,23 @@ export const videoLoad = async ({ studyUID }) =>
     );
   });
 
-export const videoExists = ({ studyUID }) =>
-  new Promise((resolve, reject) =>
-    blobService.doesBlobExist(
-      container,
-      studyUID,
-      (err, { exists }) => {
-        if (err) {
-          return reject(err);
-        }
+export const videoExists = ({ studyUID }) => {
+  if (studyUID) {
+    new Promise((resolve, reject) =>
+      blobService.doesBlobExist(
+        container,
+        studyUID,
+        (err, { exists }) => {
+          if (err) {
+            return reject(err);
+          }
 
-        resolve(exists);
-      }
-    )
-  );
+          resolve(exists);
+        }
+      )
+    );
+  }
+};
 
 export const videoDelete = ({ studyUID }) =>
   new Promise((resolve, reject) =>

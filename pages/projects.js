@@ -272,13 +272,7 @@ class ProjectsListing extends Component {
               <input
                 type="checkbox"
                 onChange={({ target: { value } }) => {
-                  console.log("value", value);
-
                   toggleProjectDefault(studyUID);
-                  //   setProjectProps({
-                  //     studyUID,
-                  //     sample: value === "on"
-                  //   });
                 }}
                 checked={sample === true}
                 style={{

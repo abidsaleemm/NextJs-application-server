@@ -28,7 +28,7 @@ export default async ({ admin = false } = {}) => {
       .map(
         async ([
           { studyUID, studyName = "", ...study } = {},
-          { status, ...project } = {}
+          { status, sample = false, ...project } = {}
         ]) => {
           const { multusID = "" } =
             (await getProject({ studyUID })) || {};
@@ -45,7 +45,8 @@ export default async ({ admin = false } = {}) => {
             statusName: getStatusName(status || 0),
             status: status || 0,
             videoExists: await videoExists({ studyUID }),
-            uploadedFiles: await uploadList({ studyUID })
+            uploadedFiles: await uploadList({ studyUID }),
+            sample
           };
         }
       )

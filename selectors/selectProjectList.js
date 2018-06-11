@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import { createSelector } from "reselect";
 
-// TODO Handle this through settings instead
+// TODO Handle this through settings instead?
 const filterByKey = (key, query) =>
   R.filter(item =>
     R.propSatisfies(
@@ -29,12 +29,16 @@ export default createSelector(
       );
 
     // Sort by key: key, cb
-    // TODO Handle this through settings instead
+    // TODO Handle this through settings instead?
     const sortedList = R.sortBy(R.prop(sortKey));
 
     // Set list order
     const orderedList = list => (sortDesc ? R.reverse(list) : list);
 
-    return R.compose(orderedList, sortedList, filteredList)(projects);
+    return R.compose(
+      orderedList,
+      sortedList,
+      filteredList
+    )(projects);
   }
 );

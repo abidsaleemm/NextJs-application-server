@@ -92,7 +92,8 @@ class ProjectsListing extends Component {
         videoDelete = () => {},
         uploadDel = () => {},
         handleUpload = () => {},
-        setProjectProps = () => {}
+        setProjectProps = () => {},
+        toggleProjectDefault = () => {}
       } = {},
       state: { popupTarget, popupStudyUID }
     } = this;
@@ -271,10 +272,13 @@ class ProjectsListing extends Component {
               <input
                 type="checkbox"
                 onChange={({ target: { value } }) => {
-                  setProjectProps({
-                    studyUID,
-                    sample: value === "on"
-                  });
+                  console.log("value", value);
+
+                  toggleProjectDefault(studyUID);
+                  //   setProjectProps({
+                  //     studyUID,
+                  //     sample: value === "on"
+                  //   });
                 }}
                 checked={sample === true}
                 style={{

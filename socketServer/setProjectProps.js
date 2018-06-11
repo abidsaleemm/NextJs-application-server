@@ -7,5 +7,4 @@ export default async ({
   action: { studyUID, ...props } = {}
 }) => {
   await setProject({ studyUID, props });
-  pageProjectDetail({ socket, action: { studyUID } });
 };

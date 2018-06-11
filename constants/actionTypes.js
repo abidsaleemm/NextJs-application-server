@@ -32,3 +32,5 @@ export const ROUTE = "ROUTE";
 
 // Defaults
 export const DEFAULTS_SET_LIST = "DEFAULTS_SET_LIST";
+
+export const SET_PROJECT_PROPS = "SET_PROJECT_PROPS";

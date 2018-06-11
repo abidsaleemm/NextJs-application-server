@@ -9,6 +9,10 @@ export { default as setProjectProps } from "./setProjectProps";
 export { default as fetchAction } from "./fetchAction";
 export { default as setVideo } from "./setVideo";
 
+export {
+  default as toggleProjectDefault
+} from "./toggleProjectDefault";
+
 // Settings
 export { default as setPortalSettings } from "./setPortalSettings";
 export {
@@ -33,6 +37,7 @@ export {
 export { default as setDefaultList } from "./setDefaultList";
 export { default as destroyProject } from "./destroyProject";
 export { default as setMetaData } from "./setMetaData";
+
 //Users
 export { default as deleteUser } from "./deleteUser";
 export { default as createUser } from "./createUser";

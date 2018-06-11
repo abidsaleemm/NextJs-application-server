@@ -38,6 +38,10 @@ export default props => {
             background: #ddd;
           }
 
+          .filterColor {
+            background: #eef;
+          }
+
           .headerCell {
             white-space: nowrap;
             cursor: pointer;
@@ -126,7 +130,7 @@ export default props => {
               )
             )}
           </tr>
-          <tr className="fieldColor">
+          <tr className="filterColor">
             {Object.entries(header).map(
               ([id, { filter: filterProp = false }]) => (
                 <td

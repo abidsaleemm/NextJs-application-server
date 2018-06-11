@@ -59,7 +59,7 @@ export const videoLoad = async ({ studyUID }) =>
 
 export const videoExists = ({ studyUID }) => {
   if (studyUID) {
-    new Promise((resolve, reject) =>
+    return new Promise((resolve, reject) =>
       blobService.doesBlobExist(
         container,
         studyUID,

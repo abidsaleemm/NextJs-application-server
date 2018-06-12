@@ -12,6 +12,8 @@ export default async ({ socket, action }) => {
       props: { encoding: new Date().toString() }
     });
 
+    socket.emit("action", { type: "CAPTURE_CLOSE" });
+
     try {
       const ret = await generateVideo({ session, numberImages });
 
@@ -28,7 +30,7 @@ export default async ({ socket, action }) => {
 
     setProject({
       studyUID,
-      props: { encoding: '' }
+      props: { encoding: "" }
     });
   }
 };

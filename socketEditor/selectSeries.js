@@ -2,8 +2,7 @@ import { getImages, getImageData } from "../dicom";
 
 export default async ({
   socket,
-  action: { seriesUID, location = 0 } = {},
-  sliceIndex = 0
+  action: { seriesUID, location = 0, loadImages = true } = {}
 }) => {
   const imageList = await getImages({
     seriesUID
@@ -18,6 +17,12 @@ export default async ({
   // Send selected image first
   const { [location]: { instanceUID } = {} } = imageList;
 
+  if (!loadImages) {
+    // Bailout
+    socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
+    return;
+  }
+
   if (instanceUID) {
     const data = await getImageData({ instanceUID });
 
@@ -26,9 +31,9 @@ export default async ({
       index: location,
       data
     });
-  }
 
-  socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
+    socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
+  }
 
   // Push slice Data in background
   imageList.map(async ({ instanceUID }, i) => {

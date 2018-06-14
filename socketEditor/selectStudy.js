@@ -3,7 +3,7 @@ import { getSeries, getImages, getImageData } from "../dicom";
 import selectSeries from "./selectSeries";
 
 export default async ({ socket, action }) => {
-  const { studyUID } = action;
+  const { studyUID, loadImages } = action;
   console.log("studyUID", studyUID); // TODO Used for debugging / logging
 
   const project = await getProjectSnapshot({ studyUID });
@@ -14,9 +14,10 @@ export default async ({ socket, action }) => {
   }
 
   const dicomSeries = (await getSeries({ studyUID })).filter(
-    ({ seriesName }) => seriesName !== undefined && seriesName !== null
+    ({ seriesName }) =>
+      seriesName !== undefined && seriesName !== null
   );
-  
+
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
   const { selectedSeries: projectSelectedSeries } = project;
@@ -33,7 +34,7 @@ export default async ({ socket, action }) => {
       ...project,
       selectedSeries,
       dicomSeries,
-      studyUID,
+      studyUID
     }
   });
 
@@ -42,7 +43,7 @@ export default async ({ socket, action }) => {
   if (dicomSeries.length > 0) {
     await selectSeries({
       socket,
-      action: { seriesUID: selectedSeries, location }
+      action: { seriesUID: selectedSeries, location, loadImages }
     });
   }
 };

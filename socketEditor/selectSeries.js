@@ -60,6 +60,7 @@ export default async ({
     }))
     .filter(({ index }) => index !== sliceLocation);
 
+  // TODO Sort images from sliceLocation outward
   const pool = new PromisePool(() => {
     if (imageListEnhanced.length <= 0) {
       return null;

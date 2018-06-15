@@ -28,22 +28,29 @@ export default async ({ socket, action }) => {
     ? projectSelectedSeries
     : firstSeriesUID;
 
-  await socket.emit("action", {
-    type: "PROJECT_PAYLOAD",
-    project: {
-      ...project,
-      selectedSeries,
-      dicomSeries,
-      studyUID
-    }
+  // Send Payload first
+  await new Promise((resolve, reject) => {
+    socket.emit(
+      "action",
+      {
+        type: "PROJECT_PAYLOAD",
+        project: {
+          ...project,
+          selectedSeries,
+          dicomSeries,
+          studyUID
+        }
+      },
+      err => (err ? reject() : resolve())
+    );
   });
 
-  const { slice: { location = 0 } = {} } = project;
+  const { sliceLocation = 0 } = project;
 
   if (dicomSeries.length > 0) {
-    await selectSeries({
+    selectSeries({
       socket,
-      action: { seriesUID: selectedSeries, location, loadImages }
+      action: { seriesUID: selectedSeries, sliceLocation, loadImages }
     });
   }
 };

@@ -39,6 +39,7 @@
     "dateformat": "3.0.3",
     "dicom-parser": "1.7.6",
     "dotenv": "5.0.1",
+    "es6-promise-pool": "^2.5.0",
     "express": "4.16.3",
     "express-session": "1.15.6",
     "fluent-ffmpeg": "2.1.2",

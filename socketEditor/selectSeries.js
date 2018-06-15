@@ -1,21 +1,29 @@
 import { getImages, getImageData } from "../dicom";
+// import asyncForEach from "../helpers/asyncForEach";
+import PromisePool from "es6-promise-pool";
 
 export default async ({
   socket,
-  action: { seriesUID, location = 0, loadImages = true } = {}
+  action: { seriesUID, sliceLocation = 0, loadImages = true } = {}
 }) => {
   const imageList = await getImages({
     seriesUID
   });
 
   // TODO If slice index then load first
-  await socket.emit("action", {
-    type: "VOLUME_SET",
-    volume: imageList
+  await new Promise((resolve, reject) => {
+    socket.emit(
+      "action",
+      {
+        type: "VOLUME_SET",
+        volume: imageList
+      },
+      err => (err ? reject() : resolve())
+    );
   });
 
   // Send selected image first
-  const { [location]: { instanceUID } = {} } = imageList;
+  const { [sliceLocation]: { instanceUID } = {} } = imageList;
 
   if (!loadImages) {
     // Bailout
@@ -26,27 +34,62 @@ export default async ({
   if (instanceUID) {
     const data = await getImageData({ instanceUID });
 
-    socket.emit("action", {
-      type: "VOLUME_SLICE_DATA",
-      index: location,
-      data
+    await new Promise((resolve, reject) => {
+      socket.emit(
+        "action",
+        {
+          type: "VOLUME_SLICE_DATA",
+          index: sliceLocation,
+          data
+        },
+        err => (err ? reject() : resolve())
+      );
     });
-
-    socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
   }
 
-  // Push slice Data in background
-  imageList.map(async ({ instanceUID }, i) => {
-    if (i === location) {
-      return;
+  socket.emit("action", {
+    type: "SPINNER_TOGGLE",
+    toggle: false
+  });
+
+  const concurrency = 3;
+  const imageListEnhanced = imageList
+    .map((v, i) => ({
+      ...v,
+      index: i
+    }))
+    .filter(({ index }) => index !== sliceLocation);
+
+  const pool = new PromisePool(() => {
+    if (imageListEnhanced.length <= 0) {
+      return null;
     }
 
-    const data = await getImageData({ instanceUID });
+    const { instanceUID, index } = imageListEnhanced.pop();
+    return new Promise(async (resolve, reject) => {
+      const data = await getImageData({ instanceUID });
 
-    socket.emit("action", {
-      type: "VOLUME_SLICE_DATA",
-      index: i,
-      data
+      socket.emit(
+        "action",
+        {
+          type: "VOLUME_SLICE_DATA",
+          index,
+          data
+        },
+        err => (err ? reject() : resolve())
+      );
     });
-  });
+  }, concurrency);
+
+  const poolPromise = pool.start();
+
+  // Wait for the pool to settle.
+  poolPromise.then(
+    () => {
+      console.log("All images loaded");
+    },
+    ({ message }) => {
+      console.log(`Error ${message}`);
+    }
+  );
 };

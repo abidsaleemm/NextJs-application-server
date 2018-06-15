@@ -28,6 +28,7 @@ export default async ({
   if (!loadImages) {
     // Bailout
     socket.emit("action", { type: "SPINNER_TOGGLE", toggle: false });
+    socket.emit("action", { type: "VOLUME_LOADED" });
     return;
   }
 
@@ -88,6 +89,7 @@ export default async ({
   poolPromise.then(
     () => {
       console.log("All images loaded");
+      socket.emit("action", { type: "VOLUME_LOADED" });
     },
     ({ message }) => {
       console.log(`Error ${message}`);

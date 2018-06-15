@@ -14,9 +14,9 @@ export default ({
   sessionMiddleWare = () => {}
 }) => {
   const socketio = new Server({
-    pingTimeout: 120000,
+    pingTimeout: 60000,
     transports: ["websocket"],
-    pingInterval: 30000
+    pingInterval: 10000
   });
 
   const io = socketio.listen(server);

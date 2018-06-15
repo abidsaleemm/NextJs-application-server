@@ -8,7 +8,7 @@ export default async ({ socket, action }) => {
     const output = data.replace(/^data:image\/(png|jpeg);base64,/, "");
     const imageBuffer = new Buffer(output, "base64");
 
-    console.log("Received frame", session, index);
+    console.log("Received frame", session, index, numFrames);
 
     await Promise.all(
       new Array(numFrames).fill().map((v, i) =>

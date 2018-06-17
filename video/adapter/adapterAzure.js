@@ -2,8 +2,8 @@ import azure from "azure-storage";
 
 // TODO Move this under helpers?  Reusable.
 export const blobService = azure.createBlobService(
-  process.env.STORAGE,
-  process.env.STORAGE_KEY
+  process.env.STORAGE_ACCOUNT,
+  process.env.STORAGE_ACCOUNT_KEY
 );
 
 const container = "videos";

@@ -1,6 +1,6 @@
 # Multus Server Application
 
-TODO Add more description 
+TODO Add more description
 
 ## Requirements:
 
@@ -20,9 +20,9 @@ TODO Add more description
 ## Directory structure
 
 ```
-. 
-├─ actions      - Redux actions. 
-├─ api          - API based functions here.               
+.
+├─ actions      - Redux actions.
+├─ api          - API based functions here.
 ├─ auth         - PassportJS strategy functions and user based functions.
 ├─ components   - Reusable React components are declared here.
 ├─ constants    - Redux action types defined here.
@@ -40,7 +40,6 @@ TODO Add more description
 ├─ styles       - SCSS style sheets for front-end components. Global sheets also.
 └─ video       - Video Rendering processing code.
 ```
-
 
 # Live site
 
@@ -60,21 +59,19 @@ pass: test91a
 
 Access keys to storage accounts need to be set as environment vars.
 
-*Note:  These do not apply if you are locally testing. This is required for Azure testing.*
+_Note: These do not apply if you are locally testing. This is required for Azure testing._
 
 Below is an example env file.
 
 ```bash
 # Required
-STORAGE=multus
-STORAGE_KEY=$KEY
-STORAGE2=nhf        # Used to grab DICOM files from NHF file storage account for now.  
-STORAGE2_KEY=$KEY   # Used to grab DICOM files from NHF file storage account for now.  
+STORAGE_ACCOUNT=multus
+STORAGE_ACCOUNT_KEY=$KEY
 
 # Optional
-DICOM_CONTAINER=dicom   # default 'dicom'
+CONTAINER_NAME=dicom   # default 'dicom'
 PROJECT_TABLE=projects  # default 'projects'
-DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.   
+DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.
 ```
 
 ## Project storage
@@ -86,48 +83,48 @@ Snapshots contain an application state payload.
 Adapter functions:
 
 ```javascript
-getProject({ studyUID })
-getProjectList()
-getProjectSnapshot({ studyUID })
-setProjectSnapshot({ studyUID, payload })
-setProject({ studyUID, props })
+getProject({ studyUID });
+getProjectList();
+getProjectSnapshot({ studyUID });
+setProjectSnapshot({ studyUID, payload });
+setProject({ studyUID, props });
 ```
 
 ### Local (used for testing without internet)
 
 TODO Add description
 
-### Azure Storage 
+### Azure Storage
 
 TODO Add description
 
 ## DICOM storage
 
-TODO Add description.  Add return object structure.
+TODO Add description. Add return object structure.
 
 Adapter functions:
 
 ```javascript
-getImages({ seriesUID })
-getSeries({ studyUID })
-getStudies()
-getStudy({ studyUID })
+getImages({ seriesUID });
+getSeries({ studyUID });
+getStudies();
+getStudy({ studyUID });
 ```
 
 ### Local (used for testing without internet)
 
-Local DICOM storage contains no database, but instead just scans all the DICOM files inside a set directory on startup.  This is only recommended with a high speed SSD drive and is very inefficient and only recommended for testing purposes.
+Local DICOM storage contains no database, but instead just scans all the DICOM files inside a set directory on startup. This is only recommended with a high speed SSD drive and is very inefficient and only recommended for testing purposes.
 
 ### Azure
 
-Three tables contain the DICOM lookup information stored using Azure Table Storage. 
+Three tables contain the DICOM lookup information stored using Azure Table Storage.
 
-*Note: default for DICOM_CONTAINER is "dicom"*
+_Note: default for CONTAINER_NAME is "dicom"_
 
 ```
-{DICOM_CONTAINER}Studies
-{DICOM_CONTAINER}Series
-{DICOM_CONTAINER}Images
+{CONTAINER_NAME}Studies
+{CONTAINER_NAME}Series
+{CONTAINER_NAME}Images
 ```
 
 TODO Add additional information regarding PartitionKey and Rowkey.
@@ -142,7 +139,7 @@ yarn install
 
 ## Testing locally
 
-The following yarn commands can be ran to test the app locally.  You can specify which adapter you want to use for testing.
+The following yarn commands can be ran to test the app locally. You can specify which adapter you want to use for testing.
 
 ```
 yarn local   # Test using local DB adapters.  Requires no internet connection.
@@ -159,7 +156,7 @@ The deployment script will build a docker image and push to Docker Hub. After th
 
 ## Manual deployment commands
 
-Login using the following commands if not already.  NOTE: You might have to sudo.
+Login using the following commands if not already. NOTE: You might have to sudo.
 
 ```sh
 docker login -u $DOCKER_USER -p "$DOCKER_PASS"

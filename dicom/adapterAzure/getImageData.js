@@ -10,7 +10,7 @@ function swap16(val) {
 
 export default async ({ instanceUID }) => {
   const imageData = await pullBlob({
-    container: `${process.env.DICOM_CONTAINER}-cache`,
+    container: `${process.env.CONTAINER_NAME}-cache`,
     blobName: instanceUID
   });
 

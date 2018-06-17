@@ -4,8 +4,8 @@ const containerName = "uploads";
 
 // TODO Should be moved to helpers? Reused other places
 const blobService = azure.createBlobService(
-  process.env.STORAGE,
-  process.env.STORAGE_KEY
+  process.env.STORAGE_ACCOUNT,
+  process.env.STORAGE_ACCOUNT_KEY
 );
 
 // TODO Should be moved to helpers? Reused other places

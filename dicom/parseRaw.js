@@ -38,14 +38,18 @@ export default (data, { bypassData = false, path } = {}) => {
       // Pixel data tags
       bitsAllocated: dataSet.uint16("x00280100"),
       bitsStored: dataSet.uint16("x00280101"),
-      highBit: dataSet.uint16("x00280102")
+      highBit: dataSet.uint16("x00280102"),
+      // Extra tags
+      institutionName: dataSet.string("x00080080"),
+      manufacturer: dataSet.string("x00080070"),
+      referringPhysicianName: dataSet.string("x00080090")
     };
 
     const pixelDataElement = dataSet.elements.x7fe00010;
 
     if (pixelDataElement !== undefined && bypassData === false) {
       const startTime = new Date();
-      
+
       const image = Series.parseImage(
         new DataView(Utils.toArrayBuffer(data))
       );

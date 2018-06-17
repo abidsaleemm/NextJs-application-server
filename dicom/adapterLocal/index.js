@@ -69,7 +69,9 @@ export {
           pixelSpacing,
           sliceThickness,
           windowCenter,
-          windowWidth
+          windowWidth,
+          institutionName,
+          manufacturer
         } = parseRaw(data, { bypassData: true, path: newPath });
 
         if (
@@ -94,7 +96,7 @@ export {
             modality,
             location,
             patientSex,
-            uploadDateTime,
+            uploadDateTime
           }
         };
 
@@ -104,7 +106,16 @@ export {
             studyUID,
             seriesName,
             seriesUID,
-            patientID
+            patientID,
+            // Extra props
+            patientName,
+            patientSex,
+            patientBirthDate,
+            studyName,
+            studyDate,
+            modality,
+            institutionName,
+            manufacturer
           }
         };
 

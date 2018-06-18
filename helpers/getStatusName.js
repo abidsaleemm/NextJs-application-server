@@ -6,6 +6,8 @@ export default (status = 0) =>
       2: "Segmentation",
       3: "Injuries",
       4: "Review",
-      5: "Done"
+      5: "Done",
+      6: "Rendered",
+      7: "Delivered"
     }
   ) => statusNames[status])();

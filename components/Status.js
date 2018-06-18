@@ -66,11 +66,21 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 10
+              status: 6
             })
           }
         >
-          {getStatusName(10)}
+          {getStatusName(6)}
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectProps({
+              studyUID,
+              status: 7
+            })
+          }
+        >
+          {getStatusName(7)}
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

@@ -3,7 +3,6 @@ import queryProjectsList from "../helpers/queryProjectsList";
 import {
   payloadProjectDetail,
   payloadProjects,
-  fetchAction,
   setProjectDetailSettings
 } from "../actions";
 import { getUserProps } from "../authUsers";
@@ -13,20 +12,19 @@ export default async ({
   action: { studyUID = "" },
   user: { id: userID, admin = false } = {}
 }) => {
+  // TODO Optimize loading
   const projectDetail = await queryProjectDetail({ studyUID });
   const { projectDetailSettings } = await getUserProps(userID, [
     "projectDetailSettings"
   ]);
 
-  await socket.emit("action", payloadProjectDetail(projectDetail));
+  socket.emit("action", payloadProjectDetail(projectDetail));
 
   const projects = await queryProjectsList({ admin });
-  await socket.emit("action", payloadProjects({ projects }));
+  socket.emit("action", payloadProjects({ projects }));
 
-  await socket.emit(
+  socket.emit(
     "action",
     setProjectDetailSettings(projectDetailSettings)
   );
-
-  socket.emit("action", fetchAction(false));
 };

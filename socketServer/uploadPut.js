@@ -9,7 +9,8 @@ export default async ({
   action: { data, studyUID, name } = {},
   user
 }) => {
-  await socket.emit("action", fetchAction(true));
+//   socket.emit("action", fetchAction(true));
+
   const decoded = dataUriToBuffer(data);
 
   const stream = new Readable();
@@ -19,5 +20,6 @@ export default async ({
   await uploadPut({ studyUID, name, stream });
   console.log("Upload done", name);
 
+  socket.emit("action", fetchAction(false));
   pageProjects({ socket, user });
 };

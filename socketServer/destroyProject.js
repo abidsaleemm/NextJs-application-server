@@ -1,5 +1,5 @@
 import { destroyProject } from "../projects";
-import { route, fetchAction } from "../actions";
+import { route } from "../actions";
 
 export default async ({ socket, action: { studyUID } = {} }) => {
   if (!studyUID) {
@@ -9,5 +9,5 @@ export default async ({ socket, action: { studyUID } = {} }) => {
   console.log("Destroying project", studyUID);
 
   await destroyProject({ studyUID });
-  await socket.emit("action", route({ pathname: "/projects" }));
+  socket.emit("action", route({ pathname: "/projects" }));
 };

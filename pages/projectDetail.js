@@ -46,8 +46,7 @@ const ProjectDetails = class extends Component {
     const {
       payloadProjectDetail,
       payloadProjects,
-      setProjectDetailSettings,
-      fetchAction
+      setProjectDetailSettings
     } = actions;
 
     if (isServer) {
@@ -58,7 +57,6 @@ const ProjectDetails = class extends Component {
       return;
     }
 
-    store.dispatch(fetchAction(true));
     store.dispatch({
       type: "server/pageProjectDetail",
       studyUID
@@ -363,6 +361,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  Wrapper(ProjectDetails)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wrapper(ProjectDetails));

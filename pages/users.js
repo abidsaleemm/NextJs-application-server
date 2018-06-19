@@ -22,7 +22,7 @@ class Users extends Component {
     isServer,
     query: { users = [] }
   }) {
-    const { payloadUsers, fetchAction } = actions;
+    const { payloadUsers } = actions;
 
     if (isServer) {
       //TODO Should we wrap these in a single action?
@@ -30,7 +30,6 @@ class Users extends Component {
       return;
     }
 
-    store.dispatch(fetchAction(true));
     store.dispatch({ type: "server/pageUsers" });
   }
 
@@ -126,6 +125,7 @@ const mapStateToProps = ({ userList }) => ({ userList });
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  Wrapper(Users)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Wrapper(Users));

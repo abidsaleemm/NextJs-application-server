@@ -34,11 +34,7 @@ class ProjectsListing extends Component {
     isServer,
     query: { projects = [], projectsSettings = {} } = {}
   }) {
-    const {
-      payloadProjects,
-      fetchAction,
-      setProjectsSettings
-    } = actions;
+    const { payloadProjects, setProjectsSettings } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
@@ -47,7 +43,6 @@ class ProjectsListing extends Component {
       return;
     }
 
-    store.dispatch(fetchAction(true));
     store.dispatch({
       type: "server/pageProjects"
     });

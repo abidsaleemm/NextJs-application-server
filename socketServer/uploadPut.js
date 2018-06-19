@@ -9,8 +9,6 @@ export default async ({
   action: { data, studyUID, name } = {},
   user
 }) => {
-//   socket.emit("action", fetchAction(true));
-
   const decoded = dataUriToBuffer(data);
 
   const stream = new Readable();

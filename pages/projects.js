@@ -132,7 +132,7 @@ class ProjectsListing extends Component {
                       : status === 6
                         ? "rgba(0, 255, 0, 0.5)"
                         : status === 7
-                          ? "rgba(0, 0, 255, 0.5)"
+                          ? "rgba(0, 0, 255, 0.3)"
                           : "rgba(0, 0, 0, 0.0)",
           action: (
             <ButtonGroup>

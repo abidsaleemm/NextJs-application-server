@@ -1,5 +1,4 @@
 import { getImages, getImageData } from "../dicom";
-// import asyncForEach from "../helpers/asyncForEach";
 import PromisePool from "es6-promise-pool";
 
 export default async ({

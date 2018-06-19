@@ -4,7 +4,7 @@ export default async ({ socket, action }) => {
   const { payload = {} } = action;
   const { studyUID } = payload;
 
-  console.log('saving snapshot', studyUID);
+  console.log('Saving snapshot', studyUID);
 
   setProjectSnapshot({ studyUID, payload });
 }

@@ -81,7 +81,6 @@ class ProjectsListing extends Component {
         tableData = [],
         tableHeader = {},
         tableSettings = {},
-        defaultList = [],
         setProjectsSettings = () => {},
         createProject = () => {},
         videoDelete = () => {},
@@ -119,6 +118,7 @@ class ProjectsListing extends Component {
           patientName: `${patientName} (${patientID})`,
           status: <Status {...{ ...props, status, studyUID }} />,
           tableBackground:
+            // TODO Create helper to set color
             status === 1
               ? "rgba(255, 0, 0, 0.1)"
               : status === 2
@@ -129,9 +129,11 @@ class ProjectsListing extends Component {
                     ? "rgba(0, 255, 0, 0.1)"
                     : status === 5
                       ? "rgba(0, 255, 0, 0.2)"
-                      : status === 10
-                        ? "rgba(127, 127, 127, 0.2)"
-                        : "rgba(0, 0, 0, 0.0)",
+                      : status === 6
+                        ? "rgba(0, 255, 0, 0.5)"
+                        : status === 7
+                          ? "rgba(0, 0, 255, 0.5)"
+                          : "rgba(0, 0, 0, 0.0)",
           action: (
             <ButtonGroup>
               {!hasProjectSnapshots ? (

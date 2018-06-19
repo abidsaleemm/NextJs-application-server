@@ -1,5 +1,5 @@
 import { fetchAction } from "../actions";
-import { setProjectSnapshot, getProjectSnapshot } from "../projects";
+import { setProjectSnapshot } from "../projects";
 import { selectStudy } from "../socketEditor";
 
 // Add props that need to be remove
@@ -10,6 +10,8 @@ export default async ({
   io,
   action: { studyUID = "", data = "" } = {}
 }) => {
+  socket.emit("action", fetchAction(true));
+
   const parsedData = JSON.parse(data); // TODO Add better error handling around JSON parsing
   const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
 
@@ -22,10 +24,8 @@ export default async ({
     {}
   );
 
-  const clientSockets = Object.values(
-    io.sockets.sockets
-  ).filter(({ rooms = {} }) =>
-    Object.keys(rooms).some(v => v === roomName)
+  const clientSockets = Object.values(io.sockets.sockets).filter(
+    ({ rooms = {} }) => Object.keys(rooms).some(v => v === roomName)
   );
 
   await setProjectSnapshot({
@@ -49,5 +49,5 @@ export default async ({
     })
   );
 
-  await socket.emit("action", fetchAction(false));
+  socket.emit("action", fetchAction(false));
 };

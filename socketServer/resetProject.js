@@ -4,7 +4,7 @@ import {
   getProjectSnapshot
 } from "../projects";
 import createProject from "../projects/createProject";
-import { route, fetchAction } from "../actions";
+import { fetchAction } from "../actions";
 import selectStudy from "../socketEditor/selectStudy";
 
 export default async ({ socket, io, action: { studyUID } = {} }) => {
@@ -13,7 +13,10 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
     return;
   }
 
+  socket.emit("action", fetchAction(true));
+
   // Lookup Project
+  // TODO Optimize loading
   const project = await getProject({ studyUID });
   const { defaultStudyUID = "" } = project;
 
@@ -55,5 +58,5 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
     })
   );
 
-  await socket.emit("action", fetchAction(false));
+  socket.emit("action", fetchAction(false));
 };

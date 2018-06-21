@@ -35,8 +35,7 @@ const db = low(new FileSync(pathUsers));
 db.defaults({ users: defaultUsers }).write();
 
 export const setUserProps = async (id = 0, props = {}) => {
-  db
-    .get("users")
+  db.get("users")
     .find({ id: id })
     .assign(props)
     .write();
@@ -58,7 +57,7 @@ export const getUser = async ({ username = "", password = "" }) => {
     .find({ username: username })
     .value();
 
-  const { password: passwordTest = "" } = user;
+  const { password: passwordTest = "" } = user || {};
   return password.toLocaleLowerCase() ===
     passwordTest.toLocaleLowerCase()
     ? user
@@ -71,16 +70,14 @@ export const getUsers = () => {
 };
 
 export const deleteUser = id => {
-  db
-    .get("users")
+  db.get("users")
     .remove({ id })
     .write()
     .then(console.log(id, "delete User"));
 };
 
 export const createUser = user => {
-  db
-    .get("users")
+  db.get("users")
     .push(user)
     .write()
     .then(console.log(user, "create User"));

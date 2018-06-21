@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Table,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  Input
-} from "reactstrap";
+import { Button, ButtonGroup, Table } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
 import { connect } from "react-redux";
@@ -74,14 +65,11 @@ const ProjectDetails = class extends Component {
         patientBirthDate,
         patientSex,
         studyDate,
-        status = 0,
         uploadedFiles = [],
         defaultStudyUID = "",
         location,
-        user: { admin = false },
         projects = [],
         setProjectProps = () => {},
-        videoRender = () => {},
         toggleSidebar = () => {},
         resetProject = () => {},
         handleProjectImport = () => {},

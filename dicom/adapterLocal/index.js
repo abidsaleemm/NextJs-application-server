@@ -1,4 +1,4 @@
-import walk from "walk";
+import walk from "walk"; // TODO Replace with own better version of walk
 import fs from "fs";
 import parseRaw from "../parseRaw";
 

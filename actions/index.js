@@ -13,6 +13,10 @@ export {
   default as toggleProjectDefault
 } from "./toggleProjectDefault";
 
+export {
+  default as setProjectDetailStatus
+} from "./setProjectDetailStatus";
+
 // Settings
 export { default as setPortalSettings } from "./setPortalSettings";
 export {

@@ -2,7 +2,6 @@ import fs from "fs";
 
 const spinePathName = "SpinePath";
 const filePath = `modules/spine/models/${spinePathName}.json`;
-const numRadiusSegments = 16;
 
 export default () => {
   const data = fs.readFileSync(filePath);

@@ -1,12 +1,4 @@
-import azure from "azure-storage";
-import queryTable from "../../helpers/azure/queryTable";
-import { tablePrefix } from "./";
 import pullBlob from "./helpers/pullBlob";
-import { tableService } from "./";
-
-function swap16(val) {
-  return ((val & 0xff) << 8) | ((val >> 8) & 0xff);
-}
 
 export default async ({ instanceUID }) => {
   const imageData = await pullBlob({

@@ -1,5 +1,4 @@
 import { images } from "./";
-import parseRaw from "../parseRaw";
 
 export default async ({ seriesUID }) => {
   return Object.values(images)

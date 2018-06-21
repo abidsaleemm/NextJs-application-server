@@ -163,7 +163,7 @@ export default props => {
                   id,
                   data: dataProps[id]
                 }))
-                .map(({ id, data, type, title, action }) => {
+                .map(({ id, data, title }) => {
                   return (
                     <td
                       className="dataCell"

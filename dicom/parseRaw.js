@@ -3,7 +3,7 @@ import dicomParser from "dicom-parser/build/built";
 // issue-73
 import { Series, Utils } from "daikon";
 
-export default (data, { bypassData = false, path } = {}) => {
+export default (data, { bypassData = false } = {}) => {
   try {
     const dataSet = dicomParser.parseDicom(data);
 
@@ -80,6 +80,7 @@ export default (data, { bypassData = false, path } = {}) => {
   }
 };
 
+// TODO These are reusabe in indexer
 const parseImagePosition = (value = "") => {
   const arrSplit = value.split("\\");
   return {

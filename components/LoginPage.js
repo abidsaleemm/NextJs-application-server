@@ -21,6 +21,10 @@ export default ({ error = "", staging = false }) => (
           height: 100vh;
         }
 
+        .loginImage {
+          width: 430px;
+        }
+
         .login_box {
           width: 450px;
           margin: 0px auto;
@@ -42,6 +46,7 @@ export default ({ error = "", staging = false }) => (
           margin: 0px 0px 30px 0px;
           text-align: center;
         }
+
         .login_form input {
           background: transparent none repeat scroll 0 0;
           color: #000;
@@ -51,6 +56,7 @@ export default ({ error = "", staging = false }) => (
           border: 1px solid #ccc;
           padding-top: 9px;
         }
+
         .form-control:focus {
           background-color: transparent;
           border-color: #ddd;
@@ -69,16 +75,19 @@ export default ({ error = "", staging = false }) => (
           color: #b2b2b2;
           font-size: 12px;
         }
+
         .form-control:-ms-input-placeholder {
           /* IE 10+ */
           color: #b2b2b2;
           font-size: 12px;
         }
+
         .form-control:-moz-placeholder {
           /* Firefox 18- */
           color: #b2b2b2;
           font-size: 12px;
         }
+
         .login_btn {
           border: 0 none;
           border-radius: 3px;
@@ -94,24 +103,29 @@ export default ({ error = "", staging = false }) => (
           padding: 0 20px;
           line-height: 40px;
         }
+
         .btn-secondary.focus,
         .btn-secondary:focus {
           box-shadow: none;
           -webkit-box-shadow: none;
         }
+
         .login_btn:hover {
           background-color: rgba(0, 0, 0, 0.6);
           color: #fff;
         }
+
         .login_form p {
           margin: 0;
           padding: 10px 0;
           text-align: center;
         }
+
         .login_form p a {
           font-size: 16px;
           color: #797979;
         }
+
         .login_form .acc_crt {
           float: left;
           margin: 30px 0 0;
@@ -129,7 +143,12 @@ export default ({ error = "", staging = false }) => (
       <Row>
         <div className="login_box">
           <div className="login_form">
-            <h1 className="text-center">MULTUS</h1>
+            <h1 className="text-center">
+              <img
+                className="loginImage"
+                src="/static/images/logo.jpg"
+              />
+            </h1>
             <Alert color="danger" hidden={!error}>
               <strong>{error}</strong>
             </Alert>

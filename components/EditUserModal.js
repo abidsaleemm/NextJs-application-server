@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import UUID from "uuid-js";
 import {
   Button,
   Modal,
@@ -9,10 +8,8 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
-  FormText
+  Input
 } from "reactstrap";
-import { debug } from "util";
 
 export class CreateUserModal extends Component {
   constructor(props) {
@@ -45,7 +42,9 @@ export class CreateUserModal extends Component {
 
   renderConfirmPassword = () => {
     const { password: statePassword } = this.state;
-    const { user: { password: propsPassword } } = this.props;
+    const {
+      user: { password: propsPassword }
+    } = this.props;
 
     return propsPassword !== statePassword ? (
       <FormGroup>

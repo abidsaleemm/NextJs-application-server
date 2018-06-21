@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import Router from "next/router";
-import { Nav, NavItem, NavLink } from "reactstrap";
+import { Nav } from "reactstrap";
 
 const RenderUser = () => (
   <li

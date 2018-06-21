@@ -28,7 +28,7 @@ export default class extends Component {
 
   render() {
     const {
-      state: { confirmed = false, mouseOver = false },
+      state: { confirmed = false },
       props: {
         children,
         message,

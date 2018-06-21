@@ -1,8 +1,5 @@
-import react from "react";
-import { Input } from "reactstrap";
-
 export default props => {
-  const { value, placeholder, onChange, onClear, muiTheme } = props;
+  const { value, placeholder, onChange, onClear } = props;
 
   const shouldShowClear = !!(onClear && value);
   return (

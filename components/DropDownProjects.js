@@ -3,8 +3,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  Table
+  DropdownItem
 } from "reactstrap";
 
 const RenderRow = ({ patientName, age = "", sex = "" }) => (
@@ -34,7 +33,6 @@ const RenderRow = ({ patientName, age = "", sex = "" }) => (
 
 export default ({
   label = "Create",
-  studyUID,
   projects = [],
   onClick = () => {}
 }) => {

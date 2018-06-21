@@ -9,8 +9,7 @@ import {
   Form,
   FormGroup,
   Label,
-  Input,
-  FormText
+  Input
 } from "reactstrap";
 
 export class CreateUserModal extends Component {
@@ -39,7 +38,7 @@ export class CreateUserModal extends Component {
   };
 
   render() {
-    const { toggle, onSubmit, isOpen } = this.props;
+    const { toggle, isOpen } = this.props;
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
         <ModalHeader toggle={toggle}>Create User</ModalHeader>

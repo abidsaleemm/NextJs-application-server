@@ -2,14 +2,12 @@ import React from "react";
 import {
   Container,
   Row,
-  Col,
   Alert,
   Form,
   FormGroup,
   Label,
   Input,
   Button,
-  FormText
 } from "reactstrap";
 
 export default ({ error = "", staging = false }) => (

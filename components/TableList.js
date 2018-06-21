@@ -1,7 +1,5 @@
 import React from "react";
 import { Table } from "reactstrap";
-import R from "ramda";
-import uuid from "uuid";
 import SearchInput from "./SearchInput";
 
 export default props => {

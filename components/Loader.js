@@ -1,6 +1,5 @@
 import React from "react";
 
-// display: ${fetching ? "flex" : "none"};
 export default ({ fetching = false }) => (
   <div className="loader">
     <style jsx>
@@ -8,7 +7,7 @@ export default ({ fetching = false }) => (
         .loader {
           position: fixed;
           display: flex;
-          visibility: ${fetching ? 'visible' : 'hidden'};
+          visibility: ${fetching ? "visible" : "hidden"};
           top: 0;
           left: 0;
           width: 100%;

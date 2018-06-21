@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Tooltip } from "reactstrap";
-import uuid from "uuid";
 
 export default class extends Component {
   constructor(props) {

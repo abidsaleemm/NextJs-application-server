@@ -1,11 +1,8 @@
-import queryTableAll from "../../helpers/azure/queryTableAll";
-import { tableService, tableName, createTable } from "./";
+import { queryTableAll } from "../table";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
-// TODO Messy and duplicate code.  Might want to map getProject.
-export default async () => {
-  await createTable();
-
+// TODO Messy and duplicate code.  Might want to map getProject?
+export default async ({ tableService, tableName }) => {
   const values = await queryTableAll({ tableService, tableName });
 
   return Promise.all(

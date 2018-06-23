@@ -1,6 +1,11 @@
-import { tableService, tableName, createTable } from "./";
+// import { tableService, tableName, createTable } from "./";
+import { insertOrMergeEntity } from "../table";
 
-export default async ({ studyUID, props = {} }) => {
+export default async ({
+  studyUID,
+  props: propsProject = {},
+  ...props
+}) => {
   if (!studyUID) {
     return;
   }
@@ -8,22 +13,23 @@ export default async ({ studyUID, props = {} }) => {
   const entity = {
     PartitionKey: studyUID, // TODO PartitionKey and RowKey the same?
     RowKey: studyUID,
-    ...props
+    ...propsProject
   };
 
-  await createTable();
-  await new Promise((resolve, reject) => {
-    tableService.insertOrMergeEntity(
-      tableName,
-      entity,
-      (error, result, response) => {
-        if (error) {
-          reject(error);
-          return;
-        }
+  await insertOrMergeEntity({ ...props, entity });
+  //   await createTable();
+  //   await new Promise((resolve, reject) => {
+  //     tableService.insertOrMergeEntity(
+  //       tableName,
+  //       entity,
+  //       (error, result, response) => {
+  //         if (error) {
+  //           reject(error);
+  //           return;
+  //         }
 
-        resolve(result);
-      }
-    );
-  });
+  //         resolve(result);
+  //       }
+  //     );
+  //   });
 };

@@ -1,57 +1,29 @@
-import azure from "azure-storage";
+import { createContainerIfNotExists } from "../blob";
+import { createTableIfNotExists } from "./table";
 
-export { default as getProject } from "./getProject";
-export { default as getProjectList } from "./getProjectList";
-export { default as getProjectSnapshot } from "./getProjectSnapshot";
-export { default as setProject } from "./setProject";
-export { default as setProjectSnapshot } from "./setProjectSnapshot";
-export { default as destroyProject } from "./destroyProject";
+import getProject from "./getProject";
+import getProjectList from "./getProjectList";
+import getProjectSnapshot from "./getProjectSnapshot";
+import setProject from "./setProject";
+import setProjectSnapshot from "./setProjectSnapshot";
+import destroyProject from "./destroyProject";
 
-export const tableName = process.env.PROJECT_TABLE || "projects";
+export default async azureProps => {
+  await createTableIfNotExists(props);
+  await createContainerIfNotExists(props);
 
-// TODO Should be moved to helpers?
-export const blobService = azure.createBlobService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
-
-// TODO Should be moved to helpers?
-export const tableService = azure.createTableService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
-
-// TODO Should be moved to helpers?
-export const createTable = () =>
-  new Promise((resolve, reject) =>
-    tableService.createTableIfNotExists(
-      tableName,
-      (error, result, response) => {
-        if (error) {
-          console.log("error", error);
-          reject(error);
-          return;
-        }
-
-        resolve(result);
-      }
-    )
-  );
-
-// TODO Should be moved to helpers?
-export const createContainer = () =>
-  new Promise((resolve, reject) =>
-    blobService.createContainerIfNotExists(
-      tableName,
-      (error, result, response) => {
-        if (error) {
-          // Container exists and is private
-          console.log("error", error);
-          reject(error);
-          return;
-        }
-
-        resolve(result);
-      }
-    )
-  );
+  return {
+    getProject: async props =>
+      await getProject({ ...azureProps, ...props }),
+    getProjectList: async props =>
+      await getProjectList({ ...azureProps, ...props }),
+    getProjectSnapshot: async props =>
+      await getProjectSnapshot({ ...azureProps, ...props }),
+    setProject: async props =>
+      await setProject({ ...azureProps, ...props }),
+    setProjectSnapshot: async props =>
+      await setProjectSnapshot({ ...azureProps, ...props }),
+    destroyProject: async props =>
+      await destroyProject({ ...azureProps, ...props })
+  };
+};

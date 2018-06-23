@@ -1,2 +1,4 @@
-module.exports = process.env.LOCAL !== undefined ?
-    require('./adapterLocal') : require('./adapterAzure');
+module.exports =
+  process.env.LOCAL !== undefined
+    ? require("../../adapter/local/video/index")
+    : require("../../adapter/azure/video/index");

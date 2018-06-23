@@ -22,6 +22,7 @@ export default async ({ studyUID = "" }) => {
         sample
       } = {}
     } = project;
+
     return {
       studyUID,
       status,

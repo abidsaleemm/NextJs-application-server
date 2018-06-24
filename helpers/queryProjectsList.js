@@ -1,14 +1,8 @@
-// import { getStudies } from "../dicom";
-// import { getProjectList } from "../projects";
-// import { getUserProps } from "../authUsers";
-// import { getProject } from "../projects";
 import getStatusName from "../helpers/getStatusName";
-// import { list as uploadList } from "../upload";
-// import { videoExists } from "../video";
 
 import { adapter } from "../server";
 
-export default async ({ admin = false } = {}) => {
+export default async () => {
   const {
     video: { videoExists = () => {} } = {},
     upload: { list: uploadList = () => {} } = {},

@@ -1,4 +1,4 @@
-import { studies } from "./";
+// import { studies } from "./";
 
-export default ({ patientID = "" }) =>
+export default ({ patientID = "", studies = {} }) =>
   Object.values(studies).filter(v => v.patientID === patientID);

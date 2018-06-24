@@ -1,8 +1,8 @@
 import fs from "fs";
-import { path as root, images } from "./";
-import parseRaw from "./dicompParseRaw";
+// import { path as root, images } from "./";
+import parseRaw from "./dicomParseRaw";
 
-export default async ({ instanceUID }) => {
+export default async ({ instanceUID, path: root, images = {} }) => {
   // Lookup image
   const { path } =
     Object.values(images).find(f => f.instanceUID === instanceUID) ||

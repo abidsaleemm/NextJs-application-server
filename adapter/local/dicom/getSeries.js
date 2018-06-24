@@ -1,8 +1,8 @@
 import { Vector3 } from "three";
-import { series } from "./";
-import { images } from "./";
+// import { series } from "./";
+// import { images } from "./";
 
-export default async ({ studyUID }) =>
+export default async ({ studyUID, series = {}, images = {} }) =>
   Object.values(series)
     .filter(v => v.studyUID === studyUID)
     .map(

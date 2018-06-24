@@ -9,9 +9,9 @@ export default async ({
   const {
     projects: {
       setProject = () => {},
-      setProjectSnapshot = () => {}
-    } = {},
-    getProjectSnapshot = () => {}
+      setProjectSnapshot = () => {},
+      getProjectSnapshot = () => {}
+    } = {}
   } = adapter;
 
   if (!studyUID) {

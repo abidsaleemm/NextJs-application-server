@@ -1,9 +1,9 @@
-import fs from "fs";
+// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import { path } from "./index";
+// import { path } from "./index";
 
-export default async ({ studyUID, props = {} }) => {
+export default async ({ studyUID, props = {}, path }) => {
   if (path === undefined || !studyUID) return;
 
   const db = low(new FileSync(`${path}/projects.json`));
@@ -15,15 +15,13 @@ export default async ({ studyUID, props = {} }) => {
     .value();
 
   if (find === undefined) {
-    db
-      .get("projects")
+    db.get("projects")
       .push({ studyUID, ...props })
       .write();
     return;
   }
 
-  db
-    .get("projects")
+  db.get("projects")
     .find({ studyUID })
     .assign(props)
     .write();

@@ -1,11 +1,11 @@
-import fs from "fs";
+// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import { path } from "./index";
+// import { path } from "./index";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
 // TODO Messy and duplicate code might want to map getProject.
-export default async () => {
+export default async ({ path }) => {
   if (path === undefined) return;
 
   const db = low(new FileSync(`${path}/projects.json`));

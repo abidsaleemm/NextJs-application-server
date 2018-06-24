@@ -1,9 +1,9 @@
 import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import { path, snapshotDir } from "./index";
+// import { path, snapshotDir } from "./index";
 
-export default async ({ studyUID }) => {
+export default async ({ studyUID, path, snapshotDir }) => {
   if (path === undefined) return;
   if (!studyUID) return;
 

@@ -3,9 +3,9 @@ import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
 import getProjectSnapshot from "./getProjectSnapshot";
-import { path } from "./index";
+// import { path } from "./index";
 
-export default async ({ studyUID = "_", payload = {} }) => {
+export default async ({ studyUID = "_", payload = {}, path }) => {
   if (path === undefined) return;
 
   // TODO Reuseable?
@@ -39,8 +39,7 @@ export default async ({ studyUID = "_", payload = {} }) => {
     JSON.stringify(mergedPayload)
   );
 
-  db
-    .get("projects")
+  db.get("projects")
     .find({ studyUID })
     .assign({ snapshot: snapShotUID })
     .write();
@@ -52,8 +51,7 @@ export default async ({ studyUID = "_", payload = {} }) => {
       .get("snapshots")
       .value() || [];
 
-  db
-    .get("projects")
+  db.get("projects")
     .find({ studyUID })
     .assign({ snapshots: [...snapshots, snapShotUID] })
     .write();

@@ -7,7 +7,6 @@ export default async ({ instanceUID, path: root, images = {} }) => {
     Object.values(images).find(f => f.instanceUID === instanceUID) ||
     {};
 
-  console.log("path", path, images);
   if (path) {
     const data = fs.readFileSync(`${root}/${path}`);
     const { pixelData } = parseRaw(data, { path });

@@ -27,21 +27,21 @@ export const defaultUsers = [
   }
 ];
 
-export const path = "./projectsLocal";
-export const pathUsers = `${path}/users.json`;
+// export const path = "./projectsLocal";
+// export const pathUsers = `${path}/users.json`;
 
 // TODO this should be some sort of reusable function under helpers
-export const checkExists = () => {
-  if (fs.existsSync(path) === false) {
-    fs.mkdirSync(path);
-  }
-};
+// export const checkExists = () => {
+//   if (fs.existsSync(path) === false) {
+//     fs.mkdirSync(path);
+//   }
+// };
 
-checkExists();
-const db = low(new FileSync(pathUsers));
-db.defaults({ users: defaultUsers }).write();
+// checkExists();
+// const db = low(new FileSync(pathUsers));
+// db.defaults({ users: defaultUsers }).write();
 
-export const setUserProps = async (id = 0, props = {}) => {
+const setUserProps = async (id = 0, props = {}, db) => {
   db.get("users")
     .find({ id: id })
     .assign(props)
@@ -49,7 +49,7 @@ export const setUserProps = async (id = 0, props = {}) => {
 };
 
 // props - array of keys
-export const getUserProps = async (id = 0, props = []) => {
+const getUserProps = async (id = 0, props = [], db) => {
   const user = db
     .get("users")
     .find({ id: id })
@@ -58,7 +58,7 @@ export const getUserProps = async (id = 0, props = []) => {
   return filterProps(props)(user);
 };
 
-export const getUser = async ({ username = "", password = "" }) => {
+const getUser = async ({ username = "", password = "", db }) => {
   const user = db
     .get("users")
     .find({ username: username })
@@ -71,21 +71,37 @@ export const getUser = async ({ username = "", password = "" }) => {
     : undefined;
 };
 
-//Should we... use helpers for these? filter out passwords here?
-export const getUsers = () => {
+// TODO Should we... use helpers for these? filter out passwords here?
+const getUsers = ({ db }) => {
   return db.get("users");
 };
 
-export const deleteUser = id => {
+const deleteUser = ({ id, db }) => {
   db.get("users")
     .remove({ id })
     .write()
-    .then(console.log(id, "delete User"));
+    .then(console.log(id, "Deleted User"));
 };
 
-export const createUser = user => {
+const createUser = ({ user, db }) => {
   db.get("users")
     .push(user)
     .write()
-    .then(console.log(user, "create User"));
+    .then(console.log(user, "Created User"));
+};
+
+export default ({ path }) => {
+  const pathUsers = `${path}/users.json`;
+
+  const db = low(new FileSync(pathUsers));
+  db.defaults({ users: defaultUsers }).write();
+
+  return {
+    createUser: async user => await createUser({ user, db }),
+    deleteUser: async id => await deleteUser({ id, db }),
+    getUsers: async () => await getUsers({ db }),
+    getUser: async () => await getUser({...props, }),
+    getUserProps,
+    setUserProps
+  };
 };

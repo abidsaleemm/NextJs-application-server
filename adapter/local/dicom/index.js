@@ -157,7 +157,7 @@ export default ({ path }) => {
       await getSeries({ ...props, series, images }),
     getImages: async props => await getImages({ ...props, images }),
     getImageData: async props =>
-      await getImageData({ ...props, path: directory }),
+      await getImageData({ ...props, path: directory, images }),
     getStudiesByPatientID: async props =>
       await getStudiesByPatientID({ ...props, studies })
   };

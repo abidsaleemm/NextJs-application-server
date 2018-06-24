@@ -1,5 +1,3 @@
-// import { images } from "./";
-
 export default async ({ seriesUID, images = {} }) => {
   return Object.values(images)
     .filter(f => f.seriesUID === seriesUID)

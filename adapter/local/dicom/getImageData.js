@@ -1,5 +1,4 @@
 import fs from "fs";
-// import { path as root, images } from "./";
 import parseRaw from "./dicomParseRaw";
 
 export default async ({ instanceUID, path: root, images = {} }) => {
@@ -8,6 +7,7 @@ export default async ({ instanceUID, path: root, images = {} }) => {
     Object.values(images).find(f => f.instanceUID === instanceUID) ||
     {};
 
+  console.log("path", path, images);
   if (path) {
     const data = fs.readFileSync(`${root}/${path}`);
     const { pixelData } = parseRaw(data, { path });

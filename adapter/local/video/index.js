@@ -1,8 +1,6 @@
 import fs from "fs";
 
-const savePath = "projectsLocal/video";
-
-export const videoSave = async ({ studyUID, readStream }) => {
+const videoSave = async ({ studyUID, readStream, savePath }) => {
   if (fs.existsSync(savePath) === false) {
     fs.mkdirSync(savePath);
   }
@@ -13,14 +11,27 @@ export const videoSave = async ({ studyUID, readStream }) => {
   readStream.pipe(writeStream);
 };
 
-export const videoLoad = ({ studyUID }) => {
+const videoLoad = ({ studyUID, savePath }) => {
   return fs.createReadStream(`${savePath}/${studyUID}.mp4`);
 };
 
-export const videoExists = ({ studyUID }) => {
+const videoExists = ({ studyUID, savePath }) => {
   return fs.existsSync(`${savePath}/${studyUID}.mp4`);
 };
 
-export const videoDelete = ({ studyUID }) => {
+const videoDelete = ({ studyUID, savePath }) => {
   fs.unlinkSync(`${savePath}/${studyUID}.mp4`);
+};
+
+export default ({ path }) => {
+  const savePath = `${path}/video`;
+
+  return {
+    videoSave: async props => await videoSave({ ...props, savePath }),
+    videoLoad: async props => await videoLoad({ ...props, savePath }),
+    videoExists: async props =>
+      await videoExists({ ...props, videoExists }),
+    videoDelete: async props =>
+      await videoDelete({ ...props, savePath })
+  };
 };

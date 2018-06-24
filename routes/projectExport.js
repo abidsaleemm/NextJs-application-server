@@ -1,8 +1,14 @@
 import authMiddleware from "../auth/middleware";
-import { getProjectSnapshot } from "../projects";
-import { getStudy } from "../dicom";
+// import { getProjectSnapshot } from "../projects";
+// import { getStudy } from "../dicom";
+import { adapter } from "../server";
 
 export default ({ server, app }) => {
+  const {
+    dicom: { getStudy = () => {} } = {},
+    projects: { getProjectSnapshot = () => {} } = {}
+  } = adapter;
+
   server.get("/export", authMiddleware(), async (req, res) => {
     const { query: { studyUID = "" } = {} } = req;
 

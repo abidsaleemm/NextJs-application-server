@@ -5,13 +5,14 @@ import users from "./users";
 import video from "./video";
 
 export default () => {
-  //
+  const path = "./projectsLocal";
 
+  // Initialize all adapters
   return {
-    dicom: dicom(),
-    projects: projects(),
-    upload: upload(),
-    users: users(),
-    video: video()
+    dicom: dicom({ path }),
+    projects: projects({ path }),
+    upload: upload({ path }),
+    users: users({ path }),
+    video: video({ path })
   };
 };

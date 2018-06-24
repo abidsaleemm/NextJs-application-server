@@ -1,7 +1,10 @@
 import authMiddleware from "../auth/middleware";
-import { videoLoad } from "../video";
+// import { videoLoad } from "../video";
+import { adapter } from "../server";
 
 export default ({ server, app }) => {
+  const { video: { videoLoad = () => {} } = {} } = adapter;
+
   server.get("/video", authMiddleware(), async (req, res) => {
     const { query: { id, patientName } = {} } = req;
 

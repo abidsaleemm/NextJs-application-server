@@ -1,14 +1,18 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { getUser } from "../authUsers";
+import { adapter } from "../server";
+// import { getUser } from "../authUsers";
 
 export default server => {
+  const { users: { getUser = () => {} } = {} } = adapter;
+
   server.use(passport.initialize());
   server.use(passport.session());
   passport.use(
     new Strategy((username, password, done) =>
-      getUser({ username, password }).then(user => 
-        done(null, user))));
+      getUser({ username, password }).then(user => done(null, user))
+    )
+  );
 
   passport.serializeUser((user, done) => {
     done(null, user);

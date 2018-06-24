@@ -7,7 +7,7 @@ import getImages from "./getImages";
 import getSeries from "./getSeries";
 import getStudies from "./getStudies";
 import getStudiesByPatientID from "./getStudiesByPatientID";
-import { PAYLOAD_USERS } from "../../../constants/actionTypes";
+// import { PAYLOAD_USERS } from "../../../constants/actionTypes";
 
 // export let series = {};
 // export let studies = {};

@@ -11,6 +11,10 @@ import auth from "./auth";
 import routes from "./routes";
 import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
+import storageAdapter from "./adapter";
+
+// TODO This is not the best way.  Works for now but should be passed through as props.
+export const adapter = storageAdapter();
 
 const flash = require("connect-flash");
 const port = process.env.PORT || 3000;
@@ -58,6 +62,8 @@ app.prepare().then(() => {
 
   const passport = auth(server);
   routes({ server, app }); // Setup routes
+
+  console.log("storageAdapter", storageAdapter);
 
   // Setup static routes
   if (!dev) {

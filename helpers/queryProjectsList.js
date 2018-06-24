@@ -1,12 +1,24 @@
-import { getStudies } from "../dicom";
-import { getProjectList } from "../projects";
-import { getUserProps } from "../authUsers";
-import { getProject } from "../projects";
+// import { getStudies } from "../dicom";
+// import { getProjectList } from "../projects";
+// import { getUserProps } from "../authUsers";
+// import { getProject } from "../projects";
 import getStatusName from "../helpers/getStatusName";
-import { list as uploadList } from "../upload";
-import { videoExists } from "../video";
+// import { list as uploadList } from "../upload";
+// import { videoExists } from "../video";
+
+import { adapter } from "../server";
 
 export default async ({ admin = false } = {}) => {
+  const {
+    video: { videoExists = () => {} } = {},
+    upload: { list: uploadList = () => {} } = {},
+    projects: {
+      getProject = () => {},
+      getProjectList = () => {}
+    } = {},
+    dicom: { getStudies = () => {} } = {}
+  } = adapter;
+
   // TODO Do query directly getProjectList instead of filtering with javascript
   const [projects = [], studies = []] = await Promise.all([
     getProjectList(),

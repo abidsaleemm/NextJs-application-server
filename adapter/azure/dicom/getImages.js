@@ -2,7 +2,7 @@ import azure from "azure-storage";
 import queryTable from "./helpers/queryTable";
 import { tablePrefix } from "./";
 
-export default async ({ seriesUID }) => {
+export default async ({ seriesUID,  }) => {
   const images = await queryTable({
     query: new azure.TableQuery()
       .select([

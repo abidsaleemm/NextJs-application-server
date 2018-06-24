@@ -1,9 +1,12 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
 import queryProjectsList from "../helpers/queryProjectsList";
 import authMiddleware from "../auth/middleware";
-import { getUserProps } from "../authUsers";
+import { adapter } from "../server";
+// import { getUserProps } from "../authUsers";
 
-export default ({ server, app }) =>
+export default ({ server, app }) => {
+  const { users: { getUserProps = () => {} } = {} } = adapter;
+
   server.get("/projectDetail", authMiddleware(), async (req, res) => {
     const {
       user: { id, admin = false } = {},
@@ -21,3 +24,4 @@ export default ({ server, app }) =>
       projects: await queryProjectsList({ admin })
     });
   });
+};

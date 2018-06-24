@@ -1,5 +1,12 @@
 import shallowDiff from "shallow-diff";
-import filterProps from "../helpers/filterProps";
+import * as R from "ramda";
+
+const filterProps = props =>
+  R.pipe(
+    R.toPairs,
+    R.filter(([k, v]) => props.some(t => t === k)),
+    R.fromPairs
+  );
 
 export default store => next => action => {
   const { type } = action;

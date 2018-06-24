@@ -1,7 +1,14 @@
 import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import filterProps from "../helpers/filterProps";
+import * as R from "ramda";
+
+const filterProps = props =>
+  R.pipe(
+    R.toPairs,
+    R.filter(([k, v]) => props.some(t => t === k)),
+    R.fromPairs
+  );
 
 export const defaultUsers = [
   {

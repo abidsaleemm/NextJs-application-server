@@ -1,10 +1,14 @@
-import { getImages, getImageData } from "../dicom";
 import PromisePool from "es6-promise-pool";
+import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { seriesUID, sliceLocation = 0, loadImages = true } = {}
 }) => {
+  const {
+    dicom: { getImages = () => {}, getImageData = () => {} } = {}
+  } = adapter;
+
   const imageList = await getImages({
     seriesUID
   });

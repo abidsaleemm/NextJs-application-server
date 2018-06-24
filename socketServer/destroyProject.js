@@ -1,7 +1,9 @@
-import { destroyProject } from "../projects";
 import { route } from "../actions";
+import { adapter } from "../server";
 
 export default async ({ socket, action: { studyUID } = {} }) => {
+  const { projects: { destroyProject = () => {} } = {} } = adapter;
+
   if (!studyUID) {
     return;
   }

@@ -1,7 +1,12 @@
 import { generateVideo, cleanup, videoSave } from "../video";
-import { setProject } from "../projects";
+import { adapter } from "../server";
 
 export default async ({ socket, action }) => {
+  const {
+    projects: { setProject = () => {} } = {},
+    video: { videoSave = () => {} } = {}
+  } = adapter;
+
   const { session, numberImages = 0, studyUID = "" } = action;
 
   if (session) {

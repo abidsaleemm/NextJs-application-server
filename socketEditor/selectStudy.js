@@ -1,9 +1,13 @@
-import { getProjectSnapshot } from "../projects";
-import { getSeries, getImages, getImageData } from "../dicom";
 import selectSeries from "./selectSeries";
+import { adapter } from "../server";
 
 export default async ({ socket, action }) => {
+  const {
+    projects: { getProjectSnapshot = () => {} } = {},
+    dicom: { getSeries = () => {} } = {}
+  } = adapter;
   const { studyUID, loadImages } = action;
+
   console.log("studyUID", studyUID); // TODO Used for debugging / logging
 
   const project = await getProjectSnapshot({ studyUID });

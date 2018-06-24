@@ -1,15 +1,19 @@
-import createProject from "../projects/createProject";
-import {
-  setProject,
-  setProjectSnapshot,
-  getProjectSnapshot
-} from "../projects";
+import createProject from "../helpers/createProject";
 import { route, fetchAction } from "../actions";
+import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { studyUID, defaultStudyUID = "" } = {}
 }) => {
+  const {
+    projects: {
+      setProject = () => {},
+      setProjectSnapshot = () => {}
+    } = {},
+    getProjectSnapshot = () => {}
+  } = adapter;
+
   if (!studyUID) {
     return;
   }

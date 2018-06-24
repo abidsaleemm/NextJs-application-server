@@ -1,13 +1,17 @@
-import {
-  setProjectSnapshot,
-  getProject,
-  getProjectSnapshot
-} from "../projects";
-import createProject from "../projects/createProject";
+import createProject from "../helpers/createProject";
 import { fetchAction } from "../actions";
 import selectStudy from "../socketEditor/selectStudy";
+import { adapter } from "../server";
 
 export default async ({ socket, io, action: { studyUID } = {} }) => {
+  const {
+    projects: {
+      setProjectSnapshot = () => {},
+      getProject = () => {},
+      getProjectSnapshot = () => {}
+    } = {}
+  } = adapter;
+
   if (!studyUID) {
     // TODO Add better error handling here
     return;
@@ -46,7 +50,6 @@ export default async ({ socket, io, action: { studyUID } = {} }) => {
 
   await Promise.all(
     clientSockets.map(async clientSocket => {
-      // await socket.emit("action", route({ pathname: "/projects" }));
       clientSocket.emit("action", {
         type: "SPINNER_TOGGLE",
         toggle: true

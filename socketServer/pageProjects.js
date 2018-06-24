@@ -1,8 +1,10 @@
 import queryProjectsList from "../helpers/queryProjectsList";
 import { payloadProjects, setProjectsSettings } from "../actions";
-import { getUserProps } from "../authUsers";
+import { adapter } from "../server";
 
 export default async ({ socket, user: { admin, id } = {} }) => {
+  const { users: { getUserProps = () => {} } = {} } = adapter;
+
   // TODO Optimize with promise
   const projects = await queryProjectsList({ admin });
   const { projectsSettings } = await getUserProps(id, [

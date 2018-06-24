@@ -1,9 +1,7 @@
-import { createUser } from "../authUsers/local";
+import { adapter } from "../server";
 
-export default async ({
-  socket,
-  user: { admin = false } = {},
-  action: { userData }
-}) => {
+export default async ({ action: { userData } }) => {
+  const { users: { createUser = () => {} } = {} } = adapter;
+
   createUser(userData);
 };

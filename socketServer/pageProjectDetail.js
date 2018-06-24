@@ -5,13 +5,15 @@ import {
   payloadProjects,
   setProjectDetailSettings
 } from "../actions";
-import { getUserProps } from "../authUsers";
+import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { studyUID = "" },
   user: { id: userID, admin = false } = {}
 }) => {
+  const { users: { getUserProps = () => {} } = {} } = adapter;
+
   // TODO Optimize loading
   const projectDetail = await queryProjectDetail({ studyUID });
   const { projectDetailSettings } = await getUserProps(userID, [

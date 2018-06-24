@@ -1,14 +1,16 @@
 import dataUriToBuffer from "data-uri-to-buffer";
 import { Readable } from "stream";
-import { put as uploadPut } from "../upload";
 import pageProjects from "./pageProjects";
 import { fetchAction } from "../actions";
+import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { data, studyUID, name } = {},
   user
 }) => {
+  const { upload: { put: uploadPut = () => {} } = {} } = adapter;
+
   const decoded = dataUriToBuffer(data);
 
   const stream = new Readable();

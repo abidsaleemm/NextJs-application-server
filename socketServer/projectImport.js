@@ -1,6 +1,6 @@
 import { fetchAction } from "../actions";
-import { setProjectSnapshot } from "../projects";
 import { selectStudy } from "../socketEditor";
+import { adapter } from "../server";
 
 // Add props that need to be remove
 const filterRemove = ["studyUID"];
@@ -10,6 +10,10 @@ export default async ({
   io,
   action: { studyUID = "", data = "" } = {}
 }) => {
+  const {
+    projects: { setProjectSnapshot = () => {} } = {}
+  } = adapter;
+
   socket.emit("action", fetchAction(true));
 
   const parsedData = JSON.parse(data); // TODO Add better error handling around JSON parsing

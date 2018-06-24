@@ -1,9 +1,7 @@
-import { deleteUser } from "../authUsers/local";
+import { adapter } from "../server";
 
-export default async ({
-  socket,
-  user: { admin = false } = {},
-  action: { userId }
-}) => {
+export default async ({ action: { userId } }) => {
+  const { users: { deleteUser = () => {} } = {} } = adapter;
+
   deleteUser(userId);
 };

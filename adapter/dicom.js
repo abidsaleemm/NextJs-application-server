@@ -1,5 +1,4 @@
 import dateFormat from "dateformat";
-import { adapter } from "../";
 
 // TODO Propose to move this to indexer and store directly in DB
 const parseDate = date => {
@@ -48,17 +47,25 @@ const transform = ({
   };
 };
 
-export default () => {};
+export default props => {
+  const {
+    dicom: {
+      getStudies = () => {},
+      getStudy = () => {},
+      ...dicomProps
+    } = {}
+  } = props;
 
-module.exports = (({ getStudies, getStudy, ...adapter }) => ({
-  ...adapter,
-  getStudies: async () => {
-    const studies = await getStudies();
-    return studies.map(transform);
-  },
-  getStudy: async props => transform(await getStudy(props))
-}))(
-  process.env.LOCAL !== undefined
-    ? require("./adapterLocal")
-    : require("./adapterAzure")
-);
+  return {
+    ...props,
+    dicom: {
+      ...dicomProps,
+      getStudies: async () => {
+        console.log("getStudies");
+        const studies = await getStudies();
+        return studies.map(transform);
+      },
+      getStudy: async props => transform(await getStudy(props))
+    }
+  };
+};

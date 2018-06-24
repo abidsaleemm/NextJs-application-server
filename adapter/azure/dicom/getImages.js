@@ -1,9 +1,9 @@
 import azure from "azure-storage";
 // import queryTable from "./helpers/queryTable";
 import { queryTable } from "../table";
-import { tablePrefix } from "./";
+// import { tablePrefix } from "./";
 
-export default async ({ seriesUID }) => {
+export default async ({ seriesUID, tablePrefix, tableService }) => {
   const images = await queryTable({
     query: new azure.TableQuery()
       .select([
@@ -23,7 +23,8 @@ export default async ({ seriesUID }) => {
         "windowWidth"
       ])
       .where("seriesUID eq ?", seriesUID),
-    tableName: `${tablePrefix}Images`
+    tableName: `${tablePrefix}Images`,
+    tableService
   });
 
   return images

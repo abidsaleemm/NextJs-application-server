@@ -9,28 +9,30 @@
 // const container = "videos";
 
 // TODO Move this to default azure helpers?
-createContainer = () =>
-  new Promise((resolve, reject) => {
-    blobService.createContainerIfNotExists(
-      container,
-      (err, result, response) => {
-        if (err) {
-          return reject(err);
-        }
+// createContainer = () =>
+//   new Promise((resolve, reject) => {
+//     blobService.createContainerIfNotExists(
+//       container,
+//       (err, result, response) => {
+//         if (err) {
+//           return reject(err);
+//         }
 
-        resolve();
-      }
-    );
-  });
+//         resolve();
+//       }
+//     );
+//   });
 
-const videoSave = async ({
+import { createContainerIfNotExists } from "../blob";
+
+const videoSave = ({
   studyUID,
   readStream,
   blobService,
   container
 }) => {
-  await createContainer(); // Create if container does not exists
-  await new Promise((resolve, reject) => {
+  //   await createContainer(); // Create if container does not exists
+  return new Promise((resolve, reject) => {
     const writeStream = blobService.createWriteStreamToBlockBlob(
       container,
       studyUID,
@@ -93,6 +95,7 @@ const videoDelete = ({ studyUID, blobService, container }) =>
 
 export default ({ blobService }) => {
   const container = "videos";
+  createContainerIfNotExists({ blobService, tableName: container });
 
   return {
     videoSave: async props =>

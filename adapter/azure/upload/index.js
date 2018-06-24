@@ -1,33 +1,36 @@
-import azure from "azure-storage";
+// import azure from "azure-storage";
 
-const containerName = "uploads";
-
-// TODO Should be moved to helpers? Reused other places
-const blobService = azure.createBlobService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
+// const containerName = "uploads";
 
 // TODO Should be moved to helpers? Reused other places
-const createContainerIfNotExists = ({ name }) =>
-  new Promise((resolve, reject) =>
-    blobService.createContainerIfNotExists(
-      name,
-      (error, result, response) => {
-        if (error) {
-          // Container exists and is private
-          console.log("error createContainerIfNotExists", error);
-          reject(error);
-          return;
-        }
+// const blobService = azure.createBlobService(
+//   process.env.STORAGE_ACCOUNT,
+//   process.env.STORAGE_ACCOUNT_KEY
+// );
 
-        resolve(result);
-      }
-    )
-  );
+// TODO Should be moved to helpers? Reused other places
+// const createContainerIfNotExists = ({ name }) =>
+//   new Promise((resolve, reject) =>
+//     blobService.createContainerIfNotExists(
+//       name,
+//       (error, result, response) => {
+//         if (error) {
+//           // Container exists and is private
+//           console.log("error createContainerIfNotExists", error);
+//           reject(error);
+//           return;
+//         }
 
-export const list = async ({ studyUID = "" }) => {
-  await createContainerIfNotExists({ name: containerName });
+//         resolve(result);
+//       }
+//     )
+//   );
+
+import { createContainerIfNotExists } from "../blob";
+
+const list = async ({ studyUID = "" }) => {
+  //   await createContainerIfNotExists({ name: containerName });
+
   return await new Promise((resolve, reject) => {
     blobService.listBlobsSegmentedWithPrefix(
       containerName,
@@ -48,7 +51,7 @@ export const list = async ({ studyUID = "" }) => {
   });
 };
 
-export const get = async ({ studyUID, name }) =>
+const get = async ({ studyUID, name }) =>
   blobService.createReadStream(
     containerName,
     `${studyUID}/${name}`,
@@ -59,8 +62,9 @@ export const get = async ({ studyUID, name }) =>
     }
   );
 
-export const put = async ({ studyUID, name, stream }) => {
-  await createContainerIfNotExists({ name: containerName });
+const put = async ({ studyUID, name, stream }) => {
+  //   await createContainerIfNotExists({ name: containerName });
+
   return await new Promise((resolve, reject) => {
     const writeStream = blobService.createWriteStreamToBlockBlob(
       containerName,
@@ -79,8 +83,9 @@ export const put = async ({ studyUID, name, stream }) => {
   });
 };
 
-export const del = async ({ studyUID, name }) => {
-  await createContainerIfNotExists({ name: containerName });
+const del = async ({ studyUID, name }) => {
+  //   await createContainerIfNotExists({ name: containerName });
+
   await new Promise((resolve, reject) => {
     blobService.deleteBlob(
       containerName,
@@ -95,4 +100,25 @@ export const del = async ({ studyUID, name }) => {
       }
     );
   });
+};
+
+export default ({ blobService }) => {
+  const containerName = "uploads";
+
+  // TODO Wrap this with Promise
+  createContainerIfNotExists({
+    tableName: containerName,
+    blobService
+  });
+
+  return {
+    get: async props =>
+      await get({ ...props, blobService, containerName }),
+    put: async props =>
+      await put({ ...props, blobService, containerName }),
+    del: async props =>
+      await del({ ...props, blobService, containerName }),
+    list: async props =>
+      await list({ ...props, blobService, containerName })
+  };
 };

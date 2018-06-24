@@ -1,9 +1,10 @@
 import pullBlob from "../blob/pullBlob";
 
-export default async ({ instanceUID }) => {
+export default async ({ instanceUID, blobService }) => {
   const imageData = await pullBlob({
-    container: `${process.env.CONTAINER_NAME}-cache`,
-    blobName: instanceUID
+    container: `${process.env.CONTAINER_NAME}-cache`, // TODO Don't use Env var here
+    blobName: instanceUID,
+    blobService
   });
 
   // TODO Kinda Hacked should use Array methods?

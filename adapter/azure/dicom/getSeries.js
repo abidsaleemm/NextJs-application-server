@@ -3,9 +3,9 @@ import azure from "azure-storage";
 import { queryTable } from "../table";
 import getImages from "./getImages";
 import getStudy from "./getStudy";
-import { tablIePrefix } from "./";
+// import { tablIePrefix } from "./";
 
-export default async ({ studyUID }) => {
+export default async ({ studyUID, tablePrefix, tableService }) => {
   const [
     {
       patientName,
@@ -24,7 +24,8 @@ export default async ({ studyUID }) => {
       query: new azure.TableQuery()
         .select(["seriesName", "seriesUID"])
         .where("studyUID eq ?", studyUID),
-      tableName: `${tablePrefix}Series`
+      tableName: `${tablePrefix}Series`,
+      tableService
     })
   ]);
 

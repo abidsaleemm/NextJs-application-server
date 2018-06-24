@@ -4,7 +4,7 @@ import { queryTable } from "../table";
 import mapStringifyJSON from "../../../helpers/mapStringifyJSON";
 import mapParseJSON from "../../../helpers/mapParseJSON";
 
-export const getUser = async ({
+const getUser = async ({
   username = "",
   password,
   tableService,
@@ -27,7 +27,7 @@ export const getUser = async ({
   return false;
 };
 
-export const setUserProps = async ({
+const setUserProps = async ({
   id = 0,
   props = {},
   tableName,
@@ -54,7 +54,7 @@ export const setUserProps = async ({
   });
 };
 
-export const getUserProps = async ({
+const getUserProps = async ({
   id = 0,
   props = [],
   tableName,

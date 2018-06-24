@@ -1,23 +1,29 @@
-import azure from "azure-storage";
+import getSeries from "./getSeries";
+import getStudies from "./getStudies";
+import getStudy from "./getStudy";
+import getImages from "./getImages";
+import getImageData from "./getImageData";
+import getStudiesByPatientID from "./getStudiesByPatientID";
 
-// TODO Move this under helpers?  Reusable.
-export const blobService = azure.createBlobService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
+export default ({ blobService, tableService }) => {
+  const tablePrefix = process.env.CONTAINER_NAME || "dicom"; // TODO MMake this a passthrough prop
 
-export const tableService = azure.createTableService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
-
-export const tablePrefix = process.env.CONTAINER_NAME || "dicom";
-
-export { default as getSeries } from "./getSeries";
-export { default as getStudies } from "./getStudies";
-export { default as getStudy } from "./getStudy";
-export { default as getImages } from "./getImages";
-export { default as getImageData } from "./getImageData";
-export {
-  default as getStudiesByPatientID
-} from "./getStudiesByPatientID";
+  return {
+    getSeries: async props =>
+      await getSeries({ ...props, tablePrefix }),
+    getStudies: async props =>
+      await getStudies({ ...props, tablePrefix, tableService }),
+    getStudy: async props =>
+      await getStudy({ ...props, tablePrefix, tableService }),
+    getImages: async props =>
+      await getImages({ ...props, tablePrefix, tableService }),
+    getImageData: async props =>
+      await getImageData({ ...props, tablePrefix, blobService }),
+    getStudiesByPatientID: async props =>
+      await getStudiesByPatientID({
+        ...props,
+        tablePrefix,
+        tableService
+      })
+  };
+};

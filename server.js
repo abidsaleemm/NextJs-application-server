@@ -63,8 +63,6 @@ app.prepare().then(() => {
   const passport = auth(server);
   routes({ server, app }); // Setup routes
 
-  console.log("storageAdapter", storageAdapter);
-
   // Setup static routes
   if (!dev) {
     server.use("/static", authMiddleware({ redirect: false }));

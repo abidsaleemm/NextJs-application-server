@@ -1,7 +1,14 @@
-import { getProject, getProjectSnapshot } from "../projects";
-import createProject from "../projects/createProject";
+import createProject from "../helpers/createProject";
+import { adapter } from "../server";
 
 export default async ({ socket, action }) => {
+  const {
+    projects: {
+      getProject = () => {},
+      getProjectSnapshot = () => {}
+    } = {}
+  } = adapter;
+
   const { props = {}, func, studyUID } = action;
 
   // TODO Get default for studyUID

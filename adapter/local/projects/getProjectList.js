@@ -31,7 +31,7 @@ export default async ({ path }) => {
         encoding,
         deleted,
         sample,
-        hasProjectSnapshots: await hasProjectSnapshots({ studyUID })
+        hasProjectSnapshots: await hasProjectSnapshots({ studyUID, path })
       })
     )
   );

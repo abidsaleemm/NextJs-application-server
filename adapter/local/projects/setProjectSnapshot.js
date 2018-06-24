@@ -3,7 +3,6 @@ import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
 import getProjectSnapshot from "./getProjectSnapshot";
-// import { path } from "./index";
 
 export default async ({ studyUID = "_", payload = {}, path }) => {
   if (path === undefined) return;
@@ -24,7 +23,8 @@ export default async ({ studyUID = "_", payload = {}, path }) => {
   const snapShotUID = uuid();
 
   // Query last snapshot and merge
-  const lastSnapshot = (await getProjectSnapshot({ studyUID })) || {};
+  const lastSnapshot =
+    (await getProjectSnapshot({ studyUID, path })) || {};
   if (!lastSnapshot) {
     return; // Bailout
   }

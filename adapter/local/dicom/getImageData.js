@@ -1,6 +1,6 @@
 import fs from "fs";
 import { path as root, images } from "./";
-import parseRaw from "../parseRaw";
+import parseRaw from "./dicompParseRaw";
 
 export default async ({ instanceUID }) => {
   // Lookup image

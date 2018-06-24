@@ -1,4 +1,4 @@
-import fs from "fs";
+// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import * as R from "ramda";
@@ -41,7 +41,7 @@ export const defaultUsers = [
 // const db = low(new FileSync(pathUsers));
 // db.defaults({ users: defaultUsers }).write();
 
-const setUserProps = async (id = 0, props = {}, db) => {
+const setUserProps = async ({ id = 0, props = {}, db }) => {
   db.get("users")
     .find({ id: id })
     .assign(props)
@@ -49,7 +49,7 @@ const setUserProps = async (id = 0, props = {}, db) => {
 };
 
 // props - array of keys
-const getUserProps = async (id = 0, props = [], db) => {
+const getUserProps = async ({ id = 0, props = [], db }) => {
   const user = db
     .get("users")
     .find({ id: id })
@@ -96,12 +96,15 @@ export default ({ path }) => {
   const db = low(new FileSync(pathUsers));
   db.defaults({ users: defaultUsers }).write();
 
+  // TODO Refactor higher order code implimentation.  Should only pass object properties not params.
   return {
     createUser: async user => await createUser({ user, db }),
     deleteUser: async id => await deleteUser({ id, db }),
     getUsers: async () => await getUsers({ db }),
-    getUser: async () => await getUser({...props, }),
-    getUserProps,
-    setUserProps
+    getUser: async props => await getUser({ ...props, db }),
+    getUserProps: async (id = 0, props = []) =>
+      await getUserProps({ id, props, db }),
+    setUserProps: async (id = 0, props = []) =>
+      await setUserProps({ id, props, db })
   };
 };

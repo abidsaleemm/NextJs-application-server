@@ -4,20 +4,11 @@ import { queryTable } from "../table";
 import mapStringifyJSON from "../../../helpers/mapStringifyJSON";
 import mapParseJSON from "../../../helpers/mapParseJSON";
 
-// Using reusable table service
-// import { tableService } from "../projects/adapterAzure/";
-
-const tableName = "users";
-
-/**
- * validates/invalidates the username/password auth from azure
- * @param {*} username
- * @param {*} password
- */
 export const getUser = async ({
   username = "",
   password,
-  tableService
+  tableService,
+  tableName
 }) => {
   // Always handle and store as lower case
   const query = new azure.TableQuery().where(
@@ -36,7 +27,12 @@ export const getUser = async ({
   return false;
 };
 
-export const setUserProps = async (id = 0, props = {}) => {
+export const setUserProps = async ({
+  id = 0,
+  props = {},
+  tableName,
+  tableService
+}) => {
   const updatedTask = {
     PartitionKey: id,
     RowKey: id,
@@ -58,7 +54,12 @@ export const setUserProps = async (id = 0, props = {}) => {
   });
 };
 
-export const getUserProps = async (id = 0, props = []) => {
+export const getUserProps = async ({
+  id = 0,
+  props = [],
+  tableName,
+  tableService
+}) => {
   const query = new azure.TableQuery()
     .select(props)
     .where("id eq ?", parseInt(id));
@@ -69,4 +70,22 @@ export const getUserProps = async (id = 0, props = []) => {
   });
 
   return mapParseJSON(user);
+};
+
+export default ({ tableService }) => {
+  const tableName = "users";
+
+  return {
+    createUser: async user => await createUser({ user, tableName }),
+    deleteUser: async id =>
+      await deleteUser({ id, tableName, tableService }),
+    getUsers: async () =>
+      await getUsers({ db, tableName, tableService }),
+    getUser: async props =>
+      await getUser({ ...props, tableName, tableService }),
+    getUserProps: async (id = 0, props = []) =>
+      await getUserProps({ id, props, tableName, tableService }),
+    setUserProps: async (id = 0, props = []) =>
+      await setUserProps({ id, props, tableName, tableService })
+  };
 };

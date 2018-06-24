@@ -1,15 +1,15 @@
-import azure from "azure-storage";
+// import azure from "azure-storage";
 
 // TODO Move this under helpers?  Reusable.
-export const blobService = azure.createBlobService(
-  process.env.STORAGE_ACCOUNT,
-  process.env.STORAGE_ACCOUNT_KEY
-);
+// export const blobService = azure.createBlobService(
+//   process.env.STORAGE_ACCOUNT,
+//   process.env.STORAGE_ACCOUNT_KEY
+// );
 
-const container = "videos";
+// const container = "videos";
 
 // TODO Move this to default azure helpers?
-const createContainer = () =>
+createContainer = () =>
   new Promise((resolve, reject) => {
     blobService.createContainerIfNotExists(
       container,
@@ -23,7 +23,12 @@ const createContainer = () =>
     );
   });
 
-export const videoSave = async ({ studyUID, readStream }) => {
+const videoSave = async ({
+  studyUID,
+  readStream,
+  blobService,
+  container
+}) => {
   await createContainer(); // Create if container does not exists
   await new Promise((resolve, reject) => {
     const writeStream = blobService.createWriteStreamToBlockBlob(
@@ -44,7 +49,7 @@ export const videoSave = async ({ studyUID, readStream }) => {
 };
 
 // Returns readStream
-export const videoLoad = async ({ studyUID }) =>
+const videoLoad = async ({ studyUID, blobService, container }) =>
   blobService.createReadStream(container, studyUID, (err, result) => {
     if (err) {
       console.log(err);
@@ -57,7 +62,7 @@ export const videoLoad = async ({ studyUID }) =>
     );
   });
 
-export const videoExists = ({ studyUID }) => {
+const videoExists = ({ studyUID, blobService, container }) => {
   if (studyUID) {
     return new Promise((resolve, reject) =>
       blobService.doesBlobExist(
@@ -75,7 +80,7 @@ export const videoExists = ({ studyUID }) => {
   }
 };
 
-export const videoDelete = ({ studyUID }) =>
+const videoDelete = ({ studyUID, blobService, container }) =>
   new Promise((resolve, reject) =>
     blobService.deleteBlobIfExists(container, studyUID, err => {
       if (err) {
@@ -85,3 +90,18 @@ export const videoDelete = ({ studyUID }) =>
       }
     })
   );
+
+export default ({ blobService }) => {
+  const container = "videos";
+
+  return {
+    videoSave: async props =>
+      await videoSave({ ...props, blobService, container }),
+    videoLoad: async props =>
+      await videoLoad({ ...props, blobService, container }),
+    videoExists: async props =>
+      await videoExists({ ...props, blobService, container }),
+    videoDelete: async props =>
+      await videoDelete({ ...props, blobService, container })
+  };
+};

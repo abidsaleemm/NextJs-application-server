@@ -30,7 +30,7 @@ export default ({ path }) => {
     videoSave: async props => await videoSave({ ...props, savePath }),
     videoLoad: async props => await videoLoad({ ...props, savePath }),
     videoExists: async props =>
-      await videoExists({ ...props, videoExists }),
+      await videoExists({ ...props, savePath }),
     videoDelete: async props =>
       await videoDelete({ ...props, savePath })
   };

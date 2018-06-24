@@ -1,14 +1,10 @@
 import azure from "./azure";
 import local from "./local";
+import dicom from "./dicom";
 
-// process.env.LOCAL !== undefined
-//     ? require("./adapterLocal")
-//     : require("./adapterAzure")
+export default () => {
+  const enhancer =
+    process.env.LOCAL !== undefined ? local() : azure();
 
-export default () =>
-  process.env.LOCAL !== undefined ? local() : azure();
-
-//   return {
-//     ...azure
-//   };
-// };
+  return dicom(enhancer);
+};

@@ -1,5 +1,5 @@
 import { createContainerIfNotExists } from "../blob";
-import { createTableIfNotExists } from "./table";
+import { createTableIfNotExists } from "../table";
 
 import getProject from "./getProject";
 import getProjectList from "./getProjectList";

@@ -1,9 +1,9 @@
 import { Vector3 } from "three";
 import azure from "azure-storage";
-import queryTable from "./helpers/queryTable";
+import { queryTable } from "../table";
 import getImages from "./getImages";
 import getStudy from "./getStudy";
-import { tablePrefix } from "./";
+import { tablIePrefix } from "./";
 
 export default async ({ studyUID }) => {
   const [

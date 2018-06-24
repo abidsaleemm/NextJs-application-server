@@ -1,11 +1,11 @@
 import azure from "azure-storage";
 import bcrypt from "bcryptjs";
-import queryTable from "../helpers/azure/queryTable";
-import mapStringifyJSON from "../helpers/mapStringifyJSON";
-import mapParseJSON from "../helpers/mapParseJSON";
+import { queryTable } from "../table";
+import mapStringifyJSON from "../../../helpers/mapStringifyJSON";
+import mapParseJSON from "../../../helpers/mapParseJSON";
 
 // Using reusable table service
-import { tableService } from "../projects/adapterAzure/";
+// import { tableService } from "../projects/adapterAzure/";
 
 const tableName = "users";
 
@@ -14,7 +14,11 @@ const tableName = "users";
  * @param {*} username
  * @param {*} password
  */
-export const getUser = async ({ username = "", password }) => {
+export const getUser = async ({
+  username = "",
+  password,
+  tableService
+}) => {
   // Always handle and store as lower case
   const query = new azure.TableQuery().where(
     "username eq ?",

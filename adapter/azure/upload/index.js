@@ -26,99 +26,141 @@
 //     )
 //   );
 
-import { createContainerIfNotExists } from "../blob";
+// import { createContainerIfNotExists } from "../blob";
 
-const list = async ({ studyUID = "" }) => {
+const list = async ({
+  studyUID = "",
+  blobAdapter: { listBlobsSegmentedWithPrefix }
+}) => {
   //   await createContainerIfNotExists({ name: containerName });
 
-  return await new Promise((resolve, reject) => {
-    blobService.listBlobsSegmentedWithPrefix(
-      containerName,
-      studyUID,
-      null,
-      (error, { entries = [] }) => {
-        if (error) {
-          console.log("error list", error);
-          reject(error);
-          return;
-        }
-
-        resolve(
-          entries.map(({ name = "" }) => name.split("/").pop())
-        );
-      }
-    );
-  });
-};
-
-const get = async ({ studyUID, name }) =>
-  blobService.createReadStream(
+  return await listBlobsSegmentedWithPrefix({
     containerName,
-    `${studyUID}/${name}`,
-    (error, result) => {
-      if (error) {
-        console.log("error get", error);
-      }
-    }
-  );
+    prefix: studyUID
+  });
+  //listBlobsSegmentedWithPrefix
+  //   return await new Promise((resolve, reject) => {
+  //     blobService.listBlobsSegmentedWithPrefix(
+  //       containerName,
+  //       studyUID,
+  //       null,
+  //       (error, { entries = [] }) => {
+  //         if (error) {
+  //           console.log("error list", error);
+  //           reject(error);
+  //           return;
+  //         }
 
-const put = async ({ studyUID, name, stream }) => {
-  //   await createContainerIfNotExists({ name: containerName });
+  //         resolve(
+  //           entries.map(({ name = "" }) => name.split("/").pop())
+  //         );
+  //       }
+  //     );
+  //   });
+};
 
-  return await new Promise((resolve, reject) => {
-    const writeStream = blobService.createWriteStreamToBlockBlob(
-      containerName,
-      `${studyUID}/${name}`,
-      (error, result) => {
-        if (error) {
-          console.log("error put", error);
-          return reject(error);
-        }
-
-        resolve(result);
-      }
-    );
-
-    stream.pipe(writeStream);
+const get = async ({
+  studyUID,
+  containerName,
+  name,
+  blobAdapter: { createReadStream }
+}) => {
+  return await createReadStream({
+    containerName,
+    blobName: `${studyUID}/${name}`
   });
 };
 
-const del = async ({ studyUID, name }) => {
+//   blobService.createReadStream(
+//     containerName,
+//     `${studyUID}/${name}`,
+//     (error, result) => {
+//       if (error) {
+//         console.log("error get", error);
+//       }
+//     }
+//   );
+
+const put = async ({
+  studyUID,
+  name,
+  stream,
+  containerName,
+  blobAdapter: { createWriteStreamToBlockBlob }
+}) => {
   //   await createContainerIfNotExists({ name: containerName });
 
-  await new Promise((resolve, reject) => {
-    blobService.deleteBlob(
-      containerName,
-      `${studyUID}/${name}`,
-      (error, result) => {
-        if (error) {
-          console.log("error del", error);
-          return reject(error);
-        }
-
-        resolve();
-      }
-    );
+  return await createWriteStreamToBlockBlob({
+    containerName,
+    blobName: `${studyUID}/${name}`
   });
 };
 
-export default ({ blobService }) => {
+//   return await new Promise((resolve, reject) => {
+//     const writeStream = blobService.createWriteStreamToBlockBlob(
+//       containerName,
+//       `${studyUID}/${name}`,
+//       (error, result) => {
+//         if (error) {
+//           console.log("error put", error);
+//           return reject(error);
+//         }
+
+//         resolve(result);
+//       }
+//     );
+
+//     stream.pipe(writeStream);
+//   });
+// };
+
+const del = async ({
+  studyUID,
+  name,
+  containerName,
+  blobAdapter: { deleteBlob }
+}) => {
+  //   await createContainerIfNotExists({ name: containerName });
+
+  return await deleteBlob({
+    containerName,
+    blobName: `${studyUID}/${name}`
+  });
+};
+
+//   await new Promise((resolve, reject) => {
+//     blobService.deleteBlob(
+//       containerName,
+//       `${studyUID}/${name}`,
+//       (error, result) => {
+//         if (error) {
+//           console.log("error del", error);
+//           return reject(error);
+//         }
+
+//         resolve();
+//       }
+//     );
+//   });
+// };
+
+export default ({ blobAdapter }) => {
   const containerName = "uploads";
 
   // TODO Wrap this with Promise
-  createContainerIfNotExists({
-    tableName: containerName,
-    blobService
-  });
+  //   createContainerIfNotExists({
+  //     tableName: containerName,
+  //     blobService
+  //   });
 
   return {
     get: async props =>
-      await get({ ...props, blobService, containerName }),
+      await get({ ...props, blobAdapter, containerName }),
     put: async props =>
-      await put({ ...props, blobService, containerName }),
+      await put({ ...props, blobAdapter, containerName }),
     del: async props =>
-      await del({ ...props, blobService, containerName }),
+      await del({ ...props, blobAdapter, containerName }),
     list: async props =>
-      await list({ ...props, blobService, containerName })
+      await list({ ...props, blobAdapter, containerName })
   };
 };

@@ -1,14 +1,15 @@
 import azure from "azure-storage";
 import bcrypt from "bcryptjs";
-import { queryTable } from "../table";
+
+// TODO make these more global and reusable
 import mapStringifyJSON from "../../../helpers/mapStringifyJSON";
 import mapParseJSON from "../../../helpers/mapParseJSON";
 
 const getUser = async ({
   username = "",
   password,
-  tableService,
-  tableName
+  tableName,
+  tableAdapter: { queryTable }
 }) => {
   // Always handle and store as lower case
   const query = new azure.TableQuery().where(
@@ -17,7 +18,7 @@ const getUser = async ({
   );
   const {
     0: { password: passwordCheck, ...user } = {}
-  } = await queryTable({ tableService, query, tableName });
+  } = await queryTable({ query, tableName });
 
   // check if the query corresponding entry has been found or not
   if (passwordCheck) {
@@ -31,7 +32,7 @@ const setUserProps = async ({
   id = 0,
   props = {},
   tableName,
-  tableService
+  tableAdapter: { mergeEntity }
 }) => {
   const updatedTask = {
     PartitionKey: id,
@@ -39,32 +40,33 @@ const setUserProps = async ({
     ...mapStringifyJSON(props)
   };
 
+  return await mergeEntity({ tableName, entity: updatedTask });
   // TODO Reusable should move to helper area?
-  await new Promise((resolve, reject) => {
-    tableService.mergeEntity(
-      tableName,
-      updatedTask,
-      (error, result, response) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve(result);
-      }
-    );
-  });
+  //   await new Promise((resolve, reject) => {
+  //     tableService.mergeEntity(
+  //       tableName,
+  //       updatedTask,
+  //       (error, result, response) => {
+  //         if (error) {
+  //           return reject(error);
+  //         }
+  //         resolve(result);
+  //       }
+  //     );
+  //   });
 };
 
 const getUserProps = async ({
   id = 0,
   props = [],
   tableName,
-  tableService
+  tableAdapter: { queryTable }
 }) => {
   const query = new azure.TableQuery()
     .select(props)
     .where("id eq ?", parseInt(id));
+
   const [user] = await queryTable({
-    tableService,
     query,
     tableName
   });
@@ -72,20 +74,21 @@ const getUserProps = async ({
   return mapParseJSON(user);
 };
 
-export default ({ tableService }) => {
+export default ({ tableAdapter }) => {
   const tableName = "users";
 
   return {
-    createUser: async user => await createUser({ user, tableName }),
+    createUser: async user =>
+      await createUser({ user, tableName, tableAdapter }),
     deleteUser: async id =>
-      await deleteUser({ id, tableName, tableService }),
+      await deleteUser({ id, tableName, tableAdapter }),
     getUsers: async () =>
-      await getUsers({ db, tableName, tableService }),
+      await getUsers({ db, tableName, tableAdapter }),
     getUser: async props =>
-      await getUser({ ...props, tableName, tableService }),
+      await getUser({ ...props, tableName, tableAdapter }),
     getUserProps: async (id = 0, props = []) =>
-      await getUserProps({ id, props, tableName, tableService }),
+      await getUserProps({ id, props, tableName, tableAdapter }),
     setUserProps: async (id = 0, props = []) =>
-      await setUserProps({ id, props, tableName, tableService })
+      await setUserProps({ id, props, tableName, tableAdapter })
   };
 };

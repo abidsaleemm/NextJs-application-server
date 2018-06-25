@@ -8,6 +8,9 @@ export default server => {
 
   server.use(passport.initialize());
   server.use(passport.session());
+
+  console.log("getUser", getUser, adapter);
+
   passport.use(
     new Strategy((username, password, done) =>
       getUser({ username, password }).then(user => done(null, user))

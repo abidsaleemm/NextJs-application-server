@@ -23,88 +23,133 @@
 //     );
 //   });
 
-import { createContainerIfNotExists } from "../blob";
+// import { createContainerIfNotExists } from "../blob";
 
-const videoSave = ({
+const videoSave = async ({
   studyUID,
   readStream,
-  blobService,
-  container
+  //   blobService,
+  containerName,
+  blobAdapter
 }) => {
-  //   await createContainer(); // Create if container does not exists
-  return new Promise((resolve, reject) => {
-    const writeStream = blobService.createWriteStreamToBlockBlob(
-      container,
-      studyUID,
-      (err, result) => {
-        if (err) {
-          return reject(err);
-        }
+  const { createWriteStreamToBlockBlob } = blobAdapter;
 
-        console.log("Video blob uploaded.", studyUID);
-        resolve(result);
-      }
-    );
-
-    readStream.pipe(writeStream);
+  return await createWriteStreamToBlockBlob({
+    containerName,
+    blobName: studyUID,
+    readStream
   });
+
+  //   await createContainer(); // Create if container does not exists
+  //   return new Promise((resolve, reject) => {
+  //     const writeStream = blobService.createWriteStreamToBlockBlob(
+  //       containerName,
+  //       studyUID,
+  //       (err, result) => {
+  //         if (err) {
+  //           return reject(err);
+  //         }
+
+  //         console.log("Video blob uploaded.", studyUID);
+  //         resolve(result);
+  //       }
+  //     );
+
+  //     readStream.pipe(writeStream);
+  //   });
 };
 
 // Returns readStream
-const videoLoad = async ({ studyUID, blobService, container }) =>
-  blobService.createReadStream(container, studyUID, (err, result) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
+const videoLoad = async ({
+  studyUID,
+  blobAdapter,
+  containerName
+}) => {
+  const { createReadStream } = blobAdapter;
 
-    console.log(
-      `Video blob loaded ${result.contentLength} bytes.`,
-      studyUID
-    );
+  return await createReadStream({
+    containerName,
+    blobName: studyUID
   });
+};
 
-const videoExists = ({ studyUID, blobService, container }) => {
+// blobService.createReadStream(
+//   containerName,
+//   studyUID,
+//   (err, result) => {
+//     if (err) {
+//       console.log(err);
+//       return;
+//     }
+
+//     console.log(
+//       `Video blob loaded ${result.contentLength} bytes.`,
+//       studyUID
+//     );
+//   }
+// );
+
+const videoExists = async ({
+  studyUID,
+  blobAdapter,
+  containerName
+}) => {
+  const { doesBlobExist } = blobAdapter;
+
   if (studyUID) {
-    return new Promise((resolve, reject) =>
-      blobService.doesBlobExist(
-        container,
-        studyUID,
-        (err, { exists }) => {
-          if (err) {
-            return reject(err);
-          }
+    return await doesBlobExist({ containerName, blobName: studyUID });
+    // return new Promise((resolve, reject) =>
+    //   blobService.doesBlobExist(
+    //     containerName,
+    //     studyUID,
+    //     (err, { exists }) => {
+    //       if (err) {
+    //         return reject(err);
+    //       }
 
-          resolve(exists);
-        }
-      )
-    );
+    //       resolve(exists);
+    //     }
+    //   )
+    // );
   }
 };
 
-const videoDelete = ({ studyUID, blobService, container }) =>
-  new Promise((resolve, reject) =>
-    blobService.deleteBlobIfExists(container, studyUID, err => {
-      if (err) {
-        return reject(err);
-      } else {
-        return resolve();
-      }
-    })
-  );
+const videoDelete = async ({
+  studyUID,
+  blobAdapter,
+  containerName
+}) => {
+  const { deleteBlobIfExists } = blobAdapter;
 
-export default ({ blobService }) => {
-  const container = "videos";
-  createContainerIfNotExists({ blobService, tableName: container });
+  return await deleteBlobIfExists({
+    containerName,
+    blobName: studyUID
+  });
+};
+// new Promise((resolve, reject) =>
+//   blobService.deleteBlobIfExists(containerName, studyUID, err => {
+//     if (err) {
+//       return reject(err);
+//     } else {
+//       return resolve();
+//     }
+//   })
+// );
+
+export default ({ blobAdapter }) => {
+  const { createContainerIfNotExists = () => {} } = blobAdapter;
+
+  const containerName = "videos";
+  createContainerIfNotExists({ containerName });
 
   return {
     videoSave: async props =>
-      await videoSave({ ...props, blobService, container }),
+      await videoSave({ ...props, blobAdapter, containerName }),
     videoLoad: async props =>
-      await videoLoad({ ...props, blobService, container }),
+      await videoLoad({ ...props, blobAdapter, containerName }),
     videoExists: async props =>
-      await videoExists({ ...props, blobService, container }),
+      await videoExists({ ...props, blobAdapter, containerName }),
     videoDelete: async props =>
-      await videoDelete({ ...props, blobService, container })
+      await videoDelete({ ...props, blobAdapter, containerName })
   };
 };

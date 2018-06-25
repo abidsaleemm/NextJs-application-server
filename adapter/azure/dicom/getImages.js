@@ -25,7 +25,6 @@ export default async ({
       ])
       .where("seriesUID eq ?", seriesUID),
     tableName: `${tablePrefix}Images`,
-    tableService
   });
 
   return images

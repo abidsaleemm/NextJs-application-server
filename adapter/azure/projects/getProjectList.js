@@ -28,6 +28,7 @@ export default async ({
         sample,
         hasProjectSnapshots: await hasProjectSnapshots({
           ...props,
+          containerName: tableName,
           studyUID
         })
       })

@@ -6,6 +6,7 @@ import getStudy from "./getStudy";
 export default async ({
   studyUID,
   tablePrefix,
+  tableAdapter,
   tableAdapter: { queryTable }
 }) => {
   const [
@@ -21,7 +22,7 @@ export default async ({
     },
     series
   ] = await Promise.all([
-    getStudy({ studyUID }),
+    getStudy({ studyUID, tablePrefix, tableAdapter }),
     queryTable({
       query: new azure.TableQuery()
         .select(["seriesName", "seriesUID"])
@@ -34,7 +35,11 @@ export default async ({
   const enhancedValues = await Promise.all(
     series.map(async v => {
       const { seriesUID, seriesName } = v;
-      const images = await getImages({ seriesUID });
+      const images = await getImages({
+        seriesUID,
+        tablePrefix,
+        tableAdapter
+      });
       const {
         [0]: {
           imageOrientation: [oX, oY] = [

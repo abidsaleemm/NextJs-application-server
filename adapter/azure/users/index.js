@@ -41,19 +41,6 @@ const setUserProps = async ({
   };
 
   return await mergeEntity({ tableName, entity: updatedTask });
-  // TODO Reusable should move to helper area?
-  //   await new Promise((resolve, reject) => {
-  //     tableService.mergeEntity(
-  //       tableName,
-  //       updatedTask,
-  //       (error, result, response) => {
-  //         if (error) {
-  //           return reject(error);
-  //         }
-  //         resolve(result);
-  //       }
-  //     );
-  //   });
 };
 
 const getUserProps = async ({

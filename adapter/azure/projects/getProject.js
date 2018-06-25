@@ -3,13 +3,11 @@ import hasProjectSnapshots from "./hasProjectSnapshots";
 
 export default async ({
   studyUID = "",
-  tableService,
   tableName,
   tableAdapter: { queryTable },
   ...props
 }) => {
   const project = await queryTable({
-    tableService,
     tableName,
     query: new azure.TableQuery().where("RowKey eq ?", studyUID)
   });
@@ -36,6 +34,7 @@ export default async ({
       sample,
       hasProjectSnapshots: await hasProjectSnapshots({
         ...props,
+        containerName: tableName,
         studyUID
       })
     };

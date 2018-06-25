@@ -12,16 +12,26 @@ export default azureProps => {
     tableName
   } = azureProps;
 
+  const containerName = tableName;
+
   createTableIfNotExists({ tableName });
   createContainerIfNotExists({ containerName: tableName });
 
   return {
     getProject: async props =>
-      await getProject({ ...azureProps, ...props }),
+      await getProject({ ...azureProps, ...props, containerName }),
     getProjectList: async props =>
-      await getProjectList({ ...azureProps, ...props }),
+      await getProjectList({
+        ...azureProps,
+        ...props,
+        containerName
+      }),
     getProjectSnapshot: async props =>
-      await getProjectSnapshot({ ...azureProps, ...props }),
+      await getProjectSnapshot({
+        ...azureProps,
+        ...props,
+        containerName
+      }),
     setProject: async props =>
       await setProject({ ...azureProps, ...props }),
     setProjectSnapshot: async props =>

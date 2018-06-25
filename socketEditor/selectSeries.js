@@ -36,10 +36,8 @@ export default async ({
   }
 
   if (instanceUID) {
-    console.log("imageList", imageList);
     const data = await getImageData({ instanceUID });
 
-    console.log("data", data);
     await new Promise((resolve, reject) => {
       socket.emit(
         "action",

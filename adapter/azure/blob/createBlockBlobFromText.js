@@ -6,7 +6,6 @@ export default ({ blobService, containerName, blobName, text }) =>
       containerName,
       blobName,
       text,
-      // { contentType: 'application/json' }, // TODO contentType not working
       (error, response) => {
         if (error) {
           reject();

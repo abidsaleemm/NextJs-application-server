@@ -4,8 +4,7 @@ export default async ({
 }) => {
   const imageData = await getBlobData({
     container: `${process.env.CONTAINER_NAME}-cache`, // TODO Don't use Env var here
-    blobName: instanceUID,
-    blobService
+    blobName: instanceUID
   });
 
   // TODO Kinda Hacked should use Array methods?

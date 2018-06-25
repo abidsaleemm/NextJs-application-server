@@ -1,4 +1,4 @@
-export default ({ containerName, blobName }) =>
+export default ({ blobService, containerName, blobName }) =>
   new Promise((resolve, reject) =>
     blobService.getBlobToText(
       containerName,

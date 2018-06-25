@@ -1,6 +1,4 @@
-import { blobService } from "../";
-
-export default ({ container, blobName }) =>
+export default ({ blobService, container, blobName }) =>
   new Promise((resolve, reject) => {
     const stream = blobService.createReadStream(container, blobName);
     const buffers = [];

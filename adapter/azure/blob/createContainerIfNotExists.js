@@ -1,7 +1,7 @@
-export default ({ tableName, blobService }) =>
+export default ({ containerName, blobService }) =>
   new Promise((resolve, reject) =>
     blobService.createContainerIfNotExists(
-      tableName,
+      containerName,
       (error, result, response) => {
         if (error) {
           // Container exists and is private

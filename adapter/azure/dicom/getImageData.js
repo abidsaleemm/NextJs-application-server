@@ -1,7 +1,8 @@
-import pullBlob from "../blob/pullBlob";
-
-export default async ({ instanceUID, blobService }) => {
-  const imageData = await pullBlob({
+export default async ({
+  instanceUID,
+  blobAdapter: { getBlobData }
+}) => {
+  const imageData = await getBlobData({
     container: `${process.env.CONTAINER_NAME}-cache`, // TODO Don't use Env var here
     blobName: instanceUID,
     blobService

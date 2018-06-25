@@ -5,20 +5,25 @@ import getImages from "./getImages";
 import getImageData from "./getImageData";
 import getStudiesByPatientID from "./getStudiesByPatientID";
 
-export default ({ blobService, tableService }) => {
+export default ({ blobService, tableAdapter }) => {
   const tablePrefix = process.env.CONTAINER_NAME || "dicom"; // TODO MMake this a passthrough prop
 
   return {
     getSeries: async props =>
-      await getSeries({ ...props, tablePrefix }),
+      await getSeries({ ...props, tablePrefix, tableAdapter }),
     getStudies: async props =>
-      await getStudies({ ...props, tablePrefix, tableService }),
+      await getStudies({ ...props, tablePrefix, tableAdapter }),
     getStudy: async props =>
-      await getStudy({ ...props, tablePrefix, tableService }),
+      await getStudy({ ...props, tablePrefix, tableAdapter }),
     getImages: async props =>
-      await getImages({ ...props, tablePrefix, tableService }),
+      await getImages({ ...props, tablePrefix, tableAdapter }),
     getImageData: async props =>
-      await getImageData({ ...props, tablePrefix, blobService }),
+      await getImageData({
+        ...props,
+        tablePrefix,
+        tableAdapter,
+        blobService
+      }),
     getStudiesByPatientID: async props =>
       await getStudiesByPatientID({
         ...props,

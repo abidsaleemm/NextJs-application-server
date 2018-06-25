@@ -1,11 +1,13 @@
 import { Vector3 } from "three";
 import azure from "azure-storage";
-import { queryTable } from "../table";
 import getImages from "./getImages";
 import getStudy from "./getStudy";
-// import { tablIePrefix } from "./";
 
-export default async ({ studyUID, tablePrefix, tableService }) => {
+export default async ({
+  studyUID,
+  tablePrefix,
+  tableAdapter: { queryTable }
+}) => {
   const [
     {
       patientName,
@@ -24,8 +26,7 @@ export default async ({ studyUID, tablePrefix, tableService }) => {
       query: new azure.TableQuery()
         .select(["seriesName", "seriesUID"])
         .where("studyUID eq ?", studyUID),
-      tableName: `${tablePrefix}Series`,
-      tableService
+      tableName: `${tablePrefix}Series`
     })
   ]);
 

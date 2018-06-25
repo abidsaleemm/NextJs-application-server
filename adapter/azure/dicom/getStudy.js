@@ -1,9 +1,10 @@
 import azure from "azure-storage";
-// import queryTable from './helpers/queryTable';
-import { queryTable } from "../table";
-// import { tablePrefix } from "./";
 
-export default async ({ studyUID, tablePrefix }) => {
+export default async ({
+  studyUID,
+  tablePrefix,
+  tableAdapter: { queryTable }
+}) => {
   const tableName = `${tablePrefix}Studies`; // TODO create const in upper scope for the three types of tables
   const query = new azure.TableQuery()
     .select([])

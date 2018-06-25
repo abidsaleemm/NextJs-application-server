@@ -1,10 +1,11 @@
-// import { tableService, tableName, createTable } from "./";
 import { insertOrMergeEntity } from "../table";
 
 export default async ({
   studyUID,
   props: propsProject = {},
-  ...props
+  tableName,
+  tableAdapter: { insertOrMergeEntity }
+  //   ...props
 }) => {
   if (!studyUID) {
     return;
@@ -16,7 +17,7 @@ export default async ({
     ...propsProject
   };
 
-  await insertOrMergeEntity({ ...props, entity });
+  await insertOrMergeEntity({ tableName, entity });
   //   await createTable();
   //   await new Promise((resolve, reject) => {
   //     tableService.insertOrMergeEntity(

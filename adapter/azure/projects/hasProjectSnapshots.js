@@ -1,11 +1,12 @@
-// import azure from "azure-storage";
-// import { blobService, tableName, createContainer } from "./";
-import { getBlobProperties } from "../blob";
+// import { getBlobProperties } from "../blob";
 
-export default async ({ studyUID = "", tableName, ...props }) => {
+export default async ({
+  studyUID = "",
+  containerName,
+  blobAdapter: { getBlobProperties }
+}) => {
   return await getBlobProperties({
-    ...props,
-    containerName: tableName,
+    containerName,
     blobName: studyUID
   });
 

@@ -1,17 +1,13 @@
 import azure from "azure-storage";
-// import queryTable from "../../helpers/azure/queryTable";
-import { queryTable } from "../table";
-// import { tableService, tableName, createTable } from "./";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
 export default async ({
   studyUID = "",
   tableService,
   tableName,
+  tableAdapter: { queryTable },
   ...props
 }) => {
-  //   await createTable();
-
   const project = await queryTable({
     tableService,
     tableName,

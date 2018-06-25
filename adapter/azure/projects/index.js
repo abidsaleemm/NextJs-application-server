@@ -1,6 +1,3 @@
-import { createContainerIfNotExists } from "../blob";
-import { createTableIfNotExists } from "../table";
-
 import getProject from "./getProject";
 import getProjectList from "./getProjectList";
 import getProjectSnapshot from "./getProjectSnapshot";
@@ -8,9 +5,15 @@ import setProject from "./setProject";
 import setProjectSnapshot from "./setProjectSnapshot";
 import destroyProject from "./destroyProject";
 
-export default async azureProps => {
-  await createTableIfNotExists(props);
-  await createContainerIfNotExists(props);
+export default azureProps => {
+  const {
+    blobAdapter: { createContainerIfNotExists },
+    tableAdapter: { createTableIfNotExists },
+    tableName
+  } = azureProps;
+
+  createTableIfNotExists({ tableName });
+  createContainerIfNotExists({ containerName: tableName });
 
   return {
     getProject: async props =>

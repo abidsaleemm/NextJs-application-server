@@ -1,18 +1,23 @@
-import { blobService, tableName, createContainer } from "./";
-import getProjectSnapshot from "./getProjectSnapshot";
+// import { blobService, tableName, createContainer } from "./";
+// import getProjectSnapshot from "./getProjectSnapshot";
 // import { createBlobSnapshot } from "../blob";
-import { createBlockBlobFromText } from "../blob";
+// import { createBlockBlobFromText } from "../blob";
 
 export default async ({
   studyUID = "_",
   payload = {},
   tableName,
-  ...props
+  blobAdapter: {
+    getBlobProperties,
+    getProjectSnapshot,
+    createBlockBlobFromText
+  }
+  //   ...props
 }) => {
   //   await createContainer();
 
   const exists = await getBlobProperties({
-    ...props,
+    // ...props,
     containerName: tableName,
     blobName: studyUID
   });
@@ -61,7 +66,7 @@ export default async ({
     //   )
     // );
 
-    await blobService({ ...props });
+    // await blobService({ ...props });
 
     // Get existing payload and merge
     // TODO There must be a more efficient way to handle this
@@ -78,7 +83,7 @@ export default async ({
   const json = JSON.stringify(payloadMerged);
 
   await createBlockBlobFromText({
-    ...props,
+    // ...props,
     containerName: tableName,
     blobName: studyUID,
     text: json

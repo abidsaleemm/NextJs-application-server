@@ -1,9 +1,16 @@
 // import azure from "azure-storage";
 // import { blobService, tableName, createContainer } from "./";
-import { getBlobToText } from "../blob";
+// import { getBlobToText } from "../blob";
 
-export default async ({ studyUID = "", ...props }) => {
-  const json = await getBlobToText({ ...props });
+export default async ({
+  studyUID = "",
+  containerName,
+  blobAdapter: { getBlobToText }
+}) => {
+  const json = await getBlobToText({
+    containerName,
+    blobName: studyUID
+  });
   //   await createContainer();
 
   //   const json = await new Promise((resolve, reject) =>

@@ -1,7 +1,10 @@
 import { BlobUtilities } from "azure-storage";
-import { deleteBlob } from "../blob";
 
-export default async ({ studyUID, tableName, ...props }) => {
+export default async ({
+  studyUID,
+  tableName,
+  blobAdapter: { deleteBlob }
+}) => {
   if (!studyUID) return;
 
   // TODO Any of this reusable and should be placed in healers?
@@ -12,7 +15,6 @@ export default async ({ studyUID, tableName, ...props }) => {
   };
 
   await deleteBlob({
-    ...props,
     blobName: studyUID,
     containerName: tableName,
     options

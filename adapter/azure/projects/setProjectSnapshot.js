@@ -20,7 +20,7 @@ export default async ({
   let payloadMerged = payload;
   if (exists === true) {
     await createBlobSnapshot({
-      conainerName: tableName,
+      containerName: tableName,
       blobName: studyUID
     });
 

@@ -3,11 +3,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import { Button, ButtonGroup } from "reactstrap";
+import { sortBy, prop, compose, reverse } from "ramda";
+
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import TableList from "../components/TableList";
 import DropDownProjects from "../components/DropDownProjects";
-import selectProjectList from "../selectors/selectProjectList";
 import ButtonConfirm from "../components/ButtonConfirm";
 import UploadFilePopup from "../components/UploadFilePopup";
 import UploadButton from "../components/UploadButton";
@@ -330,6 +331,7 @@ class ProjectsListing extends Component {
 
 const mapStateToProps = ({
   projectsSettings,
+  projectsSettings: { sortKey, sortDesc },
   defaultList,
   projects: { projects }
 }) => ({
@@ -354,10 +356,10 @@ const mapStateToProps = ({
     upload: { title: "Attach Records", sort: false }
   },
   tableSettings: projectsSettings,
-  tableData: selectProjectList({
-    projects,
-    settings: projectsSettings
-  }),
+  tableData: compose(
+    sortBy(prop(sortKey)),
+    list => (sortDesc ? reverse(list) : list)
+  )(data),
   defaultList
 });
 
@@ -368,3 +370,12 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectsListing));
+
+/*
+const filteredList = list =>
+      R.reduce(
+        (acc, [key, query]) => filterByKey(key, query)(acc),
+        list,
+        R.toPairs(filter)
+      );
+*/

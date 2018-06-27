@@ -1,3 +1,5 @@
+import { Input } from "reactstrap";
+
 export default props => {
   const { value, placeholder, onChange, onClear } = props;
 
@@ -7,8 +9,6 @@ export default props => {
       <style jsx>
         {`
           .root {
-            padding: 5px;
-            background: white;
             display: flex;
             position: relative;
             width: 100%;
@@ -20,29 +20,16 @@ export default props => {
             cursor: pointer;
           }
 
-          .input {
-            height: 30px;
-            border: none;
-            box-shadow: none;
-            width: 100%;
-            padding-right: 30px;
-          }
-
-          .input:focus {
-            outline: none;
-          }
-
           .clearButton {
             position: absolute;
             background: none;
             right: 5px;
             line-height: 0;
-            width: 30px;
-            height: 30px;
+            height: 90%;
             border: none;
-            justify-content: center;
-            align-items: center;
+            align-self: center;
             padding: 0;
+            margin: 0;
             border-radius: 900px;
           }
 
@@ -53,12 +40,12 @@ export default props => {
         `}
       </style>
 
-      <input
-        className="input"
+      <Input
         type="text"
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        style={{ margin: 0 }}
       />
       {shouldShowClear ? (
         <button className="clearButton" onClick={onClear}>

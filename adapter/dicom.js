@@ -61,7 +61,6 @@ export default props => {
     dicom: {
       ...dicomProps,
       getStudies: async () => {
-        console.log("getStudies");
         const studies = await getStudies();
         return studies.map(transform);
       },

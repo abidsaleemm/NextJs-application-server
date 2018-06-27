@@ -12,25 +12,15 @@ import ButtonConfirm from "../components/ButtonConfirm";
 import UploadFilePopup from "../components/UploadFilePopup";
 import UploadButton from "../components/UploadButton";
 import Status from "../components/Status";
+import RemoveButton from "../components/RemoveButton";
+
+import SearchInput from "../components/SearchInput";
 
 // TODO This code is duplicated in projectDetail.  Please clean up.
 const windowName = "renderWindow";
 const width = 1920;
 const height = 1080;
 const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-
-// TODO Move this to a different file
-const RemoveButton = () => (
-  <img
-    width={20}
-    whight={20}
-    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF7SURBVGhD7dnBboJAEMZx7u2zeGmxB5uYAL7/a8iVpde2OzCfYsMCwiw7TeafbGIsZfsrK5o1syzLsqw9q8/nV34Yre/L4YUfxsmV71Vb5HVTfXzyU+LRudsyv7oqL/kp2QjhiuNXWx5//EQuBoYRDc1Bc4ljHhEYspghAqPD+Ln5kG3ReqVLPZzgPmQwY4jb8EtZ7DXTXN5OwYk2YiYRMZbwDKZZM+HuCCSJSYZAEpjkCLQFowaB1mDUIdAzGLUItASjHoGmMfTu/PdTAcaym8OuTf/Xx4ZCBFqOUYxAPSa0lPwHQf8z9QiK/sjwa6Ib+iH91fjnS2s5AsNj/N2Of11HUwheZuHbrxbM9JXol9DsMakxSxB86PyxqTDPIJA6zBoEUoPZgkDJMRIIlAwjiUC7Y2IgEJ/bBc8thZnZoNuEQDOYq9gGHe3BjmyZiiDQGEZ0yxQ9YmQRaIiJgkCEoUsdA4E6TJHX0RAo+pcwvj2+TLIsy7Kse1n2C9LWR7iAvc9TAAAAAElFTkSuQmCC"
-  />
-);
-
-// onFilter={([k, v]) =>
-//     setProjectsSettings({ filter: { [k]: v } })
-//   }
 
 const sortFunc = {
   status: (a, b) => {
@@ -83,39 +73,66 @@ const header = {
 };
 
 const filterRender = ({
-  filter: { sample = false } = {},
-  toggleFilterSettings = () => {}
+  filter: {
+    sample = false,
+    patientName,
+    patientBirthDate,
+    studyName,
+    location
+  } = {},
+  toggleFilterSettings = () => {},
+  setProjectsSettings = () => {}
 }) => ({
   patientName: (
-    <Input
+    <SearchInput
       type="text"
-      onChange={v => {
-        setProjectsSettings({ filter: { patientName: v } });
-      }}
+      name={`filter-patientName`}
+      value={patientName}
+      onClear={() =>
+        setProjectsSettings({ filter: { patientName: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { patientName: value } })
+      }
     />
   ),
   patientBirthDate: (
-    <Input
+    <SearchInput
       type="text"
-      onChange={v => {
-        setProjectsSettings({ filter: { patientName: v } });
-      }}
+      name={`filter-patientBirthDate`}
+      value={patientBirthDate}
+      onClear={() =>
+        setProjectsSettings({ filter: { patientBirthDate: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { patientBirthDate: value } })
+      }
     />
   ),
   studyName: (
-    <Input
+    <SearchInput
       type="text"
-      onChange={v => {
-        setProjectsSettings({ filter: { patientName: v } });
-      }}
+      name={`filter-studyName`}
+      value={studyName}
+      onClear={() =>
+        setProjectsSettings({ filter: { studyName: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { studyName: value } })
+      }
     />
   ),
   location: (
-    <Input
+    <SearchInput
       type="text"
-      onChange={v => {
-        setProjectsSettings({ filter: { patientName: v } });
-      }}
+      name={`filter-location`}
+      value={location}
+      onClear={() =>
+        setProjectsSettings({ filter: { location: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { location: value } })
+      }
     />
   ),
   sampleRender: (
@@ -144,15 +161,25 @@ const filterRender = ({
 // TODO Cut up into separate files
 const filterFunc = props => {
   const {
-    filter: { sample: filterSample = false }
+    filter: {
+      sample: sampleFilter = false,
+      patientName: patientNameFilter,
+      patientBirthDate: patientBirthDateFilter,
+      studyName: studyNameFilter,
+      location: locationFilter
+    }
   } = props;
 
   return {
-    patientName: v => true,
-    patientBirthDate: v => true,
-    studyName: v => true,
-    location: v => true,
-    sample: ({ sample }) => filterSample === sample
+    patientName: ({ patientName }) =>
+      new RegExp(patientNameFilter, "gi").test(patientName),
+    patientBirthDate: ({ patientBirthDate }) =>
+      new RegExp(patientBirthDateFilter, "gi").test(patientBirthDate),
+    studyName: ({ studyName }) =>
+      new RegExp(studyNameFilter, "gi").test(studyName),
+    location: ({ location }) =>
+      new RegExp(locationFilter, "gi").test(location),
+    sample: ({ sample }) => sampleFilter === sample
   };
 };
 

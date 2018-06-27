@@ -12,12 +12,6 @@ import sortFunc from "./sortFunc";
 import filterRender from "./filterRender";
 import filterFunc from "./filterFunc";
 
-// TODO This code is duplicated in projectDetail.  Please clean up.
-const windowName = "renderWindow";
-const width = 1920;
-const height = 1080;
-const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-
 class ProjectsListing extends Component {
   static async getInitialProps({
     store,
@@ -50,12 +44,12 @@ class ProjectsListing extends Component {
   }
 
   // TODO Move to redux action?
-  popupOpen({ target, studyUID }) {
+  popupOpen = ({ target, studyUID }) => {
     this.setState({
       popupTarget: target,
       popupStudyUID: studyUID
     });
-  }
+  };
 
   // TODO Move to redux action?
   popupToggle() {
@@ -77,7 +71,10 @@ class ProjectsListing extends Component {
       state: { popupTarget, popupStudyUID }
     } = this;
 
-    const projectsEnhanced = fieldEnhancer(props);
+    const projectsEnhanced = fieldEnhancer({
+      ...props,
+      popupOpen: this.popupOpen
+    });
 
     // Query the study from tableData
     const study = projects.find(

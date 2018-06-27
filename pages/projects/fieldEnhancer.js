@@ -8,6 +8,12 @@ import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
 
+// TODO This code is duplicated in projectDetail.  Please clean up.
+const windowName = "renderWindow";
+const width = 1920;
+const height = 1080;
+const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
+
 export default props => {
   const {
     projects = [],
@@ -15,7 +21,8 @@ export default props => {
     videoDelete = () => {},
     handleUpload = () => {},
     setProjectProps = () => {},
-    toggleProjectDefault = () => {}
+    toggleProjectDefault = () => {},
+    popupOpen = () => {}
   } = props;
 
   return projects.map(
@@ -168,7 +175,7 @@ export default props => {
                 id={`file-popover-${i}`}
                 color="success"
                 onClick={() =>
-                  this.popupOpen({
+                  popupOpen({
                     studyUID,
                     target: `file-popover-${i}`
                   })

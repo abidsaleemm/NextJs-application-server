@@ -10,56 +10,32 @@ import {
   toPairs
 } from "ramda";
 
-// import SearchInput from "./SearchInput";
-
-// {!filterProp ? null : filter[id] !== undefined ? (
-//     <SearchInput
-//       type="text"
-//       name={`filter-${id}`}
-//       value={filter[id]}
-//       onClear={() => onFilter([id, ""])}
-//       onChange={({ target: { value } = {} }) =>
-//         onFilter([id, value])
-//       }
-//     />
-//   ) : null}
-
 export default props => {
   const {
     data = [],
     header = {},
-    // filter = {},
     sortKey = "",
     sortDesc = false,
     sortFunc = {},
     filterRender = {},
     filterFunc = {},
     onRowClick = () => {},
-    onFilter = () => {},
     onSort = () => {}
   } = props;
 
-  const filterByKey = (key, func = () => true) => {
-    // const { [key]: func = () => true } = filterFunc;
-
-    // console.log("query", query);
-    // console.log("filterByKey", key, query, func);
-    // return true;
-
-    return filter(v => func(v));
-  };
+  const filterByKey = (key, func = () => true) =>
+    filter(v => func(v));
 
   // Sorting and filtering here
   const dataEnhanced = compose(
     (list = []) => (sortDesc ? reverse(list) : list),
     sortBy(prop(sortKey)),
-    (list = []) => {
-      return reduce(
+    (list = []) =>
+      reduce(
         (acc, [key, func]) => filterByKey(key, func)(acc),
         list,
         toPairs(filterFunc)
-      );
-    }
+      )
   )(data);
 
   return (

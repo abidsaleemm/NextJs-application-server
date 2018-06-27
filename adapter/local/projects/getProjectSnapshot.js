@@ -2,8 +2,6 @@ import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 
-// import { path } from "./index";
-
 // TODO Add functionality to index prev snapshots?
 export default async ({ studyUID = "", path }) => {
   if (path === undefined) return;

@@ -1,6 +1,5 @@
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-// import { path } from "./index";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
 export default async ({ studyUID = "", path }) => {

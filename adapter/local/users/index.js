@@ -1,4 +1,3 @@
-// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import * as R from "ramda";
@@ -26,20 +25,6 @@ export const defaultUsers = [
     admin: true
   }
 ];
-
-// export const path = "./projectsLocal";
-// export const pathUsers = `${path}/users.json`;
-
-// TODO this should be some sort of reusable function under helpers
-// export const checkExists = () => {
-//   if (fs.existsSync(path) === false) {
-//     fs.mkdirSync(path);
-//   }
-// };
-
-// checkExists();
-// const db = low(new FileSync(pathUsers));
-// db.defaults({ users: defaultUsers }).write();
 
 const setUserProps = async ({ id = 0, props = {}, db }) => {
   db.get("users")

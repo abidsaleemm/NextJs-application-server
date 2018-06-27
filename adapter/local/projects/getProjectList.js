@@ -1,7 +1,5 @@
-// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-// import { path } from "./index";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
 // TODO Messy and duplicate code might want to map getProject.

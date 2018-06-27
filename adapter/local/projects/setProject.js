@@ -1,7 +1,5 @@
-// import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-// import { path } from "./index";
 
 export default async ({ studyUID, props = {}, path }) => {
   if (path === undefined || !studyUID) return;

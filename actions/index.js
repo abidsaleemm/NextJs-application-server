@@ -25,6 +25,9 @@ export {
 export {
   default as setProjectDetailSettings
 } from "./setProjectDetailSettings";
+export {
+  default as toggleFilterSettings
+} from "./toggleFilterSettings";
 
 export { default as toggleSidebar } from "./toggleSidebar";
 export { default as videoRender } from "./videoRender";

@@ -4,6 +4,7 @@ import createBlobSnapshot from "./createBlobSnapshot";
 import createBlockBlobFromText from "./createBlockBlobFromText";
 import createContainerIfNotExists from "./createContainerIfNotExists";
 import deleteBlob from "./deleteBlob";
+import deleteBlobIfExists from "./deleteBlobIfExists";
 import getBlobProperties from "./getBlobProperties";
 import getBlobToText from "./getBlobToText";
 import getBlobData from "./getBlobData";
@@ -27,6 +28,8 @@ export default () => {
       await createContainerIfNotExists({ ...props, blobService }),
     deleteBlob: async props =>
       await deleteBlob({ ...props, blobService }),
+    deleteBlobIfExists: async props =>
+      await deleteBlobIfExists({ ...props, blobService }),
     getBlobProperties: async props =>
       await getBlobProperties({ ...props, blobService }),
     getBlobToText: async props =>

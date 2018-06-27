@@ -2,7 +2,6 @@ export { default as payloadProjects } from "./payloadProjects";
 export {
   default as payloadProjectDetail
 } from "./payloadProjectDetail";
-export { default as payloadPortal } from "./payloadPortal";
 export { default as payloadUsers } from "./payloadUsers";
 
 export { default as setProjectProps } from "./setProjectProps";
@@ -18,7 +17,6 @@ export {
 } from "./setProjectDetailStatus";
 
 // Settings
-export { default as setPortalSettings } from "./setPortalSettings";
 export {
   default as setProjectsSettings
 } from "./setProjectsSettings";

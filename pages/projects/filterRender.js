@@ -7,7 +7,9 @@ export default ({
     patientName,
     patientBirthDate,
     studyName,
-    location
+    location,
+    studyDate,
+    uploadDateTime
   } = {},
   toggleFilterSettings = () => {},
   setProjectsSettings = () => {}
@@ -84,5 +86,31 @@ export default ({
         }}
       />
     </div>
+  ),
+  uploadDateTime: (
+    <SearchInput
+      type="text"
+      name={`filter-uploadDateTime`}
+      value={uploadDateTime}
+      onClear={() =>
+        setProjectsSettings({ filter: { uploadDateTime: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { uploadDateTime: value } })
+      }
+    />
+  ),
+  studyDate: (
+    <SearchInput
+      type="text"
+      name={`filter-studyDate`}
+      value={studyDate}
+      onClear={() =>
+        setProjectsSettings({ filter: { studyDate: "" } })
+      }
+      onChange={({ target: { value } = {} }) =>
+        setProjectsSettings({ filter: { studyDate: value } })
+      }
+    />
   )
 });

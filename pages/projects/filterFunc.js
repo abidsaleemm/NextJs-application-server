@@ -4,7 +4,9 @@ export default ({
     patientName: patientNameFilter,
     patientBirthDate: patientBirthDateFilter,
     studyName: studyNameFilter,
-    location: locationFilter
+    location: locationFilter,
+    studyDate: studyDateFilter,
+    uploadDateTime: uploadDateTimeFilter
   }
 }) => ({
   patientName: ({ patientName }) =>
@@ -15,5 +17,10 @@ export default ({
     new RegExp(studyNameFilter, "gi").test(studyName),
   location: ({ location }) =>
     new RegExp(locationFilter, "gi").test(location),
+  uploadDateTime: ({ uploadDateTime }) =>
+    new RegExp(uploadDateTimeFilter, "gi").test(uploadDateTime),
+  studyDate: ({ studyDate }) =>
+    new RegExp(studyDateFilter, "gi").test(studyDate),
   sample: ({ sample }) => sampleFilter === sample
+  // patientBirthDate
 });

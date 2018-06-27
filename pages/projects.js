@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
-import { Button, ButtonGroup } from "reactstrap";
-import { sortBy, prop, compose, reverse } from "ramda";
+import { Button, ButtonGroup, Input } from "reactstrap";
 
 import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
@@ -28,6 +27,134 @@ const RemoveButton = () => (
     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF7SURBVGhD7dnBboJAEMZx7u2zeGmxB5uYAL7/a8iVpde2OzCfYsMCwiw7TeafbGIsZfsrK5o1syzLsqw9q8/nV34Yre/L4YUfxsmV71Vb5HVTfXzyU+LRudsyv7oqL/kp2QjhiuNXWx5//EQuBoYRDc1Bc4ljHhEYspghAqPD+Ln5kG3ReqVLPZzgPmQwY4jb8EtZ7DXTXN5OwYk2YiYRMZbwDKZZM+HuCCSJSYZAEpjkCLQFowaB1mDUIdAzGLUItASjHoGmMfTu/PdTAcaym8OuTf/Xx4ZCBFqOUYxAPSa0lPwHQf8z9QiK/sjwa6Ib+iH91fjnS2s5AsNj/N2Of11HUwheZuHbrxbM9JXol9DsMakxSxB86PyxqTDPIJA6zBoEUoPZgkDJMRIIlAwjiUC7Y2IgEJ/bBc8thZnZoNuEQDOYq9gGHe3BjmyZiiDQGEZ0yxQ9YmQRaIiJgkCEoUsdA4E6TJHX0RAo+pcwvj2+TLIsy7Kse1n2C9LWR7iAvc9TAAAAAElFTkSuQmCC"
   />
 );
+
+// onFilter={([k, v]) =>
+//     setProjectsSettings({ filter: { [k]: v } })
+//   }
+
+const sortFunc = {
+  status: (a, b) => {
+    return 0;
+  },
+  sample: (a, b) => {
+    return 0;
+  },
+  // videoOptions: (a, b) => {},
+  patientName: (a, b) => {
+    return 0;
+  },
+  patientAge: (a, b) => {
+    return 0;
+  },
+  patientSex: (a, b) => {
+    return 0;
+  },
+  patientBirthDate: (a, b) => {
+    return 0;
+  },
+  studyName: (a, b) => {
+    return 0;
+  },
+  studyDate: (a, b) => {
+    return 0;
+  },
+  location: (a, b) => {
+    return 0;
+  },
+  uploadDateTime: (a, b) => {
+    return 0;
+  }
+};
+
+const header = {
+  action: "",
+  status: "Status",
+  sampleRender: "Sample",
+  videoOptions: "Rendered",
+  patientName: "Patient Name",
+  patientAge: "Age",
+  patientSex: "Gender",
+  patientBirthDate: "Patient DOB",
+  studyName: "Study Name",
+  studyDate: "Study Date",
+  location: "Facility",
+  uploadDateTime: "Date Uploaded",
+  upload: "Attach Records"
+};
+
+const filterRender = ({
+  filter: { sample = false } = {},
+  toggleFilterSettings = () => {}
+}) => ({
+  patientName: (
+    <Input
+      type="text"
+      onChange={v => {
+        setProjectsSettings({ filter: { patientName: v } });
+      }}
+    />
+  ),
+  patientBirthDate: (
+    <Input
+      type="text"
+      onChange={v => {
+        setProjectsSettings({ filter: { patientName: v } });
+      }}
+    />
+  ),
+  studyName: (
+    <Input
+      type="text"
+      onChange={v => {
+        setProjectsSettings({ filter: { patientName: v } });
+      }}
+    />
+  ),
+  location: (
+    <Input
+      type="text"
+      onChange={v => {
+        setProjectsSettings({ filter: { patientName: v } });
+      }}
+    />
+  ),
+  sampleRender: (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center"
+      }}
+    >
+      <input
+        type="checkbox"
+        onChange={({ target: { value } }) => {
+          toggleFilterSettings("sample");
+        }}
+        checked={sample}
+        style={{
+          alignSelf: "center",
+          width: "25px",
+          height: "25px"
+        }}
+      />
+    </div>
+  )
+});
+
+// TODO Cut up into separate files
+const filterFunc = props => {
+  const {
+    filter: { sample: filterSample = false }
+  } = props;
+
+  return {
+    patientName: v => true,
+    patientBirthDate: v => true,
+    studyName: v => true,
+    location: v => true,
+    sample: ({ sample }) => filterSample === sample
+  };
+};
 
 class ProjectsListing extends Component {
   static async getInitialProps({
@@ -79,9 +206,10 @@ class ProjectsListing extends Component {
     const {
       props,
       props: {
-        tableData = [],
-        tableHeader = {},
-        tableSettings = {},
+        projects = [],
+        sortKey,
+        sortDesc,
+        filters = {},
         setProjectsSettings = () => {},
         createProject = () => {},
         videoDelete = () => {},
@@ -93,8 +221,8 @@ class ProjectsListing extends Component {
       state: { popupTarget, popupStudyUID }
     } = this;
 
-    // TODO Should this be moved?
-    const tableDataEnhanced = tableData.map(
+    // TODO Should this be moved? Move this to a componentEnhanced.
+    const projectsEnhanced = projects.map(
       (
         {
           studyUID,
@@ -120,6 +248,7 @@ class ProjectsListing extends Component {
           status: <Status {...{ ...props, status, studyUID }} />,
           tableBackground:
             // TODO Create helper to set color
+            // Create a hof for this.
             status === 1
               ? "rgba(255, 0, 0, 0.1)"
               : status === 2
@@ -259,7 +388,8 @@ class ProjectsListing extends Component {
               />
             </ButtonGroup>
           ),
-          sample: (
+          sample,
+          sampleRender: (
             <div
               style={{
                 display: "flex",
@@ -286,7 +416,7 @@ class ProjectsListing extends Component {
     );
 
     // Query the study from tableData
-    const study = tableData.find(
+    const study = projects.find(
       ({ studyUID = "" }) => studyUID === popupStudyUID
     );
 
@@ -303,14 +433,16 @@ class ProjectsListing extends Component {
             }
           `}
         </style>
+
         <TableList
-          data={tableDataEnhanced}
-          header={tableHeader}
+          data={projectsEnhanced}
+          sortFunc={sortFunc}
+          sortKey={sortKey}
+          sortDesc={sortDesc}
+          header={header}
+          filterFunc={filterFunc(props)}
+          filterRender={filterRender(props)}
           onSort={k => setProjectsSettings({ sortKey: k })}
-          onFilter={([k, v]) =>
-            setProjectsSettings({ filter: { [k]: v } })
-          }
-          {...tableSettings}
         />
         <UploadFilePopup
           popupTarget={popupTarget}
@@ -330,36 +462,19 @@ class ProjectsListing extends Component {
 }
 
 const mapStateToProps = ({
-  projectsSettings,
-  projectsSettings: { sortKey, sortDesc },
+  //   projectsSettings,
+  projectsSettings: { sortKey, sortDesc, filter },
   defaultList,
   projects: { projects }
 }) => ({
-  tableHeader: {
-    action: { title: "", sort: false },
-    // multusID: { title: "Multus ID", sort: true }, // TODO Maybe only for admins in future?
-    status: { title: "Status", sort: true },
-    sample: { title: "Sample", sort: true },
-    videoOptions: { title: "Rendered", sort: false },
-    patientName: { title: "Patient Name", sort: true, filter: true },
-    patientAge: { title: "Age", sort: true },
-    patientSex: { title: "Gender", sort: true },
-    patientBirthDate: {
-      title: "Patient DOB",
-      sort: true,
-      filter: true
-    },
-    studyName: { title: "Study Name", sort: true, filter: true },
-    studyDate: { title: "Study Date", sort: true },
-    location: { title: "Facility", sort: true, filter: true },
-    uploadDateTime: { title: "Date Uploaded", sort: true },
-    upload: { title: "Attach Records", sort: false }
-  },
-  tableSettings: projectsSettings,
-  tableData: compose(
-    sortBy(prop(sortKey)),
-    list => (sortDesc ? reverse(list) : list)
-  )(data),
+  projects,
+  sortKey,
+  sortDesc,
+  filter,
+  // tableData: compose(
+  //   list => (sortDesc ? reverse(list) : list),
+  //   sortBy(prop(sortKey))
+  // )(projects),
   defaultList
 });
 
@@ -370,12 +485,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Wrapper(ProjectsListing));
-
-/*
-const filteredList = list =>
-      R.reduce(
-        (acc, [key, query]) => filterByKey(key, query)(acc),
-        list,
-        R.toPairs(filter)
-      );
-*/

@@ -1,18 +1,66 @@
 import React from "react";
 import { Table } from "reactstrap";
-import SearchInput from "./SearchInput";
+import {
+  sortBy,
+  prop,
+  compose,
+  reverse,
+  filter,
+  reduce,
+  toPairs
+} from "ramda";
+
+// import SearchInput from "./SearchInput";
+
+// {!filterProp ? null : filter[id] !== undefined ? (
+//     <SearchInput
+//       type="text"
+//       name={`filter-${id}`}
+//       value={filter[id]}
+//       onClear={() => onFilter([id, ""])}
+//       onChange={({ target: { value } = {} }) =>
+//         onFilter([id, value])
+//       }
+//     />
+//   ) : null}
 
 export default props => {
   const {
     data = [],
     header = {},
-    filter = {},
+    // filter = {},
     sortKey = "",
     sortDesc = false,
+    sortFunc = {},
+    filterRender = {},
+    filterFunc = {},
     onRowClick = () => {},
     onFilter = () => {},
     onSort = () => {}
   } = props;
+
+  const filterByKey = (key, func = () => true) => {
+    // const { [key]: func = () => true } = filterFunc;
+
+    // console.log("query", query);
+    // console.log("filterByKey", key, query, func);
+    // return true;
+
+    return filter(v => func(v));
+  };
+
+  // Sorting and filtering here
+  const dataEnhanced = compose(
+    (list = []) => (sortDesc ? reverse(list) : list),
+    sortBy(prop(sortKey)),
+    (list = []) => {
+      return reduce(
+        (acc, [key, func]) => filterByKey(key, func)(acc),
+        list,
+        toPairs(filterFunc)
+      );
+    }
+  )(data);
 
   return (
     <div className="root">
@@ -30,6 +78,7 @@ export default props => {
             padding: 0.4em;
             border: none;
             min-width: 1em;
+            height: 100%;
           }
 
           .fieldColor {
@@ -104,8 +153,10 @@ export default props => {
       <Table hover>
         <thead>
           <tr>
-            {Object.entries(header).map(
-              ([id, { title = "", sort = false }]) => (
+            {Object.entries(header).map(([id, title]) => {
+              const { [id]: sort } = sortFunc;
+
+              return (
                 <th
                   className={`
                   ${sort ? "headerCell" : "headerCellDisabled"} 
@@ -125,61 +176,55 @@ export default props => {
                     ) : null}
                   </div>
                 </th>
-              )
-            )}
+              );
+            })}
           </tr>
           <tr className="filterColor">
-            {Object.entries(header).map(
-              ([id, { filter: filterProp = false }]) => (
+            {Object.keys(header).map(key => {
+              const { [key]: render = null } = filterRender;
+
+              return (
                 <td
                   className="fieldFilter"
-                  key={`tableList-${id}-filter`}
+                  key={`tableList-${key}-filter`}
                 >
-                  {!filterProp ? null : filter[id] !== undefined ? (
-                    <SearchInput
-                      type="text"
-                      name={`filter-${id}`}
-                      value={filter[id]}
-                      onClear={() => onFilter([id, ""])}
-                      onChange={({ target: { value } = {} }) =>
-                        onFilter([id, value])
-                      }
-                    />
-                  ) : null}
+                  {render}
                 </td>
-              )
-            )}
+              );
+            })}
           </tr>
         </thead>
         <tbody>
-          {data.map(({ tableBackground, ...dataProps }, i) => (
-            <tr
-              key={`tableList-tableRow-${i}`}
-              onClick={() => onRowClick(dataProps)}
-            >
-              {Object.entries(header)
-                .map(([id, props]) => ({
-                  ...props,
-                  id,
-                  data: dataProps[id]
-                }))
-                .map(({ id, data, title }) => {
-                  return (
-                    <td
-                      className="dataCell"
-                      key={`tableList-tableCell-${id}-${title}`}
-                      style={{
-                        ...(tableBackground
-                          ? { background: tableBackground }
-                          : {})
-                      }}
-                    >
-                      {data !== undefined ? data : null}
-                    </td>
-                  );
-                })}
-            </tr>
-          ))}
+          {dataEnhanced.map(
+            ({ tableBackground, ...dataProps }, i) => (
+              <tr
+                key={`tableList-tableRow-${i}`}
+                onClick={() => onRowClick(dataProps)}
+              >
+                {Object.entries(header)
+                  .map(([id, props]) => ({
+                    ...props,
+                    id,
+                    data: dataProps[id]
+                  }))
+                  .map(({ id, data, title }) => {
+                    return (
+                      <td
+                        className="dataCell"
+                        key={`tableList-tableCell-${id}-${title}`}
+                        style={{
+                          ...(tableBackground
+                            ? { background: tableBackground }
+                            : {})
+                        }}
+                      >
+                        {data !== undefined ? data : null}
+                      </td>
+                    );
+                  })}
+              </tr>
+            )
+          )}
         </tbody>
       </Table>
     </div>

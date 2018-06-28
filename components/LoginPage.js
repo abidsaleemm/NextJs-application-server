@@ -144,7 +144,7 @@ export default ({ error = "", staging = false }) => (
             <h1 className="text-center">
               <img
                 className="loginImage"
-                src="static/images/logo.png"
+                src="static/public/logo.png"
               />
             </h1>
             <Alert color="danger" hidden={!error}>

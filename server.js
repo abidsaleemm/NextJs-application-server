@@ -67,9 +67,15 @@ app.prepare().then(() => {
   if (!dev) {
     server.use(
       "/static/interface",
-      authMiddleware({ redirect: false })
+      authMiddleware({ redirect: false }),
+      express.static("static/interface")
     );
-    server.use("/static/render", authMiddleware({ redirect: false }));
+    server.use(
+      "/static/render",
+      authMiddleware({ redirect: false }),
+      express.static("static/render")
+    );
+
     server.use("/static/public", express.static("static/public"));
   } else {
     // Used for local testing.

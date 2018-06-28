@@ -51,20 +51,20 @@ export default props => {
         statusRender: <Status {...{ ...props, status, studyUID }} />,
         tableBackground:
           // TODO Create helper to set color
-          // Create a hof for this.
-          status === 1
+          // Create a hof for this?
+          status === "Pending"
             ? "rgba(255, 0, 0, 0.1)"
-            : status === 2
+            : status === "Segmentation"
               ? "rgba(255, 255, 0, 0.1)"
-              : status === 3
+              : status === "Injuries"
                 ? "rgba(255, 255, 0, 0.2)"
-                : status === 4
+                : status === "Review"
                   ? "rgba(0, 255, 0, 0.1)"
-                  : status === 5
+                  : status === "Done"
                     ? "rgba(0, 255, 0, 0.2)"
-                    : status === 6
+                    : status === "Rendered"
                       ? "rgba(0, 255, 0, 0.5)"
-                      : status === 7
+                      : status === "Delivered"
                         ? "rgba(0, 0, 255, 0.3)"
                         : "rgba(0, 0, 0, 0.0)",
         action: (

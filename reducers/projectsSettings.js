@@ -1,17 +1,7 @@
 import { PROJECTS_SET_SETTINGS } from "../constants/actionTypes";
 
 const initialState = {
-  filter: {
-    status: "", // TODO Change type later
-    patientName: "",
-    patientBirthDate: "",
-    studyName: "",
-    studyDate: "", // TODO Change type later
-    modality: "",
-    location: "",
-    uploadDateTime: "",
-    multusID: ""
-  },
+  filter: {},
   sortKey: "status",
   sortDesc: false
 };
@@ -21,7 +11,7 @@ export default (
   { type, settings: { sortKey, filter = {}, ...settings } = {} }
 ) => {
   switch (type) {
-    // TODO This is used in two places.  Should a utility function?
+    // TODO This is used in two places.  Should a utility/helper function?
     case PROJECTS_SET_SETTINGS:
       return {
         ...state,

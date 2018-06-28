@@ -1,8 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
 import {
-  sortBy,
-  prop,
+  sort,
   compose,
   reverse,
   filter,
@@ -26,10 +25,12 @@ export default props => {
   const filterByKey = (key, func = () => true) =>
     filter(v => func(v));
 
+  const { [sortKey]: selectSortFunc = (a, b) => a - b } = sortFunc;
+
   // Sorting and filtering here
   const dataEnhanced = compose(
     (list = []) => (sortDesc ? reverse(list) : list),
-    sortBy(prop(sortKey)),
+    sort(selectSortFunc),
     (list = []) =>
       reduce(
         (acc, [key, func]) => filterByKey(key, func)(acc),

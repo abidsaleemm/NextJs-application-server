@@ -110,6 +110,7 @@ export default props => {
           ? new Date().getFullYear() -
             new Date(patientBirthDate).getFullYear()
           : "",
+        videoExists,
         videoOptions: (
           <div style={{ display: "inline-flex" }}>
             <style jsx>
@@ -169,6 +170,7 @@ export default props => {
             )}
           </div>
         ),
+        uploadedFiles,
         upload: (
           <ButtonGroup>
             {uploadedFiles.length > 0 ? (

@@ -65,7 +65,7 @@ app.prepare().then(() => {
 
   // Setup static routes
   if (!dev) {
-    server.use("/static", authMiddleware({ redirect: false }));
+    // server.use("/static", authMiddleware({ redirect: false }));
     server.use("/static", express.static("static"));
   } else {
     // Used for local testing.

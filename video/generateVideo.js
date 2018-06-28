@@ -52,7 +52,7 @@ export default async ({ session, numberImages = 0 }) => {
     });
     const length = buffers.reduce((a, v) => a + v.length, 0);
     const { byteRate } = format;
-    const diff = parseInt(frame / fps * byteRate) - length;
+    const diff = parseInt((frame / fps) * byteRate) - length;
 
     if (diff > 0) {
       buffers.push(new Buffer(diff % 2 === 0 ? diff : diff + 1)); // Align to even bytes
@@ -77,6 +77,8 @@ export default async ({ session, numberImages = 0 }) => {
       .outputOptions([
         "-vprofile main",
         "-pix_fmt yuv420p",
+        "-codec:a libmp3lame",
+        "-b:a 128k",
         "-threads 1"
       ])
       .fps(fps)

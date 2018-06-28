@@ -1,19 +1,36 @@
+const strSort = (a = "", b = "") => {
+  const strA = a.toUpperCase();
+  const strB = b.toUpperCase();
+
+  if (strA < strB) {
+    return -1;
+  }
+
+  if (strA > strB) {
+    return 1;
+  }
+
+  return 0;
+};
+
 export default () => ({
-  statusRender: ({ status: a }, { status: b }) =>
-    parseInt(a) - parseInt(b), // TODO Fix if data type is string
-  videoOptions: ({ videoExists: a }, { videoExists: b }) => a - b,
-  patientName: ({ patientName: a }, { patientName: b }) => a - b,
-  patientAge: ({ patientAge: a }, { patientAge: b }) => a - b,
-  patientSex: ({ patientSex: a }, { patientSex: b }) => a - b,
+  statusRender: ({ status: a = "" }, { status: b = "" }) =>
+    strSort(a, b),
+  videoOptions: ({ videoExists: a }, { videoExists: b }) =>
+    strSort(a, b),
+  patientName: ({ patientName: a }, { patientName: b }) =>
+    strSort(a, b),
+  patientAge: ({ patientAge: a }, { patientAge: b }) => strSort(a, b),
+  patientSex: ({ patientSex: a }, { patientSex: b }) => strSort(a, b),
   patientBirthDate: (
     { patientBirthDate: a },
     { patientBirthDate: b }
-  ) => a - b,
-  studyName: ({ studyName: a }, { studyName: b }) => a - b,
-  studyDate: ({ studyDate: a }, { studyDate: b }) => a - b,
-  location: ({ location: a }, { location: b }) => a - b,
+  ) => strSort(a, b),
+  studyName: ({ studyName: a }, { studyName: b }) => strSort(a, b),
+  studyDate: ({ studyDate: a }, { studyDate: b }) => strSort(a, b),
+  location: ({ location: a }, { location: b }) => strSort(a, b),
   uploadDateTime: ({ uploadDateTime: a }, { uploadDateTime: b }) =>
-    a - b,
+    strSort(a, b),
   upload: ({ uploadedFiles: a = [] }, { uploadedFiles: b = [] }) =>
     a.length - b.length
 });

@@ -31,7 +31,7 @@ export default async ({
       multusID,
       encoding,
       deleted,
-      sample,
+      sample: sample === "" ? false : sample ? true : false,
       hasProjectSnapshots: await hasProjectSnapshots({
         ...props,
         containerName: tableName,

@@ -1,6 +1,7 @@
 // TODO Update if status is stored as string
-const statusCheck = ({ statusFilter, status }) =>
+const statusCheck = ({ statusFilter = "", status }) =>
   [
+    statusFilter === "",
     statusFilter === "All",
     statusFilter === "Not Delivered" && parseInt(status) !== 7,
     statusFilter === "Pending" && parseInt(status) === 1,
@@ -37,5 +38,5 @@ export default ({
     new RegExp(uploadDateTimeFilter, "gi").test(uploadDateTime),
   studyDate: ({ studyDate }) =>
     new RegExp(studyDateFilter, "gi").test(studyDate),
-  sample: ({ sample }) => sampleFilter === sample
+  sample: ({ sample = false }) => sampleFilter === sample
 });

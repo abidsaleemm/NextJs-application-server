@@ -16,8 +16,7 @@ const strSort = (a = "", b = "") => {
 export default () => ({
   statusRender: ({ status: a = "" }, { status: b = "" }) =>
     strSort(a, b),
-  videoOptions: ({ videoExists: a }, { videoExists: b }) =>
-    strSort(a, b),
+  videoOptions: ({ videoExists: a }, { videoExists: b }) => a - b,
   patientName: ({ patientName: a }, { patientName: b }) =>
     strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => strSort(a, b),

@@ -17,6 +17,9 @@ RUN npm install pm2 -g
 
 # Bundle app source
 COPY . /usr/src/
+
+RUN chmod -R 0755 /usr/src/static
+
 RUN npm install
 RUN npm run build
 # RUN yarn install

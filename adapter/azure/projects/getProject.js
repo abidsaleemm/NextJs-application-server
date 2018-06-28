@@ -15,7 +15,7 @@ export default async ({
   if (project.length > 0) {
     const {
       0: {
-        status = 0,
+        status = "None",
         defaultStudyUID,
         multusID,
         encoding,

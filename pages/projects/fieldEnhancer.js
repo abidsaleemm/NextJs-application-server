@@ -30,7 +30,6 @@ export default props => {
       {
         studyUID,
         status,
-        statusName,
         hasProjectSnapshots,
         patientID,
         patientName,

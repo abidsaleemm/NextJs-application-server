@@ -1,7 +1,3 @@
-// import { getStudy } from "../dicom";
-// import { getProject } from "../projects";
-// import { getUserProps } from "../authUsers";
-// import { list as uploadList } from "../upload";
 import { adapter } from "../server";
 
 export default async ({ studyUID = 0 }) => {
@@ -17,8 +13,8 @@ export default async ({ studyUID = 0 }) => {
 
   // Merge project and study table
   return {
-    ...project,
     ...study,
+    ...project,
     studyUID,
     uploadedFiles
   };

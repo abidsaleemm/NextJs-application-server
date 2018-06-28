@@ -1,5 +1,3 @@
-import getStatusName from "../helpers/getStatusName";
-
 import { adapter } from "../server";
 
 export default async () => {
@@ -48,8 +46,7 @@ export default async () => {
                 : studyName, // TODO Trim here. Maybe better place or way?
             studyUID,
             multusID,
-            statusName: getStatusName(status || 0),
-            status: status || 0,
+            status: status,
             videoExists: await videoExists({ studyUID }),
             uploadedFiles: await uploadList({ studyUID }),
             sample

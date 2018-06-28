@@ -5,82 +5,81 @@ import {
   DropdownItem,
   UncontrolledDropdown
 } from "reactstrap";
-import getStatusName from "../helpers/getStatusName";
 
 export default ({ status, studyUID, setProjectProps = () => {} }) => {
   return (
     <UncontrolledDropdown>
-      <DropdownToggle caret>{getStatusName(status)}</DropdownToggle>
+      <DropdownToggle caret>{status}</DropdownToggle>
       <DropdownMenu>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 1
+              status: "Pending"
             })
           }
         >
-          {getStatusName(1)}
+          Pending
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 2
+              status: "Segmentation"
             })
           }
         >
-          {getStatusName(2)}
+          Segmentation
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 3
+              status: "Injuries"
             })
           }
         >
-          {getStatusName(3)}
+          Injuries
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 4
+              status: "Review"
             })
           }
         >
-          {getStatusName(4)}
+          Review
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 5
+              status: "Done"
             })
           }
         >
-          {getStatusName(5)}
+          Done
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 6
+              status: "Rendered"
             })
           }
         >
-          {getStatusName(6)}
+          Rendered
         </DropdownItem>
         <DropdownItem
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: 7
+              status: "Delivered"
             })
           }
         >
-          {getStatusName(7)}
+          Delivered
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

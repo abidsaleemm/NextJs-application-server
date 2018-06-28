@@ -1,8 +1,16 @@
 import React from "react";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
+
 import SearchInput from "../../components/SearchInput";
 
 export default ({
   filter: {
+    status = "All",
     sample = false,
     patientName,
     patientBirthDate,
@@ -14,6 +22,88 @@ export default ({
   toggleFilterSettings = () => {},
   setProjectsSettings = () => {}
 }) => ({
+  status: (
+    <UncontrolledDropdown>
+      <DropdownToggle caret>{status}</DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "All" } })
+          }
+        >
+          All
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({
+              filter: { status: "Not Delivered" }
+            })
+          }
+        >
+          Not Delivered
+        </DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "None" } })
+          }
+        >
+          None
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Pending" } })
+          }
+        >
+          Pending
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({
+              filter: { status: "Segmentation" }
+            })
+          }
+        >
+          Segmentation
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Injuries" } })
+          }
+        >
+          Injuries
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Review" } })
+          }
+        >
+          Review
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Done" } })
+          }
+        >
+          Done
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Rendered" } })
+          }
+        >
+          Rendered
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Delivered" } })
+          }
+        >
+          Delivered
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  ),
   patientName: (
     <SearchInput
       type="text"

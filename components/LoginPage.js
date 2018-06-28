@@ -7,7 +7,7 @@ import {
   FormGroup,
   Label,
   Input,
-  Button,
+  Button
 } from "reactstrap";
 
 export default ({ error = "", staging = false }) => (
@@ -144,7 +144,7 @@ export default ({ error = "", staging = false }) => (
             <h1 className="text-center">
               <img
                 className="loginImage"
-                src="/static/images/logo.jpg"
+                src="static/images/logo.png"
               />
             </h1>
             <Alert color="danger" hidden={!error}>

@@ -22,7 +22,7 @@ export default ({
   toggleFilterSettings = () => {},
   setProjectsSettings = () => {}
 }) => ({
-  status: (
+  statusRender: (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>
       <DropdownMenu>

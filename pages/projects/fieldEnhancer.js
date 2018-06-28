@@ -48,7 +48,8 @@ export default props => {
         ...project,
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
-        status: <Status {...{ ...props, status, studyUID }} />,
+        status,
+        statusRender: <Status {...{ ...props, status, studyUID }} />,
         tableBackground:
           // TODO Create helper to set color
           // Create a hof for this.

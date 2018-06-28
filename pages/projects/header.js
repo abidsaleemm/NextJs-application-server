@@ -1,6 +1,6 @@
 export default () => ({
   action: "",
-  status: "Status",
+  statusRender: "Status",
   sampleRender: "Sample",
   videoOptions: "Rendered",
   patientName: "Patient Name",

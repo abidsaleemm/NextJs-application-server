@@ -19,7 +19,12 @@ export default () => ({
   videoOptions: ({ videoExists: a }, { videoExists: b }) => a - b,
   patientName: ({ patientName: a }, { patientName: b }) =>
     strSort(a, b),
-  patientAge: ({ patientAge: a }, { patientAge: b }) => strSort(a, b),
+  patientAge: ({ patientAge: a }, { patientAge: b }) => {
+    const testA = parseInt(a);
+    const testB = parseInt(b);
+
+    return (isNaN(testA) ? 0 : testA) - (isNaN(testB) ? 0 : testB);
+  },
   patientSex: ({ patientSex: a }, { patientSex: b }) => strSort(a, b),
   patientBirthDate: (
     { patientBirthDate: a },

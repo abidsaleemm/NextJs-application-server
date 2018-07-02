@@ -1,6 +1,6 @@
 const strSort = (a = "", b = "") => {
-  const strA = a.toUpperCase();
-  const strB = b.toUpperCase();
+  const strA = `${a}`.toUpperCase();
+  const strB = `${b}`.toUpperCase();
 
   if (strA < strB) {
     return -1;

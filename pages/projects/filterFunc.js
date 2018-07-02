@@ -1,16 +1,15 @@
-// TODO Update if status is stored as string
 const statusCheck = ({ statusFilter = "", status }) =>
   [
     statusFilter === "",
     statusFilter === "All",
-    statusFilter === "Not Delivered" && parseInt(status) !== 7,
-    statusFilter === "Pending" && parseInt(status) === 1,
-    statusFilter === "Segmentation" && parseInt(status) === 2,
-    statusFilter === "Injuries" && parseInt(status) === 3,
-    statusFilter === "Review" && parseInt(status) === 4,
-    statusFilter === "Done" && parseInt(status) === 5,
-    statusFilter === "Rendered" && parseInt(status) === 6,
-    statusFilter === "Delivered" && parseInt(status) === 7
+    statusFilter === "Not Delivered" && status !== "Delivered",
+    statusFilter === "Pending" && status === "Pending",
+    statusFilter === "Segmentation" && status === "Segmentation",
+    statusFilter === "Injuries" && status === "Injuries",
+    statusFilter === "Review" && status === "Review",
+    statusFilter === "Done" && status === "Done",
+    statusFilter === "Rendered" && status === "Rendered",
+    statusFilter === "Delivered" && status === "Delivered"
   ].some(v => v);
 
 export default ({

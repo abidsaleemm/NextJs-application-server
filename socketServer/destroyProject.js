@@ -2,7 +2,12 @@ import { route } from "../actions";
 import { adapter } from "../server";
 
 export default async ({ socket, action: { studyUID } = {} }) => {
-  const { projects: { destroyProject = () => {} } = {} } = adapter;
+  const {
+    projects: {
+      setProject = () => {},
+      destroyProject = () => {}
+    } = {}
+  } = adapter;
 
   if (!studyUID) {
     return;
@@ -11,5 +16,7 @@ export default async ({ socket, action: { studyUID } = {} }) => {
   console.log("Destroying project", studyUID);
 
   await destroyProject({ studyUID });
+  await setProject({ studyUID, props: { status: "None" } });
+
   socket.emit("action", route({ pathname: "/projects" }));
 };

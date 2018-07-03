@@ -2,6 +2,8 @@ import createProject from "../helpers/createProject";
 import { route, fetchAction } from "../actions";
 import { adapter } from "../server";
 
+const defaultStatus = "Pending";
+
 export default async ({
   socket,
   action: { studyUID, defaultStudyUID = "" } = {}
@@ -31,7 +33,7 @@ export default async ({
 
   await setProject({
     studyUID,
-    props: { defaultStudyUID, status: 1 }
+    props: { defaultStudyUID, status: defaultStatus }
   });
   await setProjectSnapshot({ studyUID, payload: project });
 

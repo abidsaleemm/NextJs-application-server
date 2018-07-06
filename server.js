@@ -125,8 +125,8 @@ app.prepare().then(() => {
 
     // If not dev we assume we are on Azure
     const options = {
-      key: fs.readFileSync("certs/privkey3.pem"), // TODO see issue-89. Uses Certbot mount archive
-      cert: fs.readFileSync("certs/fullchain3.pem")
+      key: fs.readFileSync("certs/privkey4.pem"), // TODO see issue-89. Uses Certbot mount archive
+      cert: fs.readFileSync("certs/fullchain4.pem")
     };
 
     const serverHttp = https

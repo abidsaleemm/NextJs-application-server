@@ -20,6 +20,7 @@ export default async ({ studyUID = "", path }) => {
     if (snapShotUID === undefined) return; // No Snapshot.  First value?
 
     try {
+      // TODO Use file adapter
       const data = fs.readFileSync(
         `${path}/snapshots/${snapShotUID}.json`
       );

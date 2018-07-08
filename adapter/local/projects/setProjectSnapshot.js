@@ -34,6 +34,7 @@ export default async ({ studyUID = "_", payload = {}, path }) => {
     ...payload
   };
 
+  // TODO use file adapter
   fs.writeFileSync(
     `${path}/snapshots/${snapShotUID}.json`,
     JSON.stringify(mergedPayload)

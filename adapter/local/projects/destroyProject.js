@@ -12,13 +12,14 @@ export default async ({ studyUID, path, snapshotDir }) => {
 
   const project = db
     .get("projects")
-    .find({ studyUID: studyUID })
+    .find({ studyUID })
     .value();
 
   if (project !== undefined) {
     const { snapshots = [] } = project;
     snapshots.forEach(name => {
       try {
+        // TODO use del adapter function instead
         fs.unlinkSync(`${snapshotDir}/${name}.json`);
         console.log("removed snapshot", name);
       } catch (e) {

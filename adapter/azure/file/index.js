@@ -1,56 +1,53 @@
 const list = async ({
-  studyUID = "",
   containerName,
-  blobAdapter: { listBlobsSegmentedWithPrefix }
+  blobAdapter: { listBlobsSegmentedWithPrefix },
+  path
 }) => {
   return await listBlobsSegmentedWithPrefix({
     containerName,
-    prefix: studyUID
+    prefix: path
   });
 };
 
 const get = async ({
-  studyUID,
   containerName,
-  name,
-  blobAdapter: { createReadStream }
+  blobAdapter: { createReadStream },
+  path
 }) => {
   return await createReadStream({
     containerName,
-    blobName: `${studyUID}/${name}`
+    blobName: path
   });
 };
 
 const put = async ({
-  studyUID,
-  name,
   stream,
   containerName,
-  blobAdapter: { createWriteStreamToBlockBlob }
+  blobAdapter: { createWriteStreamToBlockBlob },
+  path
 }) => {
   return await createWriteStreamToBlockBlob({
     containerName,
-    blobName: `${studyUID}/${name}`,
+    blobName: path,
     readStream: stream
   });
 };
 
 const del = async ({
-  studyUID,
-  name,
   containerName,
-  blobAdapter: { deleteBlob }
+  blobAdapter: { deleteBlob },
+  path
 }) => {
   return await deleteBlob({
     containerName,
-    blobName: `${studyUID}/${name}`
+    blobName: path
   });
 };
 
 // TODO Add exists function?
 const exists = async ({ path }) => {};
 
-// TODO Create this
+// TODO Create this.  Not sure if this should be used at all.  Instead use separate service.
 const query = async ({}) => {};
 
 export default ({ blobAdapter, containerName = "uploads" }) => {

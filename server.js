@@ -23,7 +23,7 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-// TODO Use a better adapter style
+// TODO Use a better adapter style?
 const sessionStoreLocal = () => {
   console.log("Using session-file-store");
 
@@ -31,7 +31,7 @@ const sessionStoreLocal = () => {
   return new FileStore({ path: "./sessiondb" });
 };
 
-// TODO Use a better adapter style
+// TODO Use a better adapter style?
 const sessionStoreAzure = () => {
   console.log("Using azure-session");
   return require("./auth/azure-session.js")(expressSession).create();
@@ -41,9 +41,8 @@ app.prepare().then(() => {
   const server = express();
   server.disable("x-powered-by"); //x-powered-by disable form headers
   const sessionMiddleWare = expressSession({
-    // TODO using NODE_ENV == dev instead?
     store: process.env.LOCAL
-      ? // TODO Use a better adapter style
+      ? // TODO Use a better adapter style?
         sessionStoreLocal() // Used for local testing
       : sessionStoreAzure(),
     secret: "session_secret",

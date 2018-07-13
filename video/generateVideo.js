@@ -73,7 +73,6 @@ export default async ({ session, numberImages = 0 }) => {
       .addInput(`${os.tmpdir()}/${session}/frames/%04d.jpg`) // TODO Will break if more than 9999 frames
       .inputFPS(fps)
       .addInput(audioPath)
-      .audioCodec("mp2")
       .outputOptions([
         "-vprofile main",
         "-pix_fmt yuv420p",

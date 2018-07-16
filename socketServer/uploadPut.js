@@ -9,7 +9,9 @@ export default async ({
   action: { data, studyUID, name } = {},
   user
 }) => {
-  const { upload: { put: uploadPut = () => {} } = {} } = adapter;
+  const {
+    file: { put: uploadPut = () => {} }
+  } = adapter;
 
   const decoded = dataUriToBuffer(data);
 
@@ -17,9 +19,12 @@ export default async ({
   stream.push(decoded);
   stream.push(null);
 
-  await uploadPut({ studyUID, name, stream });
+  const path = `${studyUID}/${name}`;
+
+  await uploadPut({ path, stream });
+
   console.log("Upload done", name);
 
-  socket.emit("action", fetchAction(false));
+  socket.emit("action", fetchAction(false)); // TODO Do we stll use this?
   pageProjects({ socket, user });
 };

@@ -1,61 +1,29 @@
-import { Table, Tooltip } from "reactstrap";
 import CheckConfirm from "./CheckConfirm";
+import { Table, Popover, PopoverHeader } from "reactstrap";
 
 export default ({
   popupTarget,
   fileList = [],
-  toggle = () => {},
   studyUID = "",
+  toggle = () => {},
   onDelete = () => {}
 }) => {
   return popupTarget ? (
-    <Tooltip
+    <Popover
       placement="left"
       isOpen={true}
-      autohide={false}
       target={popupTarget}
-      toggle={() => {
-        toggle();
-      }}
+      toggle={toggle}
     >
       <style jsx>
         {`
-          :global(div.tooltip.show) {
-            opacity: 1;
-          }
-
-          :global(div.tooltip-inner) {
-            background: white;
-            color: black;
-            border-radius: 5px;
-            min-width: 200px;
-            padding: 5px;
-            -webkit-box-shadow: 3px 3px 23px 0px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: 3px 3px 23px 0px rgba(0, 0, 0, 0.75);
-            box-shadow: 3px 3px 23px 0px rgba(0, 0, 0, 0.75);
-          }
-
-          .tableCellHeader {
-            display: flex;
-            padding: 5px;
-            background: lightgray;
-          }
-
           .tableCell {
-            display: flex;
-            justify-content: space-between;
-            padding: 0px;
-            min-height: 24px;
-            text-align: left;
+            padding: 5px;
           }
         `}
       </style>
+      <PopoverHeader>Files</PopoverHeader>
       <Table hover>
-        <thead>
-          <tr>
-            <td className="tableCellHeader">Files</td>
-          </tr>
-        </thead>
         <tbody>
           {fileList.map((name, i) => (
             <tr key={`file-upload-${popupTarget}-${i}`}>
@@ -66,6 +34,8 @@ export default ({
                 >
                   {name}
                 </a>
+              </td>
+              <td className="tableCell">
                 <CheckConfirm
                   onConfirm={() => {
                     onDelete({ studyUID, name });
@@ -76,6 +46,6 @@ export default ({
           ))}
         </tbody>
       </Table>
-    </Tooltip>
+    </Popover>
   ) : null;
-}
+};

@@ -1,10 +1,18 @@
 import pageProjects from "./pageProjects";
 import { adapter } from "../server";
 
-export default async ({ socket, action: props = {}, user }) => {
-  const { upload: { del: uploadDel = () => {} } = {} } = adapter;
+export default async ({
+  socket,
+  action: { name, studyUID } = {},
+  user
+}) => {
+  const {
+    file: { del: uploadDel = () => {} }
+  } = adapter;
 
-  await uploadDel(props);
+  const path = `${studyUID}/${name}`;
+
+  await uploadDel({ path });
 
   pageProjects({ socket, user });
 };

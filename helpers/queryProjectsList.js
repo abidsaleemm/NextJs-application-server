@@ -3,7 +3,7 @@ import { adapter } from "../server";
 export default async () => {
   const {
     video: { videoExists = () => {} } = {},
-    upload: { list: uploadList = () => {} } = {},
+    file: { list = () => {} } = {},
     projects: {
       getProject = () => {},
       getProjectList = () => {}
@@ -48,7 +48,7 @@ export default async () => {
             multusID,
             status: status,
             videoExists: await videoExists({ studyUID }),
-            uploadedFiles: await uploadList({ studyUID }),
+            uploadedFiles: await list({ path: studyUID }),
             sample
           };
         }

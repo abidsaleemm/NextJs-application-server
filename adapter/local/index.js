@@ -1,18 +1,17 @@
 import dicom from "./dicom";
 import projects from "./projects";
-import upload from "./upload";
+import file from "./file";
 import users from "./users";
-import video from "./video";
 
 export default () => {
   const path = "./projectsLocal";
 
+  // TODO Maybe pass more setting as props here?
   // Initialize all adapters
   return {
     dicom: dicom({ path }),
     projects: projects({ path }),
-    upload: upload({ path }),
-    users: users({ path }),
-    video: video({ path })
+    file: file({ path }),
+    users: users({ path })
   };
 };

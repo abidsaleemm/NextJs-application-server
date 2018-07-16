@@ -1,7 +1,9 @@
 import fs from "fs";
+import { default as pathNode } from "path";
 
 const list = async ({ path }) => {
-  if (fs.existsSync(studyDir) !== false) {
+  if (fs.existsSync(path) !== false) {
+    // TODO test if directory?
     const files = fs.readdirSync(path);
     return files;
   }
@@ -15,18 +17,20 @@ const get = async ({ path }) => {
   }
 };
 
-// const putSync = async ({ path }) => {
-//   const stream = fs.createReadStream(path);
-//   return await put({ session, studyUID, stream });
-// };
+const put = ({ stream, path }) => {
+  const dir = pathNode.dirname(path);
 
-const put = ({ stream, path }) =>
-  new Promise((resolve, reject) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+
+  return new Promise((resolve, reject) => {
     const writeStream = fs.createWriteStream(path);
     stream.pipe(writeStream);
     stream.on("end", () => resolve());
     stream.on("error", () => reject());
   });
+};
 
 const del = async ({ path }) => {
   try {
@@ -36,15 +40,17 @@ const del = async ({ path }) => {
   }
 };
 
-// TODO Update with this
-const query = async ({ path }) => {};
+export default ({ path = "projectsLocal" }) => {
+  const pathFiles = `${path}/uploads`;
 
-// TODO pass a base directory?
-export default () => {
   return {
-    get: async props => await get({ ...props }),
-    put: async props => await put({ ...props }),
-    del: async props => await del({ ...props }),
-    list: async props => await list({ ...props })
+    get: async ({ path, ...props }) =>
+      await get({ ...props, path: `${pathFiles}/${path}` }),
+    put: async ({ path, ...props }) =>
+      await put({ ...props, path: `${pathFiles}/${path}` }),
+    del: async ({ path, ...props }) =>
+      await del({ ...props, path: `${pathFiles}/${path}` }),
+    list: async ({ path, ...props }) =>
+      await list({ ...props, path: `${pathFiles}/${path}` })
   };
 };

@@ -1,54 +1,7 @@
-const list = async ({
-  containerName,
-  blobAdapter: { listBlobsSegmentedWithPrefix },
-  path
-}) => {
-  return await listBlobsSegmentedWithPrefix({
-    containerName,
-    prefix: path
-  });
-};
-
-const get = async ({
-  containerName,
-  blobAdapter: { createReadStream },
-  path
-}) => {
-  return await createReadStream({
-    containerName,
-    blobName: path
-  });
-};
-
-const put = async ({
-  stream,
-  containerName,
-  blobAdapter: { createWriteStreamToBlockBlob },
-  path
-}) => {
-  return await createWriteStreamToBlockBlob({
-    containerName,
-    blobName: path,
-    readStream: stream
-  });
-};
-
-const del = async ({
-  containerName,
-  blobAdapter: { deleteBlob },
-  path
-}) => {
-  return await deleteBlob({
-    containerName,
-    blobName: path
-  });
-};
-
-// TODO Add exists function?
-const exists = async ({ path }) => {};
-
-// TODO Create this.  Not sure if this should be used at all.  Instead use separate service.
-const query = async ({}) => {};
+import get from "./get";
+import put from "./put";
+import list from "./list";
+import del from "./del";
 
 export default ({ blobAdapter, containerName = "uploads" }) => {
   return {

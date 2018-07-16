@@ -1,8 +1,7 @@
 import dicom from "./dicom";
 import projects from "./projects";
-import upload from "./upload";
+import file from "./file";
 import users from "./users";
-import video from "./video";
 import blob from "./blob";
 import table from "./table";
 
@@ -22,8 +21,7 @@ export default () => {
       tableName: projectsTableName
     }),
     //
-    upload: upload({ blobAdapter, tableAdapter }),
-    users: users({ tableAdapter }),
-    video: video({ blobAdapter, tableAdapter })
+    file: file({ blobAdapter }),
+    users: users({ tableAdapter })
   };
 };

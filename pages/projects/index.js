@@ -106,6 +106,7 @@ class ProjectsListing extends Component {
           filterRender={filterRender(props)}
           onSort={k => setProjectsSettings({ sortKey: k })}
         />
+
         <UploadFilePopup
           popupTarget={popupTarget}
           fileList={uploadedFiles}
@@ -113,6 +114,7 @@ class ProjectsListing extends Component {
           studyUID={popupStudyUID}
           onDelete={props => {
             uploadDel(props);
+
             if (uploadedFiles.length <= 1) {
               this.setState({ popupTarget: null });
             }

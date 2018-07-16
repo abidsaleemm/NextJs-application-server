@@ -1,5 +1,5 @@
-import fs from 'fs';
-import os from 'os';
+import fs from "fs";
+import os from "os";
 
 export default async ({ session, index, data }) => {
   const dirPath = `${os.tmpdir()}/${session}/frames`;
@@ -8,12 +8,12 @@ export default async ({ session, index, data }) => {
   try {
     fs.mkdirSync(`${os.tmpdir()}/${session}`);
   } catch (e) {}
-  
+
   try {
     fs.mkdirSync(dirPath);
   } catch (e) {}
-  
-  const fileName = index.toString().padStart(4, '0');
+
+  const fileName = index.toString().padStart(4, "0");
   const fullPath = `${dirPath}/${fileName}.jpg`;
 
   fs.writeFileSync(fullPath, data);

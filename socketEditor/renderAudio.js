@@ -7,7 +7,7 @@ import saveAudio from "../video/saveAudio";
 // TODO Handle this as ENV var
 const apiKey = "dbe1e8e3c5384d5b9015f951b0e40b8b";
 
-// TODO Will not work if not connected to internet
+// TODO Move to video helpers directory
 // Add some sort of error checking and don't add any audio if this is the case
 const azureAudio = ({ text }) =>
   new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ const azureAudio = ({ text }) =>
           "Ocp-Apim-Subscription-Key": apiKey
         }
       },
-      (err, resp, accessToken) => {
+      (err, resp = {}, accessToken) => {
         if (err || resp.statusCode != 200) {
           // TODO handle using reject?
           console.log(err, resp.body);

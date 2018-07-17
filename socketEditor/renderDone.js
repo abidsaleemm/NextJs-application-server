@@ -28,8 +28,8 @@ export default async ({ socket, action }) => {
       console.log("Saving Video.");
       const path = `${studyUID}/video.mp4`; // TODO create filename based on
       const videoPath = `${os.tmpdir()}/${session}/video.mp4`;
-      const readStream = fs.createReadStream(videoPath);
-      await filePut({ path, readStream });
+      const stream = fs.createReadStream(videoPath);
+      await filePut({ path, stream });
 
       console.log("Video saved cleaning up resources.");
       await cleanup({ session });

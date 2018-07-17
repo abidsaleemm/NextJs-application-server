@@ -64,7 +64,6 @@ export default ({
         }
       }
 
-      console.log("action", prefix, parseType, socket.id);
       await actionHandler({
         socket,
         io,

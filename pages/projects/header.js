@@ -7,7 +7,7 @@ export default () => ({
   patientAge: "Age",
   patientSex: "Gender",
   patientBirthDate: "Patient DOB",
-  studyName: "Study Name",
+  studyType: "Study Type",
   studyDate: "Study Date",
   location: "Facility",
   uploadDateTime: "Date Uploaded",

@@ -1,9 +1,9 @@
 import { adapter } from "../server";
+import createVideoFileName from "../helpers/createVideoFileName";
 
 export default async () => {
   const {
-    video: { videoExists = () => {} } = {},
-    file: { list = () => {} } = {},
+    file: { list: fileList = () => {}, get: fileGet = () => {} } = {},
     projects: {
       getProject = () => {},
       getProjectList = () => {}
@@ -37,9 +37,18 @@ export default async () => {
           const { multusID = "" } =
             (await getProject({ studyUID })) || {};
 
+          // TODO Cleanup.  Check for multiple video files an images
+          const { studyDate, patientName, studyType } = study;
+          const videoFileName = createVideoFileName({
+            patientName,
+            studyType,
+            studyDate
+          });
+
           return {
             ...project,
             ...study,
+            // TODO Remove this
             studyName:
               studyName.length > 20
                 ? studyName.substr(0, 20).concat("...")
@@ -47,8 +56,11 @@ export default async () => {
             studyUID,
             multusID,
             status: status,
-            videoExists: await videoExists({ studyUID }),
-            uploadedFiles: await list({ path: studyUID }),
+            videoExists:
+              (await fileGet({
+                path: `${studyUID}/${videoFileName}`
+              })) !== undefined,
+            uploadedFiles: await fileList({ path: studyUID }),
             sample
           };
         }

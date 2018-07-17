@@ -1,6 +1,13 @@
 import React from "react";
 import Router from "next/router";
-import { Button, ButtonGroup } from "reactstrap";
+import {
+  Button,
+  ButtonGroup,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 
 import DropDownProjects from "../../components/DropDownProjects";
 import ButtonConfirm from "../../components/ButtonConfirm";
@@ -18,7 +25,6 @@ export default props => {
   const {
     projects = [],
     createProject = () => {},
-    videoDelete = () => {},
     handleUpload = () => {},
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
@@ -114,8 +120,12 @@ export default props => {
           <div style={{ display: "inline-flex" }}>
             <style jsx>
               {`
-                .renderText {
+                .renderTextNo {
                   color: red;
+                }
+
+                .renderTextYes {
+                  color: green;
                 }
 
                 .renderTextEncoding {
@@ -126,30 +136,24 @@ export default props => {
                 align-self: center;
               `}
             </style>
-            <ButtonGroup>
-              <Button
-                onClick={() =>
-                  window.open(
-                    `/static/render/?p=${studyUID}`,
-                    windowName,
-                    windowSettings
-                  )
-                }
-              >
-                R
-              </Button>
-              {videoExists ? (
-                <ButtonConfirm
-                  tipID="deleteVideoButton"
-                  color="warning"
-                  message="You are about to delete a rendered video from this case.  This action can't be undone. Please confirm."
-                  onConfirm={() => videoDelete({ studyUID })}
-                  style={{ borderRadius: "0 5px 5px 0" }}
+            <UncontrolledDropdown>
+              <DropdownToggle caret>Render</DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem
+                  onClick={() =>
+                    window.open(
+                      `/static/render/?p=${studyUID}`,
+                      windowName,
+                      windowSettings
+                    )
+                  }
                 >
-                  <RemoveButton />
-                </ButtonConfirm>
-              ) : null}
-            </ButtonGroup>
+                  Spine Video
+                </DropdownItem>
+                <DropdownItem>Spine Images</DropdownItem>
+                <DropdownItem>Spine Compare</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(
@@ -158,14 +162,9 @@ export default props => {
                 min. elapsed)
               </div>
             ) : videoExists ? (
-              <a
-                href={`/video/?id=${studyUID}&patientName=${patientName}`}
-                target="_videoPreview"
-              >
-                Download
-              </a>
+              <div className="renderTextYes">Yes</div>
             ) : (
-              <div className="renderText">No</div>
+              <div className="renderTextNo">No</div>
             )}
           </div>
         ),

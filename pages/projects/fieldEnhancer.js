@@ -171,7 +171,8 @@ export default props => {
                   >
                     Spine Video
                   </a>
-                  <Button
+                  <a
+                    className="btn btn-warning"
                     color="warning"
                     onClick={() => {
                       window.open(
@@ -182,12 +183,13 @@ export default props => {
                     }}
                   >
                     Debug
-                  </Button>
+                  </a>
                 </DropdownItem>
                 <DropdownItem>Spine Images</DropdownItem>
                 <DropdownItem>Spine Compare</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(

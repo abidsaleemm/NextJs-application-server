@@ -5,12 +5,12 @@ import users from "./users";
 import blob from "./blob";
 import table from "./table";
 
-export default () => {
+export default ({ storageAccount, storageKey }) => {
   // TODO Should this be done in table adapter?
   const projectsTableName = process.env.PROJECT_TABLE || "projects";
 
-  const blobAdapter = blob();
-  const tableAdapter = table();
+  const blobAdapter = blob({ storageAccount, storageKey });
+  const tableAdapter = table({ storageAccount, storageKey });
 
   return {
     // Higher order adapters

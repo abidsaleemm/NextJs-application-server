@@ -6,7 +6,12 @@ import { compose } from "ramda";
 
 export default () => {
   const enhancer =
-    process.env.LOCAL !== undefined ? local() : azure();
+    process.env.LOCAL !== undefined
+      ? local()
+      : azure({
+          storageAccount: process.env.STORAGE_ACCOUNT,
+          storageKey: process.env.STORAGE_ACCOUNT_KEY
+        });
 
   return compose(
     dicom,

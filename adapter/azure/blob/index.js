@@ -13,10 +13,10 @@ import createReadStream from "./createReadStream";
 import doesBlobExist from "./doesBlobExist";
 import listBlobsSegmentedWithPrefix from "./listBlobsSegmentedWithPrefix";
 
-export default () => {
+export default ({ storageAccount, storageKey }) => {
   const blobService = azure.createBlobService(
-    process.env.STORAGE_ACCOUNT,
-    process.env.STORAGE_ACCOUNT_KEY
+    storageAccount,
+    storageKey
   );
 
   return {

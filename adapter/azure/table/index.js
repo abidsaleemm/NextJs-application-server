@@ -6,10 +6,10 @@ import queryTable from "./queryTable";
 import queryTableAll from "./queryTableAll";
 import mergeEntity from "./mergeEntity";
 
-export default () => {
+export default ({ storageAccount, storageKey }) => {
   const tableService = azure.createTableService(
-    process.env.STORAGE_ACCOUNT,
-    process.env.STORAGE_ACCOUNT_KEY
+    storageAccount,
+    storageKey
   );
 
   return {

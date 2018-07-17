@@ -6,7 +6,6 @@ import blob from "./blob";
 import table from "./table";
 
 export default ({ storageAccount, storageKey }) => {
-  // TODO Should this be done in table adapter?
   const projectsTableName = process.env.PROJECT_TABLE || "projects";
 
   const blobAdapter = blob({ storageAccount, storageKey });

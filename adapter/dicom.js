@@ -1,4 +1,6 @@
 import dateFormat from "dateformat";
+import mapStudyType from "../helpers/mapStudyType";
+import mapPatientName from "../helpers/mapPatientName";
 
 // TODO Propose to move this to indexer and store directly in DB
 const parseDate = date => {
@@ -16,6 +18,7 @@ const parseDate = date => {
 const transform = ({
   patientName = "",
   studyDate = "",
+  studyName = "",
   patientBirthDate = "",
   uploadDateTime,
   referringPhysicianName = "",
@@ -23,15 +26,17 @@ const transform = ({
   ...study
 }) => {
   return {
+    studyName,
     ...Object.entries(study).reduce(
       (a, [k, v]) => ({ ...a, [k]: v === undefined ? "" : v }),
       {}
     ),
-    patientName: patientName.replace(/\^/g, " ").trim(),
+    patientName: mapPatientName({ patientName }),
     referringPhysicianName: referringPhysicianName
       .replace(/\^/g, " ")
       .trim(),
     studyDate: parseDate(studyDate),
+    studyType: mapStudyType({ studyName }),
     patientBirthDate:
       patientBirthDate !== ""
         ? parseDate(patientBirthDate)

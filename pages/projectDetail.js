@@ -10,19 +10,6 @@ import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
 import DropDownProjects from "../components/DropDownProjects";
 
-// TODO This code is duplicated in projects component.  Please clean up.
-// TODO Used for render video will be removed in the future
-const windowName = "renderWindow";
-const width = 1920;
-const height = 1080;
-
-const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-const windowSettingsDebug = `width=${parseInt(
-  width / 2
-)},height=${parseInt(
-  height / 2
-)},resizable=false,toolbar=false,status=false`;
-
 const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
@@ -177,33 +164,6 @@ const ProjectDetails = class extends Component {
           <div className="projectDetailLeft">
             <div>
               <div className="Sidebar-header">Project Details</div>
-              <div className="renderButton">
-                <ButtonGroup>
-                  <Button
-                    onClick={() =>
-                      window.open(
-                        `/static/render/?p=${studyUID}`,
-                        windowName,
-                        windowSettings
-                      )
-                    }
-                  >
-                    Render Video
-                  </Button>
-                  <Button
-                    color="warning"
-                    onClick={() =>
-                      window.open(
-                        `/static/render/?p=${studyUID}&debug=true`,
-                        windowName,
-                        windowSettingsDebug
-                      )
-                    }
-                  >
-                    Debug
-                  </Button>
-                </ButtonGroup>
-              </div>
               <Table>
                 <tbody>
                   <tr>

@@ -15,11 +15,16 @@ import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
 
-// TODO This code is duplicated in projectDetail.  Please clean up.
+// TODO Please clean up.
 const windowName = "renderWindow";
 const width = 1920;
 const height = 1080;
 const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
+const windowSettingsDebug = `width=${parseInt(
+  width / 2
+)},height=${parseInt(
+  height / 2
+)},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
 
 export default props => {
   const {
@@ -134,21 +139,50 @@ export default props => {
 
                 margin-left: 7px;
                 align-self: center;
+
+                .renderOption {
+                  display: flex;
+                  background: green;
+                  justify-content: space-between;
+                }
+
+                .renderLink {
+                  padding-right: 30px;
+                  cursor: pointer;
+                  padding-left: 0px;
+                  margin-left: 0px;
+                }
               `}
             </style>
+
             <UncontrolledDropdown>
               <DropdownToggle caret>Render</DropdownToggle>
               <DropdownMenu>
-                <DropdownItem
-                  onClick={() =>
-                    window.open(
-                      `/static/render/?p=${studyUID}`,
-                      windowName,
-                      windowSettings
-                    )
-                  }
-                >
-                  Spine Video
+                <DropdownItem className="renderOption">
+                  <a
+                    className="renderLink"
+                    onClick={() => {
+                      window.open(
+                        `/static/render/?p=${studyUID}`,
+                        windowName,
+                        windowSettings
+                      );
+                    }}
+                  >
+                    Spine Video
+                  </a>
+                  <Button
+                    color="warning"
+                    onClick={() => {
+                      window.open(
+                        `/static/render/?p=${studyUID}&debug=true`,
+                        windowName,
+                        windowSettingsDebug
+                      );
+                    }}
+                  >
+                    Debug
+                  </Button>
                 </DropdownItem>
                 <DropdownItem>Spine Images</DropdownItem>
                 <DropdownItem>Spine Compare</DropdownItem>

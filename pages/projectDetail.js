@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, ButtonGroup, Table } from "reactstrap";
+import { Table } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
 import { connect } from "react-redux";

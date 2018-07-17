@@ -2,14 +2,16 @@ import { adapter } from "../server";
 
 export default async ({ studyUID = 0 }) => {
   const {
-    upload: { list: uploadList = () => {} } = {},
+    file: { list: fileList = () => {} } = {},
     projects: { getProject = () => {} } = {},
     dicom: { getStudy = () => {} } = {}
   } = adapter;
 
   const { ...study } = await getStudy({ studyUID });
   const project = await getProject({ studyUID });
-  const uploadedFiles = await uploadList({ studyUID });
+
+  // TODO Filter out video resources
+  const uploadedFiles = await fileList({ path: studyUID });
 
   // Merge project and study table
   return {

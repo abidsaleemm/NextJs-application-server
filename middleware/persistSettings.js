@@ -1,11 +1,11 @@
 import shallowDiff from "shallow-diff";
-import * as R from "ramda";
+import { pipe, toPairs, filter, fromPairs } from "ramda";
 
 const filterProps = props =>
-  R.pipe(
-    R.toPairs,
-    R.filter(([k, v]) => props.some(t => t === k)),
-    R.fromPairs
+  pipe(
+    toPairs,
+    filter(([k, v]) => props.some(t => t === k)),
+    fromPairs
   );
 
 export default store => next => action => {
@@ -14,7 +14,7 @@ export default store => next => action => {
   const result = next(action);
   const currentState = store.getState();
 
-  if (/SETTINGS$/.test(action.type)) {
+  if (/SETTINGS$/.test(type)) {
     const { updated } = shallowDiff(prevState, currentState);
     const action = filterProps(updated)(currentState);
     store.dispatch({

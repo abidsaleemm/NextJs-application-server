@@ -7,6 +7,11 @@ export default async ({ studyUID, series = {}, images = {} }) =>
       ({
         seriesUID,
         seriesName,
+        seriesDate,
+        seriesTime,
+        seriesNumber,
+        seriesType,
+        //
         patientName,
         patientSex,
         patientBirthDate,
@@ -32,6 +37,11 @@ export default async ({ studyUID, series = {}, images = {} }) =>
         return {
           seriesUID,
           seriesName,
+          seriesDate,
+          seriesTime,
+          seriesNumber,
+          seriesType,
+          //
           direction,
           patientName,
           patientSex,

@@ -43,8 +43,14 @@ export default ({ path }) => {
         patientSex,
         //   patientAge,
         modality,
+        // Series
         seriesName,
         seriesUID,
+        seriesDate,
+        seriesTime,
+        seriesNumber,
+        seriesType,
+        //
         checksum,
         imageNumber,
         instanceUID,
@@ -98,6 +104,10 @@ export default ({ path }) => {
           seriesName,
           seriesUID,
           patientID,
+          seriesDate,
+          seriesTime,
+          seriesNumber,
+          seriesType,
           // Extra props
           patientName,
           patientSex,

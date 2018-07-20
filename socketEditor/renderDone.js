@@ -113,11 +113,7 @@ const templateActions = {
 };
 
 export default async ({ socket, action }) => {
-  const {
-    // projects: { setProject = () => {} } = {},
-    // file: { put: filePut = () => {} } = {},
-    dicom: { getStudy = () => {} } = {}
-  } = adapter;
+  const { dicom: { getStudy = () => {} } = {} } = adapter;
 
   const { session, studyUID = "", templateName } = action;
 
@@ -125,16 +121,6 @@ export default async ({ socket, action }) => {
 
   if (session) {
     console.log("Render done. Generating resources.", studyUID);
-
-    // await setProject({
-    //   studyUID,
-    //   props: { encoding: new Date().toString() }
-    // });
-
-    // TODO Get study data
-    // const { patientName, studyType, studyDate } = await getStudy({
-    //   studyUID
-    // });
 
     const study = await getStudy({ studyUID });
 
@@ -145,42 +131,6 @@ export default async ({ socket, action }) => {
       studyUID
     });
 
-    socket.emit("action", { type: "CAPTURE_CLOSE" });
-
-    // TODO Handle based on templates
-    // template
-    // const videoFileName = createVideoFileName({
-    //   patientName,
-    //   studyType,
-    //   studyDate
-    // });
-
     // socket.emit("action", { type: "CAPTURE_CLOSE" });
-
-    // try {
-    //   // TODO Return stream instead?
-    //   await generateVideo({ session, numberImages });
-
-    //   console.log("Saving Video.");
-
-    //   const path = `${studyUID}/${videoFileName}`; // TODO create filename based on
-    //   const stream = fs.createReadStream(
-    //     `${os.tmpdir()}/${session}/video.mp4`
-    //   );
-
-    //   await filePut({ path, stream });
-
-    //   console.log("Video saved cleaning up resources.");
-    //   await cleanup({ session });
-
-    //   console.log("Video done.");
-    // } catch (e) {
-    //   console.log("Video error.", e);
-    // }
-
-    // setProject({
-    //   studyUID,
-    //   props: { encoding: "" }
-    // });
   }
 };

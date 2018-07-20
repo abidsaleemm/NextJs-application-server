@@ -1,12 +1,12 @@
 import saveFile from "../video/saveFile";
 
 export default async ({ socket, action }) => {
-  const { data, session, name } = action;
+  const { data, session, filePath } = action;
 
   if (session) {
     saveFile({
       session,
-      name,
+      filePath,
       // TODO Duplicate code?
       data: new Buffer(
         data.replace(/^data:image\/(png|jpeg);base64,/, ""),

@@ -1,10 +1,10 @@
 import fs from "fs";
 import os from "os";
+import path from "path";
 
 export default async ({ session, filePath, data }) => {
-  // TODO Create directories if they don't exist
   const fullPath = `${os.tmpdir()}/${session}/${filePath}`;
-  const dirPath = `${os.tmpdir()}/${session}`;
+  const dirPath = path.dirname(fullPath);
 
   try {
     fs.mkdirSync(dirPath);

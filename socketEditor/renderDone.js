@@ -17,7 +17,9 @@ const templateActions = {
     studyType,
     studyDate,
     session,
-    numberImages
+    numberImages,
+    anonymous = false,
+    debug = false
   }) => {
     const {
       projects: { setProject = () => {} } = {},
@@ -30,7 +32,11 @@ const templateActions = {
     });
 
     const videoFileName = createVideoFileName({
-      patientName,
+      patientName: anonymous
+        ? "Anonymous"
+        : debug
+          ? "Debug"
+          : patientName,
       studyType,
       studyDate
     });
@@ -67,12 +73,16 @@ const templateActions = {
     patientName,
     studyType,
     studyDate,
-    adapter
+    adapter,
+    anonymous = false,
+    debug = false
   }) =>
     new Promise((resolve, reject) => {
       const { file: { put: filePut = () => {} } = {} } = adapter;
 
-      const zipFileName = `Images ${patientName}-${studyType}-${studyDate}.zip`;
+      const zipFileName = `Images ${
+        anonymous ? "Anonymous" : debug ? "Debug" : patientName
+      }-${studyType}-${studyDate}.zip`;
       const zipFilePath = `${os.tmpdir()}/${session}.zip`;
 
       zipFolder(

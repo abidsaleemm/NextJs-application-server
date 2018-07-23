@@ -24,21 +24,15 @@ export default ({ studyUID }) => (
           display: flex;
           background: green;
           justify-content: space-between;
-        }
-
-        .renderLink {
-          padding-right: 30px;
           cursor: pointer;
-          padding-left: 0px;
-          margin-left: 0px;
         }
       `}
     </style>
     <DropdownToggle caret>Render</DropdownToggle>
     <DropdownMenu>
-      <DropdownItem className="renderOption">
+      <DropdownItem>
         <a
-          className="renderLink"
+          className="btn"
           onClick={() => {
             window.open(
               `/static/render/?p=${studyUID}`,
@@ -49,9 +43,10 @@ export default ({ studyUID }) => (
         >
           Spine Video
         </a>
+      </DropdownItem>
+      <DropdownItem>
         <a
-          className="btn btn-warning"
-          color="warning"
+          className="btn"
           onClick={() => {
             window.open(
               `/static/render/?p=${studyUID}&debug=true`, // Don't need to assign template video is default
@@ -60,7 +55,7 @@ export default ({ studyUID }) => (
             );
           }}
         >
-          Debug
+          Spine Video - Debug
         </a>
       </DropdownItem>
       <DropdownItem>
@@ -68,6 +63,23 @@ export default ({ studyUID }) => (
           className="btn"
           color="warning"
           onClick={() => {
+            // TODO create wrapper reusable function for this
+            window.open(
+              `/static/render/?p=${studyUID}&anonymous=true`,
+              windowName,
+              windowSettings
+            );
+          }}
+        >
+          Spine Video - Anonymous
+        </a>
+      </DropdownItem>
+      <DropdownItem>
+        <a
+          className="btn"
+          color="warning"
+          onClick={() => {
+            // TODO create wrapper reusable function for this
             window.open(
               `/static/render/?p=${studyUID}&template=spineImages`,
               windowName,
@@ -83,6 +95,23 @@ export default ({ studyUID }) => (
           className="btn"
           color="warning"
           onClick={() => {
+            // TODO create wrapper reusable function for this
+            window.open(
+              `/static/render/?p=${studyUID}&template=spineImages&anonymous=true`,
+              windowName,
+              windowSettings
+            );
+          }}
+        >
+          Spine Images - Anonymous
+        </a>
+      </DropdownItem>
+      <DropdownItem>
+        <a
+          className="btn"
+          color="warning"
+          onClick={() => {
+            // TODO create wrapper reusable function for this
             window.open(
               `/static/render/?p=${studyUID}&template=spineComparison`,
               windowName,

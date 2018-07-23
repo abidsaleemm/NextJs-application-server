@@ -1,9 +1,11 @@
 import os from "os";
 import fs from "fs";
+import zipFolder from "zip-folder";
 
 import { generateVideo, cleanup } from "../video";
 import { adapter } from "../server";
 import createVideoFileName from "../helpers/createVideoFileName";
+import { resolve } from "dns";
 
 // TODO Move this someplace else?
 // TODO Cut up into seperate functions for now
@@ -59,9 +61,44 @@ const templateActions = {
       props: { encoding: "" }
     });
   },
-  spineImages: async () => {
-    // Compose Zip file
-  },
+  spineImages: ({
+    studyUID,
+    session,
+    patientName,
+    studyType,
+    studyDate,
+    adapter
+  }) =>
+    new Promise((resolve, reject) => {
+      const { file: { put: filePut = () => {} } = {} } = adapter;
+
+      const zipFileName = `Images ${patientName}-${studyType}-${studyDate}.zip`;
+      const zipFilePath = `${os.tmpdir()}/${session}.zip`;
+
+      zipFolder(
+        `${os.tmpdir()}/${session}`,
+        zipFilePath,
+        async err => {
+          if (err) {
+            console.log("Error", err);
+            reject(err);
+            return;
+          }
+
+          const stream = fs.createReadStream(zipFilePath);
+
+          const path = `${studyUID}/${zipFileName}`;
+          await filePut({ path, stream });
+
+          // Removing generated zip file.
+          // TODO maybe use direct stream instead?
+          fs.unlinkSync(zipFilePath);
+
+          await cleanup({ session });
+          resolve();
+        }
+      );
+    }),
   spineComparison: async ({
     studyUID,
     adapter,

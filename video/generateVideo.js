@@ -1,8 +1,7 @@
 import os from "os";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "fs";
-import { Writer, FileWriter, Reader } from "wav";
-// import { Readable, Writable } from "stream";
+import { FileWriter, Reader } from "wav";
 
 import { format } from "./saveAudio"; // TODO Clean up maybe make a audio functional piece?
 

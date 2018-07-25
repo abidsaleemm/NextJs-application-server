@@ -7,7 +7,7 @@ import ButtonConfirm from "../../components/ButtonConfirm";
 import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
-import DropdownRenderOptions from "../../components/DropdownRenderOptions";
+import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 
 export default props => {
   const {
@@ -124,7 +124,7 @@ export default props => {
                 align-self: center;
               `}
             </style>
-            <DropdownRenderOptions studyUID={studyUID} />
+            <DropDownRenderOptions studyUID={studyUID} />
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding ({Math.floor(

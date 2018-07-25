@@ -1,7 +1,6 @@
 import azure from "./azure";
 import local from "./local";
 import dicom from "./dicom";
-import video from "./video";
 import { compose } from "ramda";
 
 export default () => {
@@ -13,8 +12,5 @@ export default () => {
           storageKey: process.env.STORAGE_ACCOUNT_KEY
         });
 
-  return compose(
-    dicom,
-    video
-  )(enhancer);
+  return compose(dicom)(enhancer);
 };

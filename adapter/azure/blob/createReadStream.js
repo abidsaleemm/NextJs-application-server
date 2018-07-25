@@ -13,16 +13,9 @@ export default async ({ blobService, blobName, containerName }) => {
       blobName,
       (err, result) => {
         if (err) {
-          //   reject();
           console.log(err);
           return;
         }
-
-        console.log(
-          `blob loaded ${result.contentLength} bytes.`,
-          blobName,
-          result
-        );
       }
     );
   }

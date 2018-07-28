@@ -2,75 +2,39 @@ import React from "react";
 import {
   UncontrolledDropdown,
   DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  DropdownMenu
 } from "reactstrap";
 
-const RenderRow = ({ patientName, age = "", sex = "" }) => (
-  <div className="tableContainer">
-    <style jsx>
-      {`
-        .tableContainer {
-          display: flex;
-          width: 100%;
-        }
+import TableList from "./TableList";
 
-        .tablePatientName {
-          width: 100%;
-          margin: 0.5em;
-        }
+const header = () => ({
+  statusRender: "Status",
+  patientName: "Patient Name",
+  patientAge: "Age",
+  patientSex: "Gender",
+  studyType: "Study Type"
+});
 
-        .tablePatientAge {
-          margin: 0.5em;
-        }
-      `}
-    </style>
-    <div className="tablePatientName">{patientName}</div>
-    <div className="tablePatientAge">{age}</div>
-    <div className="tablePatientAge">{sex}</div>
-  </div>
-);
+//   data={projectsEnhanced}
+//           sortKey={sortKey}
+//           sortDesc={sortDesc}
+//           header={header()}
+//           filterFunc={filterFunc(props)}
+//           filterRender={filterRender(props)}
+//           onSort={k => setProjectsSettings({ sortKey: k })}
 
+// onClick={() => onClick(defaultStudyUID)}
 export default ({
   label = "Create",
   projects = [],
   onClick = () => {}
 }) => {
+  // TODO Create popup with table view componet?
   return (
     <UncontrolledDropdown>
       <DropdownToggle caret>{label}</DropdownToggle>
       <DropdownMenu>
-        <DropdownItem onClick={() => onClick()}>
-          <RenderRow patientName="None" age="" />
-        </DropdownItem>
-
-        {projects
-          .filter(({ hasProjectSnapshots }) => hasProjectSnapshots)
-          .map(
-            ({
-              studyUID: defaultStudyUID,
-              patientName,
-              patientBirthDate,
-              patientSex
-            }) => {
-              const age =
-                new Date().getFullYear() -
-                new Date(patientBirthDate).getFullYear();
-
-              return (
-                <DropdownItem
-                  key={`project-list-${defaultStudyUID}`}
-                  onClick={() => onClick(defaultStudyUID)}
-                >
-                  <RenderRow
-                    patientName={patientName}
-                    age={age}
-                    sex={patientSex}
-                  />
-                </DropdownItem>
-              );
-            }
-          )}
+        <TableList data={projects} header={header()} />
       </DropdownMenu>
     </UncontrolledDropdown>
   );

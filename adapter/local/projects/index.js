@@ -6,10 +6,9 @@ import getProjectList from "./getProjectList";
 import setProjectSnapshot from "./setProjectSnapshot";
 import setProject from "./setProject";
 import destroyProject from "./destroyProject";
-
+import getProjectSnapshotList from "./getProjectSnapshotList";
 
 export default ({ path }) => {
-
   const snapshotDir = `${path}/snapshots`;
 
   if (fs.existsSync(snapshotDir) === false) {
@@ -28,6 +27,8 @@ export default ({ path }) => {
     setProject: async props =>
       await setProject({ ...props, path, snapshotDir }),
     destroyProject: async props =>
-      await destroyProject({ ...props, path, snapshotDir })
+      await destroyProject({ ...props, path, snapshotDir }),
+    getProjectSnapshotList: async props =>
+      await getProjectSnapshotList({ ...props, path, snapshotDir })
   };
 };

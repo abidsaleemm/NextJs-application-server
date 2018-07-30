@@ -21,6 +21,9 @@ export default ({ storageAccount, storageKey }) => {
     }),
     //
     file: file({ blobAdapter }),
-    users: users({ tableAdapter })
+    users: users({ tableAdapter }),
+    // API specific
+    blob: blobAdapter,
+    table: tableAdapter
   };
 };

@@ -1,16 +1,11 @@
-import azure from "./azure";
-import local from "./local";
+import azureAdapter from "./azure";
+import localAdapter from "./local";
 import dicom from "./dicom";
 import { compose } from "ramda";
 
-export default () => {
-  const enhancer =
-    process.env.LOCAL !== undefined
-      ? local()
-      : azure({
-          storageAccount: process.env.STORAGE_ACCOUNT,
-          storageKey: process.env.STORAGE_ACCOUNT_KEY
-        });
+export default props => {
+  const { local = false } = props;
+  const enhancer = local ? localAdapter(props) : azureAdapter(props);
 
   return compose(dicom)(enhancer);
 };

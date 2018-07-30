@@ -14,7 +14,11 @@ import authMiddleware from "./auth/middleware";
 import storageAdapter from "./adapter";
 
 // TODO This is not the best way.  Works for now but should be passed through as props.
-export const adapter = storageAdapter();
+export const adapter = storageAdapter({
+  local: process.env.LOCAL,
+  storageAccount: process.env.STORAGE_ACCOUNT,
+  storageKey: process.env.STORAGE_ACCOUNT_KEY
+});
 
 const flash = require("connect-flash");
 const port = process.env.PORT || 3000;

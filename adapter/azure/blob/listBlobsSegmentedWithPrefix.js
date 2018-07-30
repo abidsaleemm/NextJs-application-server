@@ -1,4 +1,4 @@
-export default ({ blobService, containerName, prefix }) =>
+export default ({ blobService, containerName, prefix = "" }) =>
   new Promise((resolve, reject) => {
     blobService.listBlobsSegmentedWithPrefix(
       containerName,

@@ -7,6 +7,16 @@ import {
   ModalFooter
 } from "reactstrap";
 
+import TableList from "./TableList";
+
+const header = () => ({
+  statusRender: "Status",
+  patientName: "Patient Name",
+  patientAge: "Age",
+  patientSex: "Gender",
+  studyType: "Study Type"
+});
+
 /*
 <DropDownProjects
                 studyUID={studyUID}
@@ -16,60 +26,25 @@ import {
                 }}
               />
               */
+//className={this.props.className}
 
-class CreateProjectModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modal: false
-    };
+export default ({ isOpen, toggle = () => {} }) => {
+  // TODO Enhance the projects table
+  const projects = [];
 
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-
-  render() {
-    const { isOpen } = this.props;
-
-    return (
-      <div>
-        <Modal
-          isOpen={isOpen}
-          toggle={this.toggle}
-          className={this.props.className}
-        >
-          <ModalHeader toggle={this.toggle}>
-            Create Project
-          </ModalHeader>
-          <ModalBody>
-            <DropDownProjects
-              studyUID={studyUID}
-              projects={self}
-              onClick={defaultStudyUID => {
-                createProject({ studyUID, defaultStudyUID });
-              }}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-    );
-  }
-}
-
-export default CreateProjectModal;
-
-/*
-<Button color="danger" onClick={this.toggle}>
-          {this.props.buttonLabel}
-        </Button>
-        */
+  return (
+    <div>
+      <Modal isOpen={isOpen} toggle={toggle}>
+        <ModalHeader toggle={this.toggle}>Create Project</ModalHeader>
+        <ModalBody>
+          <TableList data={projects} header={header()} />
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggle}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+    </div>
+  );
+};

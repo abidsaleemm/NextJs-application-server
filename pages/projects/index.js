@@ -41,7 +41,8 @@ class ProjectsListing extends Component {
     this.state = {
       popupTarget: null,
       popupStudyUID: "",
-      modalCreateProjects: false
+      modalCreateProjects: false,
+      selectedStudyUID: null
     };
   }
 
@@ -67,21 +68,28 @@ class ProjectsListing extends Component {
         projects = [],
         sortKey,
         sortDesc,
+        projectsListSortKey,
+        projectsListSortDesc,
         setProjectsSettings = () => {},
-        uploadDel = () => {}
+        uploadDel = () => {},
+        createProject = () => {}
       } = {},
       state: {
         popupTarget,
         popupStudyUID,
-        modalCreateProjects = false
+        modalCreateProjects = false,
+        selectedStudyUID = null
       }
     } = this;
 
     const projectsEnhanced = fieldEnhancer({
       ...props,
-      onCreate: () => {
-        console.log("onCreate");
-        this.setState({ modalCreateProjects: true });
+      onCreate: ({ studyUID }) => {
+        // TODO Don't like this.  Could cause side effects.
+        this.setState({
+          modalCreateProjects: true,
+          selectedStudyUID: studyUID
+        });
       },
       popupOpen: this.popupOpen
     });
@@ -115,8 +123,26 @@ class ProjectsListing extends Component {
           onSort={k => setProjectsSettings({ sortKey: k })}
         />
         <CreateProjectModal
-          toggle={() => {}}
+          sortKey={projectsListSortKey}
+          sortDesc={projectsListSortDesc}
+          onSort={k =>
+            setProjectsSettings({ projectsListSortKey: k })
+          }
+          projects={projects.filter(
+            ({ hasProjectSnapshots }) => hasProjectSnapshots
+          )}
+          toggle={() => {
+            this.setState({
+              modalCreateProjects: !modalCreateProjects
+            });
+          }}
           isOpen={modalCreateProjects}
+          onRowClick={({ studyUID: defaultStudyUID }) => {
+            createProject({
+              studyUID: selectedStudyUID,
+              defaultStudyUID
+            });
+          }}
         />
         <UploadFilePopup
           popupTarget={popupTarget}
@@ -137,7 +163,14 @@ class ProjectsListing extends Component {
 }
 
 const mapStateToProps = ({
-  projectsSettings: { sortKey, sortDesc, filter },
+  projectsSettings: {
+    // TODO Makebe use a container for settings instead of pass through props?
+    sortKey,
+    sortDesc,
+    filter,
+    projectsListSortKey,
+    projectsListSortDesc
+  },
   defaultList,
   projects: { projects }
 }) => ({
@@ -145,6 +178,8 @@ const mapStateToProps = ({
   sortKey,
   sortDesc,
   filter,
+  projectsListSortKey,
+  projectsListSortDesc,
   defaultList
 });
 

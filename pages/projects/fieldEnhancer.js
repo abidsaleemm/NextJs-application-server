@@ -2,7 +2,6 @@ import React from "react";
 import Router from "next/router";
 import { Button, ButtonGroup } from "reactstrap";
 
-import DropDownProjects from "../../components/DropDownProjects";
 import ButtonConfirm from "../../components/ButtonConfirm";
 import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
@@ -62,7 +61,9 @@ export default props => {
         action: (
           <ButtonGroup>
             {!hasProjectSnapshots ? (
-              <Button onClick={onCreate}>Create</Button>
+              <Button onClick={() => onCreate({ studyUID })}>
+                Create
+              </Button>
             ) : (
               <Button
                 onClick={() =>

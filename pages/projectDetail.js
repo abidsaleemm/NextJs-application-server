@@ -8,7 +8,6 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
-import DropDownProjects from "../components/DropDownProjects";
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -56,7 +55,6 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         projects = [],
-        setProjectProps = () => {},
         toggleSidebar = () => {},
         resetProject = () => {},
         handleProjectImport = () => {},
@@ -272,17 +270,6 @@ const ProjectDetails = class extends Component {
             <hr />
             <div className="dataDefaults">
               <div className="dataDefaultsLabel">Set Default</div>
-              <DropDownProjects
-                label={defaultLabel}
-                studyUID={studyUID}
-                projects={projects.filter(
-                  ({ studyUID: testStudyUID }) =>
-                    studyUID !== testStudyUID
-                )}
-                onClick={(defaultStudyUID = "") => {
-                  setProjectProps({ studyUID, defaultStudyUID });
-                }}
-              />
             </div>
             <div />
           </div>

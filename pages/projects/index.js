@@ -5,7 +5,7 @@ import * as actions from "../../actions";
 import Wrapper from "../../hoc/wrapper";
 import TableList from "../../components/TableList";
 import UploadFilePopup from "../../components/UploadFilePopup";
-
+import CreateProjectModal from "../../components/CreateProjectModal";
 //
 import fieldEnhancer from "./fieldEnhancer";
 import header from "./header";
@@ -40,7 +40,8 @@ class ProjectsListing extends Component {
     // TODO Move to redux?
     this.state = {
       popupTarget: null,
-      popupStudyUID: ""
+      popupStudyUID: "",
+      modalCreateProjects: false
     };
   }
 
@@ -69,11 +70,19 @@ class ProjectsListing extends Component {
         setProjectsSettings = () => {},
         uploadDel = () => {}
       } = {},
-      state: { popupTarget, popupStudyUID }
+      state: {
+        popupTarget,
+        popupStudyUID,
+        modalCreateProjects = false
+      }
     } = this;
 
     const projectsEnhanced = fieldEnhancer({
       ...props,
+      onCreate: () => {
+        console.log("onCreate");
+        this.setState({ modalCreateProjects: true });
+      },
       popupOpen: this.popupOpen
     });
 
@@ -95,7 +104,6 @@ class ProjectsListing extends Component {
             }
           `}
         </style>
-
         <TableList
           data={projectsEnhanced}
           sortFunc={sortFunc()}
@@ -106,7 +114,10 @@ class ProjectsListing extends Component {
           filterRender={filterRender(props)}
           onSort={k => setProjectsSettings({ sortKey: k })}
         />
-
+        <CreateProjectModal
+          toggle={() => {}}
+          isOpen={modalCreateProjects}
+        />
         <UploadFilePopup
           popupTarget={popupTarget}
           fileList={uploadedFiles}

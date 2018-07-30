@@ -30,7 +30,8 @@ export default props => {
     handleUpload = () => {},
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
-    popupOpen = () => {}
+    popupOpen = () => {},
+    onCreate = () => {}
   } = props;
 
   return projects.map(
@@ -58,33 +59,10 @@ export default props => {
         status,
         statusRender: <Status {...{ ...props, status, studyUID }} />,
         tableBackground: tableRowColor(status),
-        // TODO Create helper to set color
-        // Create a object literal for this?
-        //   status === "Pending"
-        //     ? "rgba(255, 0, 0, 0.1)"
-        //     : status === "Segmentation"
-        //       ? "rgba(255, 255, 0, 0.1)"
-        //       : status === "Injuries"
-        //         ? "rgba(255, 255, 0, 0.2)"
-        //         : status === "Review"
-        //           ? "rgba(0, 255, 0, 0.1)"
-        //           : status === "Done"
-        //             ? "rgba(0, 255, 0, 0.2)"
-        //             : status === "Rendered"
-        //               ? "rgba(0, 255, 0, 0.5)"
-        //               : status === "Delivered"
-        //                 ? "rgba(0, 0, 255, 0.3)"
-        //                 : "rgba(0, 0, 0, 0.0)",
         action: (
           <ButtonGroup>
             {!hasProjectSnapshots ? (
-              <DropDownProjects
-                studyUID={studyUID}
-                projects={self}
-                onClick={defaultStudyUID => {
-                  createProject({ studyUID, defaultStudyUID });
-                }}
-              />
+              <Button onClick={onCreate}>Create</Button>
             ) : (
               <Button
                 onClick={() =>

@@ -2,13 +2,12 @@
 
 TODO Add more description
 
-## Requirements:
+## Frameworks and APIs used:
 
-- Node > 7 - https://nodejs.org
+- Node - https://nodejs.org
 - Ramda - http://ramdajs.com
-- Yarn - https://yarnpkg.com/en/
 - Express - https://expressjs.com/
-- Nextjs - https://zeit.co/blog/next2
+- Nextjs - https://github.com/zeit/next.js/
 - React - https://facebook.github.io/react/
 - PassportJS - http://passportjs.org/
 - Websockets (Socket.io) - https://socket.io/
@@ -21,24 +20,49 @@ TODO Add more description
 
 ```
 .
-├─ actions      - Redux actions.
-├─ api          - API based functions here.
-├─ auth         - PassportJS strategy functions and user based functions.
-├─ components   - Reusable React components are declared here.
-├─ constants    - Redux action types defined here.
-├─ containers   - Redux container connected components.
+├─ actions          - Redux actions.
+├─ adapter          - Storage adapter functions. See more detailed description below.
+├─ auth             - PassportJS strategy functions and user based functions.
+├─ components       - Reusable React components are declared here.
+├─ constants        - Redux action types defined here.
+├─ containers       - Redux container connected components.
+├─ helpers          - Scoped utility functions.
+├─ hoc              - React Higher Order Components
+├─ middleware       - Express and Redux middleware functions.
+├─ modules          - Module specific for creating initial state data for client frontend. (Spine, Shoulder, Knee)
+├─ pages            - React pages for NextJS.
+├─ projectsLocal    - Local storage directory.
+├─ reducers         - Redux state reducers.
+├─ routes           - Express routing handling functions.
+├─ selectors        - Redux selectors.
+├─ sessiondb        - Local express session storage.
+├─ socketEditor     - Socket.io end point functions for 3-D Editor App.
+├─ socketServer     - Socket.io end point functions for server nextjs app.
+├─ static           - Static hosted resources.
+├─ store            - Redux store function and initialization code.
+├─ styles           - SCSS style sheets for front-end components. Global sheets also.
+└─ video            - Video rendering processing code.
+```
+
+## Adapter structure
+
+TODO: These functions should be moved to separtate repo for reusablbility.
+
+```
 ├─ dicom        - Functions for querying and reading DICOM files from storage.
-├─ hoc          - React Higher Order Components
-├─ modules      - Module specific for creating initial state data for client frontend. (Spine, Shoulder, Knee)
-├─ pages        - React pages for NextJS.
 ├─ projects     - Functions for querying, saving and reading projects from storage.
-├─ query        - Data querying functions.
-├─ reducers     - Redux state reducers.
-├─ routes       - Express routing handling functions.
-├─ selectors    - Redux selectors.
-├─ socketApi    - Socket.io functions for client API.
-├─ styles       - SCSS style sheets for front-end components. Global sheets also.
-└─ video       - Video Rendering processing code.
+├─ users        - User based functions for retrieving and saving. (TODO Add groups)
+├─ projects     - Functions for querying, saving and reading projects from storage.
+├─ file     - Functions for querying, saving and reading projects from storage.
+```
+
+## Adapter API specific functions
+
+### Azure
+
+```
+blob    - Blob storage API functions
+table   - Table storage based functions
 ```
 
 # Live site
@@ -49,10 +73,6 @@ https://portal.multusmedical.com
 
 _Test user:_
 user: user@test.com
-pass: test91a
-
-_Test client:_
-user: client@test.com
 pass: test91a
 
 ## Environment variables / Access keys

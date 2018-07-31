@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
 import { connect } from "react-redux";
@@ -8,6 +8,7 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
+import CreateProjectModal from "../components/CreateProjectModal";
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -40,6 +41,12 @@ const ProjectDetails = class extends Component {
     });
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      modalProjectsList: false
+    };
+  }
   render() {
     const {
       props,
@@ -55,11 +62,16 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         projects = [],
+        projectsListSortKey = "",
+        projectsListSortDesc = false,
         toggleSidebar = () => {},
         resetProject = () => {},
         handleProjectImport = () => {},
-        destroyProject = () => {}
-      }
+        destroyProject = () => {},
+        setProjectDetailSettings = () => {},
+        setProjectProps = () => {}
+      },
+      state: { modalProjectsList = false }
     } = this;
 
     const selectedDefaultProject =
@@ -73,17 +85,6 @@ const ProjectDetails = class extends Component {
       patientSex: defaultPatientSex,
       patientBirthDate: defaultPatientBirthDate
     } = selectedDefaultProject;
-
-    // Setting up defaults
-    // TODO Calculate using current date for now
-    const defaultPatientAge =
-      new Date().getFullYear() -
-      new Date(defaultPatientBirthDate).getFullYear();
-
-    const defaultLabel =
-      defaultStudyUID !== ""
-        ? `${defaultPatientName} - ${defaultPatientAge} - ${defaultPatientSex}`
-        : "None";
 
     // TODO Calculate using current date for now
     const patientAge =
@@ -131,11 +132,8 @@ const ProjectDetails = class extends Component {
             }
 
             .dataFunction {
-              margin-right: 10px;
-            }
-
-            .dataFunction:last-child {
-              margin-right: 0;
+              margin-right: 2px;
+              margin-left: 2px;
             }
 
             .dataDefaults {
@@ -265,13 +263,18 @@ const ProjectDetails = class extends Component {
                     Destroy
                   </ButtonConfirm>
                 </div>
+                <div className="dataFunction">
+                  <Button
+                    color="secondary"
+                    onClick={() => {
+                      this.setState({ modalProjectsList: true });
+                    }}
+                  >
+                    Default
+                  </Button>
+                </div>
               </div>
             </div>
-            <hr />
-            <div className="dataDefaults">
-              <div className="dataDefaultsLabel">Set Default</div>
-            </div>
-            <div />
           </div>
         </Sidebar>
         <iframe
@@ -282,6 +285,40 @@ const ProjectDetails = class extends Component {
           height="100%"
           style={{ margin: 0, border: 0, padding: 0 }}
         />
+        <CreateProjectModal
+          sortKey={projectsListSortKey}
+          sortDesc={projectsListSortDesc}
+          onSort={k => {
+            setProjectDetailSettings({ projectsListSortKey: k });
+          }}
+          projects={projects
+            .filter(({ hasProjectSnapshots }) => hasProjectSnapshots)
+            .filter(
+              ({ studyUID: testStudyUID }) =>
+                studyUID !== testStudyUID
+            )
+            .map(
+              v =>
+                defaultStudyUID === v.studyUID
+                  ? {
+                      ...v,
+                      tableBackground: "lightgreen"
+                    }
+                  : v
+            )}
+          toggle={() => {
+            this.setState({
+              modalProjectsList: !modalProjectsList
+            });
+          }}
+          isOpen={modalProjectsList}
+          onRowClick={({ studyUID: defaultStudyUID }) => {
+            setProjectProps({ studyUID, defaultStudyUID });
+            this.setState({
+              modalProjectsList: false
+            });
+          }}
+        />
       </div>
     );
   }
@@ -290,8 +327,18 @@ const ProjectDetails = class extends Component {
 const mapStateToProps = ({
   projectDetail,
   projects: { projects },
-  projectDetailSettings: { sidebarIsOpen }
-}) => ({ ...projectDetail, sidebarIsOpen, projects });
+  projectDetailSettings: {
+    sidebarIsOpen,
+    projectsListSortKey = "",
+    projectsListSortDesc = false
+  }
+}) => ({
+  ...projectDetail,
+  sidebarIsOpen,
+  projects,
+  projectsListSortKey,
+  projectsListSortDesc
+});
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);

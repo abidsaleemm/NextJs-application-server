@@ -5,13 +5,14 @@ import {
   applyMiddleware
 } from "redux";
 import { createLogger } from "redux-logger";
-import createSocketIoMiddleware from "redux-socket.io";
+// import createSocketIoMiddleware from "redux-socket.io";
+import createSocketIoMiddleware from "./createSocketIoMiddleware";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
-import persistSettings from "./middleware/persistSettings";
-import userListAPI from "./middleware/userListAPI";
-import * as reducers from "./reducers";
-import route from "./middleware/route";
+import persistSettings from "../middleware/persistSettings";
+import userListAPI from "../middleware/userListAPI";
+import * as reducers from "../reducers";
+import route from "../middleware/route";
 
 const socketIoMiddleware = createSocketIoMiddleware(
   "undefined" !== typeof window ? io() : io("http://localhost:3000"), // TODO This Still works but not clean

@@ -18,7 +18,7 @@ export default props => {
     sortFunc = {},
     filterRender = {},
     filterFunc = {},
-    onRowClick = () => {},
+    onRowClick,
     onSort = () => {}
   } = props;
 
@@ -176,7 +176,16 @@ export default props => {
             ({ tableBackground, ...dataProps }, i) => (
               <tr
                 key={`tableList-tableRow-${i}`}
-                onClick={() => onRowClick(dataProps)}
+                onClick={() => {
+                  if (onRowClick !== undefined) {
+                    onRowClick(dataProps);
+                  }
+                }}
+                style={{
+                  ...(onRowClick !== undefined
+                    ? { cursor: "pointer" }
+                    : {})
+                }}
               >
                 {Object.entries(header)
                   .map(([id, props]) => ({

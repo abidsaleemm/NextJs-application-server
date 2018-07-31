@@ -35,6 +35,8 @@ const strSort = (a = "", b = "") => {
 
 const sortFunc = () => ({
   status: ({ status: a = "" }, { status: b = "" }) => strSort(a, b),
+  sampleRender: ({ sample: a = false }, { sample: b = false }) =>
+    a === b ? 0 : a ? -1 : 1,
   patientName: ({ patientName: a }, { patientName: b }) =>
     strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => {
@@ -60,6 +62,7 @@ export default ({
     ({ patientBirthDate = new Date(), sample = false, ...v }) => {
       return {
         ...v,
+        sample,
         patientAge:
           new Date().getFullYear() -
           new Date(patientBirthDate).getFullYear(),
@@ -68,8 +71,7 @@ export default ({
     }
   );
 
-  console.log("sortKey", sortKey, sortDesc);
-
+  console.log("projects", projects);
   return (
     <Modal
       style={{ maxWidth: "80%" }}
@@ -78,7 +80,7 @@ export default ({
     >
       <style jsx>
         {`
-          @media (class: .projectsmodal) {
+          @media (class: max-width: 80%;) {
             .modal-dialog {
               max-width: 80%;
             }

@@ -71,7 +71,6 @@ export default ({
     }
   );
 
-  console.log("projects", projects);
   return (
     <Modal
       style={{ maxWidth: "80%" }}

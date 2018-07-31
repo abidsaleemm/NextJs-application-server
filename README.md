@@ -65,16 +65,6 @@ blob    - Blob storage API functions
 table   - Table storage based functions
 ```
 
-# Live site
-
-Live site can be accessed at:
-
-https://portal.multusmedical.com
-
-_Test user:_
-user: user@test.com
-pass: test91a
-
 ## Environment variables / Access keys
 
 Access keys to storage accounts need to be set as environment vars.
@@ -165,6 +155,10 @@ The following yarn commands can be ran to test the app locally. You can specify 
 yarn local   # Test using local DB adapters.  Requires no internet connection.
 yarn azure   # Test using azure DB adapters.
 ```
+
+# Advanced
+
+NOTE: Needs access to docker cloud.
 
 ## Deployment script
 

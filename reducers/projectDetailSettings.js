@@ -4,14 +4,19 @@ import {
 } from "../constants/actionTypes";
 
 export const initialState = {
-  projects: []
+  sidebarIsOpen: false,
+  projectsListSortKey: "",
+  projectsListSortDesc: false
 };
 
 export default (
   state = { sidebarIsOpen: true },
   { type, settings = {} }
 ) => {
+  // TODO This sucks maybe deconstuct above will be better?
+  const { projectsListSortKey } = settings;
   const { sidebarIsOpen, ...rest } = state;
+
   switch (type) {
     case TOGGLE_SIDEBAR_SETTINGS:
       return {
@@ -19,7 +24,21 @@ export default (
         sidebarIsOpen: !sidebarIsOpen
       };
     case PROJECTDETAIL_SET_SETTINGS:
-      return { ...state, ...settings };
+      return {
+        ...state,
+        ...settings,
+        // TODO Messy same in other reducer projectsSettings
+        projectsListSortKey:
+          projectsListSortKey !== undefined
+            ? projectsListSortKey
+            : state.projectsListSortKey,
+        projectsListSortDesc:
+          projectsListSortKey !== undefined
+            ? state.projectsListSortKey === projectsListSortKey
+              ? !state.projectsListSortDesc
+              : state.projectsListSortDesc
+            : state.projectsListSortDesc
+      };
     default:
       return state;
   }

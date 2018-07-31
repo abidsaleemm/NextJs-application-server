@@ -1,6 +1,7 @@
 import {
   PAYLOAD_PROJECTDETAIL,
-  PROJECTDETAIL_SET_STATUS
+  PROJECTDETAIL_SET_STATUS,
+  SET_PROJECT_PROPS
 } from "../constants/actionTypes";
 
 export const initialState = {
@@ -16,7 +17,7 @@ export const initialState = {
 
 export default (
   state = initialState,
-  { type, projectDetail = {}, status = 0 }
+  { type, projectDetail = {}, status = 0, ...settings }
 ) => {
   switch (type) {
     case PAYLOAD_PROJECTDETAIL:
@@ -26,6 +27,9 @@ export default (
       };
     case PROJECTDETAIL_SET_STATUS:
       return { ...state, status };
+    case SET_PROJECT_PROPS: {
+      return { ...state, ...settings };
+    }
     default:
       return state;
   }

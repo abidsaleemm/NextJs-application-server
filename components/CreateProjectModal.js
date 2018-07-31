@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Button,
   Modal,
@@ -18,6 +18,7 @@ const header = () => ({
   studyType: "Study Type"
 });
 
+// TODO Reused other places place in helpers location
 const strSort = (a = "", b = "") => {
   const strA = `${a}`.toUpperCase();
   const strB = `${b}`.toUpperCase();

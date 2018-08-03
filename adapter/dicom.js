@@ -24,7 +24,7 @@ const transform = ({
   referringPhysicianName = "",
   patientSex = "",
   ...study
-}) => {
+} = {}) => {
   return {
     studyName,
     ...Object.entries(study).reduce(

@@ -5,7 +5,7 @@ import {
   applyMiddleware
 } from "redux";
 import { createLogger } from "redux-logger";
-import createSocketIoMiddleware from "./createSocketIoMiddleware";
+import createSocketIoMiddleware from "../middleware/createSocketIoMiddleware";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
 import persistSettings from "../middleware/persistSettings";

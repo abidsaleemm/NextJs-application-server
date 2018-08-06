@@ -2,7 +2,6 @@ import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
-import getProjectSnapshot from "./getProjectSnapshot";
 
 export default async ({ studyUID = "_", payload = {}, path }) => {
   if (path === undefined) return;

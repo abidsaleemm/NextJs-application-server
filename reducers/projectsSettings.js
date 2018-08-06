@@ -11,7 +11,7 @@ const initialState = {
 };
 
 export default (state = initialState, { type, settings = {} }) => {
-  const { filter, sortKey, projectsListSortKey } = settings;
+  const { filter, sortKey, projectsListSortKey, sortDesc } = settings;
 
   switch (type) {
     // TODO This is used in two places.  Should a utility/helper function?
@@ -20,12 +20,7 @@ export default (state = initialState, { type, settings = {} }) => {
         ...state,
         ...settings,
         sortKey: sortKey !== undefined ? sortKey : state.sortKey,
-        sortDesc:
-          sortKey !== undefined // TODO Handle this in action?
-            ? state.sortKey === sortKey
-              ? !state.sortDesc
-              : state.sortDesc
-            : state.sortDesc,
+        sortDesc: sortDesc !== undefined ? sortDesc : state.sortDesc,
         filter: {
           ...filter,
           ...state.filter

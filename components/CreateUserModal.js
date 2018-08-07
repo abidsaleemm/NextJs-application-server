@@ -18,7 +18,6 @@ import * as actions from "../actions";
 export class CreateUserModal extends Component {
   constructor(props) {
     super(props);
-
     const id = UUID.create().toString();
     this.state = { name: "", id, username: "", password: "" };
   }
@@ -30,8 +29,9 @@ export class CreateUserModal extends Component {
   };
 
   onSubmit = () => {
+    const id = UUID.create().toString();
     const { onSubmit, toggle } = this.props;
-    const { name, username, password, id } = this.state;
+    const { name, username, password } = this.state;
     onSubmit({
       name,
       username,

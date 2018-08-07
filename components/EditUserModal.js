@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../actions";
 import {
   Button,
   Modal,
@@ -11,7 +14,7 @@ import {
   Input
 } from "reactstrap";
 
-export class CreateUserModal extends Component {
+export class EditUserModal extends Component {
   constructor(props) {
     super(props);
     const { user } = props;
@@ -116,4 +119,12 @@ export class CreateUserModal extends Component {
   }
 }
 
-export default CreateUserModal;
+const mapStateToProps = ({ userList }) => ({ userList });
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditUserModal);

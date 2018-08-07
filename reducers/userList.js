@@ -28,6 +28,8 @@ export default (
       //TODO: replace user with given payload
       return {
         data: state.data
+          .filter(user => user.id !== userData.id)
+          .concat([userData])
       };
     default:
       return state;

@@ -61,18 +61,35 @@ const getUsers = ({ db }) => {
   return db.get("users");
 };
 
-const deleteUser = ({ id, db }) => {
-  db.get("users")
+const deleteUser = async ({ id, db }) => {
+  await db
+    .get("users")
     .remove({ id })
-    .write()
-    .then(console.log(id, "Deleted User"));
+    .write();
+  console.log(id, "Deleted User");
 };
 
-const createUser = ({ user, db }) => {
-  db.get("users")
+const editUser = async ({ user, db }) => {
+  const { id, username, name, password, admin } = user;
+  await db
+    .get("users")
+    .find({ id: id })
+    .assign({
+      username,
+      name,
+      password,
+      admin
+    })
+    .write();
+  console.log(user, "Edited User");
+};
+
+const createUser = async ({ user, db }) => {
+  await db
+    .get("users")
     .push(user)
-    .write()
-    .then(console.log(user, "Created User"));
+    .write();
+  console.log(user, "Created User");
 };
 
 export default ({ path }) => {
@@ -84,6 +101,7 @@ export default ({ path }) => {
   // TODO Refactor higher order code implimentation.  Should only pass object properties not params.
   return {
     createUser: async user => await createUser({ user, db }),
+    editUser: async user => await editUser({ user, db }),
     deleteUser: async id => await deleteUser({ id, db }),
     getUsers: async () => await getUsers({ db }),
     getUser: async props => await getUser({ ...props, db }),

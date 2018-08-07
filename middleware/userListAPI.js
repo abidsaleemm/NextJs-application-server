@@ -1,4 +1,8 @@
-import { DELETE_USER, CREATE_USER } from "../constants/actionTypes";
+import {
+  DELETE_USER,
+  CREATE_USER,
+  EDIT_USER
+} from "../constants/actionTypes";
 
 const userListAPI = store => next => action => {
   const { type, userId, userData } = action;
@@ -12,6 +16,13 @@ const userListAPI = store => next => action => {
     case CREATE_USER:
       store.dispatch({
         type: "server/createUser",
+        userData
+      });
+      break;
+    case EDIT_USER:
+      console.log("EDIT USER Middleware", userData);
+      store.dispatch({
+        type: "server/editUser",
         userData
       });
       break;

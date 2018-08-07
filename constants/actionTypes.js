@@ -23,7 +23,7 @@ export const VIDEO_RENDER = "VIDEO_RENDER"; // Used for tracking window.
 //Users
 export const DELETE_USER = "DELETE_USER";
 export const CREATE_USER = "CREATE_USER";
-export const EDIT_USER = "EDIT USER";
+export const EDIT_USER = "EDIT_USER";
 export const USER_SET = "USER_SET";
 
 export const ROUTE = "ROUTE";

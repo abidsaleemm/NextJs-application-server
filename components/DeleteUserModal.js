@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import UUID from "uuid-js";
 import { bindActionCreators } from "redux";
-import {
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-  } from "reactstrap";  
-import Wrapper from "../hoc/wrapper";
+import { Button, Modal, ModalHeader, ModalBody } from "reactstrap";
 import * as actions from "../actions";
 
 export class DeleteUserModal extends Component {
@@ -45,7 +38,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
 export default connect(
-mapStateToProps,
-mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(DeleteUserModal);
-

@@ -31,6 +31,10 @@ export default (
           .filter(user => user.id !== userData.id)
           .concat([userData])
       };
+    case CREATE_USER:
+      return {
+        data: state.data.concat([userData])
+      };
     default:
       return state;
   }

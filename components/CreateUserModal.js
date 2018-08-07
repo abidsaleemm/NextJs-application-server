@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import UUID from "uuid-js";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   Button,
   Modal,
@@ -11,6 +13,7 @@ import {
   Label,
   Input
 } from "reactstrap";
+import * as actions from "../actions";
 
 export class CreateUserModal extends Component {
   constructor(props) {
@@ -27,14 +30,15 @@ export class CreateUserModal extends Component {
   };
 
   onSubmit = () => {
+    const { onSubmit, toggle } = this.props;
     const { name, username, password, id } = this.state;
-    this.props.onSubmit({
+    onSubmit({
       name,
       username,
       password,
       id
     });
-    this.props.toggle();
+    toggle();
   };
 
   render() {
@@ -98,4 +102,13 @@ export class CreateUserModal extends Component {
   }
 }
 
-export default CreateUserModal;
+const mapStateToProps = ({ userList }) => ({ userList });
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateUserModal);
+

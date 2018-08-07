@@ -1,6 +1,7 @@
 const IconButton = props => {
+  const { children, ...otherProps } = props;
   return (
-    <div className="IconButton">
+    <div className="IconButton" { ...otherProps } >
       <style jsx>{`
         .IconButton {
           display: flex;
@@ -19,7 +20,7 @@ const IconButton = props => {
           display: block;
         }
       `}</style>
-      {props.children}
+      {children}
     </div>
   );
 };

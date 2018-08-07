@@ -15,6 +15,7 @@ import MediaCardGroup from "../components/MediaCardGroup";
 import MediaCard from "../components/MediaCard";
 import CreateUserModal from "../components/CreateUserModal";
 import EditUserModal from "../components/EditUserModal";
+import DeleteUserModal from "../components/DeleteUserModal";
 
 class Users extends Component {
   static async getInitialProps({
@@ -38,7 +39,8 @@ class Users extends Component {
     this.state = {
       currentUser: {},
       createUserModal: false,
-      editUserModal: false
+      editUserModal: false,
+      deleteUserModal: false
     };
   }
 
@@ -56,6 +58,15 @@ class Users extends Component {
       currentUser: editUserModal ? currentUser : user,
       editUserModal: !editUserModal
     });
+  };
+
+  onDeleteClick = user => {
+    const { deleteUserModal, currentUser } = this.state;
+    this.setState({
+      currentUser: deleteUserModal ? currentUser : user,
+      deleteUserModal: !deleteUserModal
+    });
+    // this.props.deleteUser(value);
   };
 
   render() {
@@ -97,7 +108,7 @@ class Users extends Component {
                 >
                   <EditIcon size="25px" />
                 </IconButton>
-                <IconButton onClick={() => deleteUser(user.id)}>
+                <IconButton onClick={() => this.onDeleteClick(user)}>
                   <DeleteIcon size="25px" />
                 </IconButton>
               </ActionGroup>
@@ -114,6 +125,12 @@ class Users extends Component {
           onSubmit={editUser}
           isOpen={this.state.editUserModal}
           toggle={this.toggleEditUserModal}
+        />
+        <DeleteUserModal
+          user={this.state.currentUser}
+          onSubmit={deleteUser}
+          isOpen={this.state.deleteUserModal}
+          toggle={this.onDeleteClick}
         />
       </div>
     );

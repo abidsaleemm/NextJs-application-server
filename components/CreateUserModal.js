@@ -3,6 +3,7 @@ import UUID from "uuid-js";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
+  Alert,
   Button,
   Modal,
   ModalHeader,
@@ -14,18 +15,36 @@ import {
   Input
 } from "reactstrap";
 import * as actions from "../actions";
+import { isRequired, isEmail } from "../helpers/validate";
 
 export class CreateUserModal extends Component {
   constructor(props) {
     super(props);
     const id = UUID.create().toString();
-    this.state = { name: "", id, username: "", password: "" };
+    this.state = { name: "", id, username: "", password: "" , confirmPassword: "", nameValid: "", emailValid: "", passwordValid: ""};
   }
 
   onFieldChange = fieldName => e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    name === "name" && (this.state.nameValid = isRequired(value));
+    name === "email" && (this.state.emailValid = isEmail(value));
+    this.isPasswordMatched(name, value);
     this.setState({
       [fieldName]: e.target.value
     });
+  };
+
+  isPasswordMatched = (name, value) => {
+    if (name === "password") {
+      if (value === this.state.confirmPassword)
+        this.state.passwordValid = "";
+      else this.state.passwordValid = "Password is not matched";
+    } else if (name === "passwordConfirm"){
+      if (value === this.state.password)
+        this.state.passwordValid = "";
+      else this.state.passwordValid = "Password is not matched";
+    }
   };
 
   onSubmit = () => {
@@ -57,6 +76,9 @@ export class CreateUserModal extends Component {
                 placeholder="John Doe"
                 onChange={this.onFieldChange("name")}
               />
+              <Alert color="danger" isOpen={!!this.state.nameValid}>
+                {this.state.nameValid}
+              </Alert>
             </FormGroup>
             <FormGroup>
               <Label for="email">User Name / Email</Label>
@@ -67,6 +89,9 @@ export class CreateUserModal extends Component {
                 placeholder="yourEmail@email.com"
                 onChange={this.onFieldChange("username")}
               />
+              <Alert color="danger" isOpen={!!this.state.emailValid}>
+                {this.state.emailValid}
+              </Alert>
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
@@ -75,7 +100,15 @@ export class CreateUserModal extends Component {
                 name="password"
                 id="password"
                 placeholder="password"
+                onChange={this.onFieldChange("password")}
+                value={this.state.password}
               />
+              <Alert
+                color="danger"
+                isOpen={!!this.state.passwordValid}
+              >
+                {this.state.passwordValid}
+              </Alert>
             </FormGroup>
             <FormGroup>
               <Label for="passwordComfirm">Confirm Password</Label>
@@ -84,7 +117,8 @@ export class CreateUserModal extends Component {
                 name="passwordConfirm"
                 id="passwordConfirm"
                 placeholder="re-type password"
-                onChange={this.onFieldChange("password")}
+                onChange={this.onFieldChange("confirmPassword")}
+                value={this.state.confirmPassword}
               />
             </FormGroup>
           </Form>

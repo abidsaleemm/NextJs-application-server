@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actions from "../actions";
 import {
   Button,
   Modal,
@@ -11,14 +10,23 @@ import {
   Form,
   FormGroup,
   Label,
+  Alert,
   Input
 } from "reactstrap";
+import * as actions from "../actions";
+import { isRequired, isEmail } from "../helpers/validate";
 
 export class EditUserModal extends Component {
   constructor(props) {
     super(props);
     const { user } = props;
-    this.state = { ...user, confirmPassword: "" };
+    this.state = {
+      ...user,
+      confirmPassword: "",
+      nameValid: "",
+      emailValid: "",
+      passwordValid: ""
+    };
   }
 
   componentWillReceiveProps({ user }) {
@@ -26,9 +34,26 @@ export class EditUserModal extends Component {
   }
 
   onFieldChange = fieldName => e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    name === "name" && (this.state.nameValid = isRequired(value));
+    name === "email" && (this.state.emailValid = isEmail(value));
+    this.isPasswordMatched(name, value);
     this.setState({
       [fieldName]: e.target.value
     });
+  };
+
+  isPasswordMatched = (name, value) => {
+    if (name === "password") {
+      if (value === this.state.confirmPassword)
+        this.state.passwordValid = "";
+      else this.state.passwordValid = "Password is not matched";
+    } else if (name === "passwordConfirm"){
+      if (value === this.state.password)
+        this.state.passwordValid = "";
+      else this.state.passwordValid = "Password is not matched";
+    }
   };
 
   onSubmit = () => {
@@ -80,6 +105,9 @@ export class EditUserModal extends Component {
                 value={this.state.name}
                 onChange={this.onFieldChange("name")}
               />
+              <Alert color="danger" isOpen={!!this.state.nameValid}>
+                {this.state.nameValid}
+              </Alert>
             </FormGroup>
             <FormGroup>
               <Label for="email">User Name / Email</Label>
@@ -91,6 +119,9 @@ export class EditUserModal extends Component {
                 value={this.state.username}
                 onChange={this.onFieldChange("username")}
               />
+              <Alert color="danger" isOpen={!!this.state.emailValid}>
+                {this.state.emailValid}
+              </Alert>
             </FormGroup>
             <FormGroup>
               <Label for="password">Password</Label>
@@ -102,6 +133,12 @@ export class EditUserModal extends Component {
                 value={this.state.password}
                 onChange={this.onFieldChange("password")}
               />
+              <Alert
+                color="danger"
+                isOpen={!!this.state.passwordValid}
+              >
+                {this.state.passwordValid}
+              </Alert>
             </FormGroup>
             {this.renderConfirmPassword()}
           </Form>
@@ -110,7 +147,15 @@ export class EditUserModal extends Component {
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>{" "}
-          <Button color="primary" onClick={this.onSubmit}>
+          <Button
+            color="primary"
+            onClick={this.onSubmit}
+            disabled={
+              !!this.state.nameValid ||
+              !!this.state.emailValid ||
+              !!this.state.passwordValid
+            }
+          >
             Edit User
           </Button>
         </ModalFooter>
@@ -125,8 +170,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(actions, dispatch);
 
 export default connect(
-mapStateToProps,
-mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(EditUserModal);
-
-

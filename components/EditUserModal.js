@@ -36,8 +36,10 @@ export class EditUserModal extends Component {
   onFieldChange = fieldName => e => {
     const name = e.target.name;
     const value = e.target.value;
-    name === "name" && (this.state.nameValid = isRequired(value));
-    name === "email" && (this.state.emailValid = isEmail(value));
+    name === "name" && (this.setState({nameValid: isRequired(value)}));
+    name === "email" && (this.setState({emailValid: isEmail(value)}));
+    name === "password" && (this.setState({passwordValid: isRequired(value)}));
+    name === "passwordConfirm" && (this.setState({passwordValid: isRequired(value)}));
     this.isPasswordMatched(name, value);
     this.setState({
       [fieldName]: e.target.value
@@ -46,24 +48,23 @@ export class EditUserModal extends Component {
 
   isPasswordMatched = (name, value) => {
     if (name === "password") {
-      if (value === this.state.confirmPassword)
-        this.state.passwordValid = "";
-      else this.state.passwordValid = "Password is not matched";
+      if (value !== this.state.confirmPassword)
+        this.setState({passwordValid: "Password is not matched"});
     } else if (name === "passwordConfirm"){
-      if (value === this.state.password)
-        this.state.passwordValid = "";
-      else this.state.passwordValid = "Password is not matched";
+      if (value !== this.state.password)
+        this.setState({passwordValid: "Password is not matched"});
     }
   };
 
   onSubmit = () => {
-    const { name, username, password, id } = this.state;
+    const { name, username, password, role, id } = this.state;
     const { toggle, onSubmit } = this.props;
     onSubmit({
       name,
       username,
       password,
-      id
+      id,
+      role
     });
     toggle();
   };

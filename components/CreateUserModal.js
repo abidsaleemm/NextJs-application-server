@@ -21,43 +21,67 @@ export class CreateUserModal extends Component {
   constructor(props) {
     super(props);
     const id = UUID.create().toString();
-    this.state = { name: "", id, username: "", password: "" , confirmPassword: "", nameValid: "", emailValid: "", passwordValid: ""};
+    this.state = {
+      name: "",
+      id,
+      username: "",
+      password: "",
+      confirmPassword: "",
+      nameValid: "",
+      emailValid: "",
+      passwordValid: ""
+    };
   }
 
   onFieldChange = fieldName => e => {
     const name = e.target.name;
     const value = e.target.value;
-    name === "name" && (this.state.nameValid = isRequired(value));
-    name === "email" && (this.state.emailValid = isEmail(value));
-    this.isPasswordMatched(name, value);
+    this.formValidate(name, value);
     this.setState({
       [fieldName]: e.target.value
     });
   };
 
+  formValidate = (name, value) => {
+    name === "name" &&
+      this.setState({ nameValid: isRequired(value) });
+    name === "email" && this.setState({ emailValid: isEmail(value) });
+    name === "password" &&
+      this.setState({ passwordValid: isRequired(value) });
+    name === "passwordConfirm" &&
+      this.setState({ passwordValid: isRequired(value) });
+    this.isPasswordMatched(name, value);
+    return (
+      !!this.state.nameValid ||
+      !!this.state.emailValid ||
+      !!this.state.passwordValid
+    );
+  };
+
   isPasswordMatched = (name, value) => {
     if (name === "password") {
-      if (value === this.state.confirmPassword)
-        this.state.passwordValid = "";
-      else this.state.passwordValid = "Password is not matched";
-    } else if (name === "passwordConfirm"){
-      if (value === this.state.password)
-        this.state.passwordValid = "";
-      else this.state.passwordValid = "Password is not matched";
+      if (value !== this.state.confirmPassword)
+        this.setState({ passwordValid: "Password is not matched" });
+    } else if (name === "passwordConfirm") {
+      if (value !== this.state.password)
+        this.setState({ passwordValid: "Password is not matched" });
     }
   };
 
   onSubmit = () => {
     const id = UUID.create().toString();
     const { onSubmit, toggle } = this.props;
-    const { name, username, password } = this.state;
-    onSubmit({
-      name,
-      username,
-      password,
-      id
-    });
-    toggle();
+    const { name, username, password, role = "user" } = this.state;
+    if (!!name && !!username && !!password) {
+      onSubmit({
+        name,
+        username,
+        password,
+        id,
+        role
+      });
+      toggle();
+    }
   };
 
   render() {
@@ -127,7 +151,15 @@ export class CreateUserModal extends Component {
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>{" "}
-          <Button color="primary" onClick={this.onSubmit}>
+          <Button
+            color="primary"
+            onClick={this.onSubmit}
+            disabled={
+              !!this.state.nameValid ||
+              !!this.state.emailValid ||
+              !!this.state.passwordValid
+            }
+          >
             Create User
           </Button>
         </ModalFooter>
@@ -145,4 +177,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateUserModal);
-

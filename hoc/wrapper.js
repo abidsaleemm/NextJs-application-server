@@ -57,7 +57,7 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
       const { setUser } = actions;
 
       if (isServer !== undefined) {
-        const { admin = false } = isServer
+        const { role = "user" } = isServer
           ? store.dispatch(setUser(user))
           : store.dispatch({ type: "server/getUser" });
       }

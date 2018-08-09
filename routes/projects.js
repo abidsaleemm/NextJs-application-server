@@ -8,7 +8,7 @@ export default ({ server, app }) => {
 
   server.get("/projects", authMiddleware(), async (req, res) => {
     const {
-      user: { admin = false, id }
+      user: { role = "user", id }
     } = req;
 
     const { projectsSettings } = await getUserProps(id, [
@@ -18,7 +18,7 @@ export default ({ server, app }) => {
     return app.render(req, res, "/projects", {
       ...req.query,
       projectsSettings,
-      projects: await queryProjectsList({ admin })
+      projects: await queryProjectsList({ role })
     });
   });
 };

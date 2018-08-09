@@ -12,11 +12,11 @@ export default ({ redirect = true } = {}) => (req, res, next) => {
   }
 
   const {
-    user: { admin = false },
+    user: { role = "user" },
     path = ""
   } = req;
 
-  if (admin) {
+  if (role === "admin") {
     return next();
   }
 

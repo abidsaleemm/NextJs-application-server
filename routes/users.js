@@ -10,7 +10,7 @@ export default ({ server, app }) => {
 
   server.get("/users", authMiddleware(), async (req, res) => {
     const {
-      user: { admin = false, id }
+      user: { role = "user", id }
     } = req;
     const { projectsSettings } = await getUserProps(id, [
       "projectsSettings"

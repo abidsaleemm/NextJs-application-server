@@ -15,14 +15,24 @@ export const defaultUsers = [
     name: "Warren Goble",
     username: "warren@hack.expert",
     password: "test91a",
-    admin: true
+    role: "admin",
+    teams: [{
+      "id": 1,
+      "title": "Team1",
+      "isTeamAdmin": false
+    }]
   },
   {
     id: 7,
     name: "Test",
     username: "test@test.com",
     password: "test91a",
-    admin: true
+    role: "admin",
+    teams: [{
+      "id": 1,
+      "title": "Team1",
+      "isTeamAdmin": false
+    }]
   }
 ];
 
@@ -70,7 +80,7 @@ const deleteUser = async ({ id, db }) => {
 };
 
 const editUser = async ({ user, db }) => {
-  const { id, username, name, password, admin } = user;
+  const { id, username, name, password, role, teams} = user;
   await db
     .get("users")
     .find({ id: id })
@@ -78,7 +88,8 @@ const editUser = async ({ user, db }) => {
       username,
       name,
       password,
-      admin
+      role,
+      teams
     })
     .write();
   console.log(user, "Edited User");

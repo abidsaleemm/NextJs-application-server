@@ -19,7 +19,7 @@ const getSettingItems = (currentUser, team) => {
   let isSameTeam = false;
   if (currentUser.teams) {
     const currentUserTeam = currentUser.teams.find(
-      item => item.id === team.id
+      item => (item.id === team.id) && (!item.isTeamAdmin)
     );
     isCurrentUserTeamAdmin =
       currentUserTeam && currentUserTeam.isTeamAdmin;
@@ -71,8 +71,8 @@ const renderWithOptions = ( teamSettingOptions, team, keyValue, onOptionSelected
             justify-content: space-between;
             cursor: pointer;
           }
-          div.dropdown {
-            padding-bottom: 10px;
+          .dropdown-toggle {
+            margin-bottom: 10px;
           }
         `}
       </style>

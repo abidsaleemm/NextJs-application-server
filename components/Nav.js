@@ -33,12 +33,6 @@ const RenderAdmin = () => (
     >
       Users
     </div>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/teams" })}
-    >
-      Teams
-    </div>
   </li>
 );
 

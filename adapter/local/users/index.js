@@ -76,7 +76,6 @@ const deleteUser = async ({ id, db }) => {
     .get("users")
     .remove({ id })
     .write();
-  console.log(id, "Deleted User");
 };
 
 const editUser = async ({ user, db }) => {
@@ -92,7 +91,6 @@ const editUser = async ({ user, db }) => {
       teams
     })
     .write();
-  console.log(user, "Edited User");
 };
 
 const createUser = async ({ user, db }) => {
@@ -100,7 +98,6 @@ const createUser = async ({ user, db }) => {
     .get("users")
     .push(user)
     .write();
-  console.log(user, "Created User");
 };
 
 export default ({ path }) => {

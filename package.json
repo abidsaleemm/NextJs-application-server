@@ -78,6 +78,7 @@
     "styled-jsx": "2.2.7",
     "stylis-rule-sheet": "0.0.10",
     "three": "0.94.0",
+    "underscore": "^1.9.1",
     "uuid": "3.3.2",
     "uuid-js": "0.7.5",
     "validator": "^10.5.0",

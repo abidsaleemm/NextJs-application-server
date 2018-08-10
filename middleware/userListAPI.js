@@ -20,7 +20,6 @@ const userListAPI = store => next => action => {
       });
       break;
     case EDIT_USER:
-      console.log("EDIT USER Middleware", userData);
       store.dispatch({
         type: "server/editUser",
         userData

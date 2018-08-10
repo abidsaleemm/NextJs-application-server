@@ -12,7 +12,8 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  InputGroup
 } from "reactstrap";
 import * as actions from "../actions";
 import { isRequired, isEmail } from "../helpers/validate";
@@ -29,8 +30,57 @@ export class CreateUserModal extends Component {
       confirmPassword: "",
       nameValid: "",
       emailValid: "",
-      passwordValid: ""
+      passwordValid: "",
+      isExpanded: false
     };
+
+    this.teams = [
+      {
+        id: "Team1",
+        title: "Team1",
+        isTeamAdmin: false
+      },
+      {
+        id: "Team2",
+        title: "Team2",
+        isTeamAdmin: false
+      },
+      {
+        id: "Team3",
+        title: "Team3",
+        isTeamAdmin: false
+      },
+      {
+        id: "Team4",
+        title: "Team4",
+        isTeamAdmin: false
+      },
+      {
+        id: "Team5",
+        title: "Team5",
+        isTeamAdmin: false
+      }
+    ];
+  }
+
+  handleClick = index => () => {
+    const { teamsWithStatus } = this.state;
+    teamsWithStatus[index].isSelected = !teamsWithStatus[index]
+      .isSelected;
+
+    this.setState({
+      ...this.state,
+      teamsWithStatus
+    });
+  };
+
+  componentWillReceiveProps({ user, teams }) {
+    const teamsWithStatus = this.teams.map(team => ({
+      ...team,
+      isSelected: false
+    }));
+
+    this.setState({ ...this.state,...user, teamsWithStatus, confirmPassword: "" });
   }
 
   onFieldChange = fieldName => e => {
@@ -40,6 +90,15 @@ export class CreateUserModal extends Component {
     this.setState({
       [fieldName]: e.target.value
     });
+    if ( name == "email")
+    {
+      if(this.props.userList.data.filter((user) => (
+        user.username === value
+      )).length >0) 
+        this.setState({isExpanded: false});
+      else
+        this.setState({isExpanded: true});
+    }
   };
 
   formValidate = (name, value) => {
@@ -71,14 +130,24 @@ export class CreateUserModal extends Component {
   onSubmit = () => {
     const id = UUID.create().toString();
     const { onSubmit, toggle } = this.props;
-    const { name, username, password, role = "user" } = this.state;
+    const { name, username, password, role = "user", teamsWithStatus } = this.state;
+    
+    const selectedItems = teamsWithStatus
+    .filter(team => team.isSelected === true)
+    .map(({ id, title, isTeamAdmin }) => ({
+      id,
+      title,
+      isTeamAdmin
+    }));
+
     if (!!name && !!username && !!password) {
       onSubmit({
         name,
         username,
         password,
         id,
-        role
+        role,
+        teams: selectedItems
       });
       toggle();
     }
@@ -86,11 +155,13 @@ export class CreateUserModal extends Component {
 
   render() {
     const { toggle, isOpen } = this.props;
+    const { id, teamsWithStatus } = this.state;
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
         <ModalHeader toggle={toggle}>Create User</ModalHeader>
         <ModalBody>
           <Form>
+            {this.state.isExpanded &&
             <FormGroup>
               <Label for="name">Name</Label>
               <Input
@@ -103,7 +174,7 @@ export class CreateUserModal extends Component {
               <Alert color="danger" isOpen={!!this.state.nameValid}>
                 {this.state.nameValid}
               </Alert>
-            </FormGroup>
+            </FormGroup>}
             <FormGroup>
               <Label for="email">User Name / Email</Label>
               <Input
@@ -117,6 +188,7 @@ export class CreateUserModal extends Component {
                 {this.state.emailValid}
               </Alert>
             </FormGroup>
+            {this.state.isExpanded &&
             <FormGroup>
               <Label for="password">Password</Label>
               <Input
@@ -133,7 +205,8 @@ export class CreateUserModal extends Component {
               >
                 {this.state.passwordValid}
               </Alert>
-            </FormGroup>
+            </FormGroup>}
+            { this.state.isExpanded &&
             <FormGroup>
               <Label for="passwordComfirm">Confirm Password</Label>
               <Input
@@ -144,7 +217,55 @@ export class CreateUserModal extends Component {
                 onChange={this.onFieldChange("confirmPassword")}
                 value={this.state.confirmPassword}
               />
-            </FormGroup>
+            </FormGroup>}
+            { this.state.isExpanded &&
+            <InputGroup>
+              <div>
+                <style jsx>
+                  {`
+                    .toggle-Item {
+                      display: inline-block;
+                      margin: 10px 15px 10px 0;
+                      padding: 5px 15px;
+                      background: white;
+                      border: 1px solid #6c757d;
+                      border-radius: 5px;
+                      text-align: center;
+                      font-size: 16px;
+                      font-weight: 500;
+                    }
+
+                    .toggle-Item:hover {
+                      cursor: pointer;
+                    }
+
+                    .toggle-Item-clicked {
+                      background-color: #6c757d;
+                      color: white;
+                    }
+
+                    .input-group {
+                      border-radius: 10px;
+                      border: 1px solid red;
+                    }
+                  `}
+                </style>
+                {teamsWithStatus &&
+                  teamsWithStatus.map((item, index) => (
+                    <div
+                      key={`addTeamModal_${id}_team_${item.id}`}
+                      className={`toggle-Item ${
+                        item.isSelected
+                          ? "toggle-Item-clicked"
+                          : "toggle-off"
+                      }`}
+                      onClick={this.handleClick(index)}
+                    >
+                      {item.title}
+                    </div>
+                  ))}
+              </div>
+            </InputGroup>}
           </Form>
         </ModalBody>
         <ModalFooter>
@@ -162,6 +283,7 @@ export class CreateUserModal extends Component {
           >
             Create User
           </Button>
+
         </ModalFooter>
       </Modal>
     );

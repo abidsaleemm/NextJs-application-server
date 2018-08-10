@@ -12,7 +12,6 @@ export class ToggleItems extends Component {
       selectedItems: [],
     };
 
-    console.log(props);
   }
 
   handleClick = (index, Item) => () => {

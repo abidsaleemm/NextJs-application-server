@@ -21,6 +21,7 @@ import AddTeamModal from "../components/AddTeamModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
 import ToggleItem from "../components/ToggleItem"; 
+import _ from "underscore";
 import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
 class Users extends Component {
@@ -87,6 +88,13 @@ class Users extends Component {
     this.props.editUser(user);
   };
 
+  isRelated = (user) => {
+    let currentUserAllTeamId = user.teams && user.teams.map( team => team.id);
+    let loginUserAllTeamId = this.props.user.teams && this.props.user.teams.map ( team => team.id);
+    let found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
+    return found;
+  };
+
   updateUserTeam = (user, option, team) => {
     switch (option) {
       case TEAM_ACTION_OPTIONS.REMOVE_FROM_TEAM:
@@ -125,10 +133,10 @@ class Users extends Component {
         <MediaCardHeader>
           <MediaCardIdentity>Name</MediaCardIdentity>
           <MediaCardContent>Email/User Name</MediaCardContent>
-          <MediaCardContent>Role</MediaCardContent>
+          { this.props.user.role === "admin" &&
+          <MediaCardContent>Role</MediaCardContent>}
           <MediaCardContent>Team</MediaCardContent>
-          <MediaCardContent />
-          {this.props.user.role === "admin" && (
+          {(this.props.user.role === "admin" || this.props.user.teams.filter( user => user.isTeamAdmin === true).length) && (
             <ActionGroup>
               <Button
                 onClick={this.toggleCreateUserModal}
@@ -145,8 +153,8 @@ class Users extends Component {
             <MediaCard key={user.id}>
               <MediaCardIdentity>{user.name}</MediaCardIdentity>
               <MediaCardContent>{user.username}</MediaCardContent>
+              { this.props.user.role === "admin" &&
               <MediaCardContent>
-                { this.props.user.role === "admin" ?
                  <DropDownButton
                   keyValue={user.id}
                   items={["admin", "user"]}
@@ -154,10 +162,9 @@ class Users extends Component {
                   onItemSelected={item =>
                     this.onRoleUpdated(user, item)
                   }
-                /> : user.role}
-              </MediaCardContent>
+                />
+              </MediaCardContent>}
               <MediaCardContent>
-
                 { Array.isArray(user.teams) && 
                   user.teams.map((item, index) =>
                   <TeamButton
@@ -169,18 +176,7 @@ class Users extends Component {
                 />
                 )}
               </MediaCardContent>
-              <MediaCardContent>
-               {this.props.user.role === "admin" && (
-                <ActionGroup>
-                  <IconButton
-                    onClick={() => this.addTeamClick(user)}
-                  >
-                    <AddIcon size="25px"/>
-                  </IconButton>
-                </ActionGroup>               
-               )}
-              </MediaCardContent>
-              {this.props.user.role === "admin" && (
+              {(this.props.user.role === "admin" || this.props.user.teams.filter( user => user.isTeamAdmin === true).length) &&  (
                 <ActionGroup>
                   <IconButton
                     onClick={() => this.toggleEditUserModal(user)}
@@ -204,6 +200,7 @@ class Users extends Component {
         />
         <EditUserModal
           user={this.state.currentUser}
+          loginUser={this.props.user}
           onSubmit={editUser}
           isOpen={this.state.editUserModal}
           toggle={this.toggleEditUserModal}

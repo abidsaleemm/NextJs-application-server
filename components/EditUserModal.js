@@ -18,11 +18,7 @@ import * as actions from "../actions";
 import { isRequired, isEmail } from "../helpers/validate";
 
 export class EditUserModal extends Component {
-  static async getInitialProps({
-    store,
-    isServer,
-    query: { users = [] }
-  }) {
+  static async getInitialProps({ store, isServer, query: { users = [] } }) {
     const { payloadUsers } = actions;
 
     if (isServer) {
@@ -71,23 +67,33 @@ export class EditUserModal extends Component {
         isTeamAdmin: false
       }
     ];
-
   }
 
-  componentWillReceiveProps({ user, teams , loginUser}) {
-    let vTeam = (loginUser.role === "admin") ? this.teams : loginUser.teams.filter(_team => _team.isTeamAdmin === true);
+  componentWillReceiveProps({ user, teams, loginUser }) {
+    let vTeam =
+      loginUser.role === "admin"
+        ? this.teams
+        .filter(team => !user.teams.find(selected => selected.id === team.id))
+        .concat(user.teams)
+        : loginUser.teams
+            .filter(_team => _team.isTeamAdmin === true)
+            .map(({ id, title, isTeamAdmin }) => ({ id, title, isTeamAdmin: false }));
     const teamsWithStatus = vTeam.map(team => ({
       ...team,
-      isSelected: Array.isArray(user.teams) && ( user.teams.filter(_team => _team.title === team.title).length > 0), 
+      isSelected: Array.isArray(user.teams) && user.teams.filter(_team => _team.title === team.title).length > 0
     }));
 
-    this.setState({ ...this.state,...user, teamsWithStatus, confirmPassword: "" });
+    this.setState({
+      ...this.state,
+      ...user,
+      teamsWithStatus,
+      confirmPassword: ""
+    });
   }
 
   handleClick = index => () => {
     const { teamsWithStatus } = this.state;
-    teamsWithStatus[index].isSelected = !teamsWithStatus[index]
-      .isSelected;
+    teamsWithStatus[index].isSelected = !teamsWithStatus[index].isSelected;
 
     this.setState({
       ...this.state,
@@ -98,10 +104,10 @@ export class EditUserModal extends Component {
   onFieldChange = fieldName => e => {
     const name = e.target.name;
     const value = e.target.value;
-    name === "name" && (this.setState({nameValid: isRequired(value)}));
-    name === "email" && (this.setState({emailValid: isEmail(value)}));
-    name === "password" && (this.setState({passwordValid: isRequired(value)}));
-    name === "passwordConfirm" && (this.setState({passwordValid: isRequired(value)}));
+    name === "name" && this.setState({ nameValid: isRequired(value) });
+    name === "email" && this.setState({ emailValid: isEmail(value) });
+    name === "password" && this.setState({ passwordValid: isRequired(value) });
+    name === "passwordConfirm" && this.setState({ passwordValid: isRequired(value) });
     this.isPasswordMatched(name, value);
     this.setState({
       [fieldName]: e.target.value
@@ -110,11 +116,9 @@ export class EditUserModal extends Component {
 
   isPasswordMatched = (name, value) => {
     if (name === "password") {
-      if (value !== this.state.confirmPassword)
-        this.setState({passwordValid: "Password is not matched"});
-    } else if (name === "passwordConfirm"){
-      if (value !== this.state.password)
-        this.setState({passwordValid: "Password is not matched"});
+      if (value !== this.state.confirmPassword) this.setState({ passwordValid: "Password is not matched" });
+    } else if (name === "passwordConfirm") {
+      if (value !== this.state.password) this.setState({ passwordValid: "Password is not matched" });
     }
   };
 
@@ -124,28 +128,22 @@ export class EditUserModal extends Component {
 
     let selectedItems;
 
-    if( this.props.loginUser.role === "user" && this.props.loginUser.teams.filter( team => team.isTeamAdmin === true).length > 0)
-    { 
-      selectedItems = teams.map(team => {
-        const selectedItem = teamsWithStatus.find(
-          selected => selected.id === team.id
-        );
-        
-        return selectedItem && selectedItem.isSelected
-          ? (({ isSelected, ...others }) => others)(selectedItem)
-          : team;
-      });
-
-      console.log("selectedItems----",selectedItems);
-    } else  {
-      selectedItems = teamsWithStatus
-      .filter(team => team.isSelected === true)
-      .map(({ id, title, isTeamAdmin }) => ({
+    if (
+      this.props.loginUser.role === "user" &&
+      this.props.loginUser.teams.filter(team => team.isTeamAdmin === true).length > 0
+    ) {
+      selectedItems = teams
+        .filter(team => !teamsWithStatus.find(selected => selected.id === team.id))
+        .concat(teamsWithStatus.filter(selected => selected.isSelected).map(({ isSelected, ...others }) => others));
+      console.log("teamswithstatus------", teamsWithStatus, "selectedItems----", selectedItems, "teams------", teams);
+    } else {
+      selectedItems = teamsWithStatus.filter(team => team.isSelected === true).map(({ id, title, isTeamAdmin }) => ({
         id,
         title,
         isTeamAdmin
       }));
     }
+
     onSubmit({
       name,
       username,
@@ -224,10 +222,7 @@ export class EditUserModal extends Component {
                 value={this.state.password}
                 onChange={this.onFieldChange("password")}
               />
-              <Alert
-                color="danger"
-                isOpen={!!this.state.passwordValid}
-              >
+              <Alert color="danger" isOpen={!!this.state.passwordValid}>
                 {this.state.passwordValid}
               </Alert>
             </FormGroup>
@@ -267,11 +262,7 @@ export class EditUserModal extends Component {
                   teamsWithStatus.map((item, index) => (
                     <div
                       key={`addTeamModal_${id}_team_${item.id}`}
-                      className={`toggle-Item ${
-                        item.isSelected
-                          ? "toggle-Item-clicked"
-                          : "toggle-off"
-                      }`}
+                      className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
                       onClick={this.handleClick(index)}
                     >
                       {item.title}
@@ -288,11 +279,7 @@ export class EditUserModal extends Component {
           <Button
             color="primary"
             onClick={this.onSubmit}
-            disabled={
-              !!this.state.nameValid ||
-              !!this.state.emailValid ||
-              !!this.state.passwordValid
-            }
+            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid}
           >
             Edit User
           </Button>
@@ -304,8 +291,7 @@ export class EditUserModal extends Component {
 
 const mapStateToProps = ({ userList }) => ({ userList });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

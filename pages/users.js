@@ -89,6 +89,8 @@ class Users extends Component {
   };
 
   isRelated = (user) => {
+    if(this.props.user.role === "admin")
+      return true;
     let currentUserAllTeamId = user.teams && user.teams.map( team => team.id);
     let loginUserAllTeamId = this.props.user.teams && this.props.user.teams.map ( team => team.id);
     let found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
@@ -150,6 +152,7 @@ class Users extends Component {
         </MediaCardHeader>
         <MediaCardGroup>
           {data.map(user => (
+            this.isRelated(user) &&
             <MediaCard key={user.id}>
               <MediaCardIdentity>{user.name}</MediaCardIdentity>
               <MediaCardContent>{user.username}</MediaCardContent>

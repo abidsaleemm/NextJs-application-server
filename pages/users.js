@@ -198,6 +198,7 @@ class Users extends Component {
         </MediaCardGroup>
         <CreateUserModal
           onSubmit={createUser}
+          loginUser={this.props.user}
           isOpen={this.state.createUserModal}
           toggle={this.toggleCreateUserModal}
         />

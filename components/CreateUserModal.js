@@ -74,8 +74,17 @@ export class CreateUserModal extends Component {
     });
   };
 
-  componentWillReceiveProps({ user, teams }) {
-    const teamsWithStatus = this.teams.map(team => ({
+  componentWillReceiveProps({ user, teams, loginUser }) {
+    let vTeam =
+    loginUser.role === "admin"
+      ? this.teams
+      .filter(team => !user.teams.find(selected => selected.id === team.id))
+      .concat(user.teams)
+      : loginUser.teams
+          .filter(_team => _team.isTeamAdmin === true)
+          .map(({ id, title, isTeamAdmin }) => ({ id, title, isTeamAdmin: false }));
+
+    const teamsWithStatus = vTeam.map(team => ({
       ...team,
       isSelected: false
     }));

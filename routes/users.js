@@ -20,7 +20,7 @@ export default ({ server, app }) => {
       ...req.query,
       projectsSettings,
       users: await getUsers(),
-      teamList: await getTeam()
+      teams: await getTeam()
     });
   });
 };

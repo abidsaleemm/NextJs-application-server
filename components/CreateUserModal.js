@@ -98,7 +98,7 @@ export class CreateUserModal extends Component {
     const { onSubmit, toggle } = this.props;
     const { name, username, password, role = "user", teamsWithStatus } = this.state;
 
-    const selectedItems = teamWithStatus && teamsWithStatus
+    const selectedItems = teamsWithStatus && teamsWithStatus
       .filter(team => team.isSelected === true)
       .map(({ id, title, isTeamAdmin }) => ({
         id,

@@ -28,6 +28,7 @@ class Users extends Component {
   static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
     const { payloadUsers, payloadTeams } = actions;
 
+    console.log("---users----", users, "----teams---", teams);
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));

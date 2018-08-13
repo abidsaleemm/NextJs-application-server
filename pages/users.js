@@ -153,7 +153,7 @@ class Users extends Component {
           {data.map(
             user =>
               this.isRelated( user, loggedInUser) && (
-                <MediaCard key={user.id}>
+                <MediaCard key={user.id} self={user.id === loggedInUser.id}>
                   <MediaCardIdentity>{user.name}</MediaCardIdentity>
                   <MediaCardContent>{user.username}</MediaCardContent>
                   {loggedInUser.role === "admin" && (

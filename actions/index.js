@@ -55,3 +55,4 @@ export { default as editUser } from "./editUser";
 //Team
 export { default as createTeam } from "./createTeam";
 export { default as getTeam } from "./getTeam";
+export { default as deleteTeams } from "./deleteTeams";

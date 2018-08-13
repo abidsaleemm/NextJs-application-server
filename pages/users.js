@@ -4,8 +4,6 @@ import { bindActionCreators } from "redux";
 import { Button } from "reactstrap";
 import EditIcon from "react-icons/lib/md/edit";
 import DeleteIcon from "react-icons/lib/md/delete";
-import AddIcon from "react-icons/lib/md/add";
-import ReactDOM from "react-dom";
 import Wrapper from "../hoc/wrapper";
 import * as actions from "../actions";
 import MediaCardIdentity from "../components/MediaCardIdentity";
@@ -19,7 +17,7 @@ import CreateUserModal from "../components/CreateUserModal";
 import EditUserModal from "../components/EditUserModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
-import CreateTeamModal from "../components/CreateTeamModal";
+import ManageTeamModal from "../components/ManageTeamModal";
 import _ from "underscore";
 import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
@@ -44,7 +42,7 @@ class Users extends Component {
       createUserModal: false,
       editUserModal: false,
       deleteUserModal: false,
-      createTeamModal: false
+      manageTeamModal: false
     };
   }
 
@@ -55,10 +53,10 @@ class Users extends Component {
     });
   };
 
-  toggleCreateTeamModal = () => {
-    const { createTeamModal } = this.state;
+  toggleManageTeamModal = () => {
+    const { manageTeamModal } = this.state;
     this.setState({
-      createTeamModal: !createTeamModal
+      manageTeamModal: !manageTeamModal
     });
   };
 
@@ -137,8 +135,8 @@ class Users extends Component {
           {loggedInUser.role === "admin" && <MediaCardContent>Role</MediaCardContent>}
           <MediaCardContent>Team</MediaCardContent>
           <ActionGroup shown={loggedInUser.role === "admin"}>
-            <Button onClick={this.toggleCreateTeamModal} color="primary" size="sm">
-              Create Team
+            <Button onClick={this.toggleManageTeamModal} color="primary" size="sm">
+              Manage Teams
             </Button>
           </ActionGroup>
           <ActionGroup
@@ -205,11 +203,11 @@ class Users extends Component {
           isOpen={this.state.createUserModal}
           toggle={this.toggleCreateUserModal}
         />
-        <CreateTeamModal
+        <ManageTeamModal
           onSubmit={createTeam}
           teams={teams}
-          isOpen={this.state.createTeamModal}
-          toggle={this.toggleCreateTeamModal}
+          isOpen={this.state.manageTeamModal}
+          toggle={this.toggleManageTeamModal}
         />
         <EditUserModal
           user={this.state.currentUser}

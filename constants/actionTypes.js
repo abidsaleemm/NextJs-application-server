@@ -32,6 +32,7 @@ export const ROUTE = "ROUTE";
 //Team
 export const CREATE_TEAM = "CREATE_TEAM";
 export const GET_TEAMS = "GET_TEAMS";
+export const DELETE_TEAMS = "DELETE_TEAMS";
 
 // Defaults
 export const DEFAULTS_SET_LIST = "DEFAULTS_SET_LIST";

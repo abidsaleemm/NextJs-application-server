@@ -2,11 +2,12 @@ import {
   DELETE_USER,
   CREATE_USER,
   EDIT_USER,
-  CREATE_TEAM
+  CREATE_TEAM,
+  DELETE_TEAMS
 } from "../constants/actionTypes";
 
 const userListAPI = store => next => action => {
-  const { type, userId, userData, teamData} = action;
+  const { type, userId, userData, teamData, teamIds} = action;
 
   switch (type) {
     case DELETE_USER:
@@ -31,6 +32,12 @@ const userListAPI = store => next => action => {
       store.dispatch({
         type: "server/createTeam",
         teamData
+      });
+      break;
+    case DELETE_TEAMS:
+      store.dispatch({
+        type: "server/deleteTeams",
+        teamIds
       });
       break;
     default:

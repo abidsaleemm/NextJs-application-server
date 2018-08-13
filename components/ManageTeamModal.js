@@ -40,7 +40,8 @@ export class CreateTeamModal extends Component {
     this.setState({
       ...this.state,
       teamsWithStatus,
-      filteredTeamStatus: teamsWithStatus
+      filteredTeamStatus: teamsWithStatus,
+      submitTitle: CREATE_TEAM_STRING
     });
   }
 
@@ -78,7 +79,7 @@ export class CreateTeamModal extends Component {
   onSubmit = () => {
     const id = UUID.create().toString();
     const { onSubmit, toggle } = this.props;
-    const { name } = this.state;
+    const { name, filteredTeamStatus } = this.state;
 
     this.formValidate("name", name);
     
@@ -92,8 +93,12 @@ export class CreateTeamModal extends Component {
         title: name,
         isTeamAdmin: false
       });
-      toggle();
     }
+    else {
+      const teamIds = filteredTeamStatus && filteredTeamStatus.filter(status => status.isSelected).map( team => team.id);
+      this.props.deleteTeams(teamIds);
+    }
+    toggle();
   };
 
   render() {
@@ -102,7 +107,7 @@ export class CreateTeamModal extends Component {
 
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Create Team</ModalHeader>
+        <ModalHeader toggle={toggle}>Manage Teams</ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>

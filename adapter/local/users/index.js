@@ -103,6 +103,13 @@ const getTeams = ({ db_team }) => {
   return db_team.get("teams");
 };
 
+const deleteTeams = async ({ ids, db_team }) => {
+  await db_team
+    .get("teams")
+    .remove((teamId) => (ids.includes(teamId.id)))
+    .write();
+};
+
 export default ({ path }) => {
   const pathUsers = `${path}/users.json`;
   const pathTeams = `${path}/teams.json`;
@@ -125,5 +132,6 @@ export default ({ path }) => {
     setUserProps: async (id = 0, props = []) =>
       await setUserProps({ id, props, db }),
     createTeam: async teamData => await createTeam({ teamData, db_team }),
+    deleteTeams: async ids => await deleteTeams({ ids, db_team }),
   };
 };

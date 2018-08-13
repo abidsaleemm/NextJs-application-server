@@ -33,7 +33,7 @@ export default ({
             })
           }
         >
-          Pending
+          Start
         </DropdownItem>
         <DropdownItem
           onClick={() =>

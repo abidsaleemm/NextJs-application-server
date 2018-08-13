@@ -10,7 +10,7 @@ import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 
 const tableRowColor = status => {
   const options = {
-    Pending: "rgba(255, 0, 0, 0.1)",
+    Start: "rgba(255, 0, 0, 0.1)",
     Segmentation: "rgba(255, 255, 0, 0.1)",
     Injuries: "rgba(255, 255, 0, 0.2)",
     Review: "rgba(0, 255, 0, 0.1)",

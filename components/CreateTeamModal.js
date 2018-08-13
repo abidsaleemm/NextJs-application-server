@@ -16,7 +16,8 @@ import {
   InputGroup
 } from "reactstrap";
 import * as actions from "../actions";
-import { isRequired, isEmail } from "../helpers/validate";
+import { isRequired } from "../helpers/validate";
+import { CREATE_TEAM_STRING, DELETE_TEAM_STRING} from "../constants/strings";
 
 export class CreateTeamModal extends Component {
   constructor(props) {
@@ -25,16 +26,48 @@ export class CreateTeamModal extends Component {
     this.state = {
       name: "",
       id,
-      nameValid: ""
+      nameValid: "",
+      submitTitle: CREATE_TEAM_STRING
     };
   }
+
+  componentWillReceiveProps({ teams }) {
+    const teamsWithStatus = teams.map(team => ({
+      ...team,
+      isSelected: false
+    }));
+
+    this.setState({
+      ...this.state,
+      teamsWithStatus,
+      filteredTeamStatus: teamsWithStatus
+    });
+  }
+
+  handleClick = index => () => {
+    const { filteredTeamStatus } = this.state;
+    filteredTeamStatus[index].isSelected = !filteredTeamStatus[index].isSelected;
+    let submitTitle = (filteredTeamStatus.filter( team => team.isSelected === true).length > 0) 
+        ? DELETE_TEAM_STRING
+        : CREATE_TEAM_STRING;
+    this.setState({
+      ...this.state,
+      filteredTeamStatus,
+      submitTitle
+    });
+  };
 
   onFieldChange = fieldName => e => {
     const name = e.target.name;
     const value = e.target.value;
     this.formValidate(name, value);
+    const { teamsWithStatus } = this.state;
+    const filteredTeamStatus = teamsWithStatus.filter( teamInfo => teamInfo.title.includes(value));
+    if(filteredTeamStatus.filter( teamInfo => teamInfo.isSelected === true).length > 0)
+      this.setState({nameValid: "" });
     this.setState({
-      [fieldName]: e.target.value
+      [fieldName]: e.target.value,
+      filteredTeamStatus 
     });
   };
 
@@ -48,8 +81,12 @@ export class CreateTeamModal extends Component {
     const { name } = this.state;
 
     this.formValidate("name", name);
-
-    if (!this.state.nameValid) {
+    
+    this.setState({
+      nameValid: this.state.submitTitle === DELETE_TEAM_STRING ? "" : this.state.nameValid
+    });
+    
+    if (!this.state.nameValid && this.state.submitTitle === CREATE_TEAM_STRING) {
       onSubmit({
         id,
         title: name,
@@ -61,7 +98,8 @@ export class CreateTeamModal extends Component {
 
   render() {
     const { toggle, isOpen } = this.props;
-    const { id } = this.state;
+    const { id, filteredTeamStatus, submitTitle } = this.state;
+
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
         <ModalHeader toggle={toggle}>Create Team</ModalHeader>
@@ -74,6 +112,49 @@ export class CreateTeamModal extends Component {
                 {this.state.nameValid}
               </Alert>
             </FormGroup>
+            <InputGroup>
+              <div>
+                <style jsx>
+                  {`
+                    .toggle-Item {
+                      display: inline-block;
+                      margin: 10px 15px 10px 0;
+                      padding: 5px 15px;
+                      background: white;
+                      border: 1px solid #6c757d;
+                      border-radius: 5px;
+                      text-align: center;
+                      font-size: 16px;
+                      font-weight: 500;
+                    }
+
+                    .toggle-Item:hover {
+                      cursor: pointer;
+                    }
+
+                    .toggle-Item-clicked {
+                      background-color: #6c757d;
+                      color: white;
+                    }
+
+                    .input-group {
+                      border-radius: 10px;
+                      border: 1px solid red;
+                    }
+                  `}
+                </style>
+                {filteredTeamStatus &&
+                  filteredTeamStatus.map((item, index) => (
+                    <div
+                      key={`editUser${id}_team_${index}`}
+                      className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
+                      onClick={this.handleClick(index)}
+                    >
+                      {item.title}
+                    </div>
+                  ))}
+              </div>
+            </InputGroup>
           </Form>
         </ModalBody>
         <ModalFooter>
@@ -85,7 +166,7 @@ export class CreateTeamModal extends Component {
             onClick={this.onSubmit}
             disabled={!!this.state.nameValid}
           >
-            Create Team
+            {submitTitle}
           </Button>
         </ModalFooter>
       </Modal>

@@ -213,7 +213,7 @@ export class CreateUserModal extends Component {
                   {teamsWithStatus &&
                     teamsWithStatus.map((item, index) => (
                       <div
-                        key={`addTeamModal_${id}_team_${item.id}`}
+                        key={`createTeamModal${id}_team_${item.id}`}
                         className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
                         onClick={this.handleClick(index)}
                       >

@@ -2,8 +2,7 @@ import {
   DELETE_USER,
   CREATE_USER,
   EDIT_USER,
-  CREATE_TEAM,
-  GET_TEAMS
+  CREATE_TEAM
 } from "../constants/actionTypes";
 
 const userListAPI = store => next => action => {
@@ -27,6 +26,7 @@ const userListAPI = store => next => action => {
         type: "server/editUser",
         userData
       });
+      break;
     case CREATE_TEAM:
       store.dispatch({
         type: "server/createTeam",

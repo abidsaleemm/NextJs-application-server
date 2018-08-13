@@ -16,11 +16,7 @@ export const defaultUsers = [
     username: "warren@hack.expert",
     password: "test91a",
     role: "admin",
-    teams: [{
-      "id": 1,
-      "title": "Team1",
-      "isTeamAdmin": false
-    }]
+    teams: []
   },
   {
     id: 7,
@@ -28,11 +24,7 @@ export const defaultUsers = [
     username: "test@test.com",
     password: "test91a",
     role: "admin",
-    teams: [{
-      "id": 1,
-      "title": "Team1",
-      "isTeamAdmin": false
-    }]
+    teams: []
   }
 ];
 
@@ -101,6 +93,7 @@ const createUser = async ({ user, db }) => {
 };
 
 const createTeam = async ({ teamData, db_team }) => {
+  console.log("****teams*****", teamData);
   await db_team
     .get("teams")
     .push(teamData)

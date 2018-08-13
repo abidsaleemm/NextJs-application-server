@@ -84,7 +84,6 @@ export class EditUserModal extends Component {
   onSubmit = () => {
     const { name, username, password, role, id, teams, teamsWithStatus } = this.state;
     const { toggle, onSubmit } = this.props;
-
     let selectedItems;
 
     if (
@@ -134,7 +133,7 @@ export class EditUserModal extends Component {
     ) : null;
   };
   render() {
-    const { toggle, onSubmit, isOpen } = this.props;
+    const { toggle, isOpen } = this.props;
     const { id, teamsWithStatus } = this.state;
 
     return (
@@ -219,7 +218,7 @@ export class EditUserModal extends Component {
                 {teamsWithStatus &&
                   teamsWithStatus.map((item, index) => (
                     <div
-                      key={`addTeamModal_${id}_team_${item.id}`}
+                      key={`editUser${id}_team_${index}`}
                       className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
                       onClick={this.handleClick(index)}
                     >

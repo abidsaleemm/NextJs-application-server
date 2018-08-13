@@ -17,7 +17,6 @@ import MediaCardGroup from "../components/MediaCardGroup";
 import MediaCard from "../components/MediaCard";
 import CreateUserModal from "../components/CreateUserModal";
 import EditUserModal from "../components/EditUserModal";
-import AddTeamModal from "../components/AddTeamModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
 import CreateTeamModal from "../components/CreateTeamModal";
@@ -46,7 +45,6 @@ class Users extends Component {
       createUserModal: false,
       editUserModal: false,
       deleteUserModal: false,
-      addTeamModal: false,
       createTeamModal: false
     };
   }
@@ -81,15 +79,7 @@ class Users extends Component {
     });
     // this.props.deleteUser(value);
   };
-
-  addTeamClick = user => {
-    const { addTeamModal, currentUser } = this.state;
-    this.setState({
-      currentUser: addTeamModal ? currentUser : user,
-      addTeamModal: !addTeamModal
-    });
-  };
-
+  
   onRoleUpdated = (user, item) => {
     user.role = item;
     this.props.editUser(user);
@@ -235,13 +225,6 @@ class Users extends Component {
           onSubmit={deleteUser}
           isOpen={this.state.deleteUserModal}
           toggle={this.onDeleteClick}
-        />
-        <AddTeamModal
-          user={this.state.currentUser}
-          teams={teams}
-          onSubmit={editUser}
-          isOpen={this.state.addTeamModal}
-          toggle={this.addTeamClick}
         />
       </div>
     );

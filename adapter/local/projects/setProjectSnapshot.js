@@ -2,7 +2,6 @@ import fs from "fs";
 import low from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import uuid from "uuid";
-import getProjectSnapshot from "./getProjectSnapshot";
 
 export default async ({ studyUID = "_", payload = {}, path }) => {
   if (path === undefined) return;
@@ -22,22 +21,10 @@ export default async ({ studyUID = "_", payload = {}, path }) => {
 
   const snapShotUID = uuid();
 
-  // Query last snapshot and merge
-  const lastSnapshot =
-    (await getProjectSnapshot({ studyUID, path })) || {};
-  if (!lastSnapshot) {
-    return; // Bailout
-  }
-
-  const mergedPayload = {
-    ...lastSnapshot,
-    ...payload
-  };
-
   // TODO use file adapter
   fs.writeFileSync(
     `${path}/snapshots/${snapShotUID}.json`,
-    JSON.stringify(mergedPayload)
+    JSON.stringify(payload)
   );
 
   db.get("projects")

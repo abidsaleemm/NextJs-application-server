@@ -1,5 +1,5 @@
 import queryProjectsList from "../helpers/queryProjectsList";
-import { payloadProjects, setProjectsSettings } from "../actions";
+import { payloadProjects, payloadProjectsSettings } from "../actions";
 import { adapter } from "../server";
 
 export default async ({ socket, user: { role, id } = {} }) => {
@@ -12,5 +12,5 @@ export default async ({ socket, user: { role, id } = {} }) => {
   ]);
 
   socket.emit("action", payloadProjects({ projects }));
-  socket.emit("action", setProjectsSettings(projectsSettings));
+  socket.emit("action", payloadProjectsSettings(projectsSettings));
 };

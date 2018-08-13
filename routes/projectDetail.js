@@ -12,9 +12,9 @@ export default ({ server, app }) => {
       user: { id, role = "user" } = {},
       query: { studyUID = "", ...query } = {}
     } = req;
-    const { projectDetailSettings } = await getUserProps(id, [
-      "projectDetailSettings"
-    ]);
+
+    const { projectDetailSettings } =
+      (await getUserProps(id, ["projectDetailSettings"])) || {};
 
     return app.render(req, res, "/projectDetail", {
       studyUID,

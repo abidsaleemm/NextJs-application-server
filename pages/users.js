@@ -17,7 +17,6 @@ import MediaCardGroup from "../components/MediaCardGroup";
 import MediaCard from "../components/MediaCard";
 import CreateUserModal from "../components/CreateUserModal";
 import EditUserModal from "../components/EditUserModal";
-import AddTeamModal from "../components/AddTeamModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
 import CreateTeamModal from "../components/CreateTeamModal";
@@ -28,7 +27,6 @@ class Users extends Component {
   static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
     const { payloadUsers, payloadTeams } = actions;
 
-    console.log("---users----", users, "----teams---");
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));
@@ -46,7 +44,6 @@ class Users extends Component {
       createUserModal: false,
       editUserModal: false,
       deleteUserModal: false,
-      addTeamModal: false,
       createTeamModal: false
     };
   }
@@ -82,23 +79,16 @@ class Users extends Component {
     // this.props.deleteUser(value);
   };
 
-  addTeamClick = user => {
-    const { addTeamModal, currentUser } = this.state;
-    this.setState({
-      currentUser: addTeamModal ? currentUser : user,
-      addTeamModal: !addTeamModal
-    });
-  };
-
   onRoleUpdated = (user, item) => {
     user.role = item;
     this.props.editUser(user);
   };
 
-  isRelated = user => {
-    if (this.props.user.role === "admin") return true;
+  isRelated = ( user, loggedInUser)=> {
+    if (loggedInUser.role === "admin") return true;
+    else if (user.role === "admin") return false;
     const currentUserAllTeamId = user.teams && user.teams.map(team => team.id);
-    const loginUserAllTeamId = this.props.user.teams && this.props.user.teams.map(team => team.id);
+    const loginUserAllTeamId = loggedInUser.teams && loggedInUser.teams.map(team => team.id);
     const found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
     return found;
   };
@@ -129,12 +119,10 @@ class Users extends Component {
       createUser,
       createTeam,
       editUser,
-      user,
+      user: loggedInUser,
       userList: { data, fetching },
       teamList: { data: teams }
     } = this.props;
-
-    console.log("user", user);
 
     return (
       <div className="root">
@@ -146,16 +134,16 @@ class Users extends Component {
         <MediaCardHeader>
           <MediaCardIdentity>Name</MediaCardIdentity>
           <MediaCardContent>Email/User Name</MediaCardContent>
-          {this.props.user.role === "admin" && <MediaCardContent>Role</MediaCardContent>}
+          {loggedInUser.role === "admin" && <MediaCardContent>Role</MediaCardContent>}
           <MediaCardContent>Team</MediaCardContent>
-          <ActionGroup shown={this.props.user.role === "admin"}>
+          <ActionGroup shown={loggedInUser.role === "admin"}>
             <Button onClick={this.toggleCreateTeamModal} color="primary" size="sm">
               Create Team
             </Button>
           </ActionGroup>
           <ActionGroup
             shown={
-              this.props.user.role === "admin" || this.props.user.teams.filter(user => user.isTeamAdmin === true).length
+              loggedInUser.role === "admin" || loggedInUser.teams.filter(user => user.isTeamAdmin === true).length
             }
           >
             <Button onClick={this.toggleCreateUserModal} color="primary" size="sm">
@@ -166,11 +154,11 @@ class Users extends Component {
         <MediaCardGroup>
           {data.map(
             user =>
-              this.isRelated(user) && (
+              this.isRelated( user, loggedInUser) && (
                 <MediaCard key={user.id}>
                   <MediaCardIdentity>{user.name}</MediaCardIdentity>
                   <MediaCardContent>{user.username}</MediaCardContent>
-                  {this.props.user.role === "admin" && (
+                  {loggedInUser.role === "admin" && (
                     <MediaCardContent>
                       <DropDownButton
                         keyValue={user.id}
@@ -186,7 +174,7 @@ class Users extends Component {
                         <TeamButton
                           key={"dropdown" + user.id + "item" + index}
                           keyValue={"team" + user.id + "item" + index}
-                          currentUser={this.props.user}
+                          currentUser={loggedInUser}
                           team={item}
                           onOptionSelected={(option, team) => this.updateUserTeam(user, option, team)}
                         />
@@ -194,8 +182,9 @@ class Users extends Component {
                   </MediaCardContent>
                   <ActionGroup
                     shown={
-                      this.props.user.role === "admin" ||
-                      this.props.user.teams.filter(user => user.isTeamAdmin === true).length
+                      loggedInUser.role === "admin" ||
+                      loggedInUser.teams.filter(user => user.isTeamAdmin === true).length ||
+                      user.id === loggedInUser.id
                     }
                   >
                     <IconButton onClick={() => this.toggleEditUserModal(user)}>
@@ -212,7 +201,7 @@ class Users extends Component {
         <CreateUserModal
           onSubmit={createUser}
           teams={teams}
-          loginUser={this.props.user}
+          loginUser={loggedInUser}
           isOpen={this.state.createUserModal}
           toggle={this.toggleCreateUserModal}
         />
@@ -225,7 +214,7 @@ class Users extends Component {
         <EditUserModal
           user={this.state.currentUser}
           teams={teams}
-          loginUser={this.props.user}
+          loginUser={loggedInUser}
           onSubmit={editUser}
           isOpen={this.state.editUserModal}
           toggle={this.toggleEditUserModal}
@@ -235,13 +224,6 @@ class Users extends Component {
           onSubmit={deleteUser}
           isOpen={this.state.deleteUserModal}
           toggle={this.onDeleteClick}
-        />
-        <AddTeamModal
-          user={this.state.currentUser}
-          teams={teams}
-          onSubmit={editUser}
-          isOpen={this.state.addTeamModal}
-          toggle={this.addTeamClick}
         />
       </div>
     );

@@ -31,6 +31,7 @@ export class CreateUserModal extends Component {
       nameValid: "",
       emailValid: "",
       passwordValid: "",
+      teamValid: "",
       isExpanded: false
     };
 
@@ -40,9 +41,13 @@ export class CreateUserModal extends Component {
     const { teamsWithStatus } = this.state;
     teamsWithStatus[index].isSelected = !teamsWithStatus[index].isSelected;
 
+    let tempTeamValid;
+    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+
     this.setState({
       ...this.state,
-      teamsWithStatus
+      teamsWithStatus,
+      teamValid: tempTeamValid
     });
   };
 
@@ -105,8 +110,12 @@ export class CreateUserModal extends Component {
         title,
         isTeamAdmin
       }));
+    
+    let tempTeamValid;
+    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+    this.setState({ teamValid: tempTeamValid });
 
-    if (!!name && !!username && !!password) {
+    if (!!name && !!username && !!password && !tempTeamValid) {
       onSubmit({
         name,
         username,
@@ -176,6 +185,9 @@ export class CreateUserModal extends Component {
                   onChange={this.onFieldChange("confirmPassword")}
                   value={this.state.confirmPassword}
                 />
+                <Alert color="danger" isOpen={!!this.state.teamValid}>
+                  {this.state.teamValid}
+                </Alert>
               </FormGroup>
             )}
             {this.state.isExpanded && (
@@ -213,7 +225,7 @@ export class CreateUserModal extends Component {
                   {teamsWithStatus &&
                     teamsWithStatus.map((item, index) => (
                       <div
-                        key={`addTeamModal_${id}_team_${item.id}`}
+                        key={`createTeamModal${id}_team_${item.id}`}
                         className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
                         onClick={this.handleClick(index)}
                       >
@@ -232,7 +244,7 @@ export class CreateUserModal extends Component {
           <Button
             color="primary"
             onClick={this.onSubmit}
-            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid}
+            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid || !!this.state.teamValid}
           >
             Create User
           </Button>

@@ -306,9 +306,15 @@ const ProjectDetails = class extends Component {
                     }
                   : v
             )}
-          toggle={() => {
+          onToggle={() => {
             this.setState({
               modalProjectsList: !modalProjectsList
+            });
+          }}
+          onDefault={() => {
+            setProjectProps({ studyUID, defaultStudyUID: "" });
+            this.setState({
+              modalProjectsList: false
             });
           }}
           isOpen={modalProjectsList}

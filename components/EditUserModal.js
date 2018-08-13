@@ -26,7 +26,8 @@ export class EditUserModal extends Component {
       confirmPassword: "",
       nameValid: "",
       emailValid: "",
-      passwordValid: ""
+      passwordValid: "",
+      teamValid: ""
     };
   }
 
@@ -54,9 +55,13 @@ export class EditUserModal extends Component {
     const { teamsWithStatus } = this.state;
     teamsWithStatus[index].isSelected = !teamsWithStatus[index].isSelected;
 
+    let tempTeamValid;
+    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+
     this.setState({
       ...this.state,
-      teamsWithStatus
+      teamsWithStatus,
+      teamValid: tempTeamValid
     });
   };
 
@@ -84,7 +89,6 @@ export class EditUserModal extends Component {
   onSubmit = () => {
     const { name, username, password, role, id, teams, teamsWithStatus } = this.state;
     const { toggle, onSubmit } = this.props;
-
     let selectedItems;
 
     if (
@@ -101,6 +105,11 @@ export class EditUserModal extends Component {
         isTeamAdmin
       }));
     }
+
+    let tempTeamValid;
+    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+    this.setState({ teamValid: tempTeamValid });
+
 
     onSubmit({
       name,
@@ -134,7 +143,7 @@ export class EditUserModal extends Component {
     ) : null;
   };
   render() {
-    const { toggle, onSubmit, isOpen } = this.props;
+    const { toggle, isOpen } = this.props;
     const { id, teamsWithStatus } = this.state;
 
     return (
@@ -219,7 +228,7 @@ export class EditUserModal extends Component {
                 {teamsWithStatus &&
                   teamsWithStatus.map((item, index) => (
                     <div
-                      key={`addTeamModal_${id}_team_${item.id}`}
+                      key={`editUser${id}_team_${index}`}
                       className={`toggle-Item ${item.isSelected ? "toggle-Item-clicked" : "toggle-off"}`}
                       onClick={this.handleClick(index)}
                     >
@@ -228,6 +237,9 @@ export class EditUserModal extends Component {
                   ))}
               </div>
             </InputGroup>
+            <Alert color="danger" isOpen={!!this.state.teamValid}>
+              {this.state.teamValid}
+            </Alert>
           </Form>
         </ModalBody>
         <ModalFooter>
@@ -237,7 +249,7 @@ export class EditUserModal extends Component {
           <Button
             color="primary"
             onClick={this.onSubmit}
-            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid}
+            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid || !!this.state.teamValid}
           >
             Edit User
           </Button>

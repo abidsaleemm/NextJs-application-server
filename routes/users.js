@@ -12,7 +12,6 @@ export default ({ server, app }) => {
     } = req;
     const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
 
-    console.log("user", user);
     return app.render(req, res, "/users", {
       ...req.query,
       projectsSettings,

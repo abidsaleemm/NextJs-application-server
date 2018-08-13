@@ -15,6 +15,16 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           onClick={() =>
             setProjectProps({
               studyUID,
+              status: "None"
+            })
+          }
+        >
+          None
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectProps({
+              studyUID,
               status: "Pending"
             })
           }

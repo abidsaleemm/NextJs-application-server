@@ -16,11 +16,7 @@ export const defaultUsers = [
     username: "warren@hack.expert",
     password: "test91a",
     role: "admin",
-    teams: [{
-      "id": 1,
-      "title": "Team1",
-      "isTeamAdmin": false
-    }]
+    teams: []
   },
   {
     id: 7,
@@ -28,11 +24,7 @@ export const defaultUsers = [
     username: "test@test.com",
     password: "test91a",
     role: "admin",
-    teams: [{
-      "id": 1,
-      "title": "Team1",
-      "isTeamAdmin": false
-    }]
+    teams: []
   }
 ];
 

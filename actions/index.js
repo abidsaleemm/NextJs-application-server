@@ -3,6 +3,9 @@ export {
   default as payloadProjectDetail
 } from "./payloadProjectDetail";
 export { default as payloadUsers } from "./payloadUsers";
+export {
+  default as payloadProjectsSettings
+} from "./payloadProjectsSettings";
 export { default as payloadTeams } from "./payloadTeams";
 
 export { default as setProjectProps } from "./setProjectProps";

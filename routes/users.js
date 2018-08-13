@@ -5,7 +5,7 @@ import { adapter } from "../server";
 
 export default ({ server, app }) => {
   const {
-    users: { getUsers = () => {}, getUserProps = () => {} } = {}
+    users: { getUsers = () => {}, getTeam = () => {}, getUserProps = () => {} } = {}
   } = adapter;
 
   server.get("/users", authMiddleware(), async (req, res) => {
@@ -19,7 +19,8 @@ export default ({ server, app }) => {
     return app.render(req, res, "/users", {
       ...req.query,
       projectsSettings,
-      users: await getUsers()
+      users: await getUsers(),
+      tList: await getTeam()
     });
   });
 };

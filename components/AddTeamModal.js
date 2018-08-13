@@ -21,34 +21,6 @@ export class AddTeamModal extends Component {
     super(props);
     const { user } = props;
 
-    this.teams = [
-      {
-        id: "Team1",
-        title: "Team1",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team2",
-        title: "Team2",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team3",
-        title: "Team3",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team4",
-        title: "Team4",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team5",
-        title: "Team5",
-        isTeamAdmin: false
-      }
-    ];
-
     this.state = {
       ...user
     };
@@ -96,12 +68,11 @@ export class AddTeamModal extends Component {
 
   componentWillReceiveProps({ user, teams }) {
     // todo: this.teams should be replaced with props.teams
-    const teamsWithStatus = this.teams.map(team => ({
+    const teamsWithStatus = teams && teams.map(team => ({
         ...team,
         isSelected:
         Array.isArray(user.teams) && (user.teams.filter(_team => _team.title === team.title).length > 0), 
     }));
-    console.log("teams",this.teams,"------",teamsWithStatus,"-----", user);
 
     this.setState({
       ...this.state,

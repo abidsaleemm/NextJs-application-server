@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 import EditIcon from "react-icons/lib/md/edit";
 import DeleteIcon from "react-icons/lib/md/delete";
 import AddIcon from "react-icons/lib/md/add";
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import Wrapper from "../hoc/wrapper";
 import * as actions from "../actions";
 import MediaCardIdentity from "../components/MediaCardIdentity";
@@ -20,16 +20,12 @@ import EditUserModal from "../components/EditUserModal";
 import AddTeamModal from "../components/AddTeamModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
-import ToggleItem from "../components/ToggleItem"; 
+import CreateTeamModal from "../components/CreateTeamModal";
 import _ from "underscore";
 import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
 class Users extends Component {
-  static async getInitialProps({
-    store,
-    isServer,
-    query: { users = [] }
-  }) {
+  static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
     const { payloadUsers } = actions;
 
     if (isServer) {
@@ -47,7 +43,8 @@ class Users extends Component {
       createUserModal: false,
       editUserModal: false,
       deleteUserModal: false,
-      addTeamModal: false
+      addTeamModal: false,
+      createTeamModal: false
     };
   }
 
@@ -55,6 +52,13 @@ class Users extends Component {
     const { createUserModal } = this.state;
     this.setState({
       createUserModal: !createUserModal
+    });
+  };
+
+  toggleCreateTeamModal = () => {
+    const { createTeamModal } = this.state;
+    this.setState({
+      createTeamModal: !createTeamModal
     });
   };
 
@@ -76,6 +80,7 @@ class Users extends Component {
   };
 
   addTeamClick = user => {
+    console.log("-----------------------", teamList);
     const { addTeamModal, currentUser } = this.state;
     this.setState({
       currentUser: addTeamModal ? currentUser : user,
@@ -88,12 +93,11 @@ class Users extends Component {
     this.props.editUser(user);
   };
 
-  isRelated = (user) => {
-    if(this.props.user.role === "admin")
-      return true;
-    let currentUserAllTeamId = user.teams && user.teams.map( team => team.id);
-    let loginUserAllTeamId = this.props.user.teams && this.props.user.teams.map ( team => team.id);
-    let found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
+  isRelated = user => {
+    if (this.props.user.role === "admin") return true;
+    const currentUserAllTeamId = user.teams && user.teams.map(team => team.id);
+    const loginUserAllTeamId = this.props.user.teams && this.props.user.teams.map(team => team.id);
+    const found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
     return found;
   };
 
@@ -121,8 +125,10 @@ class Users extends Component {
     const {
       deleteUser,
       createUser,
+      createTeam,
       editUser,
-      userList: { data, fetching }
+      userList: { data, fetching },
+      teamList: { teams }
     } = this.props;
 
     return (
@@ -135,75 +141,84 @@ class Users extends Component {
         <MediaCardHeader>
           <MediaCardIdentity>Name</MediaCardIdentity>
           <MediaCardContent>Email/User Name</MediaCardContent>
-          { this.props.user.role === "admin" &&
-          <MediaCardContent>Role</MediaCardContent>}
+          {this.props.user.role === "admin" && <MediaCardContent>Role</MediaCardContent>}
           <MediaCardContent>Team</MediaCardContent>
-          {(this.props.user.role === "admin" || this.props.user.teams.filter( user => user.isTeamAdmin === true).length) && (
-            <ActionGroup>
-              <Button
-                onClick={this.toggleCreateUserModal}
-                color="primary"
-                size="sm"
-              >
-                Create User
-              </Button>
-            </ActionGroup>
-          )}
+          <ActionGroup shown={this.props.user.role === "admin"}>
+            <Button onClick={this.toggleCreateTeamModal} color="primary" size="sm">
+              Create Team
+            </Button>
+          </ActionGroup>
+          <ActionGroup
+            shown={
+              this.props.user.role === "admin" || this.props.user.teams.filter(user => user.isTeamAdmin === true).length
+            }
+          >
+            <Button onClick={this.toggleCreateUserModal} color="primary" size="sm">
+              Create User
+            </Button>
+          </ActionGroup>
         </MediaCardHeader>
         <MediaCardGroup>
-          {data.map(user => (
-            this.isRelated(user) &&
-            <MediaCard key={user.id}>
-              <MediaCardIdentity>{user.name}</MediaCardIdentity>
-              <MediaCardContent>{user.username}</MediaCardContent>
-              { this.props.user.role === "admin" &&
-              <MediaCardContent>
-                 <DropDownButton
-                  keyValue={user.id}
-                  items={["admin", "user"]}
-                  defaultItem={user.role}
-                  onItemSelected={item =>
-                    this.onRoleUpdated(user, item)
-                  }
-                />
-              </MediaCardContent>}
-              <MediaCardContent>
-                { Array.isArray(user.teams) && 
-                  user.teams.map((item, index) =>
-                  <TeamButton
-                  key={'dropdown' + user.id + 'item' + index}
-                  keyValue={'team' + user.id + 'item' + index}
-                  currentUser={this.props.user}
-                  team={item}
-                  onOptionSelected={(option, team) => this.updateUserTeam(user, option, team)}
-                />
-                )}
-              </MediaCardContent>
-              {(this.props.user.role === "admin" || this.props.user.teams.filter( user => user.isTeamAdmin === true).length) &&  (
-                <ActionGroup>
-                  <IconButton
-                    onClick={() => this.toggleEditUserModal(user)}
+          {data.map(
+            user =>
+              this.isRelated(user) && (
+                <MediaCard key={user.id}>
+                  <MediaCardIdentity>{user.name}</MediaCardIdentity>
+                  <MediaCardContent>{user.username}</MediaCardContent>
+                  {this.props.user.role === "admin" && (
+                    <MediaCardContent>
+                      <DropDownButton
+                        keyValue={user.id}
+                        items={["admin", "user"]}
+                        defaultItem={user.role}
+                        onItemSelected={item => this.onRoleUpdated(user, item)}
+                      />
+                    </MediaCardContent>
+                  )}
+                  <MediaCardContent>
+                    {Array.isArray(user.teams) &&
+                      user.teams.map((item, index) => (
+                        <TeamButton
+                          key={"dropdown" + user.id + "item" + index}
+                          keyValue={"team" + user.id + "item" + index}
+                          currentUser={this.props.user}
+                          team={item}
+                          onOptionSelected={(option, team) => this.updateUserTeam(user, option, team)}
+                        />
+                      ))}
+                  </MediaCardContent>
+                  <ActionGroup
+                    shown={
+                      this.props.user.role === "admin" ||
+                      this.props.user.teams.filter(user => user.isTeamAdmin === true).length
+                    }
                   >
-                    <EditIcon size="25px" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => this.onDeleteClick(user)}
-                  >
-                    <DeleteIcon size="25px" />
-                  </IconButton>
-                </ActionGroup>
-              )}
-            </MediaCard>
-          ))}
+                    <IconButton onClick={() => this.toggleEditUserModal(user)}>
+                      <EditIcon size="25px" />
+                    </IconButton>
+                    <IconButton onClick={() => this.onDeleteClick(user)}>
+                      <DeleteIcon size="25px" />
+                    </IconButton>
+                  </ActionGroup>
+                </MediaCard>
+              )
+          )}
         </MediaCardGroup>
         <CreateUserModal
           onSubmit={createUser}
+          teams={teams}
           loginUser={this.props.user}
           isOpen={this.state.createUserModal}
           toggle={this.toggleCreateUserModal}
         />
+        <CreateTeamModal
+          onSubmit={createTeam}
+          isOpen={this.state.createTeamModal}
+          toggle={this.toggleCreateTeamModal}
+        />
         <EditUserModal
           user={this.state.currentUser}
+          teams={teams}
           loginUser={this.props.user}
           onSubmit={editUser}
           isOpen={this.state.editUserModal}
@@ -217,6 +232,7 @@ class Users extends Component {
         />
         <AddTeamModal
           user={this.state.currentUser}
+          teams={teams}
           onSubmit={editUser}
           isOpen={this.state.addTeamModal}
           toggle={this.addTeamClick}
@@ -226,10 +242,9 @@ class Users extends Component {
   }
 }
 
-const mapStateToProps = ({ userList }) => ({ userList });
+const mapStateToProps = ({ userList, teamList }) => ({ userList, teamList });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

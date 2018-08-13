@@ -5,6 +5,7 @@ export { default as pageUsers } from "./pageUsers";
 export { default as getUser } from "./getUser";
 export { default as deleteUser } from "./deleteUser";
 export { default as createUser } from "./createUser";
+export { default as createTeam } from "./createTeam";
 export { default as editUser } from "./editUser";
 export { default as uploadDel } from "./uploadDel";
 export { default as uploadPut } from "./uploadPut";

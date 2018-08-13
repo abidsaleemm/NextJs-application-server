@@ -1,6 +1,7 @@
 export const PAYLOAD_PROJECTS = "PAYLOAD_PROJECTS";
 export const PAYLOAD_PROJECTDETAIL = "PAYLOAD_PROJECTDETAIL";
 export const PAYLOAD_USERS = "PAYLOAD_USERS";
+export const PAYLOAD_TEAMS = "PAYLOAD_TEAMS";
 
 // Portal
 export const PORTAL_UPDATE_STUDY = "PORTAL_UPDATE_STUDY";
@@ -27,6 +28,10 @@ export const EDIT_USER = "EDIT_USER";
 export const USER_SET = "USER_SET";
 
 export const ROUTE = "ROUTE";
+
+//Team
+export const CREATE_TEAM = "CREATE_TEAM";
+export const GET_TEAMS = "GET_TEAMS";
 
 // Defaults
 export const DEFAULTS_SET_LIST = "DEFAULTS_SET_LIST";

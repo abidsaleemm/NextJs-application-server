@@ -76,6 +76,8 @@ export default ({ tableAdapter }) => {
     getUserProps: async (id = 0, props = []) =>
       await getUserProps({ id, props, tableName, tableAdapter }),
     setUserProps: async (id = 0, props = []) =>
-      await setUserProps({ id, props, tableName, tableAdapter })
+      await setUserProps({ id, props, tableName, tableAdapter }),
+    createTeam: async team =>
+      await createTeam({ team, tableName, tableAdapter }),
   };
 };

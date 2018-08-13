@@ -100,12 +100,26 @@ const createUser = async ({ user, db }) => {
     .write();
 };
 
+const createTeam = async ({ teamData, db_team }) => {
+  await db_team
+    .get("teams")
+    .push(teamData)
+    .write();
+}
+
+const getTeams = ({ db_team }) => {
+  return db_team.get("teams");
+};
+
 export default ({ path }) => {
   const pathUsers = `${path}/users.json`;
+  const pathTeams = `${path}/teams.json`;
 
   const db = low(new FileSync(pathUsers));
   db.defaults({ users: defaultUsers }).write();
 
+  const db_team = low(new FileSync(pathTeams));
+  db_team.defaults({ teams: [] }).write();
   // TODO Refactor higher order code implimentation.  Should only pass object properties not params.
   return {
     createUser: async user => await createUser({ user, db }),
@@ -113,9 +127,11 @@ export default ({ path }) => {
     deleteUser: async id => await deleteUser({ id, db }),
     getUsers: async () => await getUsers({ db }),
     getUser: async props => await getUser({ ...props, db }),
+    getTeams: async () => await getTeams({db_team}),
     getUserProps: async (id = 0, props = []) =>
       await getUserProps({ id, props, db }),
     setUserProps: async (id = 0, props = []) =>
-      await setUserProps({ id, props, db })
+      await setUserProps({ id, props, db }),
+    createTeam: async teamData => await createTeam({ teamData, db_team }),
   };
 };

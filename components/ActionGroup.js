@@ -1,6 +1,6 @@
 const ActionGroup = props => {
   return (
-    <div className="ActionGroup">
+    <div className={props.shown ? "ActionGroup" : "ActionGroup Hidden"}>
       <style jsx>{`
         .ActionGroup {
           display: flex;
@@ -10,6 +10,9 @@ const ActionGroup = props => {
         }
         .ActionGroup *:last-child {
           margin-right: 0;
+        }
+        .Hidden {
+          display: none;
         }
       `}</style>
       {props.children}

@@ -18,17 +18,6 @@ import * as actions from "../actions";
 import { isRequired, isEmail } from "../helpers/validate";
 
 export class EditUserModal extends Component {
-  static async getInitialProps({ store, isServer, query: { users = [] } }) {
-    const { payloadUsers } = actions;
-
-    if (isServer) {
-      //TODO Should we wrap these in a single action?
-      store.dispatch(payloadUsers({ data: users }));
-      return;
-    }
-    store.dispatch({ type: "server/pageUsers" });
-  }
-
   constructor(props) {
     super(props);
     const { user } = props;
@@ -39,46 +28,16 @@ export class EditUserModal extends Component {
       emailValid: "",
       passwordValid: ""
     };
-
-    this.teams = [
-      {
-        id: "Team1",
-        title: "Team1",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team2",
-        title: "Team2",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team3",
-        title: "Team3",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team4",
-        title: "Team4",
-        isTeamAdmin: false
-      },
-      {
-        id: "Team5",
-        title: "Team5",
-        isTeamAdmin: false
-      }
-    ];
   }
 
   componentWillReceiveProps({ user, teams, loginUser }) {
     let vTeam =
-      loginUser.role === "admin"
-        ? this.teams
-        .filter(team => !user.teams.find(selected => selected.id === team.id))
-        .concat(user.teams)
+      (loginUser.role === "admin"
+        ? teams && teams.filter(team => user.teams && !user.teams.find(selected => selected.id === team.id)).concat(user.teams)
         : loginUser.teams
             .filter(_team => _team.isTeamAdmin === true)
-            .map(({ id, title, isTeamAdmin }) => ({ id, title, isTeamAdmin: false }));
-    const teamsWithStatus = vTeam.map(team => ({
+            .map(({ id, title, isTeamAdmin }) => ({ id, title, isTeamAdmin: false })));
+    const teamsWithStatus = vTeam && vTeam.map(team => ({
       ...team,
       isSelected: Array.isArray(user.teams) && user.teams.filter(_team => _team.title === team.title).length > 0
     }));
@@ -135,7 +94,6 @@ export class EditUserModal extends Component {
       selectedItems = teams
         .filter(team => !teamsWithStatus.find(selected => selected.id === team.id))
         .concat(teamsWithStatus.filter(selected => selected.isSelected).map(({ isSelected, ...others }) => others));
-      console.log("teamswithstatus------", teamsWithStatus, "selectedItems----", selectedItems, "teams------", teams);
     } else {
       selectedItems = teamsWithStatus.filter(team => team.isSelected === true).map(({ id, title, isTeamAdmin }) => ({
         id,

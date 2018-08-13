@@ -28,13 +28,14 @@ class Users extends Component {
   static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
     const { payloadUsers, payloadTeams } = actions;
 
-    console.log("---users----", users, "----teams---", teams);
+    console.log("---users----", users, "----teams---");
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));
       store.dispatch(payloadTeams({ data: teams }));
       return;
     }
+
     store.dispatch({ type: "server/pageUsers" });
   }
 
@@ -128,9 +129,12 @@ class Users extends Component {
       createUser,
       createTeam,
       editUser,
+      user,
       userList: { data, fetching },
       teamList: { data: teams }
     } = this.props;
+
+    console.log("user", user);
 
     return (
       <div className="root">
@@ -244,7 +248,7 @@ class Users extends Component {
   }
 }
 
-const mapStateToProps = ({ userList, teamList }) => ({ userList, teamList });
+const mapStateToProps = ({ user, userList, teamList }) => ({ user, userList, teamList });
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

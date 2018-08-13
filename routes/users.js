@@ -4,18 +4,15 @@ import authMiddleware from "../auth/middleware";
 import { adapter } from "../server";
 
 export default ({ server, app }) => {
-  const {
-    users: { getUsers = () => {}, getTeam = () => {}, getUserProps = () => {} } = {}
-  } = adapter;
+  const { users: { getUsers = () => {}, getTeam = () => {}, getUserProps = () => {} } = {} } = adapter;
 
   server.get("/users", authMiddleware(), async (req, res) => {
     const {
       user: { role = "user", id }
     } = req;
-    const { projectsSettings } = await getUserProps(id, [
-      "projectsSettings"
-    ]);
+    const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
 
+    console.log("user", user);
     return app.render(req, res, "/users", {
       ...req.query,
       projectsSettings,

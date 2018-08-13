@@ -10,7 +10,7 @@ import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 
 const tableRowColor = status => {
   const options = {
-    Pending: "rgba(255, 0, 0, 0.1)",
+    Start: "rgba(255, 0, 0, 0.1)",
     Segmentation: "rgba(255, 255, 0, 0.1)",
     Injuries: "rgba(255, 255, 0, 0.2)",
     Review: "rgba(0, 255, 0, 0.1)",
@@ -25,7 +25,6 @@ const tableRowColor = status => {
 export default props => {
   const {
     projects = [],
-    createProject = () => {},
     handleUpload = () => {},
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
@@ -120,7 +119,8 @@ export default props => {
             <DropDownRenderOptions studyUID={studyUID} />
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
-                Encoding ({Math.floor(
+                Encoding (
+                {Math.floor(
                   (new Date() - new Date(encoding)) / 1000 / 60
                 )}{" "}
                 min. elapsed)

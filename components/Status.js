@@ -1,7 +1,11 @@
 import React from "react";
 import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 
-export default ({ status = "None", studyUID, setProjectProps = () => {} }) => {
+export default ({
+  status = "None",
+  studyUID,
+  setProjectProps = () => {}
+}) => {
   return (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>
@@ -24,7 +28,7 @@ export default ({ status = "None", studyUID, setProjectProps = () => {} }) => {
             })
           }
         >
-          Pending
+          Start
         </DropdownItem>
         <DropdownItem
           onClick={() =>

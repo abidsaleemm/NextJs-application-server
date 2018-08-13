@@ -52,10 +52,10 @@ export default ({
         </DropdownItem>
         <DropdownItem
           onClick={() =>
-            setProjectsSettings({ filter: { status: "Pending" } })
+            setProjectsSettings({ filter: { status: "Start" } })
           }
         >
-          Pending
+          Start
         </DropdownItem>
         <DropdownItem
           onClick={() =>

@@ -3,7 +3,7 @@ const statusCheck = ({ statusFilter = "", status }) =>
     statusFilter === "",
     statusFilter === "All",
     statusFilter === "Not Delivered" && status !== "Delivered",
-    statusFilter === "Pending" && status === "Pending",
+    statusFilter === "Start" && status === "Start",
     statusFilter === "Segmentation" && status === "Segmentation",
     statusFilter === "Injuries" && status === "Injuries",
     statusFilter === "Review" && status === "Review",

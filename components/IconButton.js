@@ -9,7 +9,7 @@ const IconButton = props => {
           justify-content: center;
           border-radius: 900px;
           height: 35px;
-          margin-right: 20px;
+          margin-right: 60px;
           color: #3e3e3e;
         }
         .IconButton:hover {

@@ -26,11 +26,12 @@ import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
 class Users extends Component {
   static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
-    const { payloadUsers } = actions;
+    const { payloadUsers, payloadTeams } = actions;
 
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));
+      store.dispatch(payloadTeams({ data: teams }));
       return;
     }
     store.dispatch({ type: "server/pageUsers" });
@@ -80,7 +81,6 @@ class Users extends Component {
   };
 
   addTeamClick = user => {
-    console.log("-----------------------", teamList);
     const { addTeamModal, currentUser } = this.state;
     this.setState({
       currentUser: addTeamModal ? currentUser : user,
@@ -128,7 +128,7 @@ class Users extends Component {
       createTeam,
       editUser,
       userList: { data, fetching },
-      teamList: { teams }
+      teamList: { data: teams }
     } = this.props;
 
     return (
@@ -213,6 +213,7 @@ class Users extends Component {
         />
         <CreateTeamModal
           onSubmit={createTeam}
+          teams={teams}
           isOpen={this.state.createTeamModal}
           toggle={this.toggleCreateTeamModal}
         />

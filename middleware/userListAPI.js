@@ -7,7 +7,7 @@ import {
 } from "../constants/actionTypes";
 
 const userListAPI = store => next => action => {
-  const { type, userId, userData, teamData, teams} = action;
+  const { type, userId, userData, teamData} = action;
 
   switch (type) {
     case DELETE_USER:
@@ -35,7 +35,6 @@ const userListAPI = store => next => action => {
       break;
     default:
       break;
-      //TODO: add EDIT_USER case
   }
   const result = next(action);
   return result;

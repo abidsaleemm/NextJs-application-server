@@ -12,5 +12,5 @@ export default async ({ socket, user: { role, id , teams} }) => {
   const teamList = await getTeams();
 
   socket.emit("action", payloadUsers({ data: users }));
-  socket.emit("action", payloadTeams({ teams: teamList }));
+  socket.emit("action", payloadTeams({ data: teamList }));
 };

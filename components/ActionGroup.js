@@ -4,6 +4,7 @@ const ActionGroup = props => {
       <style jsx>{`
         .ActionGroup {
           display: flex;
+          padding-right: 10px;
         }
         .ActionGroup * {
           margin-right: 5px;
@@ -12,7 +13,7 @@ const ActionGroup = props => {
           margin-right: 0;
         }
         .Hidden {
-          display: none;
+          visibility: hidden;
         }
       `}</style>
       {props.children}

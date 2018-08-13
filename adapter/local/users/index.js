@@ -93,7 +93,6 @@ const createUser = async ({ user, db }) => {
 };
 
 const createTeam = async ({ teamData, db_team }) => {
-  console.log("****teams*****", teamData);
   await db_team
     .get("teams")
     .push(teamData)

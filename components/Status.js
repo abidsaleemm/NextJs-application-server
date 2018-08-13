@@ -25,7 +25,7 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: "Pending"
+              status: "Start"
             })
           }
         >
@@ -40,16 +40,6 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           }
         >
           Segmentation
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "Injuries"
-            })
-          }
-        >
-          Injuries
         </DropdownItem>
         <DropdownItem
           onClick={() =>

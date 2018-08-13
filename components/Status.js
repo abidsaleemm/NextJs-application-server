@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown
-} from "reactstrap";
+import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
 
-export default ({ status, studyUID, setProjectProps = () => {} }) => {
+export default ({ status = "None", studyUID, setProjectProps = () => {} }) => {
   return (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>
@@ -25,7 +20,7 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           onClick={() =>
             setProjectProps({
               studyUID,
-              status: "Pending"
+              status: "Start"
             })
           }
         >
@@ -40,16 +35,6 @@ export default ({ status, studyUID, setProjectProps = () => {} }) => {
           }
         >
           Segmentation
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "Injuries"
-            })
-          }
-        >
-          Injuries
         </DropdownItem>
         <DropdownItem
           onClick={() =>

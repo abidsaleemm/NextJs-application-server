@@ -22,13 +22,10 @@ export default (state = initialState, { type, settings = {} }) => {
         sortKey: sortKey !== undefined ? sortKey : state.sortKey,
         sortDesc: sortDesc !== undefined ? sortDesc : state.sortDesc,
         filter: {
-          ...filter,
-          ...state.filter
+          ...state.filter,
+          ...filter
         },
-        projectsListSortKey:
-          projectsListSortKey !== undefined
-            ? projectsListSortKey
-            : state.projectsListSortKey,
+        projectsListSortKey: projectsListSortKey !== undefined ? projectsListSortKey : state.projectsListSortKey,
         projectsListSortDesc:
           projectsListSortKey !== undefined // TODO Handle this in action?
             ? state.projectsListSortKey === projectsListSortKey

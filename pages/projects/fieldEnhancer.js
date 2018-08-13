@@ -25,7 +25,6 @@ const tableRowColor = status => {
 export default props => {
   const {
     projects = [],
-    createProject = () => {},
     handleUpload = () => {},
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
@@ -120,7 +119,8 @@ export default props => {
             <DropDownRenderOptions studyUID={studyUID} />
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
-                Encoding ({Math.floor(
+                Encoding (
+                {Math.floor(
                   (new Date() - new Date(encoding)) / 1000 / 60
                 )}{" "}
                 min. elapsed)

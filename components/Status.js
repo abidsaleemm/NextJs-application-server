@@ -6,7 +6,11 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 
-export default ({ status, studyUID, setProjectProps = () => {} }) => {
+export default ({
+  status = "None",
+  studyUID,
+  setProjectProps = () => {}
+}) => {
   return (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>

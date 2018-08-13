@@ -22,8 +22,8 @@ export default (state = initialState, { type, settings = {} }) => {
         sortKey: sortKey !== undefined ? sortKey : state.sortKey,
         sortDesc: sortDesc !== undefined ? sortDesc : state.sortDesc,
         filter: {
-          ...filter,
-          ...state.filter
+          ...state.filter,
+          ...filter
         },
         projectsListSortKey:
           projectsListSortKey !== undefined

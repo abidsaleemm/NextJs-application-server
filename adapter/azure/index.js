@@ -4,6 +4,7 @@ import file from "./file";
 import users from "./users";
 import blob from "./blob";
 import table from "./table";
+import keystore from "./keystore";
 
 export default ({ storageAccount, storageKey }) => {
   const projectsTableName = process.env.PROJECT_TABLE || "projects";
@@ -20,6 +21,7 @@ export default ({ storageAccount, storageKey }) => {
       tableName: projectsTableName
     }),
     //
+    keystore: keystore({ tableAdapter }),
     file: file({ blobAdapter }),
     users: users({ tableAdapter }),
     // API specific

@@ -131,9 +131,19 @@ class ProjectsListing extends Component {
           projects={projects.filter(
             ({ hasProjectSnapshots }) => hasProjectSnapshots
           )}
-          toggle={() => {
+          onToggle={() => {
             this.setState({
               modalCreateProjects: !modalCreateProjects
+            });
+          }}
+          onDefault={() => {
+            createProject({
+              studyUID: selectedStudyUID,
+              defaultStudyUID: ""
+            });
+
+            this.setState({
+              modalCreateProjects: false
             });
           }}
           isOpen={modalCreateProjects}

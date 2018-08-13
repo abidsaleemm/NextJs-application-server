@@ -11,9 +11,8 @@ export default ({ server, app }) => {
       user: { role = "user", id }
     } = req;
 
-    const { projectsSettings } = await getUserProps(id, [
-      "projectsSettings"
-    ]);
+    const { projectsSettings } =
+      (await getUserProps(id, ["projectsSettings"])) || {};
 
     return app.render(req, res, "/projects", {
       ...req.query,

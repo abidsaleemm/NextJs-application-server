@@ -56,7 +56,8 @@ export default ({
   sortKey = "",
   sortDesc = false,
   onSort = () => {},
-  toggle = () => {},
+  onDefault = () => {},
+  onToggle = () => {},
   onRowClick = () => {}
 }) => {
   const projectsEnhanced = projects.map(
@@ -76,7 +77,7 @@ export default ({
     <Modal
       style={{ maxWidth: "80%" }}
       isOpen={isOpen}
-      toggle={toggle}
+      toggle={onToggle}
     >
       <style jsx>
         {`
@@ -87,7 +88,7 @@ export default ({
           }
         `}
       </style>
-      <ModalHeader toggle={toggle}>Create Project</ModalHeader>
+      <ModalHeader toggle={onToggle}>Create Project</ModalHeader>
       <ModalBody>
         <TableList
           data={projectsEnhanced}
@@ -100,7 +101,15 @@ export default ({
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="secondary" onClick={toggle}>
+        <Button
+          color="secondary"
+          onClick={() => {
+            onDefault();
+          }}
+        >
+          Default - Base
+        </Button>
+        <Button color="secondary" onClick={onToggle}>
           Cancel
         </Button>
       </ModalFooter>

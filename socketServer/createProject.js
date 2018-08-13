@@ -2,7 +2,7 @@ import createProject from "../helpers/createProject";
 import { route, fetchAction } from "../actions";
 import { adapter } from "../server";
 
-const defaultStatus = "Pending";
+const defaultStatus = "Segmentation";
 
 export default async ({
   socket,

@@ -23,6 +23,7 @@ export class EditUserModal extends Component {
     const { user } = props;
     this.state = {
       ...user,
+      password: "",
       confirmPassword: "",
       nameValid: "",
       emailValid: "",
@@ -49,6 +50,7 @@ export class EditUserModal extends Component {
     this.setState({
       ...this.state,
       ...user,
+      password: "",
       teamsWithStatus,
       confirmPassword: ""
     });

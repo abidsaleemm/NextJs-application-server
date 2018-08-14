@@ -5,48 +5,28 @@ export default () => {
   let cachedStates = [];
 
   const updateCachedState = ({ studyUID, payload }) => {
-    const index = cachedStates.findIndex(
-      ({ key }) => studyUID === key
-    );
+    const index = cachedStates.findIndex(({ key }) => studyUID === key);
 
     cachedStates =
       index > -1
-        ? [
-            ...cachedStates.slice(0, index),
-            { ...payload, studyUID },
-            ...cachedStates.slice(index + 1)
-          ]
+        ? [...cachedStates.slice(0, index), { ...payload, studyUID }, ...cachedStates.slice(index + 1)]
         : cachedStates;
   };
 
-  const getCachedState = ({ studyUID }) =>
-    cachedStates.find(({ key }) => studyUID === key);
+  const getCachedState = ({ studyUID }) => cachedStates.find(({ key }) => studyUID === key);
 
   // TODO Use keystore to store states
   return props => {
-    const {
-      projects: {
-        setProjectSnapshot = () => {},
-        getProjectSnapshot = () => {},
-        ...projectsProps
-      } = {}
-    } = props;
+    const { projects: { setProjectSnapshot = () => {}, getProjectSnapshot = () => {}, ...projectsProps } = {} } = props;
 
     return {
       ...props,
       projects: {
         ...projectsProps,
-        setProjectSnapshot: async ({
-          studyUID,
-          cache = true,
-          payload,
-          ...props
-        }) => {
+        setProjectSnapshot: async ({ studyUID, cache = true, payload, ...props }) => {
           let state = getCachedState({ studyUID });
 
-          state = !state
-            ? await getProjectSnapshot({ ...props, studyUID })
-            : state;
+          state = !state ? (await getProjectSnapshot({ ...props, studyUID })) || {} : state;
 
           const mergedPayload = { ...state, ...payload, studyUID };
 
@@ -60,15 +40,9 @@ export default () => {
             studyUID
           });
         },
-        getProjectSnapshot: async ({
-          studyUID,
-          cache = true,
-          ...props
-        }) => {
+        getProjectSnapshot: async ({ studyUID, cache = true, ...props }) => {
           let state = getCachedState({ studyUID });
-          state = !state
-            ? await getProjectSnapshot({ ...props, studyUID })
-            : state;
+          state = !state ? await getProjectSnapshot({ ...props, studyUID }) : state;
 
           if (cache) {
             updateCachedState({ studyUID, state });

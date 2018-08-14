@@ -10,7 +10,7 @@ import { adapter } from "../server";
 export default async ({
   socket,
   action: { studyUID = "" },
-  user: { id: userID, admin = false } = {}
+  user: { id: userID, role = "user" } = {}
 }) => {
   const { users: { getUserProps = () => {} } = {} } = adapter;
 
@@ -22,7 +22,7 @@ export default async ({
 
   socket.emit("action", payloadProjectDetail(projectDetail));
 
-  const projects = await queryProjectsList({ admin });
+  const projects = await queryProjectsList({ role });
   socket.emit("action", payloadProjects({ projects }));
 
   socket.emit(

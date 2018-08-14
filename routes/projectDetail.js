@@ -9,7 +9,7 @@ export default ({ server, app }) => {
 
   server.get("/projectDetail", authMiddleware(), async (req, res) => {
     const {
-      user: { id, admin = false } = {},
+      user: { id, role = "user" } = {},
       query: { studyUID = "", ...query } = {}
     } = req;
 
@@ -21,7 +21,7 @@ export default ({ server, app }) => {
       ...query,
       projectDetailSettings,
       projectDetail: await queryProjectDetail({ studyUID }),
-      projects: await queryProjectsList({ admin })
+      projects: await queryProjectsList({ role })
     });
   });
 };

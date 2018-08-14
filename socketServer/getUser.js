@@ -2,14 +2,15 @@ import { setUser } from "../actions";
 
 export default async ({
   socket,
-  user: { admin = false, id = 0, name = "" } = {}
+  user: { role = "user", id = 0, name = "", teams } = {}
 }) => {
   socket.emit(
     "action",
     setUser({
-      admin,
+      role,
       id,
-      name
+      name,
+      teams
     })
   );
 };

@@ -1,6 +1,7 @@
 const MediaCard = props => {
+  const { children, self } = props;
   return (
-    <li className="MediaCard">
+    <li className="MediaCard" id={ self? "colored" : ""}>
       <style jsx>{`
         .MediaCard {
           display: flex;
@@ -11,8 +12,11 @@ const MediaCard = props => {
             0px -1px 0px rgba(0, 0, 0, 0.1);
           padding: 20px;
         }
+        #colored {
+          background: khaki !important;
+        }
       `}</style>
-      {props.children}
+      {children}
     </li>
   );
 };

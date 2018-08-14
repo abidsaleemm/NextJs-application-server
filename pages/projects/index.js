@@ -14,15 +14,12 @@ import filterRender from "./filterRender";
 import filterFunc from "./filterFunc";
 
 class ProjectsListing extends Component {
-  static async getInitialProps({
-    store,
-    isServer,
-    query: { projects = [], projectsSettings = {} } = {}
-  }) {
-    const { payloadProjects, setProjectsSettings } = actions;
+  static async getInitialProps({ store, isServer, query: { users = [], projects = [], projectsSettings = {} } = {} }) {
+    const { payloadProjects, payloadUsers, setProjectsSettings } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
+      store.dispatch(payloadUsers({ data: users }));
       store.dispatch(payloadProjects({ projects }));
       store.dispatch(setProjectsSettings(projectsSettings));
       return;
@@ -70,22 +67,19 @@ class ProjectsListing extends Component {
         sortDesc,
         projectsListSortKey,
         projectsListSortDesc,
+        // user,
+        // userList = [],
         setProjectsSettings = () => {},
         uploadDel = () => {},
         createProject = () => {}
       } = {},
-      state: {
-        popupTarget,
-        popupStudyUID,
-        modalCreateProjects = false,
-        selectedStudyUID = null
-      }
+      state: { popupTarget, popupStudyUID, modalCreateProjects = false, selectedStudyUID = null }
     } = this;
 
     const projectsEnhanced = fieldEnhancer({
       ...props,
       onCreate: ({ studyUID }) => {
-        // TODO Don't like this.  Could cause side effects.
+        // TODO Don't like this.  Could cause side effects. WG
         this.setState({
           modalCreateProjects: true,
           selectedStudyUID: studyUID
@@ -95,9 +89,7 @@ class ProjectsListing extends Component {
     });
 
     // Query the study from tableData
-    const study = projects.find(
-      ({ studyUID = "" }) => studyUID === popupStudyUID
-    );
+    const study = projects.find(({ studyUID = "" }) => studyUID === popupStudyUID);
 
     const { uploadedFiles = [] } = study || {};
 
@@ -125,12 +117,8 @@ class ProjectsListing extends Component {
         <CreateProjectModal
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
-          onSort={k =>
-            setProjectsSettings({ projectsListSortKey: k })
-          }
-          projects={projects.filter(
-            ({ hasProjectSnapshots }) => hasProjectSnapshots
-          )}
+          onSort={k => setProjectsSettings({ projectsListSortKey: k })}
+          projects={projects.filter(({ hasProjectSnapshots }) => hasProjectSnapshots)}
           onToggle={() => {
             this.setState({
               modalCreateProjects: !modalCreateProjects
@@ -182,7 +170,9 @@ const mapStateToProps = ({
     projectsListSortDesc
   },
   defaultList,
-  projects: { projects }
+  projects: { projects },
+  user,
+  userList: { data: userList = [] }
 }) => ({
   projects,
   sortKey,
@@ -190,11 +180,12 @@ const mapStateToProps = ({
   filter,
   projectsListSortKey,
   projectsListSortDesc,
-  defaultList
+  defaultList,
+  user,
+  userList
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

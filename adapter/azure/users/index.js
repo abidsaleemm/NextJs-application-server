@@ -20,7 +20,7 @@ const hashPassword = password =>
   });
 
 const editUser = async ({ tableName, user, tableAdapter }) => {
-  const { id: userID, username, name, password, role, teams } = user;
+  const { id: userID, username, name, password, role = "", teams } = user;
   const { mergeEntity } = tableAdapter;
 
   const entity = {
@@ -28,7 +28,7 @@ const editUser = async ({ tableName, user, tableAdapter }) => {
     RowKey: `${userID}`,
     username,
     name,
-    role,
+    admin: role === "admin",
     password: await hashPassword(password),
     id: userID,
     teams: JSON.stringify(teams)

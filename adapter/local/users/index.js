@@ -52,15 +52,12 @@ const getUser = async ({ username = "", password = "", db }) => {
     .value();
 
   const { password: passwordTest = "" } = user || {};
-  return password.toLocaleLowerCase() ===
-    passwordTest.toLocaleLowerCase()
-    ? user
-    : undefined;
+  return password.toLocaleLowerCase() === passwordTest.toLocaleLowerCase() ? user : undefined;
 };
 
 // TODO Should we... use helpers for these? filter out passwords here?
 const getUsers = ({ db }) => {
-  return db.get("users");
+  return db.get("users").value();
 };
 
 const deleteUser = async ({ id, db }) => {
@@ -71,7 +68,7 @@ const deleteUser = async ({ id, db }) => {
 };
 
 const editUser = async ({ user, db }) => {
-  const { id, username, name, password, role, teams} = user;
+  const { id, username, name, password, role, teams } = user;
   await db
     .get("users")
     .find({ id: id })
@@ -97,16 +94,16 @@ const createTeam = async ({ teamData, db_team }) => {
     .get("teams")
     .push(teamData)
     .write();
-}
+};
 
 const getTeams = ({ db_team }) => {
-  return db_team.get("teams");
+  return db_team.get("teams").value();
 };
 
 const deleteTeams = async ({ ids, db_team }) => {
   await db_team
     .get("teams")
-    .remove((teamId) => (ids.includes(teamId.id)))
+    .remove(teamId => ids.includes(teamId.id))
     .write();
 };
 
@@ -126,12 +123,10 @@ export default ({ path }) => {
     deleteUser: async id => await deleteUser({ id, db }),
     getUsers: async () => await getUsers({ db }),
     getUser: async props => await getUser({ ...props, db }),
-    getTeams: async () => await getTeams({db_team}),
-    getUserProps: async (id = 0, props = []) =>
-      await getUserProps({ id, props, db }),
-    setUserProps: async (id = 0, props = []) =>
-      await setUserProps({ id, props, db }),
+    getTeams: async () => await getTeams({ db_team }),
+    getUserProps: async (id = 0, props = []) => await getUserProps({ id, props, db }),
+    setUserProps: async (id = 0, props = []) => await setUserProps({ id, props, db }),
     createTeam: async teamData => await createTeam({ teamData, db_team }),
-    deleteTeams: async ids => await deleteTeams({ ids, db_team }),
+    deleteTeams: async ids => await deleteTeams({ ids, db_team })
   };
 };

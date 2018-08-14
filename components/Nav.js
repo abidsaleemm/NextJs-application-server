@@ -3,11 +3,19 @@ import Router from "next/router";
 import { Nav } from "reactstrap";
 
 const RenderUser = () => (
-  <li
-    className="buttonLink"
-    onClick={() => Router.push({ pathname: "/projects" })}
-  >
-    Projects
+  <li>
+    <div
+      className="buttonLink"
+      onClick={() => Router.push({ pathname: "/projects" })}
+    >
+      Projects
+    </div>
+    <div
+      className="buttonLink"
+      onClick={() => Router.push({ pathname: "/users" })}
+    >
+      Users
+    </div>
   </li>
 );
 
@@ -32,7 +40,7 @@ const RenderAdmin = () => (
 const { STAGING: staging = false } =
   "undefined" !== typeof window ? window.env : process.env;
 
-export default ({ user: { admin = false, name } = {}, ...props }) => {
+export default ({ user: { role = "user", name } = {}, ...props }) => {
   return (
     <div>
       <style jsx global>
@@ -66,7 +74,7 @@ export default ({ user: { admin = false, name } = {}, ...props }) => {
         >
           Logout
         </li>
-        {admin ? <RenderAdmin /> : <RenderUser />}
+        {role === "admin" ? <RenderAdmin /> : <RenderUser />}
         <div className="navName">{`Welcome ${name}`}</div>
       </Nav>
     </div>

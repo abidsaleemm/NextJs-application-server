@@ -2,6 +2,7 @@ export default () => ({
   action: "",
   statusRender: "Status",
   sampleRender: "Sample",
+  userRender: "Assign User",
   videoOptions: "Rendered",
   patientName: "Patient Name",
   patientAge: "Age",

@@ -1,13 +1,14 @@
 import { USER_SET } from "../constants/actionTypes";
 
 export default (user = {}) => {
-  const { admin = false, id = 0, name = "" } = user;
+  const { role = "user", id = 0, name = "" , teams} = user;
   return {
     type: USER_SET,
     user: {
-      admin,
+      role,
       id,
-      name
+      name,
+      teams
     }
   };
 };

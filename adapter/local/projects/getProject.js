@@ -14,14 +14,7 @@ export default async ({ studyUID = "", path }) => {
     .value();
 
   if (project !== undefined) {
-    const {
-      status = 0,
-      defaultStudyUID,
-      multusID,
-      encoding,
-      deleted,
-      sample
-    } = project;
+    const { status = 0, defaultStudyUID, multusID, encoding, deleted, sample, userID } = project;
 
     return {
       studyUID,
@@ -31,6 +24,7 @@ export default async ({ studyUID = "", path }) => {
       encoding,
       deleted,
       sample,
+      userID,
       hasProjectSnapshots: await hasProjectSnapshots({ studyUID, path })
     };
   }

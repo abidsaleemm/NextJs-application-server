@@ -1,7 +1,7 @@
 import { adapter } from "../server";
 import createVideoFileName from "../helpers/createVideoFileName";
 
-export default async ({ role, userID }) => {
+export default async ({ role, userID, userList = [] }) => {
   const {
     file: { list: fileList = () => {}, get: fileGet = () => {} } = {},
     projects: { getProject = () => {}, getProjectList = () => {} } = {},
@@ -15,11 +15,15 @@ export default async ({ role, userID }) => {
     studies
       .map(study => [study, projects.find(({ studyUID = "" }) => study.studyUID === studyUID)])
       .filter(([study, { userID: projectUserID } = {}]) => {
+        if (projectUserID === undefined || projectUserID === null || projectUserID == "" || projectUserID == userID) {
+          return true;
+        }
+
         if (role === "admin") {
           return true;
         }
 
-        return userID === projectUserID;
+        return userList.some(({ id }) => id === projectUserID);
       })
       .filter(([study, { deleted = false } = {}]) => study !== undefined && deleted !== true)
       .map(async ([{ studyUID, studyName = "", ...study } = {}, { status, sample = false, ...project } = {}]) => {

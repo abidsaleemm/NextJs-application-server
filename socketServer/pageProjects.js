@@ -2,14 +2,10 @@ import queryProjectsList from "../helpers/queryProjectsList";
 import { payloadProjects, payloadProjectsSettings, payloadUsers } from "../actions";
 import { adapter } from "../server";
 
-export default async ({ socket, user: { role, id, teams = [] } = {} }) => {
+export default async ({ socket, user, user: { role, id, teams = [] } = {} }) => {
   const { users: { getUsers = () => {}, getUserProps = () => {} } = {} } = adapter;
 
   // TODO Optimize with promise
-  const projects = await queryProjectsList({
-    role: role === "admin" ? role : teams.some(({ isTeamAdmin }) => isTeamAdmin) ? "admin" : "user",
-    userID: id
-  });
   const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
 
   // TODO Reusablable function used in route/projects.  Wrap in helper?
@@ -24,7 +20,13 @@ export default async ({ socket, user: { role, id, teams = [] } = {} }) => {
           return [...a, ...ret];
         }, []);
 
-  socket.emit("action", payloadUsers({ data: usersSelected }));
+  const projects = await queryProjectsList({
+    role: role === "admin" ? role : teams.some(({ isTeamAdmin }) => isTeamAdmin) ? "admin" : "user",
+    userID: id,
+    userList: usersSelected
+  });
+
+  socket.emit("action", payloadUsers({ data: usersSelected.length === 0 ? [{ ...user }] : usersSelected }));
   socket.emit("action", payloadProjects({ projects }));
   socket.emit("action", payloadProjectsSettings(projectsSettings));
 };

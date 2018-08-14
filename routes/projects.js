@@ -24,11 +24,17 @@ export default ({ server, app }) => {
             return [...a, ...ret];
           }, []);
 
+    const projects = await queryProjectsList({
+      role: role === "admin" ? role : teams.some(({ isTeamAdmin }) => isTeamAdmin) ? "admin" : "user",
+      userID: id
+    });
+
     return app.render(req, res, "/projects", {
       ...req.query,
       users: usersSelected,
       projectsSettings,
-      projects: await queryProjectsList({ role })
+      projects
+      //   projects: await queryProjectsList({ role })
     });
   });
 };

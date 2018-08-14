@@ -6,7 +6,10 @@ export default async ({ socket, user: { role, id, teams = [] } = {} }) => {
   const { users: { getUsers = () => {}, getUserProps = () => {} } = {} } = adapter;
 
   // TODO Optimize with promise
-  const projects = await queryProjectsList({ role });
+  const projects = await queryProjectsList({
+    role: role === "admin" ? role : teams.some(({ isTeamAdmin }) => isTeamAdmin) ? "admin" : "user",
+    userID: id
+  });
   const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
 
   // TODO Reusablable function used in route/projects.  Wrap in helper?

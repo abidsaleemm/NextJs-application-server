@@ -7,14 +7,26 @@ export default ({ server, app }) => {
 
   server.get("/projects", authMiddleware(), async (req, res) => {
     const {
-      user: { role = "user", id }
+      user: { role = "user", id, teams = [] }
     } = req;
 
     const { projectsSettings } = (await getUserProps(id, ["projectsSettings"])) || {};
 
+    // TODO Reusablable function used in projectPages.  Wrap in helper?
+    const users = await getUsers();
+    const usersSelected =
+      role === "admin"
+        ? users
+        : teams.reduce((a, v) => {
+            const { isTeamAdmin = false, id } = v;
+            const ret = isTeamAdmin ? users.filter(({ teams = [] }) => teams.some(v => v.id === id)) : [];
+
+            return [...a, ...ret];
+          }, []);
+
     return app.render(req, res, "/projects", {
       ...req.query,
-      users: await getUsers(),
+      users: usersSelected,
       projectsSettings,
       projects: await queryProjectsList({ role })
     });

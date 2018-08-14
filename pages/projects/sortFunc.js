@@ -14,11 +14,10 @@ const strSort = (a = "", b = "") => {
 };
 
 export default () => ({
-  statusRender: ({ status: a = "" }, { status: b = "" }) =>
-    strSort(a, b),
+  userRender: ({ userName: a = "" }, { userName: b = "" }) => strSort(a, b),
+  statusRender: ({ status: a = "" }, { status: b = "" }) => strSort(a, b),
   videoOptions: ({ videoExists: a }, { videoExists: b }) => a - b,
-  patientName: ({ patientName: a }, { patientName: b }) =>
-    strSort(a, b),
+  patientName: ({ patientName: a }, { patientName: b }) => strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => {
     const testA = parseInt(a);
     const testB = parseInt(b);
@@ -26,15 +25,10 @@ export default () => ({
     return (isNaN(testA) ? 0 : testA) - (isNaN(testB) ? 0 : testB);
   },
   patientSex: ({ patientSex: a }, { patientSex: b }) => strSort(a, b),
-  patientBirthDate: (
-    { patientBirthDate: a },
-    { patientBirthDate: b }
-  ) => strSort(a, b),
+  patientBirthDate: ({ patientBirthDate: a }, { patientBirthDate: b }) => strSort(a, b),
   studyName: ({ studyName: a }, { studyName: b }) => strSort(a, b),
   studyDate: ({ studyDate: a }, { studyDate: b }) => strSort(a, b),
   location: ({ location: a }, { location: b }) => strSort(a, b),
-  uploadDateTime: ({ uploadDateTime: a }, { uploadDateTime: b }) =>
-    strSort(a, b),
-  upload: ({ uploadedFiles: a = [] }, { uploadedFiles: b = [] }) =>
-    a.length - b.length
+  uploadDateTime: ({ uploadDateTime: a }, { uploadDateTime: b }) => strSort(a, b),
+  upload: ({ uploadedFiles: a = [] }, { uploadedFiles: b = [] }) => a.length - b.length
 });

@@ -34,7 +34,6 @@ export class CreateUserModal extends Component {
       teamValid: "",
       isExpanded: false
     };
-
   }
 
   handleClick = index => () => {
@@ -42,7 +41,9 @@ export class CreateUserModal extends Component {
     teamsWithStatus[index].isSelected = !teamsWithStatus[index].isSelected;
 
     let tempTeamValid;
-    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+    teamsWithStatus.filter(team => team.isSelected === true).length < 1
+      ? (tempTeamValid = "You need to select at least one team")
+      : (tempTeamValid = "");
 
     this.setState({
       ...this.state,
@@ -59,10 +60,12 @@ export class CreateUserModal extends Component {
             .filter(_team => _team.isTeamAdmin === true)
             .map(({ id, title, isTeamAdmin }) => ({ id, title, isTeamAdmin: false }));
 
-    const teamsWithStatus = vTeam && vTeam.map(team => ({
-      ...team,
-      isSelected: false
-    }));
+    const teamsWithStatus =
+      vTeam &&
+      vTeam.map(team => ({
+        ...team,
+        isSelected: false
+      }));
 
     this.setState({ ...this.state, ...user, teamsWithStatus, confirmPassword: "" });
   }
@@ -103,16 +106,18 @@ export class CreateUserModal extends Component {
     const { onSubmit, toggle } = this.props;
     const { name, username, password, role = "user", teamsWithStatus } = this.state;
 
-    const selectedItems = teamsWithStatus && teamsWithStatus
-      .filter(team => team.isSelected === true)
-      .map(({ id, title, isTeamAdmin }) => ({
+    const selectedItems =
+      teamsWithStatus &&
+      teamsWithStatus.filter(team => team.isSelected === true).map(({ id, title, isTeamAdmin }) => ({
         id,
         title,
         isTeamAdmin
       }));
-    
+
     let tempTeamValid;
-    (teamsWithStatus.filter(team => team.isSelected === true).length < 1) ? tempTeamValid = "You need to select at least one team" : tempTeamValid = "";
+    teamsWithStatus.filter(team => team.isSelected === true).length < 1
+      ? (tempTeamValid = "You need to select at least one team")
+      : (tempTeamValid = "");
     this.setState({ teamValid: tempTeamValid });
 
     if (!!name && !!username && !!password && !tempTeamValid) {
@@ -244,7 +249,9 @@ export class CreateUserModal extends Component {
           <Button
             color="primary"
             onClick={this.onSubmit}
-            disabled={!!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid || !!this.state.teamValid}
+            disabled={
+              !!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid || !!this.state.teamValid
+            }
           >
             Create User
           </Button>

@@ -43,7 +43,7 @@ const renderNormal = team => {
 
 const renderWithOptions = (teamSettingOptions, team, keyValue, onOptionSelected) => {
   return (
-    <UncontrolledDropdown>
+    <UncontrolledDropdown style={{paddingBottom: "5px"}}>
       <DropdownToggle caret>{renderTeam(team)}</DropdownToggle>
       <DropdownMenu>
         {teamSettingOptions.map((option, index) => (

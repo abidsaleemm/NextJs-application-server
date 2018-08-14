@@ -1,6 +1,5 @@
 import azure from "azure-storage";
 import bcrypt from "bcryptjs";
-import uuid from "uuid";
 
 // TODO make these more global and reusable?
 import mapStringifyJSON from "../../../helpers/mapStringifyJSON";
@@ -15,7 +14,7 @@ const hashPassword = password =>
         reject(err);
         return;
       }
-      // Store hash in your password DB.
+
       resolve(hash);
     });
   });
@@ -65,8 +64,6 @@ const createUser = async ({ user, tableName, tableAdapter }) => {
   };
 
   // TODO Create crytocryptic hash for storing password
-  console.log("entity", entity);
-
   await insertOrMergeEntity({ tableName, entity });
 };
 

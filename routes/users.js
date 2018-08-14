@@ -4,7 +4,7 @@ import authMiddleware from "../auth/middleware";
 import { adapter } from "../server";
 
 export default ({ server, app }) => {
-  const { users: { getUsers = () => {}, getTeam = () => {}, getUserProps = () => {} } = {} } = adapter;
+  const { users: { getUsers = () => {}, getTeams = () => {}, getUserProps = () => {} } = {} } = adapter;
 
   server.get("/users", authMiddleware(), async (req, res) => {
     const {
@@ -16,7 +16,7 @@ export default ({ server, app }) => {
       ...req.query,
       projectsSettings,
       users: await getUsers(),
-      teams: await getTeam()
+      teams: await getTeams()
     });
   });
 };

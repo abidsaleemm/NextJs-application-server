@@ -7,6 +7,7 @@ export default ({ server, app }) => {
 
   server.get("/projects", authMiddleware(), async (req, res) => {
     const {
+      user,
       user: { role = "user", id, teams = [] }
     } = req;
 
@@ -24,11 +25,17 @@ export default ({ server, app }) => {
             return [...a, ...ret];
           }, []);
 
+    const projects = await queryProjectsList({
+      role: role === "admin" ? role : teams.some(({ isTeamAdmin }) => isTeamAdmin) ? "admin" : "user",
+      userID: id,
+      userList: usersSelected
+    });
+
     return app.render(req, res, "/projects", {
       ...req.query,
-      users: usersSelected,
+      users: usersSelected.length === 0 ? [{ ...user }] : usersSelected,
       projectsSettings,
-      projects: await queryProjectsList({ role })
+      projects
     });
   });
 };

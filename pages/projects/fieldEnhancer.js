@@ -147,8 +147,9 @@ export default props => {
           </ButtonGroup>
         ),
         sample,
+        userName: (userList.find(({ id }) => userID && id === userID) || {}).name || "",
         userRender: (
-          <UncontrolledDropdown>
+          <UncontrolledDropdown color="secondary">
             <DropdownToggle caret>
               {(userList.find(({ id }) => userID && id === userID) || {}).name || "None"}
             </DropdownToggle>

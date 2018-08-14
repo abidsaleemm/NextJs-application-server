@@ -45,6 +45,7 @@ const getUserProps = async ({ id = 0, props = [], db }) => {
   return filterProps(props)(user);
 };
 
+// TODO Redunant function. Same as getUserProps.
 const getUser = async ({ username = "", password = "", db }) => {
   const user = db
     .get("users")
@@ -56,7 +57,7 @@ const getUser = async ({ username = "", password = "", db }) => {
 };
 
 // TODO Should we... use helpers for these? filter out passwords here?
-const getUsers = ({ db }) => {
+const getUsers = async ({ db }) => {
   return db.get("users").value();
 };
 
@@ -67,6 +68,7 @@ const deleteUser = async ({ id, db }) => {
     .write();
 };
 
+// TODO Redunant function. Same as setUserProps.
 const editUser = async ({ user, db }) => {
   const { id, username, name, password, role, teams } = user;
   await db
@@ -96,7 +98,7 @@ const createTeam = async ({ teamData, db_team }) => {
     .write();
 };
 
-const getTeams = ({ db_team }) => {
+const getTeams = async ({ db_team }) => {
   return db_team.get("teams").value();
 };
 
@@ -116,6 +118,7 @@ export default ({ path }) => {
 
   const db_team = low(new FileSync(pathTeams));
   db_team.defaults({ teams: [] }).write();
+
   // TODO Refactor higher order code implimentation.  Should only pass object properties not params.
   return {
     createUser: async user => await createUser({ user, db }),

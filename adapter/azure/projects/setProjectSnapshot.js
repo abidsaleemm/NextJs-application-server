@@ -2,12 +2,9 @@ export default async ({
   studyUID = "_",
   payload = {},
   tableName,
-  blobAdapter: {
-    createBlobSnapshot,
-    getBlobProperties,
-    createBlockBlobFromText
-  }
+  blobAdapter: { createBlobSnapshot, getBlobProperties, createBlockBlobFromText }
 }) => {
+  // TODO Should use different function to check what exists
   const exists = await getBlobProperties({
     containerName: tableName,
     blobName: studyUID

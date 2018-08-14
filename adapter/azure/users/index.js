@@ -28,6 +28,29 @@ const getUser = async ({
   return false;
 };
 
+const getUsers = async ({
+  username = "",
+  password,
+  tableName,
+  tableAdapter: { queryTable }
+}) => {
+  // Always handle and store as lower case
+  const query = new azure.TableQuery().where(
+    "username eq ?",
+    username.toLowerCase()
+  );
+  const {
+    0: { password: passwordCheck, ...user } = {}
+  } = await queryTable({ query, tableName });
+
+  // check if the query corresponding entry has been found or not
+  if (passwordCheck) {
+    const res = await bcrypt.compare(password, passwordCheck);
+    return res === true ? user : false;
+  }
+  return false;
+};
+
 const setUserProps = async ({
   id = 0,
   props = {},
@@ -67,17 +90,23 @@ export default ({ tableAdapter }) => {
   return {
     createUser: async user =>
       await createUser({ user, tableName, tableAdapter }),
+    editUser: async user =>
+      await createUser({ user, tableName, tableAdapter }),
     deleteUser: async id =>
       await deleteUser({ id, tableName, tableAdapter }),
     getUsers: async () =>
-      await getUsers({ db, tableName, tableAdapter }),
+      await getUsers({ tableName, tableAdapter }),
     getUser: async props =>
       await getUser({ ...props, tableName, tableAdapter }),
     getUserProps: async (id = 0, props = []) =>
       await getUserProps({ id, props, tableName, tableAdapter }),
     setUserProps: async (id = 0, props = []) =>
       await setUserProps({ id, props, tableName, tableAdapter }),
-    createTeam: async team =>
-      await createTeam({ team, tableName, tableAdapter }),
+    createTeam: async teamData =>
+      await createTeam({ teamData, tableName, tableAdapter }),
+    getTeams: async () =>
+      await getTeams({ tableName, tableAdapter }),
+    deleteTeams: async ids => 
+      await deleteTeams({ ids, tableName, tableAdapter })
   };
 };

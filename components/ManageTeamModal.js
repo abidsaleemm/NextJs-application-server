@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import * as actions from "../actions";
 import { isRequired } from "../helpers/validate";
-import { CREATE_TEAM_STRING, DELETE_TEAM_STRING} from "../constants/strings";
+import { CREATE_TEAM_STRING, DELETE_TEAM_STRING } from "../constants/strings";
 
 export class CreateTeamModal extends Component {
   constructor(props) {
@@ -48,9 +48,8 @@ export class CreateTeamModal extends Component {
   handleClick = index => () => {
     const { filteredTeamStatus } = this.state;
     filteredTeamStatus[index].isSelected = !filteredTeamStatus[index].isSelected;
-    let submitTitle = (filteredTeamStatus.filter( team => team.isSelected === true).length > 0) 
-        ? DELETE_TEAM_STRING
-        : CREATE_TEAM_STRING;
+    let submitTitle =
+      filteredTeamStatus.filter(team => team.isSelected === true).length > 0 ? DELETE_TEAM_STRING : CREATE_TEAM_STRING;
     this.setState({
       ...this.state,
       filteredTeamStatus,
@@ -63,12 +62,12 @@ export class CreateTeamModal extends Component {
     const value = e.target.value;
     this.formValidate(name, value);
     const { teamsWithStatus } = this.state;
-    const filteredTeamStatus = teamsWithStatus.filter( teamInfo => teamInfo.title.includes(value));
-    if(filteredTeamStatus.filter( teamInfo => teamInfo.isSelected === true).length > 0)
-      this.setState({nameValid: "" });
+    const filteredTeamStatus = teamsWithStatus.filter(teamInfo => teamInfo.title.includes(value));
+    if (filteredTeamStatus.filter(teamInfo => teamInfo.isSelected === true).length > 0)
+      this.setState({ nameValid: "" });
     this.setState({
       [fieldName]: e.target.value,
-      filteredTeamStatus 
+      filteredTeamStatus
     });
   };
 
@@ -82,20 +81,19 @@ export class CreateTeamModal extends Component {
     const { name, filteredTeamStatus } = this.state;
 
     this.formValidate("name", name);
-    
+
     this.setState({
       nameValid: this.state.submitTitle === DELETE_TEAM_STRING ? "" : this.state.nameValid
     });
-    
+
     if (!this.state.nameValid && this.state.submitTitle === CREATE_TEAM_STRING) {
       onSubmit({
         id,
         title: name,
         isTeamAdmin: false
       });
-    }
-    else {
-      const teamIds = filteredTeamStatus && filteredTeamStatus.filter(status => status.isSelected).map( team => team.id);
+    } else {
+      const teamIds = filteredTeamStatus && filteredTeamStatus.filter(status => status.isSelected).map(team => team.id);
       this.props.deleteTeams(teamIds);
     }
     toggle();
@@ -166,11 +164,7 @@ export class CreateTeamModal extends Component {
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>{" "}
-          <Button
-            color="primary"
-            onClick={this.onSubmit}
-            disabled={!!this.state.nameValid}
-          >
+          <Button color="primary" onClick={this.onSubmit} disabled={!!this.state.nameValid}>
             {submitTitle}
           </Button>
         </ModalFooter>

@@ -34,8 +34,7 @@ export class DeleteUserModal extends Component {
 
 const mapStateToProps = ({ userList }) => ({ userList });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

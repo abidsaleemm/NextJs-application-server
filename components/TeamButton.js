@@ -31,7 +31,7 @@ const getSettingItems = (currentUser, team) => {
 
 const renderTeam = team => {
   if (team.isTeamAdmin) {
-    return <div>{team.title} Admin</div>;
+    return <span>{team.title} Admin</span>;
   } else {
     return team.title;
   }
@@ -44,19 +44,6 @@ const renderNormal = team => {
 const renderWithOptions = (teamSettingOptions, team, keyValue, onOptionSelected) => {
   return (
     <UncontrolledDropdown>
-      <style jsx>
-        {`
-          .renderOption {
-            display: flex;
-            background: green;
-            justify-content: space-between;
-            cursor: pointer;
-          }
-          .dropdown-toggle {
-            margin-bottom: 10px;
-          }
-        `}
-      </style>
       <DropdownToggle caret>{renderTeam(team)}</DropdownToggle>
       <DropdownMenu>
         {teamSettingOptions.map((option, index) => (

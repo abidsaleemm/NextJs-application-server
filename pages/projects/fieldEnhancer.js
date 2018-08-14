@@ -94,7 +94,7 @@ export default props => {
         ),
         patientAge: patientBirthDate ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear() : "",
         videoExists,
-        videoOptions: (
+        videoOptions: hasProjectSnapshots ? (
           <div style={{ display: "inline-flex" }}>
             <style jsx>
               {`
@@ -125,7 +125,7 @@ export default props => {
               <div className="renderTextNo">No</div>
             )}
           </div>
-        ),
+        ) : null,
         uploadedFiles,
         upload: (
           <ButtonGroup>

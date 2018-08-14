@@ -149,7 +149,9 @@ export default props => {
         sample,
         userRender: (
           <UncontrolledDropdown>
-            <DropdownToggle caret>{(userList.find(({ id }) => id === userID) || {}).name || "None"}</DropdownToggle>
+            <DropdownToggle caret>
+              {(userList.find(({ id }) => userID && id === userID) || {}).name || "None"}
+            </DropdownToggle>
             <DropdownMenu>
               <DropdownItem onClick={() => setProjectProps({ studyUID, userID: "" })}>None</DropdownItem>
               <DropdownItem header>Team Users</DropdownItem>

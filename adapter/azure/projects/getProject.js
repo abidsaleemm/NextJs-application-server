@@ -1,28 +1,14 @@
 import azure from "azure-storage";
 import hasProjectSnapshots from "./hasProjectSnapshots";
 
-export default async ({
-  studyUID = "",
-  tableName,
-  tableAdapter: { queryTable },
-  ...props
-}) => {
+export default async ({ studyUID = "", tableName, tableAdapter: { queryTable }, ...props }) => {
   const project = await queryTable({
     tableName,
     query: new azure.TableQuery().where("RowKey eq ?", studyUID)
   });
 
   if (project.length > 0) {
-    const {
-      0: {
-        status = "None",
-        defaultStudyUID,
-        multusID,
-        encoding,
-        deleted,
-        sample
-      } = {}
-    } = project;
+    const { 0: { status = "None", defaultStudyUID, multusID, encoding, deleted, sample, userID } = {} } = project;
 
     return {
       studyUID,
@@ -31,6 +17,7 @@ export default async ({
       multusID,
       encoding,
       deleted,
+      userID,
       sample: sample === "" ? false : sample ? true : false,
       hasProjectSnapshots: await hasProjectSnapshots({
         ...props,

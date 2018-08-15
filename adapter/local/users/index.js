@@ -74,17 +74,26 @@ const deleteUser = async ({ id, db }) => {
 
 // TODO Redunant function. Same as setUserProps.
 const editUser = async ({ user, db }) => {
-  const { id, username, name, password, role, teams } = user;
+  const { id, username, name, password = "", role, teams } = user;
   await db
     .get("users")
     .find({ id: id })
-    .assign({
-      username,
-      name,
-      password,
-      role,
-      teams
-    })
+    .assign(
+      !!password
+        ? {
+            username,
+            name,
+            password,
+            role,
+            teams
+          }
+        : {
+            username,
+            name,
+            role,
+            teams
+          }
+    )
     .write();
 };
 

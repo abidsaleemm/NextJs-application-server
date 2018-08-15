@@ -20,19 +20,20 @@ const hashPassword = password =>
   });
 
 const editUser = async ({ tableName, user, tableAdapter }) => {
-  const { id: userID, username, name, password, role = "", teams } = user;
+  const { id: userID, username, name, password = "", role = "", teams } = user;
   const { mergeEntity } = tableAdapter;
 
-  const entity = {
+  let entity = {
     PartitionKey: `${userID}`, // TODO PartitionKey and RowKey the same? or should just use row key? WG
     RowKey: `${userID}`,
     username,
     name,
     admin: role === "admin",
-    password: await hashPassword(password),
     id: userID,
     teams: JSON.stringify(teams)
   };
+
+  if (!!password) entity = { password: await hashPassword(password), ...entity };
 
   await mergeEntity({ tableName, entity });
 };
@@ -85,7 +86,7 @@ const getUser = async ({ username = "", password, tableName, tableAdapter: { que
 
 const getUsers = async ({ tableName, tableAdapter: { queryTableAll } }) => {
   const values = await queryTableAll({ tableName });
-  return values.map(({ teams = `[]`, admin = false, ...v }) => ({
+  return values.map(({ teams = `[]`, admin = false, password, ...v }) => ({
     ...v,
     role: admin ? "admin" : "user",
     teams: JSON.parse(teams)

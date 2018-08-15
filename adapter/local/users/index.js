@@ -58,7 +58,11 @@ const getUser = async ({ username = "", password = "", db }) => {
 
 // TODO Should we... use helpers for these? filter out passwords here?
 const getUsers = async ({ db }) => {
-  return db.get("users").value();
+  const value = db
+    .get("users")
+    .value()
+    .map(({ password, ...others }) => others);
+  return value;
 };
 
 const deleteUser = async ({ id, db }) => {
@@ -70,17 +74,26 @@ const deleteUser = async ({ id, db }) => {
 
 // TODO Redunant function. Same as setUserProps.
 const editUser = async ({ user, db }) => {
-  const { id, username, name, password, role, teams } = user;
+  const { id, username, name, password = "", role, teams } = user;
   await db
     .get("users")
     .find({ id: id })
-    .assign({
-      username,
-      name,
-      password,
-      role,
-      teams
-    })
+    .assign(
+      !!password
+        ? {
+            username,
+            name,
+            password,
+            role,
+            teams
+          }
+        : {
+            username,
+            name,
+            role,
+            teams
+          }
+    )
     .write();
 };
 

@@ -4,22 +4,22 @@ export const initialState = {
   data: [{ id: 1, name: "Apple" }, { id: 2, name: "Pear" }, { id: 3, name: "Banana" }]
 };
 
-export default (state = initialState, { type, users = {}, userId, userData }) => {
+export default (state = initialState, { type, users = {}, userId, userData = {} }) => {
+  const { password, ..._userData } = userData;
   switch (type) {
     case PAYLOAD_USERS:
       return { ...users };
     case DELETE_USER:
       return {
-        data: state.data.filter(user => user.id !== userId)
+        data: state.data.filter(user => user.id !== userId).map(({ password, ...user }) => user)
       };
     case EDIT_USER:
-      //TODO: replace user with given payload
       return {
-        data: state.data.map(user => (user.id !== userData.id ? user : userData))
+        data: state.data.map(({ password, ...user }) => (user.id !== userData.id ? user : _userData))
       };
     case CREATE_USER:
       return {
-        data: state.data.concat([userData])
+        data: state.data.concat([userData]).map(({ password, ...user }) => user)
       };
     default:
       return state;

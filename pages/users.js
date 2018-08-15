@@ -178,6 +178,11 @@ class Users extends Component {
                         />
                       ))}
                   </MediaCardContent>
+                  <ActionGroup>
+                    <Button color="primary" size="sm">
+                      Manage Teams
+                    </Button>
+                  </ActionGroup>
                   <ActionGroup
                     shown={
                       loggedInUser.role === "admin" ||

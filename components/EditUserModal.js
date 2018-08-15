@@ -23,6 +23,7 @@ export class EditUserModal extends Component {
     const { user } = props;
     this.state = {
       ...user,
+      password: "",
       confirmPassword: "",
       nameValid: "",
       emailValid: "",
@@ -49,6 +50,7 @@ export class EditUserModal extends Component {
     this.setState({
       ...this.state,
       ...user,
+      password: "",
       teamsWithStatus,
       confirmPassword: ""
     });
@@ -75,8 +77,6 @@ export class EditUserModal extends Component {
     const value = e.target.value;
     name === "name" && this.setState({ nameValid: isRequired(value) });
     name === "email" && this.setState({ emailValid: isEmail(value) });
-    name === "password" && this.setState({ passwordValid: isRequired(value) });
-    name === "passwordConfirm" && this.setState({ passwordValid: isRequired(value) });
     this.isPasswordMatched(name, value);
     this.setState({
       [fieldName]: e.target.value
@@ -86,8 +86,10 @@ export class EditUserModal extends Component {
   isPasswordMatched = (name, value) => {
     if (name === "password") {
       if (value !== this.state.confirmPassword) this.setState({ passwordValid: "Password is not matched" });
+      else this.setState({ passwordValid: "" });
     } else if (name === "passwordConfirm") {
       if (value !== this.state.password) this.setState({ passwordValid: "Password is not matched" });
+      else this.setState({ passwordValid: "" });
     }
   };
 

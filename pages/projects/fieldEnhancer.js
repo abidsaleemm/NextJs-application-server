@@ -43,7 +43,6 @@ export default props => {
         patientID,
         patientName,
         patientBirthDate,
-        videoExists,
         encoding = "",
         uploadedFiles = [],
         sample = false,
@@ -93,7 +92,6 @@ export default props => {
           </ButtonGroup>
         ),
         patientAge: patientBirthDate ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear() : "",
-        videoExists,
         videoOptions: hasProjectSnapshots ? (
           <div style={{ display: "inline-flex" }}>
             <style jsx>
@@ -119,11 +117,7 @@ export default props => {
               <div className="renderTextEncoding">
                 Encoding ({Math.floor((new Date() - new Date(encoding)) / 1000 / 60)} min. elapsed)
               </div>
-            ) : videoExists ? (
-              <div className="renderTextYes">Yes</div>
-            ) : (
-              <div className="renderTextNo">No</div>
-            )}
+            ) : null}
           </div>
         ) : null,
         uploadedFiles,

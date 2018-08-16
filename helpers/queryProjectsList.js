@@ -45,10 +45,6 @@ export default async ({ role, userID, userList = [] }) => {
           studyUID,
           multusID,
           status: status,
-          videoExists:
-            (await fileGet({
-              path: `${studyUID}/${videoFileName}`
-            })) !== undefined,
           uploadedFiles: await fileList({ path: studyUID }),
           sample
         };

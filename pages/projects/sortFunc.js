@@ -16,7 +16,6 @@ const strSort = (a = "", b = "") => {
 export default () => ({
   userRender: ({ userName: a = "" }, { userName: b = "" }) => strSort(a, b),
   statusRender: ({ status: a = "" }, { status: b = "" }) => strSort(a, b),
-  videoOptions: ({ videoExists: a }, { videoExists: b }) => a - b,
   patientName: ({ patientName: a }, { patientName: b }) => strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => {
     const testA = parseInt(a);

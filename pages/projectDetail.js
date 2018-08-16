@@ -14,18 +14,9 @@ const ProjectDetails = class extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: {
-      projectDetail = {},
-      projectDetailSettings = {},
-      projects = {},
-      studyUID = ""
-    }
+    query: { projectDetail = {}, projectDetailSettings = {}, projects = {}, studyUID = "" }
   }) {
-    const {
-      payloadProjectDetail,
-      payloadProjects,
-      setProjectDetailSettings
-    } = actions;
+    const { payloadProjectDetail, payloadProjects, setProjectDetailSettings } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
@@ -62,6 +53,7 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         projects = [],
+        notes = ``,
         projectsListSortKey = "",
         projectsListSortDesc = false,
         toggleSidebar = () => {},
@@ -74,11 +66,10 @@ const ProjectDetails = class extends Component {
       state: { modalProjectsList = false }
     } = this;
 
+    // setProjectProps({ studyUID, notes: '' })
+    
     const selectedDefaultProject =
-      projects.find(
-        ({ studyUID: testStudyUID }) =>
-          defaultStudyUID === testStudyUID
-      ) || {};
+      projects.find(({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID) || {};
 
     const {
       patientName: defaultPatientName,
@@ -87,9 +78,7 @@ const ProjectDetails = class extends Component {
     } = selectedDefaultProject;
 
     // TODO Calculate using current date for now
-    const patientAge =
-      new Date().getFullYear() -
-      new Date(patientBirthDate).getFullYear();
+    const patientAge = new Date().getFullYear() - new Date(patientBirthDate).getFullYear();
 
     return (
       <div
@@ -152,11 +141,7 @@ const ProjectDetails = class extends Component {
             }
           `}
         </style>
-        <Sidebar
-          toggleSidebar={toggleSidebar}
-          isOpen={sidebarIsOpen}
-          width={400}
-        >
+        <Sidebar toggleSidebar={toggleSidebar} isOpen={sidebarIsOpen} width={400}>
           <div className="projectDetailLeft">
             <div>
               <div className="Sidebar-header">Project Details</div>
@@ -201,6 +186,15 @@ const ProjectDetails = class extends Component {
               </Table>
             </div>
             <div>
+              <Button
+                onClick={() => {
+                  console.log("onClick");
+                }}
+              >
+                Notes
+              </Button>
+            </div>
+            <div>
               <Table hover>
                 <thead>
                   <tr>
@@ -211,10 +205,7 @@ const ProjectDetails = class extends Component {
                   {uploadedFiles.map((name, i) => (
                     <tr key={`attached-files-${i}`}>
                       <td>
-                        <a
-                          href={`/uploadGet/?id=${studyUID}&name=${name}`}
-                          target="_UploadPreview"
-                        >
+                        <a href={`/uploadGet/?id=${studyUID}&name=${name}`} target="_UploadPreview">
                           {name}
                         </a>
                       </td>
@@ -228,18 +219,10 @@ const ProjectDetails = class extends Component {
               <div>Data functions</div>
               <div className="dataFunctionGroup">
                 <div className="dataFunction">
-                  <UploadButton
-                    studyUID={studyUID}
-                    handleUpload={handleProjectImport}
-                    label="Import"
-                  />
+                  <UploadButton studyUID={studyUID} handleUpload={handleProjectImport} label="Import" />
                 </div>
                 <div className="dataFunction">
-                  <a
-                    className="btn btn-secondary"
-                    target="_projectExport"
-                    href={`/export/?studyUID=${studyUID}`}
-                  >
+                  <a className="btn btn-secondary" target="_projectExport" href={`/export/?studyUID=${studyUID}`}>
                     Export
                   </a>
                 </div>
@@ -293,10 +276,7 @@ const ProjectDetails = class extends Component {
           }}
           projects={projects
             .filter(({ hasProjectSnapshots }) => hasProjectSnapshots)
-            .filter(
-              ({ studyUID: testStudyUID }) =>
-                studyUID !== testStudyUID
-            )
+            .filter(({ studyUID: testStudyUID }) => studyUID !== testStudyUID)
             .map(
               v =>
                 defaultStudyUID === v.studyUID
@@ -333,11 +313,7 @@ const ProjectDetails = class extends Component {
 const mapStateToProps = ({
   projectDetail,
   projects: { projects },
-  projectDetailSettings: {
-    sidebarIsOpen,
-    projectsListSortKey = "",
-    projectsListSortDesc = false
-  }
+  projectDetailSettings: { sidebarIsOpen, projectsListSortKey = "", projectsListSortDesc = false }
 }) => ({
   ...projectDetail,
   sidebarIsOpen,
@@ -346,8 +322,7 @@ const mapStateToProps = ({
   projectsListSortDesc
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(actions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 
 export default connect(
   mapStateToProps,

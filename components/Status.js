@@ -1,9 +1,15 @@
 import React from "react";
-import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from "reactstrap";
+import {
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown
+} from "reactstrap";
 
 export default ({
   status = "None",
   studyUID,
+  setSet = () => {},
   setProjectProps = () => {}
 }) => {
   return (

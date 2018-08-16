@@ -9,6 +9,7 @@ import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
 import CreateProjectModal from "../components/CreateProjectModal";
+import RichTextEditorModal from "../components/RichTextEditorModal";
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -35,9 +36,19 @@ const ProjectDetails = class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalProjectsList: false
+      modalProjectsList: false,
+      richTextEditor: false,
+      projectNotes: ""
     };
   }
+
+  onToggleRichTextEditor = () => {
+    const { richTextEditor } = this.state;
+    this.setState({
+      richTextEditor: !richTextEditor
+    });
+  };
+
   render() {
     const {
       props,
@@ -187,9 +198,7 @@ const ProjectDetails = class extends Component {
             </div>
             <div>
               <Button
-                onClick={() => {
-                  console.log("onClick");
-                }}
+                onClick={() => {this.onToggleRichTextEditor()}}
               >
                 Notes
               </Button>
@@ -304,6 +313,11 @@ const ProjectDetails = class extends Component {
               modalProjectsList: false
             });
           }}
+        />
+        <RichTextEditorModal
+          notes={this.state.projectNotes}
+          isOpen={this.state.richTextEditor}
+          toggle={this.onToggleRichTextEditor}
         />
       </div>
     );

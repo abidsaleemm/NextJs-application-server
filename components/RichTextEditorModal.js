@@ -48,7 +48,7 @@ export class RichTextEditorModal extends Component {
     } = this.state;
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle}>
+      <Modal isOpen={isOpen} toggle={toggle} contentClassName="modal-xl">
         <ModalBody>
           <div className="root">
             <style jsx>{`
@@ -57,8 +57,8 @@ export class RichTextEditorModal extends Component {
                 flex-direction: column;
                 border: 2px;
                 padding: 3px;
-                width: auto;
-                height: auto;
+                width: 700px;
+                height: 500px;
               }
             `}</style>
             <Editor

@@ -86,9 +86,9 @@ const ProjectDetails = class extends Component {
       state: { modalProjectsList = false }
     } = this;
 
-    // setProjectProps({ studyUID, notes: '' })
+  // setProjectProps({ studyUID, notes: '' })
 
-    const selectedDefaultProject =
+  const selectedDefaultProject =
       projects.find(
         ({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID
       ) || {};
@@ -344,7 +344,7 @@ const ProjectDetails = class extends Component {
           }}
         />
         <RichTextEditorModal
-          notes={this.state.projectNotes}
+          {...props}
           isOpen={this.state.richTextEditor}
           toggle={this.onToggleRichTextEditor}
         />

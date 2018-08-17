@@ -8,7 +8,7 @@ export default async ({ studyUID = "", tableName, tableAdapter: { queryTable }, 
   });
 
   if (project.length > 0) {
-    const { 0: { status = "None", defaultStudyUID, multusID, encoding, deleted, sample, userID } = {} } = project;
+    const { 0: { status = "None", defaultStudyUID, multusID, notes = "", encoding, deleted, sample, userID } = {} } = project;
 
     return {
       studyUID,
@@ -18,6 +18,7 @@ export default async ({ studyUID = "", tableName, tableAdapter: { queryTable }, 
       encoding,
       deleted,
       userID,
+      notes,
       sample: sample === "" ? false : sample ? true : false,
       hasProjectSnapshots: await hasProjectSnapshots({
         ...props,

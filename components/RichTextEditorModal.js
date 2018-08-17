@@ -3,7 +3,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, Modal, ModalHeader, ModalBody, InputGroup } from "reactstrap";
 import * as actions from "../actions";
-import { EditorState } from "draft-js";
+import {
+  EditorState,
+  ContentState,
+  convertToRaw,
+  convertFromRaw
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 
 export class RichTextEditorModal extends Component {
@@ -14,17 +19,33 @@ export class RichTextEditorModal extends Component {
     };
   }
 
-  onSubmit() {}
-
   onEditorStateChange = editorState => {
     this.setState({
       editorState
     });
   };
 
+  componentWillReceiveProps({ notes }) {
+    this.setState({
+      editorState: notes
+        ? EditorState.createWithContent(convertFromRaw(JSON.parse(notes)))
+        : EditorState.createEmpty()
+    });
+  }
+
   render() {
-    const { toggle, isOpen } = this.props;
-    const { editorState } = this.state;
+    const {
+      toggle,
+      isOpen,
+      setProjectProps = () => {},
+      studyUID,
+      notes
+    } = this.props;
+    const {
+      editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(notes))
+      )
+    } = this.state;
 
     return (
       <Modal isOpen={isOpen} toggle={toggle}>
@@ -51,7 +72,18 @@ export class RichTextEditorModal extends Component {
           <Button color="secondary" onClick={toggle}>
             Cancel
           </Button>{" "}
-          <Button color="primary" onClick={this.onSubmit}>
+          <Button
+            color="primary"
+            onClick={() => {
+              setProjectProps({
+                studyUID,
+                notes: JSON.stringify(
+                  convertToRaw(editorState.getCurrentContent())
+                )
+              }),
+                toggle();
+            }}
+          >
             Save
           </Button>
         </ModalBody>

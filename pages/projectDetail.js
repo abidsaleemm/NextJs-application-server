@@ -204,21 +204,6 @@ const ProjectDetails = class extends Component {
               </Table>
             </div>
             <div>
-              <Button
-                color={checkPlainTextNull(notes) ? "primary" : "secondary"}
-                onClick={() => {
-                  setNotesEditor({
-                    studyUID,
-                    notes,
-                    isOpen: true,
-                    header: `${patientName}`
-                  });
-                }}
-              >
-                Notes
-              </Button>
-            </div>
-            <div>
               <Table hover>
                 <thead>
                   <tr>
@@ -243,7 +228,6 @@ const ProjectDetails = class extends Component {
             </div>
             <div>
               <hr />
-              <div>Data functions</div>
               <div className="dataFunctionGroup">
                 <div className="dataFunction">
                   <UploadButton
@@ -262,14 +246,19 @@ const ProjectDetails = class extends Component {
                   </a>
                 </div>
                 <div className="dataFunction">
-                  <ButtonConfirm
-                    tipID="resetButton"
-                    color="warning"
-                    message="You are about to reset a project to the selected default.  This action can't be undone. Please confirm."
-                    onConfirm={() => resetProject({ studyUID })}
+                  <Button
+                    color={checkPlainTextNull(notes) ? "primary" : "secondary"}
+                    onClick={() => {
+                      setNotesEditor({
+                        studyUID,
+                        notes,
+                        isOpen: true,
+                        header: `${patientName}`
+                      });
+                    }}
                   >
-                    Reset
-                  </ButtonConfirm>
+                    Notes
+                  </Button>
                 </div>
                 <div className="dataFunction">
                   <ButtonConfirm

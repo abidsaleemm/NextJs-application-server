@@ -14,6 +14,7 @@ import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
+import { convertFromRaw } from "draft-js";
 
 const tableRowColor = status => {
   const options = {
@@ -27,6 +28,11 @@ const tableRowColor = status => {
   };
 
   return options[status] || "rgba(0, 0, 0, 0.0)";
+};
+
+const checkPlainTextNull = notes => {
+  if (notes !== "") return !!convertFromRaw(JSON.parse(notes)).getPlainText();
+  else return false;
 };
 
 export default props => {
@@ -70,7 +76,7 @@ export default props => {
         tableBackground: tableRowColor(status),
         notes: (
           <Button
-            color={notes !== "" ? "primary" : "secondary"}
+            color={checkPlainTextNull(notes) ? "primary" : "secondary"}
             onClick={() => onRichText({ studyUID, notes })}
           >
             Notes

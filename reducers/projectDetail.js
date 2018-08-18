@@ -12,7 +12,8 @@ export const initialState = {
   patientID: "",
   modality: "",
   location: "",
-  defaultName: ""
+  defaultName: "",
+  notes: ""
 };
 
 export default (

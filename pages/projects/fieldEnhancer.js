@@ -1,12 +1,20 @@
 import React from "react";
 import Router from "next/router";
-import { Button, ButtonGroup, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import {
+  Button,
+  ButtonGroup,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 
 import ButtonConfirm from "../../components/ButtonConfirm";
 import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
+import checkPlainTextNull from "../../helpers/checkPlainTextNull";
 
 const tableRowColor = status => {
   const options = {
@@ -31,7 +39,8 @@ export default props => {
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
     popupOpen = () => {},
-    onCreate = () => {}
+    onCreate = () => {},
+    setNotesEditor = () => {}
   } = props;
 
   return projects.map(
@@ -47,6 +56,7 @@ export default props => {
         uploadedFiles = [],
         sample = false,
         userID,
+        notes = "",
         ...project
       },
       i,
@@ -59,6 +69,21 @@ export default props => {
         status,
         statusRender: <Status {...{ ...props, status, studyUID }} />,
         tableBackground: tableRowColor(status),
+        notes: (
+          <Button
+            color={checkPlainTextNull(notes) ? "primary" : "secondary"}
+            onClick={() => {
+              setNotesEditor({
+                studyUID,
+                notes,
+                isOpen: true,
+                header: `${patientName} (${patientID})`
+              });
+            }}
+          >
+            Notes
+          </Button>
+        ),
         action: (
           <ButtonGroup>
             {!hasProjectSnapshots ? (
@@ -91,7 +116,9 @@ export default props => {
             </ButtonConfirm>
           </ButtonGroup>
         ),
-        patientAge: patientBirthDate ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear() : "",
+        patientAge: patientBirthDate
+          ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear()
+          : "",
         videoOptions: hasProjectSnapshots ? (
           <div style={{ display: "inline-flex" }}>
             <style jsx>
@@ -115,7 +142,9 @@ export default props => {
             <DropDownRenderOptions studyUID={studyUID} />
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
-                Encoding ({Math.floor((new Date() - new Date(encoding)) / 1000 / 60)} min. elapsed)
+                Encoding (
+                {Math.floor((new Date() - new Date(encoding)) / 1000 / 60)} min.
+                elapsed)
               </div>
             ) : null}
           </div>
@@ -137,18 +166,28 @@ export default props => {
                 {uploadedFiles.length}
               </Button>
             ) : null}
-            <UploadButton studyUID={studyUID} hasFiles={uploadedFiles.length > 0} handleUpload={handleUpload} />
+            <UploadButton
+              studyUID={studyUID}
+              hasFiles={uploadedFiles.length > 0}
+              handleUpload={handleUpload}
+            />
           </ButtonGroup>
         ),
         sample,
-        userName: (userList.find(({ id }) => userID && id === userID) || {}).name || "",
+        userName:
+          (userList.find(({ id }) => userID && id === userID) || {}).name || "",
         userRender: (
           <UncontrolledDropdown color="secondary">
             <DropdownToggle caret>
-              {(userList.find(({ id }) => userID && id === userID) || {}).name || "None"}
+              {(userList.find(({ id }) => userID && id === userID) || {})
+                .name || "None"}
             </DropdownToggle>
             <DropdownMenu>
-              <DropdownItem onClick={() => setProjectProps({ studyUID, userID: "" })}>None</DropdownItem>
+              <DropdownItem
+                onClick={() => setProjectProps({ studyUID, userID: "" })}
+              >
+                None
+              </DropdownItem>
               <DropdownItem header>Team Users</DropdownItem>
               {userList.map(({ id: userID, name, username }) => (
                 <DropdownItem

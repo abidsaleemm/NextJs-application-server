@@ -26,7 +26,7 @@ export default async ({ role, userID, userList = [] }) => {
         return userList.some(({ id }) => id === projectUserID);
       })
       .filter(([study, { deleted = false } = {}]) => study !== undefined && deleted !== true)
-      .map(async ([{ studyUID, studyName = "", ...study } = {}, { status, sample = false, ...project } = {}]) => {
+      .map(async ([{ studyUID, studyName = "", ...study } = {}, { status, notes, sample = false, ...project } = {}]) => {
         const { multusID = "" } = (await getProject({ studyUID })) || {};
 
         // TODO Cleanup.  Check for multiple video files an images
@@ -45,6 +45,7 @@ export default async ({ role, userID, userList = [] }) => {
           studyUID,
           multusID,
           status: status,
+          notes: notes,
           uploadedFiles: await fileList({ path: studyUID }),
           sample
         };

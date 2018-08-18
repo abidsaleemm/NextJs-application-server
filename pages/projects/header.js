@@ -12,5 +12,6 @@ export default () => ({
   studyDate: "Study Date",
   location: "Facility",
   uploadDateTime: "Date Uploaded",
-  upload: "Attach Records"
+  upload: "Attach Records",
+  notes: "Notes"
 });

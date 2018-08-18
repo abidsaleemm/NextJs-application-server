@@ -6,7 +6,8 @@ import Wrapper from "../../hoc/wrapper";
 import TableList from "../../components/TableList";
 import UploadFilePopup from "../../components/UploadFilePopup";
 import CreateProjectModal from "../../components/CreateProjectModal";
-//
+import RichTextEditorModal from "../../components/RichTextEditorModal";
+
 import fieldEnhancer from "./fieldEnhancer";
 import header from "./header";
 import sortFunc from "./sortFunc";
@@ -14,7 +15,11 @@ import filterRender from "./filterRender";
 import filterFunc from "./filterFunc";
 
 class ProjectsListing extends Component {
-  static async getInitialProps({ store, isServer, query: { users = [], projects = [], projectsSettings = {} } = {} }) {
+  static async getInitialProps({
+    store,
+    isServer,
+    query: { users = [], projects = [], projectsSettings = {} } = {}
+  }) {
     const { payloadProjects, payloadUsers, setProjectsSettings } = actions;
 
     if (isServer) {
@@ -71,9 +76,17 @@ class ProjectsListing extends Component {
         // userList = [],
         setProjectsSettings = () => {},
         uploadDel = () => {},
-        createProject = () => {}
+        createProject = () => {},
+        richText = () => {}
       } = {},
-      state: { popupTarget, popupStudyUID, modalCreateProjects = false, selectedStudyUID = null }
+      state: {
+        popupTarget,
+        popupStudyUID,
+        modalRichText = false,
+        modalCreateProjects = false,
+        selectedStudyUID = null,
+        notes = ""
+      }
     } = this;
 
     const projectsEnhanced = fieldEnhancer({
@@ -85,11 +98,20 @@ class ProjectsListing extends Component {
           selectedStudyUID: studyUID
         });
       },
+      onRichText: ({ studyUID, notes }) => {
+        this.setState({
+          modalRichText: true,
+          selectedStudyUID: studyUID,
+          notes
+        });
+      },
       popupOpen: this.popupOpen
     });
 
     // Query the study from tableData
-    const study = projects.find(({ studyUID = "" }) => studyUID === popupStudyUID);
+    const study = projects.find(
+      ({ studyUID = "" }) => studyUID === popupStudyUID
+    );
 
     const { uploadedFiles = [] } = study || {};
 
@@ -114,11 +136,35 @@ class ProjectsListing extends Component {
           filterRender={filterRender(props)}
           onSort={k => setProjectsSettings({ sortKey: k })}
         />
+
+        <RichTextEditorModal
+          toggle={() => {
+            this.setState({
+              modalRichText: !modalRichText
+            });
+          }}
+          setProjectProps={() => {
+            richText({
+              studyUID: selectedStudyUID,
+              defaultStudyUID: ""
+            });
+
+            this.setState({
+              modalRichText: false
+            });
+          }}
+          isOpen={modalRichText}
+          studyUID={selectedStudyUID}
+          notes={notes}
+        />
+
         <CreateProjectModal
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
           onSort={k => setProjectsSettings({ projectsListSortKey: k })}
-          projects={projects.filter(({ hasProjectSnapshots }) => hasProjectSnapshots)}
+          projects={projects.filter(
+            ({ hasProjectSnapshots }) => hasProjectSnapshots
+          )}
           onToggle={() => {
             this.setState({
               modalCreateProjects: !modalCreateProjects

@@ -1,9 +1,6 @@
 const entriesMap = entries =>
   entries.map(entry =>
-    Object.entries(entry).reduce(
-      (a, [k, { _: v }]) => ({ ...a, [k]: v }),
-      {}
-    )
+    Object.entries(entry).reduce((a, [k, { _: v }]) => ({ ...a, [k]: v }), {})
   );
 
 const queryTable = ({
@@ -28,9 +25,9 @@ const queryTable = ({
         const entriesMapped = entriesMap(entries);
 
         if (continuationToken !== (undefined || null)) {
-          const values = queryTable({
+          queryTable({
             tableName,
-            select,
+            query,
             continuationToken
           }).then(
             values => {

@@ -3,15 +3,10 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button, Modal, ModalHeader, ModalBody, InputGroup } from "reactstrap";
 import * as actions from "../actions";
-import {
-  EditorState,
-  ContentState,
-  convertToRaw,
-  convertFromRaw
-} from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 
-export class RichTextEditorModal extends Component {
+const RichTextEditorModal = class extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -35,11 +30,12 @@ export class RichTextEditorModal extends Component {
 
   render() {
     const {
-      toggle,
       isOpen,
-      setProjectProps = () => {},
       studyUID,
-      notes
+      notes,
+      header,
+      setProjectProps = () => {},
+      setNotesEditor = () => {}
     } = this.props;
     const {
       editorState = EditorState.createWithContent(
@@ -48,7 +44,14 @@ export class RichTextEditorModal extends Component {
     } = this.state;
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} contentClassName="modal-xl">
+      <Modal
+        isOpen={isOpen}
+        toggle={() => setNotesEditor({ isOpen: false })}
+        contentClassName="modal-xl"
+      >
+        <ModalHeader toggle={() => setNotesEditor({ isOpen: false })}>
+          {header}
+        </ModalHeader>
         <ModalBody>
           <div className="root">
             <style jsx>{`
@@ -69,19 +72,25 @@ export class RichTextEditorModal extends Component {
               onEditorStateChange={this.onEditorStateChange}
             />
           </div>
-          <Button color="secondary" onClick={toggle}>
+          <Button
+            color="secondary"
+            onClick={() => setNotesEditor({ isOpen: false })}
+          >
             Cancel
           </Button>{" "}
           <Button
             color="primary"
             onClick={() => {
+              const jsonPayload = JSON.stringify(
+                convertToRaw(editorState.getCurrentContent())
+              );
+
               setProjectProps({
                 studyUID,
-                notes: JSON.stringify(
-                  convertToRaw(editorState.getCurrentContent())
-                )
-              }),
-                toggle();
+                notes: jsonPayload
+              });
+
+              setNotesEditor({ isOpen: false });
             }}
           >
             Save
@@ -90,9 +99,16 @@ export class RichTextEditorModal extends Component {
       </Modal>
     );
   }
-}
+};
 
-const mapStateToProps = ({ userList }) => ({ userList });
+const mapStateToProps = ({
+  notesEditor: { notes, studyUID, isOpen, header }
+}) => ({
+  notes,
+  studyUID,
+  isOpen,
+  header
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

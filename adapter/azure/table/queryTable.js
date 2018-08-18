@@ -27,7 +27,6 @@ const queryTable = ({
         if (continuationToken !== (undefined || null)) {
           queryTable({
             tableName,
-            query,
             continuationToken
           }).then(
             values => {

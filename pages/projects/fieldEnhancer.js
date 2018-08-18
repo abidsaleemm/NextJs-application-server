@@ -38,7 +38,8 @@ export default props => {
     setProjectProps = () => {},
     toggleProjectDefault = () => {},
     popupOpen = () => {},
-    onCreate = () => {}
+    onCreate = () => {},
+    onRichText = () => {}
   } = props;
 
   return projects.map(
@@ -68,7 +69,12 @@ export default props => {
         statusRender: <Status {...{ ...props, status, studyUID }} />,
         tableBackground: tableRowColor(status),
         notes: (
-          <Button color={notes !== "" ? "primary" : "secondary"}>Notes</Button>
+          <Button
+            color={notes !== "" ? "primary" : "secondary"}
+            onClick={() => onRichText({ studyUID, notes })}
+          >
+            Notes
+          </Button>
         ),
         action: (
           <ButtonGroup>

@@ -10,6 +10,7 @@ import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
 import CreateProjectModal from "../components/CreateProjectModal";
 import RichTextEditorModal from "../components/RichTextEditorModal";
+import checkPlainTextNull from "../helpers/checkPlainTextNull";
 
 const ProjectDetails = class extends Component {
   static async getInitialProps({
@@ -45,18 +46,9 @@ const ProjectDetails = class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalProjectsList: false,
-      richTextEditor: false,
-      projectNotes: ""
+      modalProjectsList: false // TODO Move this to HOC
     };
   }
-
-  onToggleRichTextEditor = () => {
-    const { richTextEditor } = this.state;
-    this.setState({
-      richTextEditor: !richTextEditor
-    });
-  };
 
   render() {
     const {
@@ -72,8 +64,8 @@ const ProjectDetails = class extends Component {
         uploadedFiles = [],
         defaultStudyUID = "",
         location,
+        notes,
         projects = [],
-        notes = ``,
         projectsListSortKey = "",
         projectsListSortDesc = false,
         toggleSidebar = () => {},
@@ -81,14 +73,13 @@ const ProjectDetails = class extends Component {
         handleProjectImport = () => {},
         destroyProject = () => {},
         setProjectDetailSettings = () => {},
-        setProjectProps = () => {}
+        setProjectProps = () => {},
+        setNotesEditor = () => {}
       },
       state: { modalProjectsList = false }
     } = this;
 
-  // setProjectProps({ studyUID, notes: '' })
-
-  const selectedDefaultProject =
+    const selectedDefaultProject =
       projects.find(
         ({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID
       ) || {};
@@ -214,8 +205,14 @@ const ProjectDetails = class extends Component {
             </div>
             <div>
               <Button
+                color={checkPlainTextNull(notes) ? "primary" : "secondary"}
                 onClick={() => {
-                  this.onToggleRichTextEditor();
+                  setNotesEditor({
+                    studyUID,
+                    notes,
+                    isOpen: true,
+                    header: `${patientName}`
+                  });
                 }}
               >
                 Notes
@@ -343,11 +340,7 @@ const ProjectDetails = class extends Component {
             });
           }}
         />
-        <RichTextEditorModal
-          {...props}
-          isOpen={this.state.richTextEditor}
-          toggle={this.onToggleRichTextEditor}
-        />
+        <RichTextEditorModal />
       </div>
     );
   }

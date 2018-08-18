@@ -14,7 +14,7 @@ import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
 import RemoveButton from "../../components/RemoveButton";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
-import { convertFromRaw } from "draft-js";
+import checkPlainTextNull from "../../helpers/checkPlainTextNull";
 
 const tableRowColor = status => {
   const options = {
@@ -30,11 +30,6 @@ const tableRowColor = status => {
   return options[status] || "rgba(0, 0, 0, 0.0)";
 };
 
-const checkPlainTextNull = notes => {
-  if (notes !== "") return !!convertFromRaw(JSON.parse(notes)).getPlainText();
-  else return false;
-};
-
 export default props => {
   const {
     projects = [],
@@ -45,7 +40,7 @@ export default props => {
     toggleProjectDefault = () => {},
     popupOpen = () => {},
     onCreate = () => {},
-    onRichText = () => {}
+    setNotesEditor = () => {}
   } = props;
 
   return projects.map(
@@ -77,7 +72,14 @@ export default props => {
         notes: (
           <Button
             color={checkPlainTextNull(notes) ? "primary" : "secondary"}
-            onClick={() => onRichText({ studyUID, notes })}
+            onClick={() => {
+              setNotesEditor({
+                studyUID,
+                notes,
+                isOpen: true,
+                header: `${patientName} (${patientID})`
+              });
+            }}
           >
             Notes
           </Button>

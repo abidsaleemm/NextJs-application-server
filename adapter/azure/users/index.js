@@ -41,7 +41,7 @@ const editUser = async ({ tableName, user, tableAdapter }) => {
 const deleteUser = async ({ id, tableName, tableAdapter }) => {
   const { deleteEntity } = tableAdapter;
 
-  await deleteEntity({ tableName, key: id });
+  await deleteEntity({ tableName, key: id.toString() });
 };
 
 const createUser = async ({ user, tableName, tableAdapter }) => {

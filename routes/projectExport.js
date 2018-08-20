@@ -1,6 +1,4 @@
 import authMiddleware from "../auth/middleware";
-// import { getProjectSnapshot } from "../projects";
-// import { getStudy } from "../dicom";
 import { adapter } from "../server";
 
 export default ({ server, app }) => {
@@ -15,7 +13,9 @@ export default ({ server, app }) => {
     const project = await getProjectSnapshot({ studyUID });
 
     // Lookup DICOM tag info
-    const { patientName } = await getStudy({ studyUID });
+    const { patientName, studyType, studyDate } = await getStudy({ studyUID });
+
+    const filename = `${patientName} - ${studyType} - ${studyDate}`;
 
     // TODO Add some sort of try /catch here and handle error
     const serialize = JSON.stringify(project);
@@ -25,7 +25,7 @@ export default ({ server, app }) => {
     res.setHeader("Content-Length", serialize.length);
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="${patientName}.json"`
+      `attachment; filename="${filename}.json"`
     );
     res.status(200).end(serialize, "binary");
   });

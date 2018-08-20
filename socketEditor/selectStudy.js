@@ -1,10 +1,11 @@
 import selectSeries from "./selectSeries";
+
 import { adapter } from "../server";
 
 export default async ({ socket, action }) => {
   const {
     projects: { getProjectSnapshot = () => {} } = {},
-    dicom: { getSeries = () => {} } = {}
+    dicom: { getSeries = () => {}, getStudy = () => {} } = {}
   } = adapter;
   const { studyUID, loadImages } = action;
 
@@ -18,8 +19,7 @@ export default async ({ socket, action }) => {
   }
 
   const dicomSeries = (await getSeries({ studyUID })).filter(
-    ({ seriesName }) =>
-      seriesName !== undefined && seriesName !== null
+    ({ seriesName }) => seriesName !== undefined && seriesName !== null
   );
 
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
@@ -32,6 +32,8 @@ export default async ({ socket, action }) => {
     ? projectSelectedSeries
     : firstSeriesUID;
 
+  const { studyType } = (await getStudy({ studyUID })) || {};
+
   // Send Payload first
   await new Promise((resolve, reject) => {
     socket.emit(
@@ -42,7 +44,8 @@ export default async ({ socket, action }) => {
           ...project,
           selectedSeries,
           dicomSeries,
-          studyUID
+          studyUID,
+          studyType
         }
       },
       err => (err ? reject() : resolve())

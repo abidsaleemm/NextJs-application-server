@@ -17,6 +17,7 @@
     "@babel/polyfill": "7.0.0-beta.54",
     "@babel/preset-env": "7.0.0-beta.54",
     "@babel/register": "7.0.0-beta.54",
+    "adapters": "git+ssh://git@github.com/MultusMedical/adapters.git#master",
     "autoprefixer": "9.0.1",
     "availity-reactstrap-validation": "^2.0.4",
     "azure-storage": "2.10.0",

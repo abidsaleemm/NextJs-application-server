@@ -32,11 +32,7 @@ const templateActions = {
     });
 
     const videoFileName = createVideoFileName({
-      patientName: anonymous
-        ? "Anonymous"
-        : debug
-          ? "Debug"
-          : patientName,
+      patientName: anonymous ? "Anonymous" : debug ? "Debug" : patientName,
       studyType,
       studyDate
     });
@@ -48,9 +44,7 @@ const templateActions = {
       console.log("Saving Video.");
 
       const path = `${studyUID}/${videoFileName}`; // TODO create filename based on
-      const stream = fs.createReadStream(
-        `${os.tmpdir()}/${session}/video.mp4`
-      );
+      const stream = fs.createReadStream(`${os.tmpdir()}/${session}/video.mp4`);
 
       await filePut({ path, stream });
 
@@ -85,29 +79,25 @@ const templateActions = {
       }-${studyType}-${studyDate}.zip`;
       const zipFilePath = `${os.tmpdir()}/${session}.zip`;
 
-      zipFolder(
-        `${os.tmpdir()}/${session}`,
-        zipFilePath,
-        async err => {
-          if (err) {
-            console.log("Error", err);
-            reject(err);
-            return;
-          }
-
-          const stream = fs.createReadStream(zipFilePath);
-
-          const path = `${studyUID}/${zipFileName}`;
-          await filePut({ path, stream });
-
-          // Removing generated zip file.
-          // TODO maybe use direct stream instead?
-          fs.unlinkSync(zipFilePath);
-
-          await cleanup({ session });
-          resolve();
+      zipFolder(`${os.tmpdir()}/${session}`, zipFilePath, async err => {
+        if (err) {
+          console.log("Error", err);
+          reject(err);
+          return;
         }
-      );
+
+        const stream = fs.createReadStream(zipFilePath);
+
+        const path = `${studyUID}/${zipFileName}`;
+        await filePut({ path, stream });
+
+        // Removing generated zip file.
+        // TODO maybe use direct stream instead?
+        fs.unlinkSync(zipFilePath);
+
+        await cleanup({ session });
+        resolve();
+      });
     }),
   spineComparison: async ({
     studyUID,
@@ -138,9 +128,7 @@ const templateActions = {
       console.log("Saving Video.");
 
       const path = `${studyUID}/${videoFileName}`; // TODO create filename based on
-      const stream = fs.createReadStream(
-        `${os.tmpdir()}/${session}/video.mp4`
-      );
+      const stream = fs.createReadStream(`${os.tmpdir()}/${session}/video.mp4`);
 
       await filePut({ path, stream });
 
@@ -178,6 +166,6 @@ export default async ({ socket, action }) => {
       studyUID
     });
 
-    // socket.emit("action", { type: "CAPTURE_CLOSE" });
+    socket.emit("action", { type: "CAPTURE_CLOSE" });
   }
 };

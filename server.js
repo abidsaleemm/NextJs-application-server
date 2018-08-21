@@ -11,7 +11,7 @@ import auth from "./auth";
 import routes from "./routes";
 import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
-import storageAdapter from "./adapter";
+import storageAdapter from "adapters";
 
 // TODO This is not the best way.  Works for now but should be passed through as props.
 export const adapter = storageAdapter({

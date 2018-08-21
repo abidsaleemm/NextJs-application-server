@@ -8,6 +8,15 @@ require("@babel/register")({
         }
       }
     ]
+  ],
+  ignore: [
+    function (filepath) {
+      console.log(filepath);
+      if (filepath.includes("node_modules")) {
+        return filepath.includes("/adapters/") ? false : true;
+      }
+      return false;
+    }
   ]
 });
 require("@babel/polyfill");

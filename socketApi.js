@@ -34,11 +34,11 @@ export default ({
       request: { session: { passport: { user } = {} } = {} } = {}
     } = socket;
 
-    // This validates user session
-    // TODO Might be a more clean way to handle this.  Can use middleware?
-    if (user === undefined) {
-      return;
-    }
+    // // This validates user session
+    // // TODO Might be a more clean way to handle this.  Can use middleware?
+    // if (user === undefined) {
+    //   return;
+    // }
 
     socket.on("action", async ({ type = "", ...action }) => {
       const [prefix, parseType] = type.split("/"); // TODO Could break if action name contains more /

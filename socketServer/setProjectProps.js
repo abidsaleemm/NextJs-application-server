@@ -6,7 +6,7 @@ export default async ({
   
   const { projects: { setProject = () => {} } = {}, renders: { setRender = () => {} } = {} } = adapter;
   if(props.status === "Done")
-    setRender({ studyUID });
+    await setRender({ studyUID });
   else  
     setProject({ studyUID, props });
 };

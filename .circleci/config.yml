@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Deploying Staging
           command: |
-            cp ${HOME}/.ssh/id_rsa_circleci_remote_docker_engine id_rsa
+            cp ${HOME}/.ssh/id_rsa_defd0aa5ab2859008ec6f163f586cb07 id_rsa
             ls ${HOME}/.ssh
             docker build -t multus/application-server:staging --build-arg MACHINENAME=application-server-staging .
             docker login -u $DOCKER_USER -p $DOCKER_PASS

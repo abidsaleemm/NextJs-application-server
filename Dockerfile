@@ -6,6 +6,8 @@ ENV MACHINENAME=${MACHINENAME}
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs
 
+COPY id_rsa /root/.ssh/
+
 WORKDIR /usr/src
 
 # Setup ffmpeg to handle video rendering.

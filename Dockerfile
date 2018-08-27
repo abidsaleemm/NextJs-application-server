@@ -1,12 +1,12 @@
 FROM node:stretch
 
+COPY id_rsa /root/.ssh/
+
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
 
 RUN mkdir -p /usr/src
 RUN mkdir -p /usr/src/certs
-
-COPY id_rsa /root/.ssh/
 
 WORKDIR /usr/src
 
@@ -18,8 +18,6 @@ RUN npm install pm2 -g
 
 # Bundle app source
 COPY . /usr/src/
-
-# RUN chmod -R 0755 /usr/src/static
 
 RUN npm install
 RUN npm run build

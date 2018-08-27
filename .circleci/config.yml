@@ -26,8 +26,8 @@ jobs:
     working_directory: ~/repo
     steps:
       - add_ssh_keys:
-        fingerprints:
-          - "51:d4:b3:1c:79:54:29:da:09:68:fe:40:05:5d:06:bd"
+          fingerprints:
+            - "51:d4:b3:1c:79:54:29:da:09:68:fe:40:05:5d:06:bd"
       - checkout
       - run:
           name: Downloading Artifacts

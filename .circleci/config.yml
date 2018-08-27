@@ -36,7 +36,7 @@ jobs:
       - setup_remote_docker
       - add_ssh_keys:
           fingerprints:
-            - "51:d4:b3:1c:79:54:29:da:09:68:fe:40:05:5d:06:bd"
+            - "de:fd:0a:a5:ab:28:59:00:8e:c6:f1:63:f5:86:cb:07"
       - run:
           name: Deploying Staging
           command: |

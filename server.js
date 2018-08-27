@@ -70,12 +70,12 @@ app.prepare().then(() => {
   if (!dev) {
     server.use(
       "/static/interface",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       express.static("static/interface")
     );
     server.use(
       "/static/render",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       express.static("static/render")
     );
 
@@ -84,7 +84,7 @@ app.prepare().then(() => {
     // Used for local testing.
     server.use(
       "/static/interface", // TODO Change name from interface to editor
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8081",
@@ -95,7 +95,7 @@ app.prepare().then(() => {
 
     server.use(
       "/static/render",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8082",
@@ -115,9 +115,7 @@ app.prepare().then(() => {
     // Handle port 80 redirect if portal.multusmedical.com
     http
       .createServer((req, res) => {
-        const {
-          headers: { host = "portal.multusmedical.com" } = {}
-        } = req;
+        const { headers: { host = "portal.multusmedical.com" } = {} } = req;
 
         res.writeHead(301, { Location: `https://${host}` });
         res.end();
@@ -132,16 +130,14 @@ app.prepare().then(() => {
       cert: fs.readFileSync("certs/fullchain4.pem")
     };
 
-    const serverHttp = https
-      .createServer(options, server)
-      .listen(port, () => {
-        console.log(`SSL listening on *:${port}`);
-        const io = socketApi({
-          server: serverHttp,
-          passport,
-          sessionMiddleWare
-        });
+    const serverHttp = https.createServer(options, server).listen(port, () => {
+      console.log(`SSL listening on *:${port}`);
+      const io = socketApi({
+        server: serverHttp,
+        passport,
+        sessionMiddleWare
       });
+    });
   } else {
     // Used for local development
     const serverHttp = server.listen(port, () => {

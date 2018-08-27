@@ -11,7 +11,7 @@ import auth from "./auth";
 import routes from "./routes";
 import socketApi from "./socketApi";
 import authMiddleware from "./auth/middleware";
-import storageAdapter from "./adapter";
+import storageAdapter from "adapters";
 
 // TODO This is not the best way.  Works for now but should be passed through as props.
 export const adapter = storageAdapter({
@@ -70,12 +70,12 @@ app.prepare().then(() => {
   if (!dev) {
     server.use(
       "/static/interface",
-      authMiddleware({ redirect: false }),
+      // authMiddleware({ redirect: false }),
       express.static("static/interface")
     );
     server.use(
       "/static/render",
-      authMiddleware({ redirect: false }),
+      // authMiddleware({ redirect: false }),
       express.static("static/render")
     );
 
@@ -84,7 +84,7 @@ app.prepare().then(() => {
     // Used for local testing.
     server.use(
       "/static/interface", // TODO Change name from interface to editor
-      authMiddleware({ redirect: false }),
+      // authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8081",
@@ -95,7 +95,7 @@ app.prepare().then(() => {
 
     server.use(
       "/static/render",
-      authMiddleware({ redirect: false }),
+      // authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8082",

@@ -1,6 +1,7 @@
 FROM node:stretch
 
 ADD id_rsa ~/.ssh/id_rsa
+RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

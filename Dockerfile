@@ -4,7 +4,8 @@ RUN mkdir ~/.ssh
 COPY id_rsa_adapters ~/.ssh/
 RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 ADD dockersshconfig ~/.ssh/config
-# RUN ssh-add ~/.ssh/id_rsa_adapters
+RUN eval "$(ssh-agent -s)"
+RUN ssh-add ~/.ssh/id_rsa_adapters
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

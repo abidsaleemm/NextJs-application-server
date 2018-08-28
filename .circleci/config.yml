@@ -13,6 +13,11 @@ jobs:
             npm i wget-improved
             node ./.circleci/artifacts.js
             rm artifacts.json
+      - run:
+          name: Install and Build
+          command: |
+            npm install
+            npm run build
       - setup_remote_docker
       - run:
           name: Deploying Production
@@ -34,20 +39,14 @@ jobs:
             node ./.circleci/artifacts.js
             rm artifacts.json
       - run:
-          name: Deploying Staging
+          name: Install and Build
           command: |
             npm install
             npm run build
       - setup_remote_docker
-      # - add_ssh_keys:
-      # fingerprints:
-      # - "de:fd:0a:a5:ab:28:59:00:8e:c6:f1:63:f5:86:cb:07"
       - run:
           name: Deploying Staging
           command: |
-            # cp ${HOME}/.ssh/id_rsa_defd0aa5ab2859008ec6f163f586cb07 id_rsa_adapters
-            # cat ${HOME}/.ssh/config
-            ls -l
             docker build -t multus/application-server:staging --build-arg MACHINENAME=application-server-staging .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push multus/application-server:staging

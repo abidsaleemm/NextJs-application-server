@@ -8,3 +8,4 @@ projectsLocal
 sessiondb
 bitbucket-pipelines.yml
 .env
+dockersshconfig

@@ -3,7 +3,8 @@ FROM node:stretch
 RUN mkdir ~/.ssh
 COPY id_rsa_adapters ~/.ssh/
 RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-RUN ssh-add ~/.ssh/id_rsa_adapters
+ADD dockersshconfig ~/.ssh/config
+# RUN ssh-add ~/.ssh/id_rsa_adapters
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

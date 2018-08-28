@@ -1,6 +1,6 @@
 FROM node:stretch
 
-COPY id_rsa /root/.ssh/
+ADD id_rsa ~/.ssh/id_rsa
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

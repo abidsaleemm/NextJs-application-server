@@ -15,6 +15,7 @@ import storageAdapter from "adapters";
 
 // TODO This is not the best way.  Works for now but should be passed through as props.
 export const adapter = storageAdapter({
+  path: "../projectsLocal",
   local: process.env.LOCAL,
   storageAccount: process.env.STORAGE_ACCOUNT,
   storageKey: process.env.STORAGE_ACCOUNT_KEY
@@ -115,9 +116,7 @@ app.prepare().then(() => {
     // Handle port 80 redirect if portal.multusmedical.com
     http
       .createServer((req, res) => {
-        const {
-          headers: { host = "portal.multusmedical.com" } = {}
-        } = req;
+        const { headers: { host = "portal.multusmedical.com" } = {} } = req;
 
         res.writeHead(301, { Location: `https://${host}` });
         res.end();
@@ -132,16 +131,14 @@ app.prepare().then(() => {
       cert: fs.readFileSync("certs/fullchain4.pem")
     };
 
-    const serverHttp = https
-      .createServer(options, server)
-      .listen(port, () => {
-        console.log(`SSL listening on *:${port}`);
-        const io = socketApi({
-          server: serverHttp,
-          passport,
-          sessionMiddleWare
-        });
+    const serverHttp = https.createServer(options, server).listen(port, () => {
+      console.log(`SSL listening on *:${port}`);
+      const io = socketApi({
+        server: serverHttp,
+        passport,
+        sessionMiddleWare
       });
+    });
   } else {
     // Used for local development
     const serverHttp = server.listen(port, () => {

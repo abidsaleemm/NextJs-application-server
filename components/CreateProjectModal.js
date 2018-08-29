@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 import TableList from "./TableList";
 
@@ -38,8 +32,7 @@ const sortFunc = () => ({
   status: ({ status: a = "" }, { status: b = "" }) => strSort(a, b),
   sampleRender: ({ sample: a = false }, { sample: b = false }) =>
     a === b ? 0 : a ? -1 : 1,
-  patientName: ({ patientName: a }, { patientName: b }) =>
-    strSort(a, b),
+  patientName: ({ patientName: a }, { patientName: b }) => strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => {
     const testA = parseInt(a);
     const testB = parseInt(b);
@@ -60,25 +53,20 @@ export default ({
   onToggle = () => {},
   onRowClick = () => {}
 }) => {
-  const projectsEnhanced = projects.map(
-    ({ patientBirthDate = new Date(), sample = false, ...v }) => {
+  const projectsEnhanced = projects
+    .filter(({ status }) => status === "Delivered" || status === "Archived")
+    .map(({ patientBirthDate = new Date(), sample = false, ...v }) => {
       return {
         ...v,
         sample,
         patientAge:
-          new Date().getFullYear() -
-          new Date(patientBirthDate).getFullYear(),
+          new Date().getFullYear() - new Date(patientBirthDate).getFullYear(),
         sampleRender: sample ? "X" : null
       };
-    }
-  );
+    });
 
   return (
-    <Modal
-      style={{ maxWidth: "80%" }}
-      isOpen={isOpen}
-      toggle={onToggle}
-    >
+    <Modal style={{ maxWidth: "80%" }} isOpen={isOpen} toggle={onToggle}>
       <style jsx>
         {`
           @media (class: max-width: 80%;) {

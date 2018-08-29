@@ -86,6 +86,16 @@ export default ({
         >
           Delivered
         </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectProps({
+              studyUID,
+              status: "Archived"
+            })
+          }
+        >
+          Archived
+        </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
   );

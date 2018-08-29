@@ -15,6 +15,7 @@ import storageAdapter from "adapters";
 
 // TODO This is not the best way.  Works for now but should be passed through as props.
 export const adapter = storageAdapter({
+  path: "../projectsLocal",
   local: process.env.LOCAL,
   storageAccount: process.env.STORAGE_ACCOUNT,
   storageKey: process.env.STORAGE_ACCOUNT_KEY

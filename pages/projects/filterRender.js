@@ -27,9 +27,7 @@ export default ({
       <DropdownToggle caret>{status}</DropdownToggle>
       <DropdownMenu>
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "All" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "All" } })}
         >
           All
         </DropdownItem>
@@ -44,16 +42,12 @@ export default ({
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "None" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "None" } })}
         >
           None
         </DropdownItem>
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Start" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "Start" } })}
         >
           Start
         </DropdownItem>
@@ -74,16 +68,12 @@ export default ({
           Injuries
         </DropdownItem>
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Review" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "Review" } })}
         >
           Review
         </DropdownItem>
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Done" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "Done" } })}
         >
           Done
         </DropdownItem>
@@ -101,6 +91,13 @@ export default ({
         >
           Delivered
         </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { status: "Archived" } })
+          }
+        >
+          Archived
+        </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
   ),
@@ -109,9 +106,7 @@ export default ({
       type="text"
       name={`filter-patientName`}
       value={patientName}
-      onClear={() =>
-        setProjectsSettings({ filter: { patientName: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { patientName: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { patientName: value } })
       }
@@ -122,9 +117,7 @@ export default ({
       type="text"
       name={`filter-patientBirthDate`}
       value={patientBirthDate}
-      onClear={() =>
-        setProjectsSettings({ filter: { patientBirthDate: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { patientBirthDate: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { patientBirthDate: value } })
       }
@@ -135,9 +128,7 @@ export default ({
       type="text"
       name={`filter-studyName`}
       value={studyName}
-      onClear={() =>
-        setProjectsSettings({ filter: { studyName: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { studyName: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { studyName: value } })
       }
@@ -148,9 +139,7 @@ export default ({
       type="text"
       name={`filter-location`}
       value={location}
-      onClear={() =>
-        setProjectsSettings({ filter: { location: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { location: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { location: value } })
       }
@@ -182,9 +171,7 @@ export default ({
       type="text"
       name={`filter-uploadDateTime`}
       value={uploadDateTime}
-      onClear={() =>
-        setProjectsSettings({ filter: { uploadDateTime: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { uploadDateTime: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { uploadDateTime: value } })
       }
@@ -195,9 +182,7 @@ export default ({
       type="text"
       name={`filter-studyDate`}
       value={studyDate}
-      onClear={() =>
-        setProjectsSettings({ filter: { studyDate: "" } })
-      }
+      onClear={() => setProjectsSettings({ filter: { studyDate: "" } })}
       onChange={({ target: { value } = {} }) =>
         setProjectsSettings({ filter: { studyDate: value } })
       }

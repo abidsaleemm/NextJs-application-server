@@ -6,13 +6,18 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: 
+      - run:
           name: Downloading Artifacts
           command: |
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
             npm i wget-improved
             node ./.circleci/artifacts.js
             rm artifacts.json
+      - run:
+          name: Install and Build
+          command: |
+            npm install
+            npm run build
       - setup_remote_docker
       - run:
           name: Deploying Production
@@ -26,18 +31,22 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: 
+      - run:
           name: Downloading Artifacts
           command: |
             curl https://circleci.com/api/v1.1/project/github/MultusMedical/application-interface/latest/artifacts?circle-token=$CIRCLE_TOKEN > artifacts.json
             npm i wget-improved
             node ./.circleci/artifacts.js
             rm artifacts.json
+      - run:
+          name: Install and Build
+          command: |
+            npm install
+            npm run build
       - setup_remote_docker
       - run:
           name: Deploying Staging
           command: |
-            cp ${HOME}/.ssh/id_circleci_github id_rsa
             docker build -t multus/application-server:staging --build-arg MACHINENAME=application-server-staging .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push multus/application-server:staging

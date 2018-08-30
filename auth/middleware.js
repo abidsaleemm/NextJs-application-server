@@ -1,6 +1,6 @@
 export default ({ redirect = true } = {}) => (req, res, next) => {
   // Check if a user session
-  if (!req.isAuthenticated()) {
+  if (!req.isAuthenticated() && req.query.token !== process.env.TOKEN && !req.session.isFromDocker) {
     if (redirect === true) {
       res.redirect("/");
     } else {
@@ -11,8 +11,11 @@ export default ({ redirect = true } = {}) => (req, res, next) => {
     return;
   }
 
+  if (req.query.token == process.env.TOKEN) {
+    req.session.isFromDocker = true;
+  }
   const {
-    user: { role = "user" },
+    user: { role = "user" } = {},
     path = ""
   } = req;
 

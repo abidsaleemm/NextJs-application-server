@@ -1,8 +1,8 @@
 import queryProjectDetail from "../helpers/queryProjectDetail";
-import queryProjectsList from "../helpers/queryProjectsList";
+import queryProjectsListDefault from "../helpers/queryProjectsListDefault";
+
 import authMiddleware from "../auth/middleware";
 import { adapter } from "../server";
-// import { getUserProps } from "../authUsers";
 
 export default ({ server, app }) => {
   const { users: { getUserProps = () => {} } = {} } = adapter;
@@ -20,8 +20,8 @@ export default ({ server, app }) => {
       studyUID,
       ...query,
       projectDetailSettings,
-      projectDetail: await queryProjectDetail({ studyUID }),
-      projects: await queryProjectsList({ role })
+      projectDetail: await queryProjectDetail({ studyUID }), // TODO Wrap in promise
+      projectsListDefault: await queryProjectsListDefault() // TODO Wrap in promise
     });
   });
 };

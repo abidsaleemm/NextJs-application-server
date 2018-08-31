@@ -15,7 +15,7 @@ export default async () => {
   ]);
 
   // Merging studies and projects table
-  const projectsListDefault = await Promise.all(
+  const projectsListDefault = (await Promise.all(
     studies
       .map(study => [
         study,
@@ -30,8 +30,7 @@ export default async () => {
           study !== undefined && deleted !== true
       )
       .map(projectsListEnhancer(adapter))
-    //   .filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots)
-  );
+  )).filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);
 
   return projectsListDefault;
 };

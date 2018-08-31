@@ -19,7 +19,7 @@ const ProjectDetails = class extends Component {
     query: {
       projectDetail = {},
       projectDetailSettings = {},
-      projects = {},
+      projects,
       projectsListDefault,
       studyUID = ""
     }
@@ -66,7 +66,6 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         notes,
-        // projects = [],
         projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
@@ -82,7 +81,7 @@ const ProjectDetails = class extends Component {
     } = this;
 
     const selectedDefaultProject =
-      projects.find(
+      projectsListDefault.find(
         ({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID
       ) || {};
 
@@ -338,7 +337,6 @@ const ProjectDetails = class extends Component {
 
 const mapStateToProps = ({
   projectDetail,
-  projects: { projects },
   projectsListDefault,
   projectDetailSettings: {
     sidebarIsOpen,
@@ -349,7 +347,6 @@ const mapStateToProps = ({
   ...projectDetail,
   projectsListDefault,
   sidebarIsOpen,
-  projects,
   projectsListSortKey,
   projectsListSortDesc
 });

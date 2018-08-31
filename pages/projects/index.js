@@ -20,7 +20,7 @@ class ProjectsListing extends Component {
     isServer,
     query: {
       users = [],
-      projects = [],
+      projects,
       projectsListDefault,
       projectsSettings = {}
     } = {}

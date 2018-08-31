@@ -18,14 +18,19 @@ class ProjectsListing extends Component {
   static async getInitialProps({
     store,
     isServer,
-    query: { users = [], projects = [], projectsSettings = {} } = {}
+    query: {
+      users = [],
+      projects = [],
+      projectsListDefault,
+      projectsSettings = {}
+    } = {}
   }) {
     const { payloadProjects, payloadUsers, setProjectsSettings } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadUsers({ data: users }));
-      store.dispatch(payloadProjects({ projects }));
+      store.dispatch(payloadProjects({ projects, projectsListDefault }));
       store.dispatch(setProjectsSettings(projectsSettings));
       return;
     }
@@ -68,6 +73,7 @@ class ProjectsListing extends Component {
       props,
       props: {
         projects = [],
+        projectsListDefault = [],
         sortKey,
         sortDesc,
         projectsListSortKey,
@@ -162,9 +168,7 @@ class ProjectsListing extends Component {
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
           onSort={k => setProjectsSettings({ projectsListSortKey: k })}
-          projects={projects.filter(
-            ({ hasProjectSnapshots }) => hasProjectSnapshots
-          )}
+          projects={projectsListDefault}
           onToggle={() => {
             this.setState({
               modalCreateProjects: !modalCreateProjects
@@ -215,12 +219,14 @@ const mapStateToProps = ({
     projectsListSortKey,
     projectsListSortDesc
   },
+  projectsListDefault,
   defaultList,
   projects: { projects },
   user,
   userList: { data: userList = [] }
 }) => ({
   projects,
+  projectsListDefault,
   sortKey,
   sortDesc,
   filter,

@@ -20,6 +20,7 @@ const ProjectDetails = class extends Component {
       projectDetail = {},
       projectDetailSettings = {},
       projects = {},
+      projectsListDefault,
       studyUID = ""
     }
   }) {
@@ -32,7 +33,7 @@ const ProjectDetails = class extends Component {
     if (isServer) {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadProjectDetail(projectDetail));
-      store.dispatch(payloadProjects({ projects }));
+      store.dispatch(payloadProjects({ projects, projectsListDefault }));
       store.dispatch(setProjectDetailSettings(projectDetailSettings));
       return;
     }
@@ -65,7 +66,8 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         notes,
-        projects = [],
+        // projects = [],
+        projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
         toggleSidebar = () => {},
@@ -298,8 +300,7 @@ const ProjectDetails = class extends Component {
           onSort={k => {
             setProjectDetailSettings({ projectsListSortKey: k });
           }}
-          projects={projects
-            .filter(({ hasProjectSnapshots }) => hasProjectSnapshots)
+          projects={projectsListDefault
             .filter(({ studyUID: testStudyUID }) => studyUID !== testStudyUID)
             .map(
               v =>
@@ -338,6 +339,7 @@ const ProjectDetails = class extends Component {
 const mapStateToProps = ({
   projectDetail,
   projects: { projects },
+  projectsListDefault,
   projectDetailSettings: {
     sidebarIsOpen,
     projectsListSortKey = "",
@@ -345,6 +347,7 @@ const mapStateToProps = ({
   }
 }) => ({
   ...projectDetail,
+  projectsListDefault,
   sidebarIsOpen,
   projects,
   projectsListSortKey,

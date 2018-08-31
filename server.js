@@ -71,12 +71,12 @@ app.prepare().then(() => {
   if (!dev) {
     server.use(
       "/static/interface",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       express.static("static/interface")
     );
     server.use(
       "/static/render",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       express.static("static/render")
     );
 
@@ -85,7 +85,7 @@ app.prepare().then(() => {
     // Used for local testing.
     server.use(
       "/static/interface", // TODO Change name from interface to editor
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8081",
@@ -96,7 +96,7 @@ app.prepare().then(() => {
 
     server.use(
       "/static/render",
-      // authMiddleware({ redirect: false }),
+      authMiddleware({ redirect: false }),
       (req, res) =>
         proxy({
           target: "http://localhost:8082",

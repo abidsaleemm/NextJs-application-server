@@ -8,7 +8,8 @@
     "local": "cross-env LOCAL=true npm run dev",
     "dev": "cross-env NODE_ENV=dev STAGING=true node ./loader.js",
     "build-run": "cross-env NODE_ENV=production node ./loader.js",
-    "build": "next build"
+    "build": "next build",
+    "postinstall": "npm update && npm install adapters"
   },
   "dependencies": {
     "@babel/core": "7.0.0-beta.54",
@@ -85,7 +86,7 @@
     "underscore": "^1.9.1",
     "uuid": "3.3.2",
     "uuid-js": "0.7.5",
-    "validator": "^10.5.0",
+    "validator": "^10.7.0",
     "walk": "2.3.14",
     "wav": "1.0.2",
     "zip-folder": "^1.0.0"

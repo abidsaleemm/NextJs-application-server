@@ -13,7 +13,12 @@ export default async ({ action: { studyUID, type, ...props } = {} }) => {
     // A single template should also be passed on
     // Also if there is alrady an existing render thats the
     // same don't add to queue
-    await setRender({ studyUID });
+    await setRender({ p: studyUID });
+    await setRender({ p: studyUID, debug: true });
+    await setRender({ p: studyUID, anonymous: true });
+    await setRender({ p: studyUID, template: "spineImages" });
+    await setRender({ p: studyUID, template: "spineImages", anonymous: true });
+    await setRender({ p: studyUID, template: "spineComparison" });
   }
 
   setProject({ studyUID, props });

@@ -17,7 +17,7 @@ export default async ({
     users: { getUsers = () => {}, getUserProps = () => {} } = {}
   } = adapter;
 
-  // TODO Optimize with promise
+  // TODO Optimize with promise?
   const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
 
   // TODO Reusablable function used in route/projects.  Wrap in helper?
@@ -34,19 +34,19 @@ export default async ({
           return [...a, ...ret];
         }, []);
 
-  // TODO Add Promise.All
-  const projects = await queryProjectsList({
-    role:
-      role === "admin"
-        ? role
-        : teams.some(({ isTeamAdmin }) => isTeamAdmin)
-          ? "admin"
-          : "user",
-    userID: id,
-    userList: usersSelected
-  });
-
-  const projectsListDefault = await queryProjectsListDefault();
+  const [projects, projectsListDefault] = await Promise.all([
+    queryProjectsList({
+      role:
+        role === "admin"
+          ? role
+          : teams.some(({ isTeamAdmin }) => isTeamAdmin)
+            ? "admin"
+            : "user",
+      userID: id,
+      userList: usersSelected
+    }),
+    queryProjectsListDefault()
+  ]);
 
   socket.emit(
     "action",

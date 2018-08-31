@@ -15,19 +15,17 @@ export default async ({
 }) => {
   const { users: { getUserProps = () => {} } = {} } = adapter;
 
-  // TODO Optimize loading
-  const projectDetail = await queryProjectDetail({ studyUID });
   const { projectDetailSettings } = await getUserProps(userID, [
     "projectDetailSettings"
   ]);
 
+  const [projectDetail, projectsListDefault] = await Promise.all([
+    queryProjectDetail({ studyUID }),
+    queryProjectsListDefault()
+  ]);
+
+  //
   socket.emit("action", payloadProjectDetail(projectDetail));
-
-  //   const projects = await queryProjectsList({ role });
-  // TODO Handle using Promise.all
-  //   const projects = await queryProjectsListDefault();
-  const projectsListDefault = await queryProjectsListDefault();
   socket.emit("action", payloadProjects({ projectsListDefault }));
-
   socket.emit("action", setProjectDetailSettings(projectDetailSettings));
 };

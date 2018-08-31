@@ -16,12 +16,17 @@ export default ({ server, app }) => {
     const { projectDetailSettings } =
       (await getUserProps(id, ["projectDetailSettings"])) || {};
 
+    const [projectDetail, projectsListDefault] = await Promise.all([
+      queryProjectDetail({ studyUID }),
+      queryProjectsListDefault()
+    ]);
+
     return app.render(req, res, "/projectDetail", {
       studyUID,
       ...query,
       projectDetailSettings,
-      projectDetail: await queryProjectDetail({ studyUID }), // TODO Wrap in promise
-      projectsListDefault: await queryProjectsListDefault() // TODO Wrap in promise
+      projectDetail,
+      projectsListDefault
     });
   });
 };

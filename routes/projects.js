@@ -32,19 +32,19 @@ export default ({ server, app }) => {
             return [...a, ...ret];
           }, []);
 
-    // TODO Wrap in Promise.all
-    const projects = await queryProjectsList({
-      role:
-        role === "admin"
-          ? role
-          : teams.some(({ isTeamAdmin }) => isTeamAdmin)
-            ? "admin"
-            : "user",
-      userID: id,
-      userList: usersSelected
-    });
-
-    const projectsListDefault = await queryProjectsListDefault();
+    const [projects, projectsListDefault] = await Promise.all([
+      queryProjectsList({
+        role:
+          role === "admin"
+            ? role
+            : teams.some(({ isTeamAdmin }) => isTeamAdmin)
+              ? "admin"
+              : "user",
+        userID: id,
+        userList: usersSelected
+      }),
+      queryProjectsListDefault()
+    ]);
 
     return app.render(req, res, "/projects", {
       ...req.query,

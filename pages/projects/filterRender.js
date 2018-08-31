@@ -38,7 +38,7 @@ export default ({
             })
           }
         >
-          Not Delivered
+          Not Delivered/Archived
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem
@@ -61,11 +61,9 @@ export default ({
           Segmentation
         </DropdownItem>
         <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Injuries" } })
-          }
+          onClick={() => setProjectsSettings({ filter: { status: "QC" } })}
         >
-          Injuries
+          QC
         </DropdownItem>
         <DropdownItem
           onClick={() => setProjectsSettings({ filter: { status: "Review" } })}

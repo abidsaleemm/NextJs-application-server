@@ -50,6 +50,16 @@ export default ({
           onClick={() =>
             setProjectProps({
               studyUID,
+              status: "QC"
+            })
+          }
+        >
+          QC
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectProps({
+              studyUID,
               status: "Review"
             })
           }

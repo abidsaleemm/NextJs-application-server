@@ -53,9 +53,8 @@ export default ({
   onToggle = () => {},
   onRowClick = () => {}
 }) => {
-  const projectsEnhanced = projects
-    .filter(({ status }) => status === "Delivered" || status === "Archived")
-    .map(({ patientBirthDate = new Date(), sample = false, ...v }) => {
+  const projectsEnhanced = projects.map(
+    ({ patientBirthDate = new Date(), sample = false, ...v }) => {
       return {
         ...v,
         sample,
@@ -63,7 +62,8 @@ export default ({
           new Date().getFullYear() - new Date(patientBirthDate).getFullYear(),
         sampleRender: sample ? "X" : null
       };
-    });
+    }
+  );
 
   return (
     <Modal style={{ maxWidth: "80%" }} isOpen={isOpen} toggle={onToggle}>

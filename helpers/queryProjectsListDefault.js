@@ -29,7 +29,7 @@ export default async () => {
         ([study, { deleted = false } = {}]) =>
           study !== undefined && deleted !== true
       )
-      .map(projectsListEnhancer(adapter))
+      .map(projectsListEnhancer({ adapter }))
   )).filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);
 
   return projectsListDefault;

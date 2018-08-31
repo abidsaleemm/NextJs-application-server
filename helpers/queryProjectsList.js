@@ -42,7 +42,7 @@ export default async ({ role, userID, userList = [] }) => {
         ([study, { deleted = false } = {}]) =>
           study !== undefined && deleted !== true
       )
-      .map(projectsListEnhancer(adapter))
+      .map(projectsListEnhancer({ adapter }))
   );
 
   return projectsList;

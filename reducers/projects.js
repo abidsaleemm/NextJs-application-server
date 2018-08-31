@@ -1,19 +1,20 @@
-import {
-  PAYLOAD_PROJECTS,
-  SET_PROJECT_PROPS
-} from "../constants/actionTypes";
+import { PAYLOAD_PROJECTS, SET_PROJECT_PROPS } from "../constants/actionTypes";
 
+// TODO Collapase this
 export const initialState = {
   projects: []
 };
 
 export default (
   state = initialState,
-  { type, projects = [], studyUID, ...props }
+  { type, projects, studyUID, ...props }
 ) => {
   switch (type) {
     case PAYLOAD_PROJECTS:
-      return { ...state, projects };
+      return {
+        ...state,
+        projects: projects !== undefined ? [...projects] : state.projects
+      };
     case SET_PROJECT_PROPS: {
       const { projects } = state;
       const index = projects.findIndex(v => v.studyUID === studyUID);

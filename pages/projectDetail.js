@@ -66,16 +66,17 @@ const ProjectDetails = class extends Component {
         defaultStudyUID = "",
         location,
         notes,
+        sample,
         projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
         toggleSidebar = () => {},
-        resetProject = () => {},
         handleProjectImport = () => {},
         destroyProject = () => {},
         setProjectDetailSettings = () => {},
         setProjectProps = () => {},
-        setNotesEditor = () => {}
+        setNotesEditor = () => {},
+        toggleProjectDefault = () => {}
       },
       state: { modalProjectsList = false }
     } = this;
@@ -200,6 +201,23 @@ const ProjectDetails = class extends Component {
                   <tr>
                     <th scope="row">Facility</th>
                     <td>{location}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Sample</th>
+                    <td>
+                      <input
+                        type="checkbox"
+                        onChange={({ target: { value } }) => {
+                          toggleProjectDefault(studyUID);
+                        }}
+                        checked={sample === true}
+                        style={{
+                          alignSelf: "center",
+                          width: "20px",
+                          height: "20px"
+                        }}
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </Table>

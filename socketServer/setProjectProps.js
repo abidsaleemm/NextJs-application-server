@@ -9,16 +9,12 @@ export default async ({ action: { studyUID, type, ...props } = {} }) => {
   const { status } = props;
 
   if (status === "Done") {
-    // TODO Will need to add extra template for images
-    // A single template should also be passed on
-    // Also if there is alrady an existing render thats the
-    // same don't add to queue
-    await setRender({ p: studyUID , rendering: false});
-    await setRender({ p: studyUID, debug: true , rendering: false});
-    await setRender({ p: studyUID, anonymous: true , rendering: false});
-    await setRender({ p: studyUID, template: "spineImages" , rendering: false});
-    await setRender({ p: studyUID, template: "spineImages", anonymous: true , rendering: false});
-    await setRender({ p: studyUID, template: "spineComparison" , rendering: false});
+    await setRender({ p: studyUID, rendering: false, uniqueID: `${studyUID}`});
+    await setRender({ p: studyUID, debug: true , rendering: false, uniqueID: `${studyUID}-debug`});
+    await setRender({ p: studyUID, anonymous: true , rendering: false, uniqueID: `${studyUID}-anonymous`});
+    await setRender({ p: studyUID, template: "spineImages" , rendering: false, uniqueID: `${studyUID}-template-spineImages`});
+    await setRender({ p: studyUID, template: "spineImages", anonymous: true , rendering: false, uniqueID: `${studyUID}-template-spineImages-anonymous`});
+    await setRender({ p: studyUID, template: "spineComparison" , rendering: false, uniqueID: `${studyUID}-template-spineComparison`});
   }
 
   setProject({ studyUID, props });

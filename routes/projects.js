@@ -38,7 +38,7 @@ export default ({ server, app }) => {
           role === "admin"
             ? role
             : teams.some(({ isTeamAdmin }) => isTeamAdmin)
-              ? "admin"
+              ? "teamAdmin"
               : "user",
         userID: id,
         userList: usersSelected

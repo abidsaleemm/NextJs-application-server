@@ -40,7 +40,7 @@ export default async ({
         role === "admin"
           ? role
           : teams.some(({ isTeamAdmin }) => isTeamAdmin)
-            ? "admin"
+            ? "teamAdmin"
             : "user",
       userID: id,
       userList: usersSelected

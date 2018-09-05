@@ -21,6 +21,7 @@ const tableRowColor = status => {
     Start: "rgba(255, 0, 0, 0.1)",
     Segmentation: "rgba(255, 255, 0, 0.1)",
     Injuries: "rgba(255, 255, 0, 0.2)",
+    QC: "rgba(0, 255, 100, 0.2)",
     Review: "rgba(0, 255, 0, 0.1)",
     Done: "rgba(0, 255, 0, 0.2)",
     Rendered: "rgba(0, 255, 0, 0.5)",

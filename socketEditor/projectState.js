@@ -5,20 +5,33 @@ const arrayMergeKey = ({ key, left, right }) =>
   values(mergeWith(merge, indexBy(prop(key), left), indexBy(prop(key), right)));
 
 // TODO Create a module proxy for this and move code for other modules spine, shoulder, etc.
-const stateProxy = ({ vertebra, segments, discs, ...state }) => ({
+const stateProxy = ({ vertebra, segments, discs }) => ({
   vertebra: vertebraPayload,
   segments: segmentsPayload,
-  discs: discsPayload
+  discs: discsPayload,
+  ...payload
 }) => {
   return {
-    ...state,
-    vertebra: vertebraPayload
-      ? arrayMergeKey({ key: "name", left: vertebra, right: vertebraPayload })
-      : vertebra,
-    segments: segmentsPayload
-      ? arrayMergeKey({ key: "name", left: segments, right: segmentsPayload })
-      : segments,
-    discs: discsPayload ? { ...discs, ...discsPayload } : discs
+    ...payload,
+    ...(vertebraPayload
+      ? {
+          vertebra: arrayMergeKey({
+            key: "name",
+            left: vertebra,
+            right: vertebraPayload
+          })
+        }
+      : {}),
+    ...(segmentsPayload
+      ? {
+          segments: arrayMergeKey({
+            key: "name",
+            left: segments,
+            right: segmentsPayload
+          })
+        }
+      : {}),
+    ...(discsPayload ? { discs: { ...discs, ...discsPayload } } : {})
   };
 };
 

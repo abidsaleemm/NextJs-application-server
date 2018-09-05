@@ -9,23 +9,25 @@ import {
 export default ({
   status = "None",
   studyUID,
-  setSet = () => {},
+  role = "",
   setProjectProps = () => {}
 }) => {
   return (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>
       <DropdownMenu>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "None"
-            })
-          }
-        >
-          None
-        </DropdownItem>
+        {role === "admin" ? (
+          <DropdownItem
+            onClick={() =>
+              setProjectProps({
+                studyUID,
+                status: "None"
+              })
+            }
+          >
+            None
+          </DropdownItem>
+        ) : null}
         <DropdownItem
           onClick={() =>
             setProjectProps({
@@ -76,36 +78,40 @@ export default ({
         >
           Done
         </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "Rendered"
-            })
-          }
-        >
-          Rendered
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "Delivered"
-            })
-          }
-        >
-          Delivered
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectProps({
-              studyUID,
-              status: "Archived"
-            })
-          }
-        >
-          Archived
-        </DropdownItem>
+        {role === "admin" ? (
+          <div>
+            <DropdownItem
+              onClick={() =>
+                setProjectProps({
+                  studyUID,
+                  status: "Rendered"
+                })
+              }
+            >
+              Rendered
+            </DropdownItem>
+            <DropdownItem
+              onClick={() =>
+                setProjectProps({
+                  studyUID,
+                  status: "Delivered"
+                })
+              }
+            >
+              Delivered
+            </DropdownItem>
+            <DropdownItem
+              onClick={() =>
+                setProjectProps({
+                  studyUID,
+                  status: "Archived"
+                })
+              }
+            >
+              Archived
+            </DropdownItem>
+          </div>
+        ) : null}
       </DropdownMenu>
     </UncontrolledDropdown>
   );

@@ -32,6 +32,7 @@ export { default as handleProjectImport } from "./handleProjectImport";
 export { default as setDefaultList } from "./setDefaultList";
 export { default as destroyProject } from "./destroyProject";
 export { default as setMetaData } from "./setMetaData";
+export { default as setRender } from "./setRender";
 
 //Users
 export { default as deleteUser } from "./deleteUser";

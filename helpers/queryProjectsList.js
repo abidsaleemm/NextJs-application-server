@@ -28,7 +28,8 @@ export default async ({ role, userID, userList = [] }) => {
           status !== "Start" &&
           status !== "Segmentation" &&
           status !== "QC" &&
-          status !== "Review"
+          status !== "Review" &&
+          status !== "Done" // TODO Should we remove this?
         ) {
           return false;
         }

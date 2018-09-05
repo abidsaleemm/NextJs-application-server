@@ -10,10 +10,7 @@ export default ({ server, app }) => {
   } = adapter;
 
   server.get("/projects", authMiddleware(), async (req, res) => {
-    const {
-      user,
-      user: { role = "user", id, teams = [] }
-    } = req;
+    const { user, user: { role = "user", id, teams = [] } = {} } = req;
 
     const { projectsSettings } =
       (await getUserProps(id, ["projectsSettings"])) || {};
@@ -38,7 +35,7 @@ export default ({ server, app }) => {
           role === "admin"
             ? role
             : teams.some(({ isTeamAdmin }) => isTeamAdmin)
-              ? "admin"
+              ? "teamAdmin"
               : "user",
         userID: id,
         userList: usersSelected

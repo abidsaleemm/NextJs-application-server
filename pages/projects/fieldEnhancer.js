@@ -21,6 +21,7 @@ const tableRowColor = status => {
     Start: "rgba(255, 0, 0, 0.1)",
     Segmentation: "rgba(255, 255, 0, 0.1)",
     Injuries: "rgba(255, 255, 0, 0.2)",
+    QC: "rgba(0, 255, 100, 0.2)",
     Review: "rgba(0, 255, 0, 0.1)",
     Done: "rgba(0, 255, 0, 0.2)",
     Rendered: "rgba(0, 255, 0, 0.5)",
@@ -32,8 +33,8 @@ const tableRowColor = status => {
 
 export default props => {
   const {
+    user: { role = "" } = {},
     projects = [],
-    user, // TODO Check for admin or team admin
     userList = [],
     handleUpload = () => {},
     setProjectProps = () => {},
@@ -67,7 +68,7 @@ export default props => {
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status,
-        statusRender: <Status {...{ ...props, status, studyUID }} />,
+        statusRender: <Status {...{ ...props, status, studyUID, role }} />,
         tableBackground: tableRowColor(status),
         notes: (
           <Button
@@ -217,6 +218,7 @@ export default props => {
                 width: "20px",
                 height: "20px"
               }}
+              disabled={role !== "admin"}
             />
           </div>
         )

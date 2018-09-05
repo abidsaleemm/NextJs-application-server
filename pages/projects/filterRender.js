@@ -9,6 +9,7 @@ import {
 import SearchInput from "../../components/SearchInput";
 
 export default ({
+  user: { role = "" } = {},
   filter: {
     status = "All",
     sample = false,
@@ -31,21 +32,26 @@ export default ({
         >
           All
         </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectsSettings({
-              filter: { status: "Not Delivered" }
-            })
-          }
-        >
-          Not Delivered/Archived
-        </DropdownItem>
+        {role === "admin" ? (
+          <DropdownItem
+            onClick={() =>
+              setProjectsSettings({
+                filter: { status: "Not Delivered" }
+              })
+            }
+          >
+            Not Delivered/Archived
+          </DropdownItem>
+        ) : null}
         <DropdownItem divider />
-        <DropdownItem
-          onClick={() => setProjectsSettings({ filter: { status: "None" } })}
-        >
-          None
-        </DropdownItem>
+
+        {role === "admin" ? (
+          <DropdownItem
+            onClick={() => setProjectsSettings({ filter: { status: "None" } })}
+          >
+            None
+          </DropdownItem>
+        ) : null}
         <DropdownItem
           onClick={() => setProjectsSettings({ filter: { status: "Start" } })}
         >
@@ -75,27 +81,31 @@ export default ({
         >
           Done
         </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Rendered" } })
-          }
-        >
-          Rendered
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Delivered" } })
-          }
-        >
-          Delivered
-        </DropdownItem>
-        <DropdownItem
-          onClick={() =>
-            setProjectsSettings({ filter: { status: "Archived" } })
-          }
-        >
-          Archived
-        </DropdownItem>
+        {role === "admin" ? (
+          <div>
+            <DropdownItem
+              onClick={() =>
+                setProjectsSettings({ filter: { status: "Rendered" } })
+              }
+            >
+              Rendered
+            </DropdownItem>
+            <DropdownItem
+              onClick={() =>
+                setProjectsSettings({ filter: { status: "Delivered" } })
+              }
+            >
+              Delivered
+            </DropdownItem>
+            <DropdownItem
+              onClick={() =>
+                setProjectsSettings({ filter: { status: "Archived" } })
+              }
+            >
+              Archived
+            </DropdownItem>
+          </div>
+        ) : null}
       </DropdownMenu>
     </UncontrolledDropdown>
   ),

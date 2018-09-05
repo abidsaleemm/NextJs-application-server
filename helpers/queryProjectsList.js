@@ -22,13 +22,20 @@ export default async ({ role, userID, userList = [] }) => {
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
       // TODO Move this to separate function
-      .filter(([study, { userID: projectUserID } = {}]) => {
+      .filter(([study, { userID: projectUserID, status } = {}]) => {
         if (
-          projectUserID === undefined ||
-          projectUserID === null ||
-          projectUserID == "" ||
-          projectUserID == userID
+          role !== "admin" &&
+          status !== "Start" &&
+          status !== "Segmentation" &&
+          status !== "QC" &&
+          status !== "Review" &&
+          status !== "Done" // TODO Should we remove this?
         ) {
+          return false;
+        }
+
+        // TODO Fix with type check?
+        if (projectUserID == userID) {
           return true;
         }
 
@@ -36,7 +43,12 @@ export default async ({ role, userID, userList = [] }) => {
           return true;
         }
 
-        return userList.some(({ id }) => id === projectUserID);
+        if (role === "teamAdmin" && projectUserID === undefined) {
+          return true;
+        }
+
+        // TODO Fix with type check?
+        return userList.some(({ id }) => id == projectUserID);
       })
       .filter(
         ([study, { deleted = false } = {}]) =>

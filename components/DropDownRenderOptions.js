@@ -7,21 +7,9 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import Wrapper from "../hoc/wrapper";
 import { connect } from "react-redux";
 
-// TODO should this be in another location?
-const windowName = "renderWindow";
-const width = 1920;
-const height = 1080;
-const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-const windowSettingsDebug = `width=${parseInt(
-  width / 2
-)},height=${parseInt(
-  height / 2
-)},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-
-const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
+const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
   <UncontrolledDropdown>
     <style jsx>
       {`
@@ -37,9 +25,8 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
     <DropdownMenu>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
-            studyUID,
-            renderParam: "none"
+          setRender({
+            studyUID
           });
         }}
       >
@@ -47,9 +34,9 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
+          setRender({
             studyUID,
-            renderParam: "debug"
+            debug: true
           });
         }}
       >
@@ -57,9 +44,9 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
+          setRender({
             studyUID,
-            renderParam: "anonymous"
+            anonymous: true
           });
         }}
       >
@@ -67,9 +54,9 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
+          setRender({
             studyUID,
-            renderParam: "spineImages"
+            template: "spineImages"
           });
         }}
       >
@@ -77,9 +64,10 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
+          setRender({
             studyUID,
-            renderParam: "spineImages-anonymous"
+            template: "spineImages",
+            anonymous: true
           });
         }}
       >
@@ -89,7 +77,7 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
         onClick={() => {
           setProjectProps({
             studyUID,
-            renderParam: "spineComparison"
+            template: "spineComparison"
           });
         }}
       >
@@ -98,9 +86,7 @@ const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
     </DropdownMenu>
   </UncontrolledDropdown>
 );
-const mapStateToProps = ({
-  setProjectProps
-}) => ({
+const mapStateToProps = ({ setProjectProps }) => ({
   setProjectProps
 });
 

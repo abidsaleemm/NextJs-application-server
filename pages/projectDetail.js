@@ -70,6 +70,7 @@ const ProjectDetails = class extends Component {
         projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
+        user: { role = "user" } = {},
         toggleSidebar = () => {},
         handleProjectImport = () => {},
         destroyProject = () => {},
@@ -216,6 +217,7 @@ const ProjectDetails = class extends Component {
                           width: "20px",
                           height: "20px"
                         }}
+                        disabled={role !== "admin"}
                       />
                     </td>
                   </tr>

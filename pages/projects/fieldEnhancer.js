@@ -32,8 +32,8 @@ const tableRowColor = status => {
 
 export default props => {
   const {
+    user: { role = "" } = {},
     projects = [],
-    user, // TODO Check for admin or team admin
     userList = [],
     handleUpload = () => {},
     setProjectProps = () => {},
@@ -67,7 +67,7 @@ export default props => {
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status,
-        statusRender: <Status {...{ ...props, status, studyUID }} />,
+        statusRender: <Status {...{ ...props, status, studyUID, role }} />,
         tableBackground: tableRowColor(status),
         notes: (
           <Button
@@ -217,7 +217,7 @@ export default props => {
                 width: "20px",
                 height: "20px"
               }}
-              disabled
+              disabled={role !== "admin"}
             />
           </div>
         )

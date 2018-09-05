@@ -78,8 +78,6 @@ class ProjectsListing extends Component {
         sortDesc,
         projectsListSortKey,
         projectsListSortDesc,
-        // user,
-        // userList = [],
         setProjectsSettings = () => {},
         uploadDel = () => {},
         createProject = () => {},

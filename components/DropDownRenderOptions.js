@@ -1,9 +1,14 @@
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import * as actions from "../actions";
 import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import Wrapper from "../hoc/wrapper";
+import { connect } from "react-redux";
 
 // TODO should this be in another location?
 const windowName = "renderWindow";
@@ -16,7 +21,7 @@ const windowSettingsDebug = `width=${parseInt(
   height / 2
 )},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
 
-export default ({ studyUID }) => (
+const DropDownRenderOptions =  ({ studyUID, setProjectProps = () => {} }) => (
   <UncontrolledDropdown>
     <style jsx>
       {`
@@ -32,70 +37,60 @@ export default ({ studyUID }) => (
     <DropdownMenu>
       <DropdownItem
         onClick={() => {
-          window.open(
-            `/static/render/?p=${studyUID}`,
-            windowName,
-            windowSettings
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "none"
+          });
         }}
       >
         Spine Video
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          window.open(
-            `/static/render/?p=${studyUID}&debug=true`, // Don't need to assign template video is default
-            windowName,
-            windowSettingsDebug
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "debug"
+          });
         }}
       >
         Spine Video - Debug
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&anonymous=true`,
-            windowName,
-            windowSettings
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "anonymous"
+          });
         }}
       >
         Spine Video - Anonymous
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineImages`,
-            windowName,
-            windowSettings
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "spineImages"
+          });
         }}
       >
         Spine Images
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineImages&anonymous=true`,
-            windowName,
-            windowSettings
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "spineImages-anonymous"
+          });
         }}
       >
         Spine Images - Anonymous
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineComparison`,
-            windowName,
-            windowSettings
-          );
+          setProjectProps({
+            studyUID,
+            renderParam: "spineComparison"
+          });
         }}
       >
         Spine Compare
@@ -103,3 +98,15 @@ export default ({ studyUID }) => (
     </DropdownMenu>
   </UncontrolledDropdown>
 );
+const mapStateToProps = ({
+  setProjectProps
+}) => ({
+  setProjectProps
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DropDownRenderOptions);

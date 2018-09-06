@@ -26,7 +26,8 @@ const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
       <DropdownItem
         onClick={() => {
           setRender({
-            studyUID
+            studyUID,
+            template: "spine"
           });
         }}
       >
@@ -36,6 +37,7 @@ const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
         onClick={() => {
           setRender({
             studyUID,
+            template: "spine",
             debug: true
           });
         }}
@@ -46,6 +48,7 @@ const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
         onClick={() => {
           setRender({
             studyUID,
+            template: "spine",
             anonymous: true
           });
         }}

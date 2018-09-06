@@ -10,7 +10,8 @@ export default async ({ action: { studyUID, type, ...props } = {} }) => {
 
   if (status === "Done") {
     setRenderQueue({
-      studyUID
+      studyUID,
+      template: "spine"
     });
 
     setRenderQueue({

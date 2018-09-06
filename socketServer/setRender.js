@@ -3,12 +3,11 @@ import { adapter } from "../server";
 export default async ({
   action: { studyUID, anonymous = false, debug = false } = {}
 }) => {
-  const { renders: { setRender = () => {} } = {} } = adapter;
+  const { renders: { setRenderQueue = () => {} } = {} } = adapter;
 
-  await setRender({
+  await setRenderQueue({
     studyUID,
     debug,
-    anonymous,
-    rendering: false
+    anonymous
   });
 };

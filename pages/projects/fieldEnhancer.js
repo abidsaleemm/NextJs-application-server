@@ -58,11 +58,13 @@ export default props => {
         sample = false,
         userID,
         notes = "",
+        renders = [],
         ...project
       },
       i,
       self
     ) => {
+
       return {
         ...project,
         patientBirthDate,

@@ -1,6 +1,7 @@
 export default ({ adapter = {} } = {}) => async ([
   { studyUID, studyName = "", ...study } = {},
-  { status, notes, sample = false, ...project } = {}
+  { status, notes, sample = false, ...project } = {},
+  renders
 ]) => {
   const {
     file: { list: fileList = () => {} } = {},
@@ -20,6 +21,7 @@ export default ({ adapter = {} } = {}) => async ([
     status: status,
     notes: notes,
     uploadedFiles: await fileList({ path: studyUID }),
-    sample
+    sample,
+    renders
   };
 };

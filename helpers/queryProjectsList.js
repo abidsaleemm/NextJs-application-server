@@ -5,13 +5,15 @@ import projectsListEnhancer from "./projectsListEnhancer";
 export default async ({ role, userID, userList = [] }) => {
   const {
     projects: { getProjectList = () => {} } = {},
-    dicom: { getStudies = () => {} } = {}
+    dicom: { getStudies = () => {} } = {},
+    renders: { getRenderQueue = () => {} } = {}
   } = adapter;
 
   // TODO Do query directly getProjectList instead of filtering with javascript
-  const [projects = [], studies = []] = await Promise.all([
+  const [projects = [], studies = [], renders = []] = await Promise.all([
     getProjectList(),
-    getStudies()
+    getStudies(),
+    getRenderQueue()
   ]);
 
   // Merging studies and projects table
@@ -19,7 +21,10 @@ export default async ({ role, userID, userList = [] }) => {
     studies
       .map(study => [
         study,
-        projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
+        projects.find(({ studyUID = "" }) => study.studyUID === studyUID),
+        renders
+          .filter(({ studyUID = "" }) => study.studyUID === studyUID)
+          .map(({ studyUID, ...props }) => props)
       ])
       // TODO Move this to separate function
       .filter(([study, { userID: projectUserID, status } = {}]) => {

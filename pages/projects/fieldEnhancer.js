@@ -64,7 +64,6 @@ export default props => {
       i,
       self
     ) => {
-
       return {
         ...project,
         patientBirthDate,
@@ -138,11 +137,31 @@ export default props => {
                   color: #b8860b;
                 }
 
-                margin-left: 7px;
-                align-self: center;
+                .renderList {
+                  display: flex;
+                  flex-direction: column;
+                  flex-wrap: nowrap;
+                }
+
+                .renderListItem {
+                  white-space: nowrap;
+                }
               `}
             </style>
             <DropDownRenderOptions studyUID={studyUID} />
+
+            {renders.length > 0 ? (
+              <div className="renderList">
+                {renders.map(
+                  ({ template, rendering = false, debug, anonymous }) => (
+                    <div className="renderListItem">
+                      {`${template} ${rendering ? "Progress" : "Queued"}`}
+                    </div>
+                  )
+                )}
+              </div>
+            ) : null}
+
             {encoding !== "" && encoding !== null ? (
               <div className="renderTextEncoding">
                 Encoding (

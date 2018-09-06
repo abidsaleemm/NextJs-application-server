@@ -16,7 +16,7 @@ export default async ({ socket, action: { studyUID } = {} }) => {
   console.log("Destroying project", studyUID);
 
   await destroyProject({ studyUID });
-  await setProject({ studyUID, props: { status: "None" } });
+  await setProject({ studyUID, props: { status: "Start" } });
 
   socket.emit("action", route({ pathname: "/projects" }));
 };

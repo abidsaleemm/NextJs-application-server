@@ -21,7 +21,9 @@ const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
         }
       `}
     </style>
-    <DropdownToggle caret>Render</DropdownToggle>
+    <DropdownToggle className="dropdownMenu" caret>
+      Render
+    </DropdownToggle>
     <DropdownMenu>
       <DropdownItem
         onClick={() => {

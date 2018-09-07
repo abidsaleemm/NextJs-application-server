@@ -141,6 +141,7 @@ export default props => {
                   display: flex;
                   flex-direction: column;
                   flex-wrap: nowrap;
+                  padding-left: 10px;
                 }
 
                 .renderListItem {
@@ -155,7 +156,13 @@ export default props => {
                 {renders.map(
                   ({ template, rendering = false, debug, anonymous }) => (
                     <div className="renderListItem">
-                      {`${template} ${rendering ? "Progress" : "Queued"}`}
+                      <Button
+                        color={rendering? "primary" : "secondary"}
+                        onClick={() => {
+                        }}
+                      >
+                        {`${template} ${rendering ? "Progress" : "Queued"}`}
+                      </Button>
                     </div>
                   )
                 )}

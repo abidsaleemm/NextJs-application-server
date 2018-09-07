@@ -80,7 +80,7 @@ const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          setProjectProps({
+          setRender({
             studyUID,
             template: "spineComparison"
           });

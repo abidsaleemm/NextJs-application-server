@@ -41,7 +41,8 @@ export default props => {
     toggleProjectDefault = () => {},
     popupOpen = () => {},
     onCreate = () => {},
-    setNotesEditor = () => {}
+    setNotesEditor = () => {},
+    delRender = () => {}
   } = props;
 
   return projects.map(
@@ -144,8 +145,24 @@ export default props => {
                   padding-left: 10px;
                 }
 
+                .renderListItemSpacing {
+                  padding: 2px;
+                }
+
                 .renderListItem {
+                  display: flex;
                   white-space: nowrap;
+                  margin: 2px;
+                  justify-content: space-between;
+                  align-items: center;
+                }
+
+                .renderTextProgress {
+                  color: green;
+                }
+
+                .renderTextQueue {
+                  color: orange;
                 }
               `}
             </style>
@@ -154,14 +171,37 @@ export default props => {
             {renders.length > 0 ? (
               <div className="renderList">
                 {renders.map(
-                  ({ template, rendering = false, debug, anonymous }) => (
+                  ({
+                    templateName = "",
+                    rendering = false,
+                    debug,
+                    anonymous,
+                    progress = 0
+                  }) => (
                     <div className="renderListItem">
+                      <div className="renderListItemSpacing">
+                        {templateName}
+                      </div>
+                      {debug ? (
+                        <div className="renderListItemSpacing">D</div>
+                      ) : null}
+                      {anonymous ? (
+                        <div className="renderListItemSpacing">A</div>
+                      ) : null}
+                      {rendering ? (
+                        <div className="renderListItemSpacing renderTextProgress">{`Progress ${progress}%`}</div>
+                      ) : (
+                        <div className="renderListItemSpacing renderTextQueue">
+                          Queued
+                        </div>
+                      )}
                       <Button
-                        color={rendering? "primary" : "secondary"}
+                        color="danger"
                         onClick={() => {
+                          delRender({ template, studyUID, debug, anonymous });
                         }}
                       >
-                        {`${template} ${rendering ? "Progress" : "Queued"}`}
+                        X
                       </Button>
                     </div>
                   )

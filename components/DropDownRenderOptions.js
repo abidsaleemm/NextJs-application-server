@@ -1,22 +1,15 @@
+import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import * as actions from "../actions";
 import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import { connect } from "react-redux";
 
-// TODO should this be in another location?
-const windowName = "renderWindow";
-const width = 1920;
-const height = 1080;
-const windowSettings = `width=${width},height=${height},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-const windowSettingsDebug = `width=${parseInt(
-  width / 2
-)},height=${parseInt(
-  height / 2
-)},resizable=false,toolbar=false,status=false,maximum-scale=1.0,user-scalable=0`;
-
-export default ({ studyUID }) => (
+const DropDownRenderOptions = ({ studyUID, setRender = () => {} }) => (
   <UncontrolledDropdown>
     <style jsx>
       {`
@@ -28,74 +21,69 @@ export default ({ studyUID }) => (
         }
       `}
     </style>
-    <DropdownToggle caret>Render</DropdownToggle>
+    <DropdownToggle className="dropdownMenu" caret>
+      Render
+    </DropdownToggle>
     <DropdownMenu>
       <DropdownItem
         onClick={() => {
-          window.open(
-            `/static/render/?p=${studyUID}`,
-            windowName,
-            windowSettings
-          );
+          setRender({
+            studyUID,
+            template: "spine"
+          });
         }}
       >
         Spine Video
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          window.open(
-            `/static/render/?p=${studyUID}&debug=true`, // Don't need to assign template video is default
-            windowName,
-            windowSettingsDebug
-          );
+          setRender({
+            studyUID,
+            template: "spine",
+            debug: true
+          });
         }}
       >
         Spine Video - Debug
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&anonymous=true`,
-            windowName,
-            windowSettings
-          );
+          setRender({
+            studyUID,
+            template: "spine",
+            anonymous: true
+          });
         }}
       >
         Spine Video - Anonymous
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineImages`,
-            windowName,
-            windowSettings
-          );
+          setRender({
+            studyUID,
+            template: "spineImages"
+          });
         }}
       >
         Spine Images
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineImages&anonymous=true`,
-            windowName,
-            windowSettings
-          );
+          setRender({
+            studyUID,
+            template: "spineImages",
+            anonymous: true
+          });
         }}
       >
         Spine Images - Anonymous
       </DropdownItem>
       <DropdownItem
         onClick={() => {
-          // TODO create wrapper reusable function for this
-          window.open(
-            `/static/render/?p=${studyUID}&template=spineComparison`,
-            windowName,
-            windowSettings
-          );
+          setRender({
+            studyUID,
+            template: "spineComparison"
+          });
         }}
       >
         Spine Compare
@@ -103,3 +91,13 @@ export default ({ studyUID }) => (
     </DropdownMenu>
   </UncontrolledDropdown>
 );
+const mapStateToProps = ({ setProjectProps }) => ({
+  setProjectProps
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DropDownRenderOptions);

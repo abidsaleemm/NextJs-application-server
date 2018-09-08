@@ -12,6 +12,11 @@ const customCSS = `
   overflow: hidden;
 }
 
+.dropdownMenu {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
 `;
 
 export default () => (

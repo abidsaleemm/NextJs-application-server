@@ -17,3 +17,5 @@ export { default as projectImport } from "./projectImport";
 export { default as setSettings } from "./setSettings";
 export { default as setMetaData } from "./setMetaData";
 export { default as videoDelete } from "./videoDelete";
+export { default as setRender } from "./setRender";
+export { default as delRender } from "./delRender";

@@ -172,7 +172,8 @@ export default props => {
               <div className="renderList">
                 {renders.map(
                   ({
-                    template = "",
+                    template,
+                    templateName = "",
                     rendering = false,
                     debug,
                     anonymous,
@@ -180,7 +181,7 @@ export default props => {
                   }) => (
                     <div className="renderListItem">
                       <div className="renderListItemSpacing">
-                        {template}
+                        {templateName}
                       </div>
                       {debug ? (
                         <div className="renderListItemSpacing">D</div>

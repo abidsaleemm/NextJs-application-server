@@ -8,11 +8,7 @@ const actionHandlers = {
 };
 
 // TODO Handle internal state changes
-export default ({
-  server,
-  passport,
-  sessionMiddleWare = () => {}
-}) => {
+export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   const socketio = new Server({
     pingTimeout: 60000,
     transports: ["websocket"],
@@ -22,9 +18,7 @@ export default ({
   const io = socketio.listen(server);
 
   // Pass down session from passportjs
-  io.use((socket, next) =>
-    sessionMiddleWare(socket.request, {}, next)
-  );
+  io.use((socket, next) => sessionMiddleWare(socket.request, {}, next));
 
   // Handle socket connections
   io.on("connection", socket => {

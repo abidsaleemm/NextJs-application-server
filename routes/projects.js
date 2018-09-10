@@ -6,7 +6,8 @@ import { adapter } from "../server";
 
 export default ({ server, app }) => {
   const {
-    users: { getUsers = () => {}, getUserProps = () => {} } = {}
+    users: { getUsers = () => {}, getUserProps = () => {} } = {},
+    renders: { getRenderQueue = () => {} } = {}
   } = adapter;
 
   server.get("/projects", authMiddleware(), async (req, res) => {
@@ -29,7 +30,7 @@ export default ({ server, app }) => {
             return [...a, ...ret];
           }, []);
 
-    const [projects, projectsListDefault] = await Promise.all([
+    const [projects, projectsListDefault, renders] = await Promise.all([
       queryProjectsList({
         role:
           role === "admin"
@@ -40,7 +41,8 @@ export default ({ server, app }) => {
         userID: id,
         userList: usersSelected
       }),
-      queryProjectsListDefault()
+      queryProjectsListDefault(),
+      getRenderQueue()
     ]);
 
     return app.render(req, res, "/projects", {
@@ -48,7 +50,8 @@ export default ({ server, app }) => {
       users: usersSelected.length === 0 ? [{ ...user }] : usersSelected,
       projectsSettings,
       projects,
-      projectsListDefault
+      projectsListDefault,
+      renders
     });
   });
 };

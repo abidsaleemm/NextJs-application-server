@@ -4,7 +4,8 @@ import queryProjectsListDefault from "../helpers/queryProjectsListDefault";
 import {
   payloadProjects,
   payloadProjectsSettings,
-  payloadUsers
+  payloadUsers,
+  payloadRenders
 } from "../actions";
 import { adapter } from "../server";
 
@@ -14,7 +15,8 @@ export default async ({
   user: { role, id, teams = [] } = {}
 }) => {
   const {
-    users: { getUsers = () => {}, getUserProps = () => {} } = {}
+    users: { getUsers = () => {}, getUserProps = () => {} } = {},
+    renders: { getRenderQueue = () => {} } = {}
   } = adapter;
 
   // TODO Optimize with promise?
@@ -34,7 +36,7 @@ export default async ({
           return [...a, ...ret];
         }, []);
 
-  const [projects, projectsListDefault] = await Promise.all([
+  const [projects, projectsListDefault, renders] = await Promise.all([
     queryProjectsList({
       role:
         role === "admin"
@@ -45,7 +47,8 @@ export default async ({
       userID: id,
       userList: usersSelected
     }),
-    queryProjectsListDefault()
+    queryProjectsListDefault(),
+    getRenderQueue()
   ]);
 
   socket.emit(
@@ -57,4 +60,5 @@ export default async ({
 
   socket.emit("action", payloadProjects({ projects, projectsListDefault }));
   socket.emit("action", payloadProjectsSettings(projectsSettings));
+  socket.emit("action", payloadRenders(renders));
 };

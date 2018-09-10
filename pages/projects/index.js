@@ -26,12 +26,19 @@ class ProjectsListing extends Component {
       projectsSettings = {}
     } = {}
   }) {
-    const { payloadProjects, payloadUsers, setProjectsSettings } = actions;
+    const {
+      payloadProjects,
+      payloadUsers,
+      payloadRenders,
+      setProjectsSettings
+    } = actions;
 
     if (isServer) {
       // TODO Should we wrap these in single action?
       store.dispatch(payloadUsers({ data: users }));
       store.dispatch(payloadProjects({ projects, projectsListDefault }));
+      store.dispatch(payloadRenders(renders));
+
       store.dispatch(setProjectsSettings(projectsSettings));
       return;
     }

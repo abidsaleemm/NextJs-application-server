@@ -21,6 +21,7 @@ class ProjectsListing extends Component {
     query: {
       users = [],
       projects,
+      renders = [],
       projectsListDefault,
       projectsSettings = {}
     } = {}
@@ -92,7 +93,6 @@ class ProjectsListing extends Component {
         notes = ""
       }
     } = this;
-
     const projectsEnhanced = fieldEnhancer({
       ...props,
       onCreate: ({ studyUID }) => {
@@ -221,6 +221,7 @@ const mapStateToProps = ({
   defaultList,
   projects: { projects },
   user,
+  renders,
   userList: { data: userList = [] }
 }) => ({
   projects,
@@ -232,6 +233,7 @@ const mapStateToProps = ({
   projectsListSortDesc,
   defaultList,
   user,
+  renders,
   userList
 });
 

@@ -38,3 +38,8 @@ export const DEFAULTS_SET_LIST = "DEFAULTS_SET_LIST";
 
 export const SET_PROJECT_PROPS = "SET_PROJECT_PROPS";
 export const NOTES_EDITOR = "NOTES_EDITOR";
+
+// Renders
+
+export const SET_RENDER = "SET_RENDER";
+export const DEL_RENDER = "DEL_RENDER";

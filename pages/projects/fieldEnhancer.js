@@ -42,7 +42,8 @@ export default props => {
     popupOpen = () => {},
     onCreate = () => {},
     setNotesEditor = () => {},
-    delRender = () => {}
+    delRender = () => {},
+    renders
   } = props;
 
   return projects.map(
@@ -59,12 +60,12 @@ export default props => {
         sample = false,
         userID,
         notes = "",
-        renders = [],
         ...project
       },
       i,
       self
     ) => {
+      const { data = {} } = renders;
       return {
         ...project,
         patientBirthDate,
@@ -167,21 +168,22 @@ export default props => {
               `}
             </style>
             <DropDownRenderOptions studyUID={studyUID} />
-
-            {renders.length > 0 ? (
+            
+            {
+              data.length > 0 ? (
               <div className="renderList">
-                {renders.map(
+                {data.map(
                   ({
                     template,
                     templateName = "",
                     rendering = false,
                     debug,
                     anonymous,
-                    progress = 0
-                  }) => (
-                    <div className="renderListItem">
+                    progress = 0,
+                  }, index) => (
+                    <div key={index} className="renderListItem">
                       <div className="renderListItemSpacing">
-                        {templateName}
+                        {template}
                       </div>
                       {debug ? (
                         <div className="renderListItemSpacing">D</div>

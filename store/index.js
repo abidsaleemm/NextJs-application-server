@@ -10,6 +10,7 @@ import io from "socket.io-client";
 import thunk from "redux-thunk";
 import persistSettings from "../middleware/persistSettings";
 import userListAPI from "../middleware/userListAPI";
+import renderAPI from "../middleware/renderAPI";
 import * as reducers from "../reducers";
 import route from "../middleware/route";
 
@@ -25,6 +26,7 @@ const enhancer = compose(
           thunk,
           persistSettings,
           userListAPI,
+          renderAPI,
           route,
           createLogger(),
           socketIoMiddleware
@@ -33,6 +35,7 @@ const enhancer = compose(
           thunk,
           persistSettings,
           userListAPI,
+          renderAPI,
           route,
           socketIoMiddleware
         )
@@ -40,6 +43,7 @@ const enhancer = compose(
         thunk,
         persistSettings,
         userListAPI,
+        renderAPI,
         route,
         socketIoMiddleware
       )

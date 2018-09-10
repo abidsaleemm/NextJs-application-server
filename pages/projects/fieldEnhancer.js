@@ -43,7 +43,7 @@ export default props => {
     onCreate = () => {},
     setNotesEditor = () => {},
     delRender = () => {},
-    renders
+    renders = []
   } = props;
 
   return projects.map(
@@ -65,7 +65,6 @@ export default props => {
       i,
       self
     ) => {
-      const { data = {} } = renders;
       return {
         ...project,
         patientBirthDate,
@@ -170,9 +169,9 @@ export default props => {
             <DropDownRenderOptions studyUID={studyUID} />
             
             {
-              data.length > 0 ? (
+              renders.length > 0 ? (
               <div className="renderList">
-                {data.map(
+                {renders.map(
                   ({
                     template,
                     templateName = "",
@@ -183,7 +182,7 @@ export default props => {
                   }, index) => (
                     <div key={index} className="renderListItem">
                       <div className="renderListItemSpacing">
-                        {template}
+                        {templateName}
                       </div>
                       {debug ? (
                         <div className="renderListItemSpacing">D</div>

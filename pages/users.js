@@ -28,7 +28,7 @@ class Users extends Component {
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));
-      store.dispatch(payloadTeams({ data: teams }));
+      store.dispatch(payloadTeams( teams ));
       return;
     }
 
@@ -119,7 +119,7 @@ class Users extends Component {
       editUser,
       user: loggedInUser,
       userList: { data, fetching },
-      teamList: { data: teams }
+      teamList: teams
     } = this.props;
 
     return (

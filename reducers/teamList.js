@@ -4,9 +4,7 @@ import {
   DELETE_TEAMS
 } from "../constants/actionTypes";
 
-export const initialState = {
-  data: []
-};
+export const initialState = [];
 
 export default (
   state = initialState,
@@ -14,15 +12,11 @@ export default (
 ) => {
   switch (type) {
     case CREATE_TEAM:
-      return {
-        data: state.data.concat([teamData])
-      };
+      return state.concat([teamData]);
     case PAYLOAD_TEAMS:
       return teamList;
     case DELETE_TEAMS:
-      return {
-        data: state.data.filter(team => !teamIds.find( id => id === team.id))
-      };
+      return state.filter(team => !teamIds.find( id => id === team.id));
     default:
       return state;
   }

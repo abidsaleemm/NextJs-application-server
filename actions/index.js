@@ -3,13 +3,13 @@ export { default as payloadProjectDetail } from "./payloadProjectDetail";
 export { default as payloadUsers } from "./payloadUsers";
 export { default as payloadProjectsSettings } from "./payloadProjectsSettings";
 export { default as payloadTeams } from "./payloadTeams";
+export { default as payloadRenders } from "./payloadRenders";
 
 export { default as setProjectProps } from "./setProjectProps";
 export { default as fetchAction } from "./fetchAction";
 export { default as setVideo } from "./setVideo";
 
 export { default as toggleProjectDefault } from "./toggleProjectDefault";
-
 export { default as setProjectDetailStatus } from "./setProjectDetailStatus";
 
 // Settings

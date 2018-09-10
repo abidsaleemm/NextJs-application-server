@@ -1,6 +1,11 @@
+import { SET_PROJECT_PROPS } from "../constants/actionTypes";
+
 import { adapter } from "../server";
 
-export default async ({ action: { studyUID, type, ...props } = {} }) => {
+export default async ({
+  socket,
+  action: { studyUID, type, ...props } = {}
+}) => {
   const {
     projects: { setProject = () => {} } = {},
     renders: { setRenderQueue = () => {} } = {}
@@ -20,5 +25,12 @@ export default async ({ action: { studyUID, type, ...props } = {} }) => {
     });
   }
 
-  setProject({ studyUID, props });
+  await setProject({ studyUID, props });
+
+  // Broadcast updated project props to other connected users
+  socket.broadcast.emit("action", {
+    type: SET_PROJECT_PROPS,
+    studyUID,
+    ...props
+  });
 };

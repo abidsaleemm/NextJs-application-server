@@ -1,16 +1,10 @@
-import {
-  combineReducers,
-  compose,
-  createStore,
-  applyMiddleware
-} from "redux";
+import { combineReducers, compose, createStore, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import createSocketIoMiddleware from "../middleware/createSocketIoMiddleware";
 import io from "socket.io-client";
 import thunk from "redux-thunk";
 import persistSettings from "../middleware/persistSettings";
 import userListAPI from "../middleware/userListAPI";
-import renderAPI from "../middleware/renderAPI";
 import * as reducers from "../reducers";
 import route from "../middleware/route";
 
@@ -26,7 +20,6 @@ const enhancer = compose(
           thunk,
           persistSettings,
           userListAPI,
-          renderAPI,
           route,
           createLogger(),
           socketIoMiddleware
@@ -35,7 +28,6 @@ const enhancer = compose(
           thunk,
           persistSettings,
           userListAPI,
-          renderAPI,
           route,
           socketIoMiddleware
         )
@@ -43,16 +35,11 @@ const enhancer = compose(
         thunk,
         persistSettings,
         userListAPI,
-        renderAPI,
         route,
         socketIoMiddleware
       )
 );
 
 export const initStore = (initialState = {}) => {
-  return createStore(
-    combineReducers(reducers),
-    initialState,
-    enhancer
-  );
+  return createStore(combineReducers(reducers), initialState, enhancer);
 };

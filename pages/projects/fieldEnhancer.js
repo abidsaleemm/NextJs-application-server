@@ -65,6 +65,10 @@ export default props => {
       i,
       self
     ) => {
+      const rendersSelected = renders.filter(
+        (v = {}) => v.studyUID === studyUID
+      );
+
       return {
         ...project,
         patientBirthDate,
@@ -167,19 +171,21 @@ export default props => {
               `}
             </style>
             <DropDownRenderOptions studyUID={studyUID} />
-            
-            {
-              renders.length > 0 ? (
+
+            {rendersSelected.length > 0 ? (
               <div className="renderList">
-                {renders.map(
-                  ({
-                    template,
-                    templateName = "",
-                    rendering = false,
-                    debug,
-                    anonymous,
-                    progress = 0,
-                  }, index) => (
+                {rendersSelected.map(
+                  (
+                    {
+                      template,
+                      templateName = "",
+                      rendering = false,
+                      debug,
+                      anonymous,
+                      progress = 0
+                    },
+                    index
+                  ) => (
                     <div key={index} className="renderListItem">
                       <div className="renderListItemSpacing">
                         {templateName}

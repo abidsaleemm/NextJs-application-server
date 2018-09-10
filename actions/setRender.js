@@ -1,9 +1,27 @@
 import { SET_RENDER } from "../constants/actionTypes";
 
-export default ({ studyUID, template, anonymous, debug }) => ({
-  type: SET_RENDER,
+export default ({
   studyUID,
   template,
-  anonymous,
-  debug
-});
+  anonymous = false,
+  debug = false,
+  ...props
+}) => dispatch => {
+  dispatch({
+    ...props,
+    type: SET_RENDER,
+    studyUID,
+    template,
+    anonymous,
+    debug
+  });
+
+  dispatch({
+    ...props,
+    type: "server/setRender",
+    studyUID,
+    template,
+    anonymous,
+    debug
+  });
+};

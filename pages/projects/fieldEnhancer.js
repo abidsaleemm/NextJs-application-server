@@ -213,27 +213,17 @@ export default props => {
                           Queued
                         </div>
                       )}
-                      {!rendering ? (
-                        <Button
-                          color="danger"
-                          onClick={() => {
-                            delRender({ template, studyUID, debug, anonymous });
-                          }}
-                        >
-                          X
-                        </Button>
-                      ) : null}
+                      <Button
+                        color="danger"
+                        onClick={() => {
+                          delRender({ template, studyUID, debug, anonymous });
+                        }}
+                      >
+                        X
+                      </Button>
                     </div>
                   )
                 )}
-              </div>
-            ) : null}
-
-            {encoding !== "" && encoding !== null ? (
-              <div className="renderTextEncoding">
-                Encoding (
-                {Math.floor((new Date() - new Date(encoding)) / 1000 / 60)} min.
-                elapsed)
               </div>
             ) : null}
           </div>

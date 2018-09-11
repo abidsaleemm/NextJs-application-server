@@ -1,6 +1,12 @@
 import Server from "socket.io";
-import * as server from "./socketServer";
-import * as editor from "./socketEditor";
+
+// Import socket handlers
+import * as server from "../socketServer";
+import * as editor from "../socketEditor";
+
+import { rendersWatcher, projectsWatcher } from "./watchers";
+
+import { adapter } from "../server";
 
 const actionHandlers = {
   server,
@@ -20,6 +26,10 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   // Pass down session from passportjs
   io.use((socket, next) => sessionMiddleWare(socket.request, {}, next));
 
+  // Compose db watchers
+  rendersWatcher({ io, adapter });
+  projectsWatcher({ io, adapter });
+
   // Handle socket connections
   io.on("connection", socket => {
     console.log("Connection " + socket.id);
@@ -34,6 +44,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
     //   return;
     // }
 
+    // Handle redux actions here
     socket.on("action", async ({ type = "", ...action }) => {
       const [prefix, parseType] = type.split("/"); // TODO Could break if action name contains more /
       const {

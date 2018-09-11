@@ -9,7 +9,7 @@ import fs from "fs";
 import proxy from "http-proxy-middleware";
 import auth from "./auth";
 import routes from "./routes";
-import socketApi from "./socketApi";
+import socketManager from "./socketManager";
 import authMiddleware from "./auth/middleware";
 import storageAdapter from "adapters";
 
@@ -133,7 +133,7 @@ app.prepare().then(() => {
 
     const serverHttp = https.createServer(options, server).listen(port, () => {
       console.log(`SSL listening on *:${port}`);
-      const io = socketApi({
+      const io = socketManager({
         server: serverHttp,
         passport,
         sessionMiddleWare
@@ -143,7 +143,7 @@ app.prepare().then(() => {
     // Used for local development
     const serverHttp = server.listen(port, () => {
       console.log(`Listening on *:${port}`);
-      const io = socketApi({
+      const io = socketManager({
         server: serverHttp,
         passport,
         sessionMiddleWare

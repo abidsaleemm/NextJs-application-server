@@ -9,8 +9,10 @@ import { rendersWatcher, projectsWatcher } from "./watchers";
 import { adapter } from "../server";
 
 const actionHandlers = {
-  server,
-  editor
+  ...server,
+  ...editor
+  //   server,
+  //   editor
 };
 
 // TODO Handle internal state changes
@@ -48,7 +50,8 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
     socket.on("action", async ({ type = "", ...action }) => {
       const [prefix, parseType] = type.split("/"); // TODO Could break if action name contains more /
       const {
-        [prefix]: { [parseType]: actionHandler = () => {} } = {}
+        // [prefix]: { [parseType]: actionHandler = () => {} } = {}
+        [parseType]: actionHandler = () => {}
       } = actionHandlers;
 
       // TODO This is kinda a hack but works well for now.  If from the editor join a room.

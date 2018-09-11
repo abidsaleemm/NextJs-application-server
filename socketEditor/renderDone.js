@@ -5,7 +5,6 @@ import zipFolder from "zip-folder";
 import { generateVideo, cleanup } from "../video";
 import { adapter } from "../server";
 import createVideoFileName from "../helpers/createVideoFileName";
-import { resolve } from "dns";
 
 // TODO Move this someplace else?
 // TODO Cut up into seperate functions for now
@@ -18,17 +17,22 @@ const templateActions = {
     studyDate,
     session,
     numberImages,
+    template,
     anonymous = false,
     debug = false
   }) => {
     const {
-      projects: { setProject = () => {} } = {},
+      renders: { setRenderQueue = () => {}, delRenderQueue = () => {} } = {},
       file: { put: filePut = () => {} } = {}
     } = adapter;
 
-    await setProject({
+    await setRenderQueue({
       studyUID,
-      props: { encoding: new Date().toString() }
+      template,
+      anonymous,
+      debug,
+      encoding: new Date().toString(),
+      rendering: true
     });
 
     const videoFileName = createVideoFileName({
@@ -56,9 +60,11 @@ const templateActions = {
       console.log("Video error.", e);
     }
 
-    setProject({
+    await delRenderQueue({
       studyUID,
-      props: { encoding: "" }
+      template,
+      anonymous,
+      debug
     });
   },
   spineImages: ({
@@ -106,16 +112,23 @@ const templateActions = {
     studyType,
     studyDate,
     session,
-    numberImages
+    numberImages,
+    template,
+    anonymous = false,
+    debug = false
   }) => {
     const {
-      projects: { setProject = () => {} } = {},
+      renders: { setRenderQueue = () => {}, delRenderQueue = () => {} } = {},
       file: { put: filePut = () => {} } = {}
     } = adapter;
 
-    await setProject({
+    await setRenderQueue({
       studyUID,
-      props: { encoding: new Date().toString() }
+      template,
+      anonymous,
+      debug,
+      encoding: new Date().toString(),
+      rendering: true
     });
 
     // Create video name
@@ -140,9 +153,11 @@ const templateActions = {
       console.log("Video error.", e);
     }
 
-    setProject({
+    await delRenderQueue({
       studyUID,
-      props: { encoding: "" }
+      template,
+      anonymous,
+      debug
     });
   }
 };
@@ -157,15 +172,19 @@ export default async ({ socket, action }) => {
   if (session) {
     console.log("Render done. Generating resources.", studyUID);
 
-    socket.emit("action", { type: "CAPTURE_CLOSE" });
+    await new Promise((resolve, reject) => {
+      socket.emit("action", { type: "CAPTURE_CLOSE" }, () => {
+        resolve();
+      });
+    });
 
     const study = await getStudy({ studyUID });
-
     await templateFunction({
       ...study,
       ...action,
       adapter,
-      studyUID
+      studyUID,
+      template: templateName
     });
   }
 };

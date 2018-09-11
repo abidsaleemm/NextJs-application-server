@@ -1,6 +1,7 @@
 import { adapter } from "../server";
 
 import projectsListEnhancer from "./projectsListEnhancer";
+import filterProjectsByUser from "./filterProjectsByUser";
 
 export default async ({ role, userID, userList = [] }) => {
   const {
@@ -21,35 +22,7 @@ export default async ({ role, userID, userList = [] }) => {
         study,
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
-      // TODO Move this to separate function
-      .filter(([study, { userID: projectUserID, status } = {}]) => {
-        if (
-          role !== "admin" &&
-          status !== "Start" &&
-          status !== "Segmentation" &&
-          status !== "QC" &&
-          status !== "Review" &&
-          status !== "Done" // TODO Should we remove this?
-        ) {
-          return false;
-        }
-
-        // TODO Fix with type check?
-        if (projectUserID == userID) {
-          return true;
-        }
-
-        if (role === "admin") {
-          return true;
-        }
-
-        if (role === "teamAdmin" && projectUserID === undefined) {
-          return true;
-        }
-
-        // TODO Fix with type check?
-        return userList.some(({ id }) => id == projectUserID);
-      })
+      .filter(filterProjectsByUser({ role, userID, userList }))
       .filter(
         ([study, { deleted = false } = {}]) =>
           study !== undefined && deleted !== true

@@ -1,26 +1,10 @@
-import { payloadRenders, payloadProjects } from "../actions";
+import { payloadProjects } from "../../actions";
 
-import projectsListEnhancer from "../helpers/projectsListEnhancer";
-import queryProjectsListDefault from "../helpers/queryProjectsListDefault";
-import filterProjectsByUser from "../helpers/filterProjectsByUser";
+import projectsListEnhancer from "../../helpers/projectsListEnhancer";
+import queryProjectsListDefault from "../../helpers/queryProjectsListDefault";
+import filterProjectsByUser from "../../helpers/filterProjectsByUser";
 
-export const rendersWatcher = ({ io, adapter = {} }) => {
-  const { renders: { getRenderQueue = () => {} } = {} } = adapter;
-
-  const intervalSeconds = 10;
-
-  const intervalFunc = async () => {
-    const renders = await getRenderQueue();
-
-    io.emit("action", payloadRenders(renders));
-
-    setTimeout(intervalFunc, intervalSeconds * 1000);
-  };
-
-  intervalFunc();
-};
-
-export const projectsWatcher = ({ io, adapter = {} }) => {
+export default ({ io, adapter = {} }) => {
   const {
     users: { getUsers = () => {} } = {},
     projects: { getProjectList = () => {} } = {},
@@ -30,7 +14,7 @@ export const projectsWatcher = ({ io, adapter = {} }) => {
   const intervalSeconds = 30;
 
   const intervalFunc = async () => {
-    // TODO Do query directly getProjectList instead of filtering with javascript
+    // TODO Do query directly getProjectList instead of filtering with javascript?
     const [projects = [], studies = []] = await Promise.all([
       getProjectList(),
       getStudies()

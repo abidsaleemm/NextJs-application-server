@@ -16,6 +16,12 @@ import RemoveButton from "../../components/RemoveButton";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 import checkPlainTextNull from "../../helpers/checkPlainTextNull";
 
+const renderTemplateMap = {
+  spine: "Video",
+  spineImages: "Images",
+  spineComparison: "Comparison"
+};
+
 const tableRowColor = status => {
   const options = {
     Start: "rgba(255, 0, 0, 0.1)",
@@ -178,7 +184,6 @@ export default props => {
                   (
                     {
                       template,
-                      templateName = "",
                       rendering = false,
                       debug,
                       anonymous,
@@ -188,7 +193,7 @@ export default props => {
                   ) => (
                     <div key={index} className="renderListItem">
                       <div className="renderListItemSpacing">
-                        {templateName}
+                        {renderTemplateMap[template] || template}
                       </div>
                       {debug ? (
                         <div className="renderListItemSpacing">D</div>

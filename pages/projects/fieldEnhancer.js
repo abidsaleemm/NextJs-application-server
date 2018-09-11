@@ -187,7 +187,8 @@ export default props => {
                       rendering = false,
                       debug,
                       anonymous,
-                      progress = 0
+                      progress = 0,
+                      encoding
                     },
                     index
                   ) => (
@@ -202,20 +203,26 @@ export default props => {
                         <div className="renderListItemSpacing">A</div>
                       ) : null}
                       {rendering ? (
-                        <div className="renderListItemSpacing renderTextProgress">{`Progress ${progress}%`}</div>
+                        encoding ? (
+                          <div className="renderListItemSpacing renderTextProgress">{`Encoding`}</div>
+                        ) : (
+                          <div className="renderListItemSpacing renderTextProgress">{`Progress ${progress}%`}</div>
+                        )
                       ) : (
                         <div className="renderListItemSpacing renderTextQueue">
                           Queued
                         </div>
                       )}
-                      <Button
-                        color="danger"
-                        onClick={() => {
-                          delRender({ template, studyUID, debug, anonymous });
-                        }}
-                      >
-                        X
-                      </Button>
+                      {!rendering ? (
+                        <Button
+                          color="danger"
+                          onClick={() => {
+                            delRender({ template, studyUID, debug, anonymous });
+                          }}
+                        >
+                          X
+                        </Button>
+                      ) : null}
                     </div>
                   )
                 )}

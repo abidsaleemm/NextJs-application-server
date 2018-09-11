@@ -22,7 +22,7 @@ const templateActions = {
     debug = false
   }) => {
     const {
-      renders: { setRenderQueue = () => {}, delRenderQueue = () => {} } = {},
+      renders: { setRenderQueue = () => {} } = {},
       file: { put: filePut = () => {} } = {}
     } = adapter;
 
@@ -59,13 +59,6 @@ const templateActions = {
     } catch (e) {
       console.log("Video error.", e);
     }
-
-    await delRenderQueue({
-      studyUID,
-      template,
-      anonymous,
-      debug
-    });
   },
   spineImages: ({
     studyUID,
@@ -118,7 +111,7 @@ const templateActions = {
     debug = false
   }) => {
     const {
-      renders: { setRenderQueue = () => {}, delRenderQueue = () => {} } = {},
+      renders: { setRenderQueue = () => {} } = {},
       file: { put: filePut = () => {} } = {}
     } = adapter;
 
@@ -152,20 +145,16 @@ const templateActions = {
     } catch (e) {
       console.log("Video error.", e);
     }
-
-    await delRenderQueue({
-      studyUID,
-      template,
-      anonymous,
-      debug
-    });
   }
 };
 
 export default async ({ socket, action }) => {
-  const { dicom: { getStudy = () => {} } = {} } = adapter;
+  const {
+    renders: { delRenderQueue = () => {} } = {},
+    dicom: { getStudy = () => {} } = {}
+  } = adapter;
 
-  const { session, studyUID = "", templateName } = action;
+  const { session, studyUID = "", templateName, anonymous, debug } = action;
 
   const { [templateName]: templateFunction } = templateActions;
 
@@ -185,6 +174,14 @@ export default async ({ socket, action }) => {
       adapter,
       studyUID,
       template: templateName
+    });
+
+    console.log("All Done");
+    await delRenderQueue({
+      studyUID,
+      template: templateName,
+      anonymous,
+      debug
     });
   }
 };

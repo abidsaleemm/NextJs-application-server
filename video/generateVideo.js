@@ -77,7 +77,6 @@ export default async ({ session, numberImages = 0 }) => {
         "-pix_fmt yuv420p",
         "-codec:a libmp3lame",
         "-b:a 128k",
-        "-threads 1"
       ])
       .fps(fps)
       .on("end", () => {

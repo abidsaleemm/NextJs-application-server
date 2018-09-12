@@ -16,7 +16,7 @@ export default async ({ session, index, data }) => {
   const fileName = index.toString().padStart(4, "0");
   const fullPath = `${dirPath}/${fileName}.jpg`;
 
-  const fd = fs.openSync(fullPath);
+  const fd = fs.openSync(fullPath, "w");
   fs.writeSync(fd, data);
   fs.closeSync(fd);
 };

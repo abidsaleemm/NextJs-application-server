@@ -29,7 +29,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
   io.use((socket, next) => sessionMiddleWare(socket.request, {}, next));
 
   // Compose db watchers
-  rendersWatcher({ io, adapter });
+  //   rendersWatcher({ io, adapter });
   //   projectsWatcher({ io, adapter });
 
   // Handle socket connections

@@ -86,6 +86,7 @@ class ProjectsListing extends Component {
         sortDesc,
         projectsListSortKey,
         projectsListSortDesc,
+        user: { role } = {},
         setProjectsSettings = () => {},
         uploadDel = () => {},
         createProject = () => {},
@@ -100,6 +101,7 @@ class ProjectsListing extends Component {
         notes = ""
       }
     } = this;
+
     const projectsEnhanced = fieldEnhancer({
       ...props,
       onCreate: ({ studyUID }) => {
@@ -142,7 +144,7 @@ class ProjectsListing extends Component {
           sortFunc={sortFunc()}
           sortKey={sortKey}
           sortDesc={sortDesc}
-          header={header()}
+          header={header({ admin: role === "admin" })}
           filterFunc={filterFunc(props)}
           filterRender={filterRender(props)}
           onSort={k => setProjectsSettings({ sortKey: k })}

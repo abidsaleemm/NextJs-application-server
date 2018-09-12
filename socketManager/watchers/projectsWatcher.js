@@ -58,6 +58,8 @@ export default ({ io, adapter = {} }) => {
                 return [...a, ...ret];
               }, []);
 
+        // console.log("userID", userID, role, usersSelected);
+
         socket.emit(
           "action",
           payloadProjects({

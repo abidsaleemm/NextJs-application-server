@@ -1,9 +1,9 @@
-export default () => ({
+export default ({ admin = false } = {}) => ({
   action: "",
   statusRender: "Status",
   sampleRender: "Sample",
   userRender: "Assign User",
-  videoOptions: "Rendered",
+  ...(admin ? { videoOptions: "Rendered" } : {}),
   patientName: "Patient Name",
   patientAge: "Age",
   patientSex: "Gender",

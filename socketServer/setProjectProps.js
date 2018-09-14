@@ -28,9 +28,9 @@ export default async ({
   await setProject({ studyUID, props });
 
   // Broadcast updated project props to other connected users
-  socket.broadcast.emit("action", {
-    type: SET_PROJECT_PROPS,
-    studyUID,
-    ...props
-  });
+//   socket.broadcast.emit("action", {
+//     type: SET_PROJECT_PROPS,
+//     studyUID,
+//     ...props
+//   });
 };

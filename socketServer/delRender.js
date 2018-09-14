@@ -16,11 +16,11 @@ export default async ({
   });
 
   // Pass same action to other connected clients
-  socket.broadcast.emit("action", {
-    type: DEL_RENDER,
-    studyUID,
-    template,
-    debug,
-    anonymous
-  });
+  //   socket.broadcast.emit("action", {
+  //     type: DEL_RENDER,
+  //     studyUID,
+  //     template,
+  //     debug,
+  //     anonymous
+  //   });
 };

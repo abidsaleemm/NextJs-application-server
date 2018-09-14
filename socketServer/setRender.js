@@ -17,12 +17,12 @@ export default async ({
   });
 
   // Pass same action to other connected clients
-  socket.broadcast.emit("action", {
-    type: SET_RENDER,
-    ...props,
-    studyUID,
-    template,
-    debug,
-    anonymous
-  });
+//   socket.broadcast.emit("action", {
+//     type: SET_RENDER,
+//     ...props,
+//     studyUID,
+//     template,
+//     debug,
+//     anonymous
+//   });
 };

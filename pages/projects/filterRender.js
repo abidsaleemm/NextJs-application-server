@@ -33,6 +33,16 @@ export default ({
         >
           All
         </DropdownItem>
+        {role === "admin" ? (
+          <DropdownItem
+            onClick={() =>
+              setProjectsSettings({ filter: { projectType: "Not Removed" } })
+            }
+          >
+            Not Removed
+          </DropdownItem>
+        ) : null}
+        <DropdownItem divider />
         <DropdownItem
           onClick={() =>
             setProjectsSettings({ filter: { projectType: "Live" } })

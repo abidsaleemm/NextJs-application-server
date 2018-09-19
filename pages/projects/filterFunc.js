@@ -40,5 +40,9 @@ export default ({
   studyDate: ({ studyDate }) =>
     new RegExp(studyDateFilter, "gi").test(studyDate),
   projectType: ({ projectType }) =>
-    statusProjectType === "All" ? true : projectType === statusProjectType
+    statusProjectType === "All"
+      ? true
+      : statusProjectType === "Not Removed"
+        ? projectType !== "Removed"
+        : projectType === statusProjectType
 });

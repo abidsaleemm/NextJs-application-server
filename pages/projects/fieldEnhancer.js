@@ -9,12 +9,11 @@ import {
   DropdownItem
 } from "reactstrap";
 
-import ButtonConfirm from "../../components/ButtonConfirm";
 import UploadButton from "../../components/UploadButton";
 import Status from "../../components/Status";
-import RemoveButton from "../../components/RemoveButton";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 import checkPlainTextNull from "../../helpers/checkPlainTextNull";
+import ProjectType from "../../components/ProjectType";
 
 const renderTemplateMap = {
   spine: "Video",
@@ -42,14 +41,13 @@ export default props => {
     user: { role = "" } = {},
     projects = [],
     userList = [],
+    renders = [],
     handleUpload = () => {},
     setProjectProps = () => {},
-    toggleProjectDefault = () => {},
     popupOpen = () => {},
     onCreate = () => {},
     setNotesEditor = () => {},
-    delRender = () => {},
-    renders = []
+    delRender = () => {}
   } = props;
 
   return projects.map(
@@ -63,13 +61,12 @@ export default props => {
         patientBirthDate,
         encoding = "",
         uploadedFiles = [],
-        sample = false,
         userID,
         notes = "",
+        projectType = "Live",
         ...project
       },
       i,
-      self
     ) => {
       const rendersSelected = renders.filter(
         (v = {}) => v.studyUID === studyUID
@@ -98,7 +95,7 @@ export default props => {
           </Button>
         ),
         action: (
-          <ButtonGroup>
+          <div>
             {!hasProjectSnapshots ? (
               <Button onClick={() => onCreate({ studyUID })}>Create</Button>
             ) : (
@@ -114,20 +111,7 @@ export default props => {
                 Edit
               </Button>
             )}
-            <ButtonConfirm
-              className="buttonGroupRight"
-              tipID="removeProject"
-              color="warning"
-              message="You are about to remove an uploaded project . Please confirm."
-              onConfirm={() => {
-                console.log("removing project");
-                setProjectProps({ studyUID, deleted: true });
-              }}
-              style={{ borderRadius: "0 5px 5px 0" }}
-            >
-              <RemoveButton />
-            </ButtonConfirm>
-          </ButtonGroup>
+          </div>
         ),
         patientAge: patientBirthDate
           ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear()
@@ -252,7 +236,6 @@ export default props => {
             />
           </ButtonGroup>
         ),
-        sample,
         userName:
           (userList.find(({ id }) => userID && id === userID) || {}).name || "",
         userRender: (
@@ -277,28 +260,18 @@ export default props => {
             </DropdownMenu>
           </UncontrolledDropdown>
         ),
-        sampleRender: (
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "space-around"
+        projectType,
+        projectTypeRender: (
+          <ProjectType
+            type={projectType}
+            admin={role === "admin"}
+            onChange={value => {
+              setProjectProps({
+                studyUID,
+                projectType: value
+              });
             }}
-          >
-            <input
-              type="checkbox"
-              onChange={({ target: { value } }) => {
-                toggleProjectDefault(studyUID);
-              }}
-              checked={sample === true}
-              style={{
-                alignSelf: "center",
-                width: "20px",
-                height: "20px"
-              }}
-              disabled={role !== "admin"}
-            />
-          </div>
+          />
         )
       };
     }

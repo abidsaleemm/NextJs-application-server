@@ -23,9 +23,10 @@ export default async ({ role, userID, userList = [] }) => {
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
       .filter(filterProjectsByUser({ role, userID, userList }))
+      .filter(([study]) => study !== undefined)
       .filter(
-        ([study, { deleted = false } = {}]) =>
-          study !== undefined && deleted !== true
+        ([study, { projectType } = {}]) =>
+          projectType === "Removed" ? role === "admin" : true
       )
       .map(projectsListEnhancer({ adapter }))
   );

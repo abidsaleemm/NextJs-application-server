@@ -25,9 +25,10 @@ export default async () => {
         ([study, { status } = {}]) =>
           status === "Delivered" || status === "Archived"
       )
+      // TODO Filter out projectType ===
       .filter(
-        ([study, { deleted = false } = {}]) =>
-          study !== undefined && deleted !== true
+        ([study, { projectType } = {}]) =>
+          study !== undefined && projectType !== "Removed"
       )
       .map(projectsListEnhancer({ adapter }))
   )).filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);

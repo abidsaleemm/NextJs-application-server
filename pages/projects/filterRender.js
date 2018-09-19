@@ -12,17 +12,60 @@ export default ({
   user: { role = "" } = {},
   filter: {
     status = "All",
-    sample = false,
     patientName,
     patientBirthDate,
     studyName,
     location,
     studyDate,
-    uploadDateTime
+    uploadDateTime,
+    projectType = "All"
   } = {},
-  toggleFilterSettings = () => {},
   setProjectsSettings = () => {}
 }) => ({
+  projectTypeRender: (
+    <UncontrolledDropdown>
+      <DropdownToggle caret>{projectType}</DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { projectType: "All" } })
+          }
+        >
+          All
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { projectType: "Live" } })
+          }
+        >
+          Live
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { projectType: "Sample" } })
+          }
+        >
+          Sample
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({ filter: { projectType: "Training" } })
+          }
+        >
+          Training
+        </DropdownItem>
+        {role === "admin" ? (
+          <DropdownItem
+            onClick={() =>
+              setProjectsSettings({ filter: { projectType: "Removed" } })
+            }
+          >
+            Removed
+          </DropdownItem>
+        ) : null}
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  ),
   statusRender: (
     <UncontrolledDropdown>
       <DropdownToggle caret>{status}</DropdownToggle>
@@ -152,27 +195,6 @@ export default ({
         setProjectsSettings({ filter: { location: value } })
       }
     />
-  ),
-  sampleRender: (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center"
-      }}
-    >
-      <input
-        type="checkbox"
-        onChange={({ target: { value } }) => {
-          toggleFilterSettings("sample");
-        }}
-        checked={sample}
-        style={{
-          alignSelf: "center",
-          width: "25px",
-          height: "25px"
-        }}
-      />
-    </div>
   ),
   uploadDateTime: (
     <SearchInput

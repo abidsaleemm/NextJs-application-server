@@ -17,14 +17,14 @@ const statusCheck = ({ statusFilter = "", status }) =>
 
 export default ({
   filter: {
-    sample: sampleFilter = false,
     patientName: patientNameFilter,
     patientBirthDate: patientBirthDateFilter,
     studyName: studyNameFilter,
     location: locationFilter,
     studyDate: studyDateFilter,
     uploadDateTime: uploadDateTimeFilter,
-    status: statusFilter
+    status: statusFilter,
+    projectType: statusProjectType = "All"
   }
 }) => ({
   status: ({ status }) => statusCheck({ statusFilter, status }),
@@ -39,5 +39,6 @@ export default ({
     new RegExp(uploadDateTimeFilter, "gi").test(uploadDateTime),
   studyDate: ({ studyDate }) =>
     new RegExp(studyDateFilter, "gi").test(studyDate),
-  sample: ({ sample = false }) => sampleFilter === sample
+  projectType: ({ projectType }) =>
+    statusProjectType === "All" ? true : projectType === statusProjectType
 });

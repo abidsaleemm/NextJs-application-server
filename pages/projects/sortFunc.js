@@ -24,10 +24,14 @@ export default () => ({
     return (isNaN(testA) ? 0 : testA) - (isNaN(testB) ? 0 : testB);
   },
   patientSex: ({ patientSex: a }, { patientSex: b }) => strSort(a, b),
-  patientBirthDate: ({ patientBirthDate: a }, { patientBirthDate: b }) => strSort(a, b),
+  patientBirthDate: ({ patientBirthDate: a }, { patientBirthDate: b }) =>
+    strSort(a, b),
   studyName: ({ studyName: a }, { studyName: b }) => strSort(a, b),
   studyDate: ({ studyDate: a }, { studyDate: b }) => strSort(a, b),
   location: ({ location: a }, { location: b }) => strSort(a, b),
-  uploadDateTime: ({ uploadDateTime: a }, { uploadDateTime: b }) => strSort(a, b),
-  upload: ({ uploadedFiles: a = [] }, { uploadedFiles: b = [] }) => a.length - b.length
+  uploadDateTime: ({ uploadDateTime: a }, { uploadDateTime: b }) =>
+    strSort(a, b),
+  upload: ({ uploadedFiles: a = [] }, { uploadedFiles: b = [] }) =>
+    a.length - b.length,
+  projectTypeRender: ({ projectType: a }, { projectType: b }) => strSort(a, b)
 });

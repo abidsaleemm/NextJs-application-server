@@ -1,7 +1,7 @@
 export default ({ admin = false } = {}) => ({
   action: "",
   statusRender: "Status",
-  sampleRender: "Sample",
+  projectTypeRender: "Type",
   userRender: "Assign User",
   ...(admin ? { videoOptions: "Rendered" } : {}),
   patientName: "Patient Name",

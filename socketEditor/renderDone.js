@@ -19,7 +19,8 @@ const templateActions = {
     numberImages,
     template,
     anonymous = false,
-    debug = false
+    debug = false,
+    root = os.tmpdir()
   }) => {
     const {
       renders: { setRenderQueue = () => {} } = {},
@@ -48,7 +49,8 @@ const templateActions = {
       console.log("Saving Video.");
 
       const path = `${studyUID}/${videoFileName}`; // TODO create filename based on
-      const stream = fs.createReadStream(`${os.tmpdir()}/${session}/video.mp4`);
+
+      const stream = fs.createReadStream(`${root}/${session}/video.mp4`);
 
       await filePut({ path, stream });
 
@@ -68,7 +70,8 @@ const templateActions = {
     studyDate,
     adapter,
     anonymous = false,
-    debug = false
+    debug = false,
+    root = os.tmpdir()
   }) =>
     new Promise((resolve, reject) => {
       const { file: { put: filePut = () => {} } = {} } = adapter;
@@ -76,9 +79,9 @@ const templateActions = {
       const zipFileName = `Images ${
         anonymous ? "Anonymous" : debug ? "Debug" : patientName
       }-${studyType}-${studyDate}.zip`;
-      const zipFilePath = `${os.tmpdir()}/${session}.zip`;
+      const zipFilePath = `${root}/${session}.zip`;
 
-      zipFolder(`${os.tmpdir()}/${session}`, zipFilePath, async err => {
+      zipFolder(`${root}/${session}`, zipFilePath, async err => {
         if (err) {
           console.log("Error", err);
           reject(err);
@@ -108,7 +111,8 @@ const templateActions = {
     numberImages,
     template,
     anonymous = false,
-    debug = false
+    debug = false,
+    root = os.tmpdir()
   }) => {
     const {
       renders: { setRenderQueue = () => {} } = {},
@@ -134,7 +138,7 @@ const templateActions = {
       console.log("Saving Video.");
 
       const path = `${studyUID}/${videoFileName}`; // TODO create filename based on
-      const stream = fs.createReadStream(`${os.tmpdir()}/${session}/video.mp4`);
+      const stream = fs.createReadStream(`${root}/${session}/video.mp4`);
 
       await filePut({ path, stream });
 

@@ -13,14 +13,14 @@ export const format = {
   signed: true
 };
 
-export default async ({ session, index, data }) => {
+export default async ({ root = os.tmpdir(), session, index, data }) => {
   const fileName = `${index.toString().padStart(4, "0")}.wav`;
-  const dirPath = `${os.tmpdir()}/${session}/audio`;
+  const dirPath = `${root}/${session}/audio`;
   const filePath = `${dirPath}/${fileName}`;
 
   // Create if does not exist
   try {
-    fs.mkdirSync(`${os.tmpdir()}/${session}`);
+    fs.mkdirSync(`${root}/${session}`);
   } catch (e) {}
 
   try {

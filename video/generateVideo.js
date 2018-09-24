@@ -25,11 +25,11 @@ const readWav = ({ filePath }) =>
     file.pipe(reader);
   });
 
-export default async ({ session, numberImages = 0 }) => {
+export default async ({ root = os.tmpdir(), session, numberImages = 0 }) => {
   // TODO Use numberFrames var name instead of numberImages
-  const videoPath = `${os.tmpdir()}/${session}/video.mp4`;
-  const audioPath = `${os.tmpdir()}/${session}/audio.wav`;
-  const audioDir = `${os.tmpdir()}/${session}/audio`;
+  const videoPath = `${root}/${session}/video.mp4`;
+  const audioPath = `${root}/${session}/audio.wav`;
+  const audioDir = `${root}/${session}/audio`;
 
   // TODO Handle error check on fs sync call
   const files = fs.readdirSync(audioDir);
@@ -69,14 +69,14 @@ export default async ({ session, numberImages = 0 }) => {
 
   return new Promise((resolve, reject) => {
     const command = ffmpeg()
-      .addInput(`${os.tmpdir()}/${session}/frames/%04d.jpg`) // TODO Will break if more than 9999 frames
+      .addInput(`${root}/${session}/frames/%04d.jpg`) // TODO Will break if more than 9999 frames
       .inputFPS(fps)
       .addInput(audioPath)
       .outputOptions([
         "-vprofile main",
         "-pix_fmt yuv420p",
         "-codec:a libmp3lame",
-        "-b:a 128k",
+        "-b:a 128k"
       ])
       .fps(fps)
       .on("end", () => {

@@ -1,12 +1,12 @@
 import fs from "fs";
 import os from "os";
 
-export default async ({ session, index, data }) => {
-  const dirPath = `${os.tmpdir()}/${session}/frames`;
+export default async ({ root = os.tmpdir(), session, index, data }) => {
+  const dirPath = `${root}/${session}/frames`;
 
   // Create if does not exist
   try {
-    fs.mkdirSync(`${os.tmpdir()}/${session}`);
+    fs.mkdirSync(`${root}/${session}`);
   } catch (e) {}
 
   try {

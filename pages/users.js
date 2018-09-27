@@ -17,7 +17,7 @@ import EditUserModal from "../components/EditUserModal";
 import DeleteUserModal from "../components/DeleteUserModal";
 import DropDownButton from "../components/DropDownButton";
 import ManageTeamModal from "../components/ManageTeamModal";
-import _ from "underscore";
+import _ from "underscore"; // TODO use ramda instead. WG
 import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
 class Users extends Component {

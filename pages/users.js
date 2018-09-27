@@ -2,8 +2,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Button } from "reactstrap";
-import EditIcon from "react-icons/lib/md/edit";
-import DeleteIcon from "react-icons/lib/md/delete";
+import { MdEdit as EditIcon, MdDelete as DeleteIcon } from "react-icons/md";
 import Wrapper from "../hoc/wrapper";
 import * as actions from "../actions";
 import MediaCardIdentity from "../components/MediaCardIdentity";
@@ -22,13 +21,17 @@ import _ from "underscore";
 import TeamButton, { TEAM_ACTION_OPTIONS } from "../components/TeamButton";
 
 class Users extends Component {
-  static async getInitialProps({ store, isServer, query: { users = [], teams = [] } }) {
+  static async getInitialProps({
+    store,
+    isServer,
+    query: { users = [], teams = [] }
+  }) {
     const { payloadUsers, payloadTeams } = actions;
 
     if (isServer) {
       //TODO Should we wrap these in a single action?
       store.dispatch(payloadUsers({ data: users }));
-      store.dispatch(payloadTeams( teams ));
+      store.dispatch(payloadTeams(teams));
       return;
     }
 
@@ -82,12 +85,16 @@ class Users extends Component {
     this.props.editUser(user);
   };
 
-  isRelated = ( user, loggedInUser)=> {
+  isRelated = (user, loggedInUser) => {
     if (loggedInUser.role === "admin") return true;
     else if (user.role === "admin") return false;
     const currentUserAllTeamId = user.teams && user.teams.map(team => team.id);
-    const loginUserAllTeamId = loggedInUser.teams && loggedInUser.teams.map(team => team.id);
-    const found = _.intersection(currentUserAllTeamId, loginUserAllTeamId).length ? true : false;
+    const loginUserAllTeamId =
+      loggedInUser.teams && loggedInUser.teams.map(team => team.id);
+    const found = _.intersection(currentUserAllTeamId, loginUserAllTeamId)
+      .length
+      ? true
+      : false;
     return found;
   };
 
@@ -99,11 +106,15 @@ class Users extends Component {
         this.props.editUser(user);
         break;
       case TEAM_ACTION_OPTIONS.ASSIGN_TEAM_ADMIN:
-        user.teams.filter(_team => _team.id === team.id).map(_team => (_team.isTeamAdmin = true));
+        user.teams
+          .filter(_team => _team.id === team.id)
+          .map(_team => (_team.isTeamAdmin = true));
         this.props.editUser(user);
         break;
       case TEAM_ACTION_OPTIONS.REMOVE_TEAM_ADMIN:
-        user.teams.filter(_team => _team.id === team.id).map(_team => (_team.isTeamAdmin = false));
+        user.teams
+          .filter(_team => _team.id === team.id)
+          .map(_team => (_team.isTeamAdmin = false));
         this.props.editUser(user);
         break;
       default:
@@ -132,19 +143,31 @@ class Users extends Component {
         <MediaCardHeader>
           <MediaCardIdentity>Name</MediaCardIdentity>
           <MediaCardContent>Email/User Name</MediaCardContent>
-          {loggedInUser.role === "admin" && <MediaCardContent>Role</MediaCardContent>}
+          {loggedInUser.role === "admin" && (
+            <MediaCardContent>Role</MediaCardContent>
+          )}
           <MediaCardContent>Team</MediaCardContent>
           <ActionGroup shown={loggedInUser.role === "admin"}>
-            <Button onClick={this.toggleManageTeamModal} color="primary" size="sm">
+            <Button
+              onClick={this.toggleManageTeamModal}
+              color="primary"
+              size="sm"
+            >
               Manage Teams
             </Button>
           </ActionGroup>
           <ActionGroup
             shown={
-              loggedInUser.role === "admin" || loggedInUser.teams.filter(user => user.isTeamAdmin === true).length
+              loggedInUser.role === "admin" ||
+              loggedInUser.teams.filter(user => user.isTeamAdmin === true)
+                .length
             }
           >
-            <Button onClick={this.toggleCreateUserModal} color="primary" size="sm">
+            <Button
+              onClick={this.toggleCreateUserModal}
+              color="primary"
+              size="sm"
+            >
               Create User
             </Button>
           </ActionGroup>
@@ -152,7 +175,7 @@ class Users extends Component {
         <MediaCardGroup>
           {data.map(
             user =>
-              this.isRelated( user, loggedInUser) && (
+              this.isRelated(user, loggedInUser) && (
                 <MediaCard key={user.id} self={user.id === loggedInUser.id}>
                   <MediaCardIdentity>{user.name}</MediaCardIdentity>
                   <MediaCardContent>{user.username}</MediaCardContent>
@@ -174,7 +197,9 @@ class Users extends Component {
                           keyValue={"team" + user.id + "item" + index}
                           currentUser={loggedInUser}
                           team={item}
-                          onOptionSelected={(option, team) => this.updateUserTeam(user, option, team)}
+                          onOptionSelected={(option, team) =>
+                            this.updateUserTeam(user, option, team)
+                          }
                         />
                       ))}
                   </MediaCardContent>
@@ -186,7 +211,9 @@ class Users extends Component {
                   <ActionGroup
                     shown={
                       loggedInUser.role === "admin" ||
-                      loggedInUser.teams.filter(user => user.isTeamAdmin === true).length ||
+                      loggedInUser.teams.filter(
+                        user => user.isTeamAdmin === true
+                      ).length ||
                       user.id === loggedInUser.id
                     }
                   >
@@ -233,7 +260,11 @@ class Users extends Component {
   }
 }
 
-const mapStateToProps = ({ user, userList, teamList }) => ({ user, userList, teamList });
+const mapStateToProps = ({ user, userList, teamList }) => ({
+  user,
+  userList,
+  teamList
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch);
 

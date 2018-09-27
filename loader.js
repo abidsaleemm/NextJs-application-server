@@ -10,7 +10,7 @@ require("@babel/register")({
     ]
   ],
   ignore: [
-    function (filepath) {
+    function(filepath) {
       if (filepath.includes("node_modules")) {
         return filepath.includes("/adapters/") ? false : true;
       }
@@ -21,4 +21,5 @@ require("@babel/register")({
 require("@babel/polyfill");
 
 require("dotenv").config();
-require("./server");
+
+require("./server").default();

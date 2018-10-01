@@ -40,11 +40,14 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       request: { session: { passport: { user } = {} } = {} } = {}
     } = socket;
 
-    // // This validates user session
-    // // TODO Might be a more clean way to handle this.  Can use middleware?
-    // if (user === undefined) {
-    //   return;
-    // }
+    // TODO Bypass if render token
+    // This validates user session
+    // TODO Might be a more clean way to handle this.  Can use middleware?
+
+    // TODO Create a bypass for this for rendering?
+    if (user === undefined) {
+      return;
+    }
 
     // Handle redux actions here
     socket.on("action", async ({ type = "", ...action }) => {

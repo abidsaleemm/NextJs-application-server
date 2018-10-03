@@ -82,6 +82,7 @@ STORAGE_ACCOUNT_KEY=$KEY
 CONTAINER_NAME=dicom   # default 'dicom'
 PROJECT_TABLE=projects  # default 'projects'
 DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.
+RENDER=true             # This allows server to bypass security check on socket.io connection.
 ```
 
 ## Project storage

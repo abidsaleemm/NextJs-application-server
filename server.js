@@ -135,8 +135,8 @@ export default async () => {
 
       // If not dev we assume we are on Azure
       const options = {
-        key: fs.readFileSync("certs/privkey4.pem"), // TODO see issue-89. Uses Certbot mount archive
-        cert: fs.readFileSync("certs/fullchain4.pem")
+        key: fs.readFileSync("certs/privkey.pem"), // TODO see issue-89. Uses Certbot mount archive
+        cert: fs.readFileSync("certs/fullchain.pem")
       };
 
       const serverHttp = https

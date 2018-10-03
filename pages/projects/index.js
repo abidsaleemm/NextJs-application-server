@@ -46,6 +46,7 @@ class ProjectsListing extends Component {
     store.dispatch({
       type: "server/pageProjects"
     });
+    store.dispatch({ type: "server/getSessions" });
   }
 
   // TODO Remove handle using redux portalSettings or portal?

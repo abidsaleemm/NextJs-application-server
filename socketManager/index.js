@@ -49,6 +49,8 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       return;
     }
 
+    socket.emit("action", setSessions(sessions));
+
     // TODO Add socket action for leaving room.
 
     // Handle redux actions here
@@ -58,8 +60,6 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
 
       // TODO This is kinda a hack but works well for now.  If from the editor join a room.
       const { studyUID } = action;
-
-      //   console.log("studyUID", studyUID, prefix, sessions);
 
       if (studyUID) {
         const { [studyUID]: session } = sessions;
@@ -94,6 +94,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
 
       await actionHandler({
         socket,
+        sessions,
         io,
         action: { ...action, type },
         user

@@ -42,6 +42,7 @@ export const SET_PROJECT_PROPS = "SET_PROJECT_PROPS";
 export const NOTES_EDITOR = "NOTES_EDITOR";
 
 // Renders
-
 export const SET_RENDER = "SET_RENDER";
 export const DEL_RENDER = "DEL_RENDER";
+
+export const SET_SESSIONS = "SET_SESSIONS";

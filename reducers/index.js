@@ -10,3 +10,4 @@ export { default as renders } from "./renders";
 export { default as teamList } from "./teamList";
 export { default as notesEditor } from "./notesEditor";
 export { default as projectsListDefault } from "./projectsListDefault";
+export { default as sessions } from "./sessions";

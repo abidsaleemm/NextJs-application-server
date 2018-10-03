@@ -6,6 +6,7 @@ import * as editor from "../socketEditor";
 
 import { rendersWatcher, projectsWatcher } from "./watchers";
 import { adapter } from "../server";
+import { setSessions } from "../actions";
 
 const actionHandlers = {
   ...server,
@@ -87,6 +88,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
           }
 
           // TODO Update everyones sessions list
+          socket.broadcast.emit("action", setSessions(sessions));
         }
       }
 
@@ -109,6 +111,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       //   console.log("disconnect sessions", sessions);
 
       // TODO Update everyones sessions list
+      socket.broadcast.emit("action", setSessions(sessions));
     });
   });
 

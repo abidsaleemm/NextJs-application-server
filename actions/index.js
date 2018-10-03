@@ -45,3 +45,4 @@ export { default as getTeam } from "./getTeam";
 export { default as deleteTeams } from "./deleteTeams";
 
 export { default as setNotesEditor } from "./setNotesEditor";
+export { default as setSessions } from "./setSessions";

@@ -1,23 +1,15 @@
 export default ({ redirect = true } = {}) => (req, res, next) => {
   // Check if a user session
-  if (!req.isAuthenticated() && req.query.token !== process.env.TOKEN && !req.session.isFromDocker) {
+  if (!req.isAuthenticated() && !process.env.RENDER) {
     if (redirect === true) {
       res.redirect("/");
     } else {
-      res
-        .status(403)
-        .send("You are not authorized to access this page");
+      res.status(403).send("You are not authorized to access this page");
     }
     return;
   }
 
-  if (req.query.token == process.env.TOKEN) {
-    req.session.isFromDocker = true;
-  }
-  const {
-    user: { role = "user" } = {},
-    path = ""
-  } = req;
+  const { user: { role = "user" } = {}, path = "" } = req;
 
   if (role === "admin") {
     return next();

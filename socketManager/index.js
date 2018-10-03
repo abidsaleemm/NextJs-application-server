@@ -43,9 +43,9 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
     } = socket;
 
     // This validates user session
-    // TODO Might be a more clean way to handle this.  Can use middleware?
-    // TODO Create a bypass for this for rendering?  Trigger this check with an ENV var. WG
-    if (user === undefined) {
+    // TODO Might be a more clean way to handle this.  Can use middleware? WG
+    if (user === undefined && !process.env.RENDER) {
+      console.log("Connection blocked. No matching passport session.");
       return;
     }
 
@@ -68,7 +68,10 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
           if (!session) {
             // Create new session
             sessions = {
-              [studyUID]: { userName: user.name, socketId: socket.id }
+              [studyUID]: {
+                userName: (user || { name: "Rendering" }).name,
+                socketId: socket.id
+              }
             };
           } else {
             const { socketId, userName } = session;

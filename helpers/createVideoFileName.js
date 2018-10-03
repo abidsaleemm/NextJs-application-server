@@ -1,5 +1,2 @@
-export default ({
-  studyType = "",
-  patientName = "",
-  studyDate = ""
-}) => `${patientName} - ${studyType} - ${studyDate}.mp4`;
+export default ({ studyType = "", patientName = "", studyDate = "" }) =>
+  `${patientName}-${studyType}-${studyDate}.mp4`;

@@ -76,9 +76,9 @@ const templateActions = {
     new Promise((resolve, reject) => {
       const { file: { put: filePut = () => {} } = {} } = adapter;
 
-      const zipFileName = `Images ${
+      const zipFileName = `${
         anonymous ? "Anonymous" : debug ? "Debug" : patientName
-      }-${studyType}-${studyDate}.zip`;
+      }-Images-${studyType}-${studyDate}.zip`;
       const zipFilePath = `${root}/${session}.zip`;
 
       zipFolder(`${root}/${session}`, zipFilePath, async err => {

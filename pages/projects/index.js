@@ -231,6 +231,7 @@ const mapStateToProps = ({
   projects: { projects },
   user,
   renders,
+  sessions,
   userList: { data: userList = [] }
 }) => ({
   projects,
@@ -243,6 +244,7 @@ const mapStateToProps = ({
   defaultList,
   user,
   renders,
+  sessions,
   userList
 });
 

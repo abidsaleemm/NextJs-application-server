@@ -1,5 +1,6 @@
 export default ({ admin = false } = {}) => ({
   action: "",
+  activeUser: "Active User",
   statusRender: "Status",
   projectTypeRender: "Type",
   userRender: "Assign User",

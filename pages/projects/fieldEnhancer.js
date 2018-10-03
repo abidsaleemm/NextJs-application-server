@@ -38,6 +38,7 @@ const tableRowColor = status => {
 
 export default props => {
   const {
+    sessions = {},
     user: { role = "" } = {},
     projects = [],
     userList = [],
@@ -66,7 +67,7 @@ export default props => {
         projectType = "Live",
         ...project
       },
-      i,
+      i
     ) => {
       const rendersSelected = renders.filter(
         (v = {}) => v.studyUID === studyUID
@@ -74,6 +75,11 @@ export default props => {
 
       return {
         ...project,
+        activeUser: sessions[studyUID] ? (
+          <div style={{ color: "green" }}>{sessions[studyUID].userName}</div>
+        ) : (
+          ""
+        ),
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,
         status,
@@ -107,6 +113,7 @@ export default props => {
                   })
                 }
                 color="success"
+                disabled={sessions[studyUID] !== undefined}
               >
                 Edit
               </Button>

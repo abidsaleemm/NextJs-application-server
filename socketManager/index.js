@@ -5,7 +5,6 @@ import * as server from "../socketServer";
 import * as editor from "../socketEditor";
 
 import { rendersWatcher, projectsWatcher } from "./watchers";
-
 import { adapter } from "../server";
 
 const actionHandlers = {
@@ -17,6 +16,8 @@ const actionHandlers = {
 
 // TODO Handle internal state changes
 export default ({ server, passport, sessionMiddleWare = () => {} }) => {
+  let sessions = {};
+
   const socketio = new Server({
     pingTimeout: 60000,
     transports: ["websocket"],
@@ -40,38 +41,52 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
       request: { session: { passport: { user } = {} } = {} } = {}
     } = socket;
 
-    // TODO Bypass if render token
     // This validates user session
     // TODO Might be a more clean way to handle this.  Can use middleware?
-
-    // TODO Create a bypass for this for rendering?
+    // TODO Create a bypass for this for rendering?  Trigger this check with an ENV var. WG
     if (user === undefined) {
       return;
     }
 
+    // TODO Add socket action for leaving room.
+
     // Handle redux actions here
     socket.on("action", async ({ type = "", ...action }) => {
       const [prefix, parseType] = type.split("/"); // TODO Could break if action name contains more /
-      const {
-        // [prefix]: { [parseType]: actionHandler = () => {} } = {}
-        [parseType]: actionHandler = () => {}
-      } = actionHandlers;
+      const { [parseType]: actionHandler = () => {} } = actionHandlers;
 
       // TODO This is kinda a hack but works well for now.  If from the editor join a room.
-      if (prefix === "editor") {
-        const { studyUID } = action;
-        if (studyUID) {
-          const roomName = `editor/${studyUID}`; // TODO This is reused someplace else.
-          const { rooms = {} } = socket;
+      const { studyUID } = action;
 
-          if (!Object.keys(rooms).some(v => v === roomName)) {
-            await new Promise(resolve => {
-              socket.join(roomName, () => {
-                console.log("socket joined room", roomName);
-                resolve();
+      //   console.log("studyUID", studyUID, prefix, sessions);
+
+      if (studyUID) {
+        const { [studyUID]: session } = sessions;
+
+        if (prefix === "editor") {
+          if (!session) {
+            // Create new session
+            sessions = {
+              [studyUID]: { userName: user.name, socketId: socket.id }
+            };
+          } else {
+            const { socketId, userName } = session;
+
+            if (socketId !== socket.id) {
+              console.log("Session Already in use", socket.id);
+
+              socket.emit("action", {
+                type: "ERROR",
+                value: true,
+                message: `This project is already in use by ${userName}. Please return to Projects listing.`
               });
-            });
+
+              // Bailout
+              return;
+            }
           }
+
+          // TODO Update everyones sessions list
         }
       }
 
@@ -85,6 +100,15 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
 
     socket.on("disconnect", error => {
       console.log("Disconnect " + socket.id, error);
+
+      sessions = Object.entries(sessions).reduce(
+        (a, [k, v = {}]) => (v.socketId === socket.id ? a : { ...a, [k]: v }),
+        {}
+      );
+
+      //   console.log("disconnect sessions", sessions);
+
+      // TODO Update everyones sessions list
     });
   });
 

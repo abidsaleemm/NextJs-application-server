@@ -68,6 +68,7 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
           if (!session) {
             // Create new session
             sessions = {
+              ...sessions,
               [studyUID]: {
                 userName: (user || { name: "Rendering" }).name,
                 socketId: socket.id
@@ -111,8 +112,6 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
         (a, [k, v = {}]) => (v.socketId === socket.id ? a : { ...a, [k]: v }),
         {}
       );
-
-      //   console.log("disconnect sessions", sessions);
 
       // TODO Update everyones sessions list
       socket.broadcast.emit("action", setSessions(sessions));

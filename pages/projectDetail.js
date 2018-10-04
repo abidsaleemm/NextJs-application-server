@@ -58,6 +58,7 @@ const ProjectDetails = class extends Component {
         sidebarIsOpen,
         studyUID,
         studyName,
+        studyType,
         patientName,
         patientBirthDate,
         patientSex,
@@ -295,6 +296,7 @@ const ProjectDetails = class extends Component {
           style={{ margin: 0, border: 0, padding: 0 }}
         />
         <CreateProjectModal
+          studyType={studyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
           onSort={k => {

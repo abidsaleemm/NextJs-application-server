@@ -65,6 +65,7 @@ export default props => {
         userID,
         notes = "",
         projectType = "Live",
+        studyType,
         ...project
       },
       i
@@ -75,6 +76,7 @@ export default props => {
 
       return {
         ...project,
+        studyType,
         activeUser: sessions[studyUID] ? (
           <div style={{ color: "green" }}>{sessions[studyUID].userName}</div>
         ) : (
@@ -103,7 +105,9 @@ export default props => {
         action: (
           <div>
             {!hasProjectSnapshots ? (
-              <Button onClick={() => onCreate({ studyUID })}>Create</Button>
+              <Button onClick={() => onCreate({ studyUID, studyType })}>
+                Create
+              </Button>
             ) : (
               <Button
                 onClick={() =>

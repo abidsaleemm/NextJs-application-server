@@ -57,8 +57,10 @@ class ProjectsListing extends Component {
     this.state = {
       popupTarget: null,
       popupStudyUID: "",
+
       modalCreateProjects: false,
-      selectedStudyUID: null
+      selectedStudyUID: null,
+      selectedStudyType: null
     };
   }
 
@@ -98,6 +100,7 @@ class ProjectsListing extends Component {
         popupStudyUID,
         modalRichText = false,
         modalCreateProjects = false,
+        selectedStudyType = null,
         selectedStudyUID = null,
         notes = ""
       }
@@ -105,11 +108,13 @@ class ProjectsListing extends Component {
 
     const projectsEnhanced = fieldEnhancer({
       ...props,
-      onCreate: ({ studyUID }) => {
+      onCreate: ({ studyUID, studyType }) => {
         // TODO Don't like this.  Could cause side effects. WG
+
         this.setState({
           modalCreateProjects: true,
-          selectedStudyUID: studyUID
+          selectedStudyUID: studyUID,
+          selectedStudyType: studyType
         });
       },
       onRichText: ({ studyUID, notes }) => {
@@ -173,6 +178,7 @@ class ProjectsListing extends Component {
         />
 
         <CreateProjectModal
+          studyType={selectedStudyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
           onSort={k => setProjectsSettings({ projectsListSortKey: k })}

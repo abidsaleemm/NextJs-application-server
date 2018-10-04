@@ -12,6 +12,14 @@ const header = () => ({
   studyType: "Study Type"
 });
 
+const filterFunc = ({ studyType: studyTypeFilter }) => ({
+  studyType: ({ studyType }) => {
+    return studyTypeFilter
+      ? new RegExp(studyTypeFilter, "gi").test(studyType)
+      : true;
+  }
+});
+
 // TODO Reused other places place in helpers location
 const strSort = (a = "", b = "") => {
   const strA = `${a}`.toUpperCase();
@@ -48,6 +56,7 @@ export default ({
   projects = [],
   sortKey = "",
   sortDesc = false,
+  studyType,
   onSort = () => {},
   onDefault = () => {},
   onToggle = () => {},
@@ -82,6 +91,7 @@ export default ({
           data={projectsEnhanced}
           header={header()}
           sortFunc={sortFunc()}
+          filterFunc={filterFunc({ studyType })}
           sortKey={sortKey}
           sortDesc={sortDesc}
           onSort={onSort}

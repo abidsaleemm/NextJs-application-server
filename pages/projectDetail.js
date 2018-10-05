@@ -60,7 +60,7 @@ const ProjectDetails = class extends Component {
         studyName,
         studyType,
         patientName,
-        patientBirthDate,
+        patientBirthDate = 0,
         patientSex,
         studyDate,
         uploadedFiles = [],

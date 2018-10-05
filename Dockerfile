@@ -1,4 +1,4 @@
-FROM node:stretch
+FROM node:alpine
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}
@@ -8,7 +8,7 @@ RUN mkdir -p /usr/src && mkdir -p /usr/src/certs
 WORKDIR /usr/src
 
 # Setup ffmpeg to handle video rendering.
-RUN apt-get update && apt-get install ffmpeg -y
+# RUN apt-get update && apt-get install ffmpeg -y
 RUN npm install pm2 -g
 
 # Bundle app source

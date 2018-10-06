@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Install and Build
           command: |
-            npm install
+            npm ci
             npm run build
       - setup_remote_docker
       - run:
@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Install and Build
           command: |
-            npm install
+            npm ci
             npm run build
       - setup_remote_docker
       - run:

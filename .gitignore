@@ -19,6 +19,7 @@ dist
 sessiondb
 certs
 
+package-lock.json
 .env
 
 *.tmp

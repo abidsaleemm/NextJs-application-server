@@ -23,19 +23,6 @@ export default ({
   onChangeWhiteList = () => {},
   onChangeBlackList = () => {}
 }) => {
-  // filterDefaultRender
-  // TODO This is duplicated in application-interface.
-  // Handle as import when refactor of iframe to component gets completed. WG
-  //   const regExRemove = [/3-pl/gi, /O-Ax/, /\bloc\b/i, /scout/gi];
-  //   const regExAllow = [/T2/gi, /GE/gi];
-
-  //   const ret = filterSeriesBlacklist(series)
-  //     ? false
-  //     : filterSeriesWhitelist(series)
-  //       ? true
-  //       : !regExRemove.some(v => v.test(seriesName)) &&
-  //         regExAllow.some(v => v.test(seriesName));
-
   return (
     <UncontrolledDropdown>
       <style jsx>

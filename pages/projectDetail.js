@@ -10,6 +10,7 @@ import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
 import CreateProjectModal from "../components/CreateProjectModal";
 import RichTextEditorModal from "../components/RichTextEditorModal";
+import RenderFilter from "../components/RenderFilter";
 import checkPlainTextNull from "../helpers/checkPlainTextNull";
 
 const ProjectDetails = class extends Component {
@@ -59,6 +60,10 @@ const ProjectDetails = class extends Component {
         studyUID,
         studyName,
         studyType,
+        series = [],
+        // TODO Maybe add series to the state?
+        seriesWhitelist = {},
+        seriesBlacklist = {},
         patientName,
         patientBirthDate = 0,
         patientSex,
@@ -81,6 +86,14 @@ const ProjectDetails = class extends Component {
       },
       state: { modalProjectsList = false }
     } = this;
+
+    const seriesEnhanced = series.map(v => {
+      const { seriesUID } = v;
+      const { [seriesUID]: whitelisted = false } = seriesWhitelist;
+      const { [seriesUID]: blacklisted = false } = seriesBlacklist;
+
+      return { ...v, whitelisted, blacklisted };
+    });
 
     const selectedDefaultProject =
       projectsListDefault.find(
@@ -202,6 +215,36 @@ const ProjectDetails = class extends Component {
                   <tr>
                     <th scope="row">Facility</th>
                     <td>{location}</td>
+                  </tr>
+                  <tr>
+                    <th>Render Filter</th>
+                    <td>
+                      <RenderFilter
+                        series={seriesEnhanced}
+                        onChangeWhiteList={({ seriesUID, value }) => {
+                          if (seriesUID) {
+                            setProjectProps({
+                              studyUID,
+                              seriesWhitelist: {
+                                ...seriesWhitelist,
+                                [seriesUID]: !value
+                              }
+                            });
+                          }
+                        }}
+                        onChangeBlackList={({ seriesUID, value }) => {
+                          if (seriesUID) {
+                            setProjectProps({
+                              studyUID,
+                              seriesBlacklist: {
+                                ...seriesBlacklist,
+                                [seriesUID]: !value
+                              }
+                            });
+                          }
+                        }}
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </Table>

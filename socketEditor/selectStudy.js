@@ -4,23 +4,40 @@ import { adapter } from "../server";
 
 export default async ({ socket, action }) => {
   const {
-    projects: { getProjectSnapshot = () => {} } = {},
+    projects: { getProjectSnapshot = () => {}, getProject = () => {} } = {},
     dicom: { getSeries = () => {}, getStudy = () => {} } = {}
   } = adapter;
   const { studyUID, loadImages } = action;
 
   console.log("studyUID", studyUID); // TODO Used for debugging / logging
 
-  const project = await getProjectSnapshot({ studyUID });
+  if (!studyUID) {
+    return; // TODO Handle bailout better? Error handle?
+  }
+
+  const [
+    { seriesFilter = {} } = {},
+    project,
+    { studyType } = {}
+  ] = await Promise.all([
+    getProject({ studyUID }),
+    getProjectSnapshot({ studyUID }),
+    getStudy({ studyUID })
+  ]);
 
   if (project === undefined) {
     console.log("Socket API Project not found");
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = (await getSeries({ studyUID })).filter(
-    ({ seriesName }) => seriesName !== undefined && seriesName !== null
-  );
+  const dicomSeries = (await getSeries({ studyUID }))
+    .filter(({ seriesName }) => seriesName !== undefined && seriesName !== null)
+    .map(v => {
+      const { seriesUID } = v;
+      const { [seriesUID]: seriesFilterValue } = seriesFilter;
+
+      return { ...v, seriesFilter: seriesFilterValue };
+    });
 
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
@@ -32,7 +49,7 @@ export default async ({ socket, action }) => {
     ? projectSelectedSeries
     : firstSeriesUID;
 
-  const { studyType } = (await getStudy({ studyUID })) || {};
+  //   const { studyType } = (await getStudy({ studyUID })) || {};
 
   // Send Payload first
   await new Promise((resolve, reject) => {

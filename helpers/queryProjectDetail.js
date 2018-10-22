@@ -4,11 +4,12 @@ export default async ({ studyUID = 0 }) => {
   const {
     file: { list: fileList = () => {} } = {},
     projects: { getProject = () => {} } = {},
-    dicom: { getStudy = () => {} } = {}
+    dicom: { getStudy = () => {}, getSeries = () => {} } = {}
   } = adapter;
 
   const { ...study } = await getStudy({ studyUID });
   const project = await getProject({ studyUID });
+  const series = await getSeries({ studyUID });
 
   // TODO Filter out video resources
   const uploadedFiles = await fileList({ path: studyUID });
@@ -18,6 +19,7 @@ export default async ({ studyUID = 0 }) => {
     ...study,
     ...project,
     studyUID,
+    series,
     uploadedFiles
   };
 };

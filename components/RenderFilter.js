@@ -18,11 +18,7 @@ const filterDefaultRender = ({ seriesName }) => {
   );
 };
 
-export default ({
-  series = [],
-  onChangeWhiteList = () => {},
-  onChangeBlackList = () => {}
-}) => {
+export default ({ series = [], onChange = () => {} }) => {
   return (
     <UncontrolledDropdown>
       <style jsx>
@@ -56,8 +52,7 @@ export default ({
                   seriesNumber,
                   seriesTime,
                   // This are composed in projectDetail pages component
-                  whitelisted = false,
-                  blacklisted = false
+                  seriesFilter = ""
                 },
                 i
               ) => {
@@ -68,13 +63,14 @@ export default ({
                   <tr
                     key={`render-filter-${seriesUID}-${i}`}
                     style={{
-                      background: whitelisted
-                        ? "green"
-                        : blacklisted
-                          ? "red"
-                          : shouldRender
-                            ? "#abebc6"
-                            : "#fadbd8"
+                      background:
+                        seriesFilter === "whitelisted"
+                          ? "green"
+                          : seriesFilter === "blacklisted"
+                            ? "red"
+                            : shouldRender
+                              ? "#abebc6"
+                              : "#fadbd8"
                     }}
                   >
                     <td>
@@ -89,9 +85,15 @@ export default ({
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={whitelisted}
+                        checked={seriesFilter === "whitelisted"}
                         onChange={() => {
-                          onChangeWhiteList({ seriesUID, value: whitelisted });
+                          onChange({
+                            seriesUID,
+                            value:
+                              seriesFilter !== "whitelisted"
+                                ? "whitelisted"
+                                : ""
+                          });
                         }}
                       />
                     </td>
@@ -99,9 +101,15 @@ export default ({
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={blacklisted}
+                        checked={seriesFilter === "blacklisted"}
                         onChange={() => {
-                          onChangeBlackList({ seriesUID, value: blacklisted });
+                          onChange({
+                            seriesUID,
+                            value:
+                              seriesFilter !== "blacklisted"
+                                ? "blacklisted"
+                                : ""
+                          });
                         }}
                       />
                     </td>

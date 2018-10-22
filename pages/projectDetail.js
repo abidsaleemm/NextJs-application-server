@@ -62,8 +62,7 @@ const ProjectDetails = class extends Component {
         studyType,
         series = [],
         // TODO Maybe add series to the state?
-        seriesWhitelist = {},
-        seriesBlacklist = {},
+        seriesFilter = {},
         patientName,
         patientBirthDate = 0,
         patientSex,
@@ -89,10 +88,9 @@ const ProjectDetails = class extends Component {
 
     const seriesEnhanced = series.map(v => {
       const { seriesUID } = v;
-      const { [seriesUID]: whitelisted = false } = seriesWhitelist;
-      const { [seriesUID]: blacklisted = false } = seriesBlacklist;
+      const { [seriesUID]: filterValue = "" } = seriesFilter;
 
-      return { ...v, whitelisted, blacklisted };
+      return { ...v, seriesFilter: filterValue };
     });
 
     const selectedDefaultProject =
@@ -221,24 +219,13 @@ const ProjectDetails = class extends Component {
                     <td>
                       <RenderFilter
                         series={seriesEnhanced}
-                        onChangeWhiteList={({ seriesUID, value }) => {
+                        onChange={({ seriesUID, value }) => {
                           if (seriesUID) {
                             setProjectProps({
                               studyUID,
-                              seriesWhitelist: {
-                                ...seriesWhitelist,
-                                [seriesUID]: !value
-                              }
-                            });
-                          }
-                        }}
-                        onChangeBlackList={({ seriesUID, value }) => {
-                          if (seriesUID) {
-                            setProjectProps({
-                              studyUID,
-                              seriesBlacklist: {
-                                ...seriesBlacklist,
-                                [seriesUID]: !value
+                              seriesFilter: {
+                                ...seriesFilter,
+                                [seriesUID]: value
                               }
                             });
                           }

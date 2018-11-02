@@ -1,4 +1,4 @@
-FROM node:10:alpine
+FROM node:10
 
 ARG MACHINENAME=application-server
 ENV MACHINENAME=${MACHINENAME}

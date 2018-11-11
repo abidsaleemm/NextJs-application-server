@@ -39,6 +39,7 @@ export default async ({
 
   const [projects, projectsListDefault, renders] = await Promise.all([
     queryProjectsList({
+      settings: projectsSettings,
       role:
         role === "admin"
           ? role

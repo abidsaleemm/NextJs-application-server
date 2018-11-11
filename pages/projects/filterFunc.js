@@ -1,20 +1,3 @@
-const statusCheck = ({ statusFilter = "", status }) =>
-  [
-    statusFilter === "",
-    statusFilter === "All",
-    statusFilter === "Not Delivered" &&
-      status !== "Delivered" &&
-      status !== "Archived",
-    statusFilter === "Start" && status === "Start",
-    statusFilter === "Segmentation" && status === "Segmentation",
-    statusFilter === "QC" && status === "QC",
-    statusFilter === "Review" && status === "Review",
-    statusFilter === "Done" && status === "Done",
-    statusFilter === "Rendered" && status === "Rendered",
-    statusFilter === "Delivered" && status === "Delivered",
-    statusFilter === "Archived" && status === "Archived"
-  ].some(v => v);
-
 export default ({
   filter: {
     patientName: patientNameFilter,
@@ -22,12 +5,9 @@ export default ({
     studyName: studyNameFilter,
     location: locationFilter,
     studyDate: studyDateFilter,
-    uploadDateTime: uploadDateTimeFilter,
-    status: statusFilter,
-    projectType: statusProjectType = "All"
+    uploadDateTime: uploadDateTimeFilter
   }
 }) => ({
-  status: ({ status }) => statusCheck({ statusFilter, status }),
   patientName: ({ patientName }) =>
     new RegExp(patientNameFilter, "gi").test(patientName),
   patientBirthDate: ({ patientBirthDate }) =>
@@ -38,11 +18,5 @@ export default ({
   uploadDateTime: ({ uploadDateTime }) =>
     new RegExp(uploadDateTimeFilter, "gi").test(uploadDateTime),
   studyDate: ({ studyDate }) =>
-    new RegExp(studyDateFilter, "gi").test(studyDate),
-  projectType: ({ projectType }) =>
-    statusProjectType === "All"
-      ? true
-      : statusProjectType === "Not Removed"
-        ? projectType !== "Removed"
-        : projectType === statusProjectType
+    new RegExp(studyDateFilter, "gi").test(studyDate)
 });

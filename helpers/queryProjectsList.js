@@ -1,7 +1,6 @@
 import { where } from "ramda";
 import { adapter } from "../server";
 
-import projectsListEnhancer from "./projectsListEnhancer";
 import filterProjectsByUser from "./filterProjectsByUser";
 
 // TODO Add filter fuctions here for now. WG
@@ -26,8 +25,8 @@ const projectTypeCheck = ({ projectTypeFilter, projectType }) =>
   projectTypeFilter === "All"
     ? true
     : projectTypeFilter === "Not Removed"
-      ? projectType !== "Removed"
-      : projectType === projectTypeFilter;
+    ? projectType !== "Removed"
+    : projectType === projectTypeFilter;
 
 export default async ({
   role,
@@ -41,6 +40,7 @@ export default async ({
   userList = []
 }) => {
   const {
+    file: { list: fileList = () => {} } = {},
     projects: { getProjectList = () => {} } = {},
     dicom: { getStudies = () => {} } = {}
   } = adapter;
@@ -77,11 +77,15 @@ export default async ({
       ) // TODO Adding an additional filter here.
       .filter(filterProjectsByUser({ role, userID, userList }))
       .filter(([study]) => study !== undefined)
-      .filter(
-        ([, { projectType } = {}]) =>
-          projectType === "Removed" ? role === "admin" : true
+      .filter(([, { projectType } = {}]) =>
+        projectType === "Removed" ? role === "admin" : true
       )
-      .map(projectsListEnhancer({ adapter }))
+      .map(async ([{ studyUID, ...study } = {}, project]) => ({
+        ...project,
+        ...study,
+        studyUID,
+        uploadedFiles: await fileList({ path: studyUID })
+      }))
   );
 
   return projectsList;

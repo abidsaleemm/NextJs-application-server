@@ -3,7 +3,10 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  Table
+  Table,
+  Row,
+  Container,
+  Col
 } from "reactstrap";
 
 // TODO This is duplicated in application-interface.
@@ -18,7 +21,24 @@ const filterDefaultRender = ({ seriesName }) => {
   );
 };
 
-export default ({ series = [], onChange = () => {} }) => {
+export default ({
+  series = [],
+  onChange = () => {},
+  setProjectsSettings = () => {},
+  user: { role = "" } = {},
+  filter: {
+    status = "All",
+    patientName,
+    defaultCheck = false,
+    defaultName,
+    patientBirthDate,
+    studyName,
+    location,
+    studyDate,
+    uploadDateTime,
+    projectType = "All"
+  } = {}
+}) => {
   return (
     <UncontrolledDropdown>
       <style jsx>
@@ -30,6 +50,11 @@ export default ({ series = [], onChange = () => {} }) => {
         `}
       </style>
       <DropdownToggle caret>Series</DropdownToggle>
+      <Row>
+        <input className="checkbox" type="checkbox" value={defaultCheck} onChange={() => {defaultCheck = !defaultCheck;}} />{" "}
+        <input className="search" type="text" value={defaultName} onChange={()=>{}}/>
+      </Row>
+
       <DropdownMenu>
         <Table>
           <thead>
@@ -67,10 +92,10 @@ export default ({ series = [], onChange = () => {} }) => {
                         seriesFilter === "whitelisted"
                           ? "green"
                           : seriesFilter === "blacklisted"
-                            ? "red"
-                            : shouldRender
-                              ? "#abebc6"
-                              : "#fadbd8"
+                          ? "red"
+                          : shouldRender
+                          ? "#abebc6"
+                          : "#fadbd8"
                     }}
                   >
                     <td>

@@ -3,7 +3,6 @@
 var azure = require("azure-storage");
 var util = require("util");
 var CronJob = require("cron").CronJob;
-
 var DEFAULT_TABLE = "azureSessionsStore"; // TODO See issue comments regarding this
 var RETRY_LIMIT = 3;
 var RETRY_INTERVAL = 3000; //miliseconds
@@ -14,6 +13,7 @@ var options = {
   overrideCron: "0 0 */1 * * *"
 };
 module.exports = function(session) {
+  console.log("session: ",session.Store);
   var Store = session.Store;
 
   function AzureTablesStore() {
@@ -280,7 +280,7 @@ module.exports = function(session) {
     return offset ? new Date(Date.now() + offset) : null;
   }
 
-  //export factory method instead of constructor for easier unit testing
+  //export factory methodt instead of constructor for easier unit testing
   var factory = {
     create: function() {
       return new AzureTablesStore();

@@ -41,24 +41,15 @@ export default async ({
 }) => {
   const {
     file: { list: fileList = () => {} } = {},
-    projects: { getProjectList = () => {} } = {},
+    projects: {
+      getProjectList = () => {},
+      hasProjectSnapshots = () => {}
+    } = {},
     dicom: { getStudies = () => {} } = {}
   } = adapter;
 
   const [projects = [], studies = []] = await Promise.all([
-    getProjectList({
-      filter: ({ status, projectType = "Live" }) => {
-        const pred = where({
-          status: v => statusCheck({ statusFilter, status: v }),
-          projectType: v =>
-            projectTypeCheck({ projectTypeFilter, projectType: v })
-        });
-
-        return pred({ status, projectType });
-      }
-    }),
-    // TODO Merges all studies for now?
-    // TODO Query list of studies based project getProjectList list. WG
+    getProjectList(),
     getStudies()
   ]);
 
@@ -69,30 +60,33 @@ export default async ({
         study,
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
-      .filter(
-        ([study, project]) => study !== undefined && project !== undefined
-      )
-      .filter(([, project]) => {
-        if (project) {
-          const { status, projectType } = project;
-          return (
-            statusCheck({ statusFilter, status }) &&
-            projectTypeCheck({ projectTypeFilter, projectType })
-          );
-        }
+      .filter(([study]) => study !== undefined)
+      .filter(([, { status, projectType = "Live" } = {}]) => {
+        const pred = where({
+          status: v => statusCheck({ statusFilter, status: v }),
+          projectType: v =>
+            projectTypeCheck({ projectTypeFilter, projectType: v })
+        });
 
-        return true;
+        return pred({ status, projectType });
       })
       .filter(filterProjectsByUser({ role, userID, userList }))
       .filter(([, { projectType } = {}]) =>
         projectType === "Removed" ? role === "admin" : true
       )
-      .map(async ([{ studyUID, ...study } = {}, project]) => ({
-        ...study,
-        ...project,
-        studyUID,
-        uploadedFiles: await fileList({ path: studyUID }) // Get attached file list
-      }))
+      .map(async ([{ studyUID, ...study } = {}, project]) => {
+        return {
+          ...study,
+          ...(project !== undefined ? project : {}),
+          studyUID,
+          hasProjectSnapshots:
+            project !== undefined
+              ? await hasProjectSnapshots({ studyUID })
+              : false,
+          uploadedFiles:
+            project !== undefined ? await fileList({ path: studyUID }) : 0 // Get attached file list
+        };
+      })
   );
 
   return projectsList;

@@ -61,8 +61,6 @@ export default async ({
     getStudies()
   ]);
 
-  console.log("projects", projects);
-
   // Merging studies and projects table
   const projectsList = await Promise.all(
     studies

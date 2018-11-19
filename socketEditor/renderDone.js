@@ -44,7 +44,7 @@ const templateActions = {
 
     try {
       // TODO Return stream instead?
-      await generateVideo({ session, numberImages });
+      await generateVideo({ session, numberImages, root });
 
       console.log("Saving Video.");
 
@@ -55,7 +55,7 @@ const templateActions = {
       await filePut({ path, stream });
 
       console.log("Video saved cleaning up resources.");
-      await cleanup({ session });
+      await cleanup({ session, root });
 
       console.log("Video done.");
     } catch (e) {
@@ -97,7 +97,7 @@ const templateActions = {
         // TODO maybe use direct stream instead?
         fs.unlinkSync(zipFilePath);
 
-        await cleanup({ session });
+        await cleanup({ session, root });
         resolve();
       });
     }),
@@ -133,7 +133,7 @@ const templateActions = {
 
     try {
       // TODO Return stream instead?
-      await generateVideo({ session, numberImages });
+      await generateVideo({ session, numberImages, root });
 
       console.log("Saving Video.");
 
@@ -143,7 +143,7 @@ const templateActions = {
       await filePut({ path, stream });
 
       console.log("Video saved cleaning up resources.");
-      await cleanup({ session });
+      await cleanup({ session, root });
 
       console.log("Video done.");
     } catch (e) {
@@ -177,7 +177,8 @@ export default async ({ socket, action }) => {
       ...action,
       adapter,
       studyUID,
-      template: templateName
+      template: templateName,
+      root: process.env.RENDER_PATH
     });
 
     console.log("All Done");

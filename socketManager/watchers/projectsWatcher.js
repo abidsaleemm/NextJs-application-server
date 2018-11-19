@@ -1,6 +1,5 @@
 import { payloadProjects } from "../../actions";
 
-import projectsListEnhancer from "../../helpers/projectsListEnhancer";
 import queryProjectsListDefault from "../../helpers/queryProjectsListDefault";
 import filterProjectsByUser from "../../helpers/filterProjectsByUser";
 
@@ -72,7 +71,10 @@ export default ({ io, adapter = {} }) => {
                     userList: usersSelected
                   })
                 )
-                .map(projectsListEnhancer({ adapter }))
+                .map(([study, project]) => ({
+                  ...project,
+                  ...study
+                }))
             ),
             projectsListDefault: await queryProjectsListDefault()
           })

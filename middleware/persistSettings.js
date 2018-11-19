@@ -8,6 +8,7 @@ const filterProps = props =>
     fromPairs
   );
 
+// TODO Maybe merge this with middlewareSettings middleware. WG
 export default store => next => action => {
   const { type } = action;
   const prevState = store.getState();

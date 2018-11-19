@@ -19,3 +19,4 @@ export { default as videoDelete } from "./videoDelete";
 export { default as setRender } from "./setRender";
 export { default as delRender } from "./delRender";
 export { default as getSessions } from "./getSessions";
+export { default as updateProjectsList } from "./updateProjectsList";

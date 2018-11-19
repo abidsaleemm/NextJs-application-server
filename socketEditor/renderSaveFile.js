@@ -11,7 +11,8 @@ export default async ({ socket, action }) => {
       data: new Buffer(
         data.replace(/^data:image\/(png|jpeg);base64,/, ""),
         "base64"
-      )
+      ),
+      root: process.env.RENDER_PATH
     });
 
     // Send Action back to start render of next frame

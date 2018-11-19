@@ -1,3 +1,5 @@
+import {sanitize} from "./helpers";
+
 export default (sid, fn, retry) => {
   var store = this;
   var cleanSid = sanitize(sid);

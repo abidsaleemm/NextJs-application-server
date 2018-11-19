@@ -1,3 +1,5 @@
+import { CronJob } from "cron";
+
 export default () => {
   if (!this.isRunningCleanUp) {
     var store = this;

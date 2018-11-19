@@ -1,3 +1,6 @@
+import azure from "azure-storage";
+import { getEntries } from "./helpers";
+
 export default () => {
   var query = new azure.TableQuery().where(
     "expiryDate lt ?",

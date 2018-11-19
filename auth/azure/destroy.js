@@ -1,3 +1,6 @@
+import azure from "azure-storage";
+import { errorOrResult } from "./helpers";
+
 export default (sid, fn) => {
   var store = this;
   var cleanSid = sanitize(sid);
@@ -19,4 +22,4 @@ export default (sid, fn) => {
   ) {
     return errorOrResult(error, result, fn);
   });
-}
+};

@@ -8,8 +8,8 @@ import startBackgroundCleanUp from "./startBackgroundCleanUp";
 import cleanUp from "./cleanUp";
 
 import util from "util";
-import { CronJob } from "cron";
-let DEFAULT_TABLE = "azureSessionsStore"; // TODO See issue comments regarding this
+import { start } from "repl";
+let DEFAULT_TABLE = "azureSessionsStore"; // TODO: See issue comments regarding this
 let RETRY_LIMIT = 3;
 let RETRY_INTERVAL = 3000; //miliseconds
 let options = {
@@ -30,7 +30,7 @@ export default ({ session }) => {
 
   Store.call(this, options);
 
-  //todo: allow retry policy to bet set on options
+  //TODO: allow retry policy to bet set on options
   let retryOperations = new azure.LinearRetryPolicyFilter(
     RETRY_LIMIT,
     RETRY_INTERVAL
@@ -41,7 +41,8 @@ export default ({ session }) => {
   if (azureStorageConnectionString) {
     tableService = azure.createTableService().withFilter(retryOperations);
   } else {
-    const storageAccount = process.env.STORAGE_ACCOUNT || options.storageAccount;
+    const storageAccount =
+      process.env.STORAGE_ACCOUNT || options.storageAccount;
     const accessKey = process.env.STORAGE_ACCOUNT_KEY || options.accessKey;
     tableService = azure
       .createTableService(storageAccount, accessKey)
@@ -51,4 +52,14 @@ export default ({ session }) => {
   let table = options.table || DEFAULT_TABLE;
   tableService.createTableIfNotExists(table, logOrThrow);
 
+  return {
+    cleanUp: async props => await cleanUp(...props),
+    destroy: async props => await destroy(...props),
+    get: async props => await get(...props),
+    set: async props => await set(...props),
+    startBackgroundCleanUp: async props =>
+      await startBackgroundCleanUp(...props),
+    touch: async props => await touch(...props),
+    update: async props => await update(...props)
+  };
 };

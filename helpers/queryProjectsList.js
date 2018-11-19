@@ -58,6 +58,7 @@ export default async ({
       }
     }),
     // TODO Merges all studies for now?
+    // TODO Query list of studies based project getProjectList list. WG
     getStudies()
   ]);
 
@@ -68,21 +69,30 @@ export default async ({
         study,
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
+      // TODO Filter projects also. WG
       .filter(
-        ([, { status = "", projectType = "Live" } = {}]) =>
-          statusCheck({ statusFilter, status }) &&
-          projectTypeCheck({ projectTypeFilter, projectType })
-      ) // TODO Adding an additional filter here.
+        ([study, project]) => study !== undefined && project !== undefined
+      )
+      .filter(([, project]) => {
+        if (project) {
+          const { status, projectType } = project;
+          return (
+            statusCheck({ statusFilter, status }) &&
+            projectTypeCheck({ projectTypeFilter, projectType })
+          );
+        }
+
+        return true;
+      }) // TODO Adding an additional filter here.
       .filter(filterProjectsByUser({ role, userID, userList }))
-      .filter(([study]) => study !== undefined)
       .filter(([, { projectType } = {}]) =>
         projectType === "Removed" ? role === "admin" : true
       )
       .map(async ([{ studyUID, ...study } = {}, project]) => ({
-        ...project,
         ...study,
+        ...project,
         studyUID,
-        uploadedFiles: await fileList({ path: studyUID })
+        uploadedFiles: await fileList({ path: studyUID }) // Get attached file list
       }))
   );
 

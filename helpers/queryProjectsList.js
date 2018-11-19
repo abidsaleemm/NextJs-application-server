@@ -69,7 +69,6 @@ export default async ({
         study,
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
-      // TODO Filter projects also. WG
       .filter(
         ([study, project]) => study !== undefined && project !== undefined
       )
@@ -83,7 +82,7 @@ export default async ({
         }
 
         return true;
-      }) // TODO Adding an additional filter here.
+      })
       .filter(filterProjectsByUser({ role, userID, userList }))
       .filter(([, { projectType } = {}]) =>
         projectType === "Removed" ? role === "admin" : true

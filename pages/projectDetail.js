@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table, Button, Row } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
 import { connect } from "react-redux";
@@ -81,10 +81,19 @@ const ProjectDetails = class extends Component {
         setProjectDetailSettings = () => {},
         setProjectProps = () => {},
         setNotesEditor = () => {},
-        toggleProjectDefault = () => {}
+        toggleProjectDefault = () => {},
+        defaultName = "",
+        defaultCheck = false
       },
       state: { modalProjectsList = false }
     } = this;
+
+    console.log(
+      "default Check....",
+      defaultCheck,
+      "defaultName...",
+      defaultName
+    );
 
     const seriesEnhanced = series.map(v => {
       const { seriesUID } = v;
@@ -231,6 +240,35 @@ const ProjectDetails = class extends Component {
                           }
                         }}
                       />
+                      <Row>
+                        <input
+                          className="defaultCheck"
+                          type="checkbox"
+                          name="defaultCheck"
+                          defaultChecked={defaultCheck}
+                          value={defaultCheck}
+                          onChange={e => {
+                            setProjectProps({
+                              studyUID,
+                              defaultCheck: !defaultCheck
+                            });
+                          }}
+                        />{" "}
+                        {defaultCheck && (
+                          <input
+                            className="defaultName"
+                            type="text"
+                            name="defaultName"
+                            value={defaultName}
+                            onChange={e => {
+                              setProjectProps({
+                                studyUID,
+                                defaultName: e.target.value
+                              });
+                            }}
+                          />
+                        )}
+                      </Row>
                     </td>
                   </tr>
                 </tbody>
@@ -333,15 +371,17 @@ const ProjectDetails = class extends Component {
             setProjectDetailSettings({ projectsListSortKey: k });
           }}
           projects={projectsListDefault
-            .filter(({ studyUID: testStudyUID }) => studyUID !== testStudyUID)
-            .map(
-              v =>
-                defaultStudyUID === v.studyUID
-                  ? {
-                      ...v,
-                      tableBackground: "lightgreen"
-                    }
-                  : v
+            .filter(
+              ({ studyUID: testStudyUID }) =>
+                studyUID !== testStudyUID && defaultCheck
+            )
+            .map(v =>
+              defaultStudyUID === v.studyUID
+                ? {
+                    ...v,
+                    tableBackground: "lightgreen"
+                  }
+                : v
             )}
           onToggle={() => {
             this.setState({

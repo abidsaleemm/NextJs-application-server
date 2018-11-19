@@ -50,10 +50,6 @@ export default ({
         `}
       </style>
       <DropdownToggle caret>Series</DropdownToggle>
-      <Row>
-        <input className="checkbox" type="checkbox" value={defaultCheck} onChange={() => {defaultCheck = !defaultCheck;}} />{" "}
-        <input className="search" type="text" value={defaultName} onChange={()=>{}}/>
-      </Row>
 
       <DropdownMenu>
         <Table>

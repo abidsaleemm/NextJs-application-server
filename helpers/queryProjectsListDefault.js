@@ -21,17 +21,15 @@ export default async () => {
         study,
         projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
       ])
-      .filter(
-        ([study, { status } = {}]) =>
-          status === "Delivered" || status === "Archived"
-      )
       // TODO Filter out projectType ===
       .filter(
         ([study, { projectType } = {}]) =>
           study !== undefined && projectType !== "Removed"
       )
       .map(projectsListEnhancer({ adapter }))
-  )).filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);
+  ))
+    .filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true)
+    .filter(({ defaultCheck = false }) => defaultCheck === true);
 
   return projectsListDefault;
 };

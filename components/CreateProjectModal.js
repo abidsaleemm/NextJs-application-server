@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import TableList from "./TableList";
 
 const header = () => ({
-  status: "Status",
+  defaultName: "defaultName",
   sampleRender: "Sample",
   patientName: "Patient Name",
   patientAge: "Age",
@@ -37,7 +37,7 @@ const strSort = (a = "", b = "") => {
 };
 
 const sortFunc = () => ({
-  status: ({ status: a = "" }, { status: b = "" }) => strSort(a, b),
+  defaultName: ({ defaultName: a = "" }, { defaultName: b = "" }) => strSort(a, b),
   sampleRender: ({ sample: a = false }, { sample: b = false }) =>
     a === b ? 0 : a ? -1 : 1,
   patientName: ({ patientName: a }, { patientName: b }) => strSort(a, b),

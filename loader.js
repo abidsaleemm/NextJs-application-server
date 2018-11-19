@@ -14,7 +14,8 @@ require("@babel/register")({
   ignore: [
     function(filepath) {
       if (filepath.includes("node_modules")) {
-        if (filepath.includes("/adapters/")) {
+        // TODO Hardcode for now, but maybe declare these in an array. WG
+        if (filepath.includes("node_modules/adapters")) {
           const isSymbolicLink = fs
             .lstatSync("node_modules/adapters")
             .isSymbolicLink();

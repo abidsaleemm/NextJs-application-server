@@ -35,7 +35,7 @@ export default ({
 
           input[type="checkbox"] {
             margin: 10px;
-            transform: scale(1.5);
+            transform: scale(2);
           }
         `}
       </style>

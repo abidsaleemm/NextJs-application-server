@@ -87,13 +87,29 @@ export default props => {
         ),
         priority,
         priorityRender: (
-          <input
-            type="checkbox"
-            checked={priority}
-            onChange={() => {
-              setProjectProps({ studyUID, priority: !priority });
-            }}
-          />
+          <div className="rootPriorityRender">
+            <style jsx>
+              {`
+                .rootPriorityRender {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                input[type="checkbox"] {
+                  margin: 10px;
+                  transform: scale(1.5);
+                }
+              `}
+            </style>
+            <input
+              type="checkbox"
+              checked={priority}
+              onChange={() => {
+                setProjectProps({ studyUID, priority: !priority });
+              }}
+            />
+          </div>
         ),
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,

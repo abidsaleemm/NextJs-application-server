@@ -169,6 +169,13 @@ const ProjectDetails = class extends Component {
             tr {
               white-space: nowrap;
             }
+
+            .defaultCheck {
+              width: 30px;
+              height: 17px;
+              margin: auto;
+              margin-left: 10px;
+            }
           `}
         </style>
         <Sidebar
@@ -233,6 +240,7 @@ const ProjectDetails = class extends Component {
                           }
                         }}
                       />
+                      <br/>
                       <Row>
                         <input
                           className="defaultCheck"

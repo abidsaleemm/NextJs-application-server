@@ -6,7 +6,6 @@ export default () => {
     const { type, settings: { filter = {} } = {} } = action;
 
     const result = next(action);
-
     if (type === PROJECTS_SET_SETTINGS) {
       if (
         propSatisfies(status => status !== undefined, "status", filter) ||
@@ -16,7 +15,8 @@ export default () => {
           filter
         )
       ) {
-        store.dispatch({ type: "server/updateProjectsList" });
+        const { projectsSettings } = store.getState();
+        store.dispatch({ type: "server/updateProjectsList", projectsSettings });
       }
     }
 

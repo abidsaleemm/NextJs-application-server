@@ -7,15 +7,10 @@ import { adapter } from "../server";
 // TODO There is a bunch of duplicate code here.  WG
 export default async ({
   socket,
-  user,
-  user: { role, id, teams = [] } = {}
+  user: { role, id, teams = [] } = {},
+  action: { projectsSettings = {} }
 }) => {
-  const {
-    users: { getUsers = () => {}, getUserProps = () => {} } = {},
-    renders: { getRenderQueue = () => {} } = {}
-  } = adapter;
-
-  const { projectsSettings } = await getUserProps(id, ["projectsSettings"]);
+  const { users: { getUsers = () => {} } = {} } = adapter;
 
   // TODO Reusablable function used in route/projects.  Wrap in helper? WG
   const users = await getUsers();

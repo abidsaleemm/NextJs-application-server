@@ -10,7 +10,7 @@ export default async ({ studyUID = 0 }) => {
   const { ...study } = await getStudy({ studyUID });
   const project = await getProject({ studyUID });
   const series = await getSeries({ studyUID });
-
+  
   // TODO Filter out video resources
   const uploadedFiles = await fileList({ path: studyUID });
 

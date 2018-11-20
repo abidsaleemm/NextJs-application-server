@@ -88,13 +88,6 @@ const ProjectDetails = class extends Component {
       state: { modalProjectsList = false }
     } = this;
 
-    console.log(
-      "default Check....",
-      defaultCheck,
-      "defaultName...",
-      defaultName
-    );
-
     const seriesEnhanced = series.map(v => {
       const { seriesUID } = v;
       const { [seriesUID]: filterValue = "" } = seriesFilter;
@@ -245,8 +238,7 @@ const ProjectDetails = class extends Component {
                           className="defaultCheck"
                           type="checkbox"
                           name="defaultCheck"
-                          defaultChecked={defaultCheck}
-                          value={defaultCheck}
+                          checked={defaultCheck}
                           onChange={e => {
                             setProjectProps({
                               studyUID,

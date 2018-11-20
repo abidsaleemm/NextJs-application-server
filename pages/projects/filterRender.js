@@ -113,6 +113,15 @@ export default ({
         <DropdownItem
           onClick={() =>
             setProjectsSettings({
+              filter: { status: "Error" }
+            })
+          }
+        >
+          Error
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({
               filter: { status: "Segmentation" }
             })
           }

@@ -42,6 +42,16 @@ export default ({
           onClick={() =>
             setProjectProps({
               studyUID,
+              status: "Error"
+            })
+          }
+        >
+          Error
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectProps({
+              studyUID,
               status: "Segmentation"
             })
           }

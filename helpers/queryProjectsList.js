@@ -13,6 +13,7 @@ const statusCheck = ({ statusFilter = "", status = "" }) =>
       status !== "Delivered" &&
       status !== "Archived",
     statusFilter === "Start" && status === "Start",
+    statusFilter === "Error" && status === "Error",
     statusFilter === "Segmentation" && status === "Segmentation",
     statusFilter === "QC" && status === "QC",
     statusFilter === "Review" && status === "Review",

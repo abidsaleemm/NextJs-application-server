@@ -84,8 +84,7 @@ export default async ({
             project !== undefined
               ? await hasProjectSnapshots({ studyUID })
               : false,
-          uploadedFiles:
-            project !== undefined ? await fileList({ path: studyUID }) : 0 // Get attached file list
+          uploadedFiles: await fileList({ path: studyUID })
         };
       })
   );

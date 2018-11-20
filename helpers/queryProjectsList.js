@@ -4,9 +4,10 @@ import { adapter } from "../server";
 import filterProjectsByUser from "./filterProjectsByUser";
 
 // TODO Add filter fuctions here for now. WG
-const statusCheck = ({ statusFilter = "", status }) =>
+const statusCheck = ({ statusFilter = "", status = "" }) =>
   [
-    statusFilter === "",
+    (statusFilter === "" || statusFilter === "None") &&
+      (status === "None" || status === ""),
     statusFilter === "All",
     statusFilter === "Not Delivered" &&
       status !== "Delivered" &&

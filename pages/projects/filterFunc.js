@@ -5,9 +5,11 @@ export default ({
     studyName: studyNameFilter,
     location: locationFilter,
     studyDate: studyDateFilter,
-    uploadDateTime: uploadDateTimeFilter
+    uploadDateTime: uploadDateTimeFilter,
+    priority: priorityFilter
   }
 }) => ({
+  priorityRender: ({ priority }) => (priorityFilter ? priority === true : true),
   patientName: ({ patientName }) =>
     new RegExp(patientNameFilter, "gi").test(patientName),
   patientBirthDate: ({ patientBirthDate }) =>

@@ -58,6 +58,7 @@ export default props => {
       {
         studyUID,
         status,
+        priority = false,
         hasProjectSnapshots,
         patientID,
         patientName,
@@ -83,6 +84,16 @@ export default props => {
           <div style={{ color: "green" }}>{sessions[studyUID].userName}</div>
         ) : (
           ""
+        ),
+        priority,
+        priorityRender: (
+          <input
+            type="checkbox"
+            checked={priority}
+            onChange={() => {
+              setProjectProps({ studyUID, priority: !priority });
+            }}
+          />
         ),
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,

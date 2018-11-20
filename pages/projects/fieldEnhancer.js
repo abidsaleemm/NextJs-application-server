@@ -30,7 +30,9 @@ const tableRowColor = status => {
     Review: "rgba(0, 255, 0, 0.1)",
     Done: "rgba(0, 255, 0, 0.2)",
     Rendered: "rgba(0, 255, 0, 0.5)",
-    Delivered: "rgba(0, 0, 255, 0.3)"
+    Delivered: "rgba(0, 0, 255, 0.3)",
+    Archived: "rgba(0, 0, 255, 0.5)",
+    Error: "rgba(255, 0, 0, 0.65)"
   };
 
   return options[status] || "rgba(0, 0, 0, 0.0)";

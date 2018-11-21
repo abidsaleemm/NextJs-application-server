@@ -5,7 +5,7 @@ export default async () => {
     projects: { getProjectList = () => {} } = {},
     dicom: { getStudies = () => {} } = {}
   } = adapter;
-
+  
   // TODO Do query directly getProjectList instead of filtering with javascript
   const [projects = [], studies = []] = await Promise.all([
     getProjectList({
@@ -15,6 +15,8 @@ export default async () => {
     }),
     getStudies()
   ]);
+
+  console.log("studies::::::::::::::::", studies.length);
 
   // Merging studies and projects table
   const projectsListDefault = studies

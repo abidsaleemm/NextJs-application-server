@@ -1,6 +1,7 @@
 export default ({ admin = false } = {}) => ({
   action: "",
   activeUser: "Active User",
+  priorityRender: "Priority",
   statusRender: "Status",
   projectTypeRender: "Type",
   userRender: "Assign User",

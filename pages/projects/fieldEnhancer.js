@@ -30,7 +30,9 @@ const tableRowColor = status => {
     Review: "rgba(0, 255, 0, 0.1)",
     Done: "rgba(0, 255, 0, 0.2)",
     Rendered: "rgba(0, 255, 0, 0.5)",
-    Delivered: "rgba(0, 0, 255, 0.3)"
+    Delivered: "rgba(0, 0, 255, 0.3)",
+    Archived: "rgba(0, 0, 255, 0.5)",
+    Error: "rgba(255, 0, 0, 0.65)"
   };
 
   return options[status] || "rgba(0, 0, 0, 0.0)";
@@ -56,6 +58,7 @@ export default props => {
       {
         studyUID,
         status,
+        priority = false,
         hasProjectSnapshots,
         patientID,
         patientName,
@@ -81,6 +84,32 @@ export default props => {
           <div style={{ color: "green" }}>{sessions[studyUID].userName}</div>
         ) : (
           ""
+        ),
+        priority,
+        priorityRender: (
+          <div className="rootPriorityRender">
+            <style jsx>
+              {`
+                .rootPriorityRender {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                }
+
+                input[type="checkbox"] {
+                  margin: 10px;
+                  transform: scale(1.5);
+                }
+              `}
+            </style>
+            <input
+              type="checkbox"
+              checked={priority}
+              onChange={() => {
+                setProjectProps({ studyUID, priority: !priority });
+              }}
+            />
+          </div>
         ),
         patientBirthDate,
         patientName: `${patientName} (${patientID})`,

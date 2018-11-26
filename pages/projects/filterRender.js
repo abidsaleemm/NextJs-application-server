@@ -18,10 +18,36 @@ export default ({
     location,
     studyDate,
     uploadDateTime,
-    projectType = "All"
+    projectType = "All",
+    priority
   } = {},
   setProjectsSettings = () => {}
 }) => ({
+  priorityRender: (
+    <div className="rootPriority">
+      <style jsx>
+        {`
+          .rootPriority {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          input[type="checkbox"] {
+            margin: 10px;
+            transform: scale(2);
+          }
+        `}
+      </style>
+      <input
+        type="checkbox"
+        checked={priority}
+        onChange={() => {
+          setProjectsSettings({ filter: { priority: !priority } });
+        }}
+      />
+    </div>
+  ),
   projectTypeRender: (
     <UncontrolledDropdown>
       <DropdownToggle caret>{projectType}</DropdownToggle>
@@ -109,6 +135,15 @@ export default ({
           onClick={() => setProjectsSettings({ filter: { status: "Start" } })}
         >
           Start
+        </DropdownItem>
+        <DropdownItem
+          onClick={() =>
+            setProjectsSettings({
+              filter: { status: "Error" }
+            })
+          }
+        >
+          Error
         </DropdownItem>
         <DropdownItem
           onClick={() =>

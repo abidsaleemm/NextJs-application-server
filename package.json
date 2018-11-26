@@ -34,6 +34,7 @@
     "body-parser": "1.18.3",
     "bootstrap": "4.1.3",
     "classnames": "2.2.6",
+    "connect-azuretables": "^1.0.19",
     "connect-flash": "0.1.1",
     "cookie-parser": "1.4.3",
     "cron": "1.5.0",

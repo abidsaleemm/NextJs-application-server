@@ -16,8 +16,6 @@ export default async () => {
     getStudies()
   ]);
 
-  console.log("studies::::::::::::::::", studies.length);
-
   // Merging studies and projects table
   const projectsListDefault = studies
     // TODO Use ramda merge function? WG
@@ -25,21 +23,12 @@ export default async () => {
       study,
       projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
     ])
-    // TODO Remove this?
-    .filter(
-      ([study, { status } = {}]) =>
-        status === "Delivered" || status === "Archived"
-    )
-    // TODO Can remove this after default gets cleaned up. WG
-    .filter(
-      ([study, { projectType } = {}]) =>
-        study !== undefined && projectType !== "Removed"
-    )
     .map(([study, project]) => ({
       ...project,
       ...study
     }))
-    .filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);
+    .filter(({ defaultCheck = false }) => defaultCheck === true);
+
 
   return projectsListDefault;
 };

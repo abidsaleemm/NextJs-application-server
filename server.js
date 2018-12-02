@@ -19,6 +19,9 @@ export let adapter;
 export default async () => {
   adapter = await storageAdapter({
     adapter: process.env.LOCAL ? "local" : "azure",
+    ...(process.env.PROJECTS_PATH
+      ? { projectsPath: process.env.PROJECTS_PATH }
+      : {}),
     ...(process.env.RENDER ? { cacheDisabled: true } : {}),
     ...(process.env.LOCAL ? { path: "../projectsLocal" } : {}),
     ...(!process.env.LOCAL

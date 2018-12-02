@@ -126,9 +126,7 @@ const importVertebra = ({ name: objectName, center }) => {
       // Find Match
       const foundIndex = vertices.findIndex(([x, y, z]) => {
         return (
-          new Vector3(-x, y, z).distanceTo(
-            new Vector3().fromArray(v)
-          ) < 0.0001
+          new Vector3(-x, y, z).distanceTo(new Vector3().fromArray(v)) < 0.0001
         );
       });
 
@@ -147,11 +145,7 @@ const importVertebra = ({ name: objectName, center }) => {
     }, []);
 
     if (nonMirrorList.length > 0) {
-      console.log(
-        "Error Object not semetric",
-        objectName,
-        nonMirrorList
-      );
+      console.log("Error Object not semetric", objectName, nonMirrorList);
     }
 
     return {

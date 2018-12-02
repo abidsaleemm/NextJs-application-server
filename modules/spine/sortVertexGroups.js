@@ -1,11 +1,11 @@
 import { uniq } from "ramda";
 
 const discFirstVertex = ({ vertices, vertexGroup = [] }) => {
-  let start = -1;
+  let start;
 
   vertexGroup.forEach(v => {
     if (vertices[v][0] === 0) {
-      if (start === -1) start = v;
+      if (start === undefined) start = v;
       start = vertices[v][2] < vertices[start][2] ? v : start;
     }
   });

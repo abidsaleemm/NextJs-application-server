@@ -67,10 +67,10 @@ export default ({ series = [], onChange = () => {} }) => {
                         seriesFilter === "whitelisted"
                           ? "green"
                           : seriesFilter === "blacklisted"
-                            ? "red"
-                            : shouldRender
-                              ? "#abebc6"
-                              : "#fadbd8"
+                          ? "red"
+                          : shouldRender
+                          ? "#abebc6"
+                          : "#fadbd8"
                     }}
                   >
                     <td>

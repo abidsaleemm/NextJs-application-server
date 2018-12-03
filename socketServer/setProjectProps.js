@@ -1,10 +1,9 @@
 import { SET_PROJECT_PROPS } from "../constants/actionTypes";
 
-import { adapter } from "../server";
-
 export default async ({
   socket,
-  action: { studyUID, type, ...props } = {}
+  action: { studyUID, type, ...props } = {},
+  adapter
 }) => {
   const {
     projects: { setProject = () => {} } = {},

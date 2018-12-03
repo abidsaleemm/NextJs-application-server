@@ -1,12 +1,11 @@
 import createProject from "../helpers/createProject";
 import { route, fetchAction } from "../actions";
-import { adapter } from "../server";
-
 const defaultStatus = "Segmentation";
 
 export default async ({
   socket,
-  action: { studyUID, defaultStudyUID = "" } = {}
+  action: { studyUID, defaultStudyUID = "" } = {},
+  adapter
 }) => {
   const {
     projects: {

@@ -1,7 +1,6 @@
 import { route } from "../actions";
-import { adapter } from "../server";
 
-export default async ({ socket, action: { studyUID } = {} }) => {
+export default async ({ socket, action: { studyUID } = {}, adapter }) => {
   const {
     projects: {
       setProject = () => {},

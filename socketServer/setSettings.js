@@ -1,6 +1,4 @@
-import { adapter } from "../server";
-
-export default async ({ user: { id } = {}, action }) => {
+export default async ({ user: { id } = {}, action, adapter }) => {
   const { users: { setUserProps = () => {} } = {} } = adapter;
 
   setUserProps(id, action.action);

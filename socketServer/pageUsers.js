@@ -1,8 +1,7 @@
 import { payloadUsers } from "../actions";
 import { payloadTeams } from "../actions";
-import { adapter } from "../server";
 
-export default async ({ socket, user: { role, id , teams} }) => {
+export default async ({ socket, user: { role, id , teams}, adapter }) => {
   const { users: 
               { getUsers = () => {},
                 getTeams = () => {}

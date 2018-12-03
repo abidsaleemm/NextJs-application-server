@@ -1,14 +1,13 @@
 import { fetchAction } from "../actions";
 import { selectStudy } from "../socketEditor";
-import { adapter } from "../server";
-
 // Add props that need to be remove
 const filterRemove = ["studyUID"];
 
 export default async ({
   socket,
   io,
-  action: { studyUID = "", data = "" } = {}
+  action: { studyUID = "", data = "" } = {},
+  adapter
 }) => {
   const {
     projects: { setProjectSnapshot = () => {} } = {}

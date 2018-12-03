@@ -2,13 +2,12 @@ import queryProjectsList from "../helpers/queryProjectsList";
 
 import { payloadProjects } from "../actions";
 
-import { adapter } from "../server";
-
 // TODO There is a bunch of duplicate code here.  WG
 export default async ({
   socket,
   user: { role, id, teams = [] } = {},
-  action: { projectsSettings = {} }
+  action: { projectsSettings = {} },
+  adapter
 }) => {
   const { users: { getUsers = () => {} } = {} } = adapter;
 
@@ -35,7 +34,8 @@ export default async ({
         ? "teamAdmin"
         : "user",
     userID: id,
-    userList: usersSelected
+    userList: usersSelected,
+    adapter
   });
 
   socket.emit("action", payloadProjects({ projects }));

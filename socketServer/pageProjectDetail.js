@@ -6,12 +6,12 @@ import {
   payloadProjects,
   setProjectDetailSettings
 } from "../actions";
-import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { studyUID = "" },
-  user: { id: userID, role = "user" } = {}
+  user: { id: userID, role = "user" } = {},
+  adapter
 }) => {
   const { users: { getUserProps = () => {} } = {} } = adapter;
 
@@ -20,8 +20,8 @@ export default async ({
   ]);
 
   const [projectDetail, projectsListDefault] = await Promise.all([
-    queryProjectDetail({ studyUID }),
-    queryProjectsListDefault()
+    queryProjectDetail({ studyUID, adapter }),
+    queryProjectsListDefault(adapter)
   ]);
 
   //

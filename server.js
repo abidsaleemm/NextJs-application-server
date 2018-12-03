@@ -61,16 +61,26 @@ export default async () => {
     });
   };
 
+  // Create random secret
+  const secret =
+    Math.random()
+      .toString(36)
+      .substring(2, 15) +
+    Math.random()
+      .toString(36)
+      .substring(2, 15);
+
   // TODO Add await here? WG
   app.prepare().then(() => {
     const server = express();
-    server.disable("x-powered-by"); //x-powered-by disable form headers
+
+    server.disable("x-powered-by");
+
     const sessionMiddleWare = expressSession({
       store: process.env.LOCAL
-        ? // TODO Use a better adapter style?
-          sessionStoreLocal() // Used for local testing
+        ? sessionStoreLocal() // Used for local testing
         : sessionStoreAzure(),
-      secret: "session_secret1",
+      secret,
       key: "express.sid",
       resave: true,
       rolling: true,

@@ -13,11 +13,8 @@ import socketManager from "./socketManager";
 import authMiddleware from "./auth/middleware";
 import storageAdapter from "adapters";
 
-// TODO This is a hack.  Instead pass this prop through. WG
-export let adapter;
-
 export default async () => {
-  adapter = await storageAdapter({
+  let adapter = await storageAdapter({
     adapter: process.env.LOCAL ? "local" : "azure",
     ...(process.env.PROJECTS_PATH
       ? { projectsPath: process.env.PROJECTS_PATH }
@@ -76,8 +73,8 @@ export default async () => {
     server.use(sessionMiddleWare);
     server.use(flash());
 
-    const passport = auth(server);
-    routes({ server, app }); // Setup routes
+    const passport = auth(server, adapter);
+    routes({ server, app, adapter }); // Setup routes
 
     // Setup static routes
     if (!dev) {
@@ -150,7 +147,8 @@ export default async () => {
           const io = socketManager({
             server: serverHttp,
             passport,
-            sessionMiddleWare
+            sessionMiddleWare,
+            adapter
           });
         });
     } else {
@@ -160,7 +158,8 @@ export default async () => {
         const io = socketManager({
           server: serverHttp,
           passport,
-          sessionMiddleWare
+          sessionMiddleWare,
+          adapter
         });
       });
     }

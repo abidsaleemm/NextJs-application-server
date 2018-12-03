@@ -6,7 +6,6 @@ export default async () => {
     dicom: { getStudies = () => {} } = {}
   } = adapter;
 
-  // TODO Do query directly getProjectList instead of filtering with javascript
   const [projects = [], studies = []] = await Promise.all([
     getProjectList(),
     getStudies()
@@ -22,9 +21,8 @@ export default async () => {
     .map(([study, project]) => ({
       ...project,
       ...study
-    }));
-  // .filter(({ defaultCheck = false }) => defaultCheck === true);
+    }))
+    .filter(({ projectType }) => projectType === "Default");
 
-  //   console.log("projectsListDefault", projectsListDefault);
   return projectsListDefault;
 };

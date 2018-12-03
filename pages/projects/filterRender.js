@@ -90,14 +90,24 @@ export default ({
         >
           Training
         </DropdownItem>
+
         {role === "admin" ? (
-          <DropdownItem
-            onClick={() =>
-              setProjectsSettings({ filter: { projectType: "Removed" } })
-            }
-          >
-            Removed
-          </DropdownItem>
+          <div>
+            <DropdownItem
+              onClick={() =>
+                setProjectsSettings({ filter: { projectType: "Default" } })
+              }
+            >
+              Default
+            </DropdownItem>
+            <DropdownItem
+              onClick={() =>
+                setProjectsSettings({ filter: { projectType: "Removed" } })
+              }
+            >
+              Removed
+            </DropdownItem>
+          </div>
         ) : null}
       </DropdownMenu>
     </UncontrolledDropdown>

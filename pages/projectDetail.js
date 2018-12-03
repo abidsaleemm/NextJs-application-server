@@ -74,16 +74,15 @@ const ProjectDetails = class extends Component {
         projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
+        defaultName = "",
+        projectType,
         user: { role = "user" } = {},
         toggleSidebar = () => {},
         handleProjectImport = () => {},
         destroyProject = () => {},
         setProjectDetailSettings = () => {},
         setProjectProps = () => {},
-        setNotesEditor = () => {},
-        toggleProjectDefault = () => {},
-        defaultName = "",
-        defaultCheck = false
+        setNotesEditor = () => {}
       },
       state: { modalProjectsList = false }
     } = this;
@@ -169,13 +168,6 @@ const ProjectDetails = class extends Component {
             tr {
               white-space: nowrap;
             }
-
-            .defaultCheck {
-              width: 30px;
-              height: 17px;
-              margin: auto;
-              margin-left: 10px;
-            }
           `}
         </style>
         <Sidebar
@@ -240,37 +232,27 @@ const ProjectDetails = class extends Component {
                           }
                         }}
                       />
-                      <br/>
-                      <Row>
+                    </td>
+                  </tr>
+                  {projectType === "Default" && (
+                    <tr>
+                      <th>Default Name</th>
+                      <td>
                         <input
-                          className="defaultCheck"
-                          type="checkbox"
-                          name="defaultCheck"
-                          checked={defaultCheck}
+                          className="defaultName"
+                          type="text"
+                          name="defaultName"
+                          value={defaultName}
                           onChange={e => {
                             setProjectProps({
                               studyUID,
-                              defaultCheck: !defaultCheck
+                              defaultName: e.target.value
                             });
                           }}
-                        />{" "}
-                        {defaultCheck && (
-                          <input
-                            className="defaultName"
-                            type="text"
-                            name="defaultName"
-                            value={defaultName}
-                            onChange={e => {
-                              setProjectProps({
-                                studyUID,
-                                defaultName: e.target.value
-                              });
-                            }}
-                          />
-                        )}
-                      </Row>
-                    </td>
-                  </tr>
+                        />
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </Table>
             </div>
@@ -371,10 +353,7 @@ const ProjectDetails = class extends Component {
             setProjectDetailSettings({ projectsListSortKey: k });
           }}
           projects={projectsListDefault
-            .filter(
-              ({ studyUID: testStudyUID }) =>
-                studyUID !== testStudyUID && defaultCheck
-            )
+            .filter(({ studyUID: testStudyUID }) => studyUID !== testStudyUID)
             .map(v =>
               defaultStudyUID === v.studyUID
                 ? {

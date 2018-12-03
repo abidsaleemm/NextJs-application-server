@@ -47,6 +47,7 @@ const sortFunc = () => ({
 });
 
 export default ({
+  base,
   isOpen,
   projects = [],
   sortKey = "",
@@ -96,7 +97,7 @@ export default ({
       </ModalBody>
       <ModalFooter>
         <Button
-          color="secondary"
+          color={base ? "primary" : "secondary"}
           onClick={() => {
             onDefault();
           }}

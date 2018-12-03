@@ -94,17 +94,6 @@ const ProjectDetails = class extends Component {
       return { ...v, seriesFilter: filterValue };
     });
 
-    const selectedDefaultProject =
-      projectsListDefault.find(
-        ({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID
-      ) || {};
-
-    const {
-      patientName: defaultPatientName,
-      patientSex: defaultPatientSex,
-      patientBirthDate: defaultPatientBirthDate
-    } = selectedDefaultProject;
-
     // TODO Calculate using current date for now
     const patientAge =
       new Date().getFullYear() - new Date(patientBirthDate).getFullYear();
@@ -346,6 +335,7 @@ const ProjectDetails = class extends Component {
           style={{ margin: 0, border: 0, padding: 0 }}
         />
         <DefaultProjectModal
+          base={!defaultStudyUID || defaultStudyUID === ""}
           studyType={studyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}

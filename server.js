@@ -26,8 +26,8 @@ export default async () => {
     ...(process.env.LOCAL ? { path: "../projectsLocal" } : {}),
     ...(!process.env.LOCAL
       ? {
-        storageAccount: process.env.STORAGE_ACCOUNT,
-        storageKey: process.env.STORAGE_ACCOUNT_KEY
+          storageAccount: process.env.STORAGE_ACCOUNT,
+          storageKey: process.env.STORAGE_ACCOUNT_KEY
         }
       : {})
   });
@@ -50,14 +50,14 @@ export default async () => {
   // TODO Use a better adapter style?
   const sessionStoreAzure = () => {
     console.log("Using azure-session");
-    return require('connect-azuretables')(expressSession).create({
+    return require("connect-azuretables")(expressSession).create({
       logger: console.log,
       errorLogger: console.log,
       sessionTimeOut: 86400000,
       overrideCron: "0 0 */1 * * *",
       storageAccount: process.env.STORAGE_ACCOUNT,
       accessKey: process.env.STORAGE_ACCOUNT_KEY,
-      table: 'azureSessionsStore'
+      table: "azureSessionsStore"
     });
   };
 
@@ -70,7 +70,7 @@ export default async () => {
         ? // TODO Use a better adapter style?
           sessionStoreLocal() // Used for local testing
         : sessionStoreAzure(),
-      secret: "session_secret",
+      secret: "session_secret1",
       key: "express.sid",
       resave: true,
       rolling: true,

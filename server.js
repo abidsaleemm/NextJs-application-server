@@ -62,13 +62,7 @@ export default async () => {
   };
 
   // Create random secret
-  const secret =
-    Math.random()
-      .toString(36)
-      .substring(2, 15) +
-    Math.random()
-      .toString(36)
-      .substring(2, 15);
+  const secret = process.env.LOCAL ? process.env.LOCAL_SECRET : process.env.AZURE_SECRET ;
 
   // TODO Add await here? WG
   app.prepare().then(() => {

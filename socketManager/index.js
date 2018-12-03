@@ -5,7 +5,6 @@ import * as server from "../socketServer";
 import * as editor from "../socketEditor";
 
 import { rendersWatcher, projectsWatcher } from "./watchers";
-import { adapter } from "../server";
 import { setSessions } from "../actions";
 
 const actionHandlers = {
@@ -16,7 +15,7 @@ const actionHandlers = {
 };
 
 // TODO Handle internal state changes
-export default ({ server, passport, sessionMiddleWare = () => {} }) => {
+export default ({ server, passport, sessionMiddleWare = () => {}, adapter }) => {
   let sessions = {};
 
   const socketio = new Server({
@@ -101,7 +100,8 @@ export default ({ server, passport, sessionMiddleWare = () => {} }) => {
         sessions,
         io,
         action: { ...action, type },
-        user
+        user,
+        adapter
       });
     });
 

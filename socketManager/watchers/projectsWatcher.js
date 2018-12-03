@@ -76,7 +76,7 @@ export default ({ io, adapter = {} }) => {
                   ...study
                 }))
             ),
-            projectsListDefault: await queryProjectsListDefault()
+            projectsListDefault: await queryProjectsListDefault(adapter)
           })
         );
       })

@@ -1,9 +1,9 @@
 import PromisePool from "es6-promise-pool";
-import { adapter } from "../server";
 
 export default async ({
   socket,
-  action: { seriesUID, sliceLocation = 0, loadImages = true } = {}
+  action: { seriesUID, sliceLocation = 0, loadImages = true } = {},
+  adapter
 }) => {
   const {
     dicom: { getImages = () => {}, getImageData = () => {} } = {}

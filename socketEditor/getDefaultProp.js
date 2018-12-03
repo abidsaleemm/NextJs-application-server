@@ -1,7 +1,6 @@
 import createProject from "../helpers/createProject";
-import { adapter } from "../server";
 
-export default async ({ socket, action }) => {
+export default async ({ socket, action, adapter }) => {
   const {
     projects: {
       getProject = () => {},

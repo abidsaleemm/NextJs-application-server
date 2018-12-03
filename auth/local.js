@@ -1,8 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { adapter } from "../server";
 
-export default server => {
+export default (server, adapter) => {
   const { users: { getUser = () => {} } = {} } = adapter;
 
   server.use(passport.initialize());

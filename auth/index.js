@@ -1,6 +1,6 @@
 
 import local from './local';
 
-export default server => {
-	local (server);
+export default (server, adapter) => {
+	local (server, adapter);
 }

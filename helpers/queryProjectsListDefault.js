@@ -1,5 +1,4 @@
 export default async (adapter) => {
-  console.log("queryProjectsListDefault: ", adapter);
   const {
     projects: { getProjectList = () => {} } = {},
     dicom: { getStudies = () => {} } = {}

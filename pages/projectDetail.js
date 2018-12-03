@@ -8,7 +8,7 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
-import CreateProjectModal from "../components/CreateProjectModal";
+import DefaultProjectModal from "../components/DefaultProjectModal";
 import RichTextEditorModal from "../components/RichTextEditorModal";
 import RenderFilter from "../components/RenderFilter";
 import checkPlainTextNull from "../helpers/checkPlainTextNull";
@@ -345,7 +345,7 @@ const ProjectDetails = class extends Component {
           height="100%"
           style={{ margin: 0, border: 0, padding: 0 }}
         />
-        <CreateProjectModal
+        <DefaultProjectModal
           studyType={studyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}

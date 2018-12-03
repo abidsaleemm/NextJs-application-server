@@ -4,9 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import TableList from "./TableList";
 
 const header = () => ({
-  defaultName: "defaultName",
-  sampleRender: "Sample",
-  patientName: "Patient Name",
+  name: "Name",
   patientAge: "Age",
   patientSex: "Gender",
   studyType: "Study Type"
@@ -37,10 +35,7 @@ const strSort = (a = "", b = "") => {
 };
 
 const sortFunc = () => ({
-  defaultName: ({ defaultName: a = "" }, { defaultName: b = "" }) => strSort(a, b),
-  sampleRender: ({ sample: a = false }, { sample: b = false }) =>
-    a === b ? 0 : a ? -1 : 1,
-  patientName: ({ patientName: a }, { patientName: b }) => strSort(a, b),
+  name: ({ name: a }, { name: b }) => strSort(a, b),
   patientAge: ({ patientAge: a }, { patientAge: b }) => {
     const testA = parseInt(a);
     const testB = parseInt(b);
@@ -63,13 +58,14 @@ export default ({
   onRowClick = () => {}
 }) => {
   const projectsEnhanced = projects.map(
-    ({ patientBirthDate = new Date(), sample = false, ...v }) => {
+    ({ patientBirthDate = new Date(), patientName, defaultName, ...v }) => {
       return {
         ...v,
-        sample,
+        patientName,
+        defaultName,
         patientAge:
           new Date().getFullYear() - new Date(patientBirthDate).getFullYear(),
-        sampleRender: sample ? "X" : null
+        name: defaultName && defaultName !== "" ? defaultName : patientName
       };
     }
   );

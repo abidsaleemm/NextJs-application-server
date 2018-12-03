@@ -1,7 +1,6 @@
 import authMiddleware from "../auth/middleware";
-import { adapter } from "../server";
 
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const { file: { get: fileGet = () => {} } = {} } = adapter;
 
   server.get("/uploadGet", authMiddleware(), async (req, res) => {

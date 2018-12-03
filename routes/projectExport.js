@@ -1,7 +1,6 @@
 import authMiddleware from "../auth/middleware";
-import { adapter } from "../server";
 
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const {
     dicom: { getStudy = () => {} } = {},
     projects: { getProjectSnapshot = () => {} } = {}

@@ -2,9 +2,8 @@ import queryProjectDetail from "../helpers/queryProjectDetail";
 import queryProjectsListDefault from "../helpers/queryProjectsListDefault";
 
 import authMiddleware from "../auth/middleware";
-import { adapter } from "../server";
 
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const { users: { getUserProps = () => {} } = {} } = adapter;
 
   server.get("/projectDetail", authMiddleware(), async (req, res) => {
@@ -18,7 +17,7 @@ export default ({ server, app }) => {
 
     const [projectDetail, projectsListDefault] = await Promise.all([
       queryProjectDetail({ studyUID }),
-      queryProjectsListDefault()
+      queryProjectsListDefault(adapter)
     ]);
 
     return app.render(req, res, "/projectDetail", {

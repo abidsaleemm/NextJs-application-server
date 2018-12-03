@@ -1,8 +1,7 @@
 import authMiddleware from "../auth/middleware";
 // import { videoLoad } from "../video";
-import { adapter } from "../server";
 
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const { video: { videoLoad = () => {} } = {} } = adapter;
 
   server.get("/video", authMiddleware(), async (req, res) => {

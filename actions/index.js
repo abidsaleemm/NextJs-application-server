@@ -9,7 +9,6 @@ export { default as setProjectProps } from "./setProjectProps";
 export { default as fetchAction } from "./fetchAction";
 export { default as setVideo } from "./setVideo";
 
-export { default as toggleProjectDefault } from "./toggleProjectDefault";
 export { default as setProjectDetailStatus } from "./setProjectDetailStatus";
 
 // Settings

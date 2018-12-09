@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, Row } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import Sidebar from "../components/Sidebar";
 import Status from "../components/Status";
 import { connect } from "react-redux";
@@ -89,9 +89,15 @@ const ProjectDetails = class extends Component {
 
     const seriesEnhanced = series.map(v => {
       const { seriesUID } = v;
-      const { [seriesUID]: filterValue = "" } = seriesFilter;
+      const { [seriesUID]: filterValue } = seriesFilter;
 
-      return { ...v, seriesFilter: filterValue };
+      return {
+        ...v,
+        seriesFilter:
+          typeof filterValue === "string"
+            ? { filter: filterValue }
+            : filterValue
+      };
     });
 
     // TODO Calculate using current date for now

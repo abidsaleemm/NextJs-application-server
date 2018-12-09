@@ -3,10 +3,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  Table,
-  Row,
-  Container,
-  Col
+  Table
 } from "reactstrap";
 
 // TODO This is duplicated in application-interface.
@@ -21,24 +18,7 @@ const filterDefaultRender = ({ seriesName }) => {
   );
 };
 
-export default ({
-  series = [],
-  onChange = () => {},
-  setProjectsSettings = () => {},
-  user: { role = "" } = {},
-  filter: {
-    status = "All",
-    patientName,
-    defaultCheck = false,
-    defaultName,
-    patientBirthDate,
-    studyName,
-    location,
-    studyDate,
-    uploadDateTime,
-    projectType = "All"
-  } = {}
-}) => {
+export default ({ series = [], onChange = () => {} }) => {
   return (
     <UncontrolledDropdown>
       <style jsx>
@@ -50,7 +30,6 @@ export default ({
         `}
       </style>
       <DropdownToggle caret>Series</DropdownToggle>
-
       <DropdownMenu>
         <Table>
           <thead>
@@ -61,19 +40,18 @@ export default ({
               {/* <td>Time</td> */}
               <td>W</td>
               <td>B</td>
+              <td>Trim</td>
             </tr>
           </thead>
           <tbody>
             {series.map(
               (
                 {
-                  seriesUID,
-                  seriesDate,
+                  seriesUID, //   seriesDate,
                   seriesName = "",
-                  seriesNumber,
-                  seriesTime,
+                  seriesNumber, //   seriesTime,
                   // This are composed in projectDetail pages component
-                  seriesFilter = ""
+                  seriesFilter: { filter = "", trim = false } = {}
                 },
                 i
               ) => {
@@ -85,9 +63,9 @@ export default ({
                     key={`render-filter-${seriesUID}-${i}`}
                     style={{
                       background:
-                        seriesFilter === "whitelisted"
+                        filter === "whitelisted"
                           ? "green"
-                          : seriesFilter === "blacklisted"
+                          : filter === "blacklisted"
                           ? "red"
                           : shouldRender
                           ? "#abebc6"
@@ -106,14 +84,11 @@ export default ({
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={seriesFilter === "whitelisted"}
+                        checked={filter === "whitelisted"}
                         onChange={() => {
                           onChange({
                             seriesUID,
-                            value:
-                              seriesFilter !== "whitelisted"
-                                ? "whitelisted"
-                                : ""
+                            value: filter !== "whitelisted" ? "whitelisted" : ""
                           });
                         }}
                       />
@@ -122,14 +97,29 @@ export default ({
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={seriesFilter === "blacklisted"}
+                        checked={filter === "blacklisted"}
                         onChange={() => {
                           onChange({
                             seriesUID,
-                            value:
-                              seriesFilter !== "blacklisted"
-                                ? "blacklisted"
-                                : ""
+                            value: {
+                              filter:
+                                filter !== "blacklisted" ? "blacklisted" : ""
+                            }
+                          });
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={trim}
+                        onChange={() => {
+                          onChange({
+                            seriesUID,
+                            value: {
+                              trim: !trim
+                            }
                           });
                         }}
                       />

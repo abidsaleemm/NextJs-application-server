@@ -1,3 +1,4 @@
+import { Vector3 } from "three";
 import selectSeries from "./selectSeries";
 
 import { adapter } from "../server";
@@ -5,7 +6,11 @@ import { adapter } from "../server";
 export default async ({ socket, action }) => {
   const {
     projects: { getProjectSnapshot = () => {}, getProject = () => {} } = {},
-    dicom: { getSeries = () => {}, getStudy = () => {} } = {}
+    dicom: {
+      getSeries = () => {},
+      getStudy = () => {},
+      getImages = () => {}
+    } = {}
   } = adapter;
   const { studyUID, loadImages } = action;
 
@@ -30,14 +35,37 @@ export default async ({ socket, action }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = (await getSeries({ studyUID }))
-    .filter(({ seriesName }) => seriesName !== undefined && seriesName !== null)
-    .map(v => {
-      const { seriesUID } = v;
-      const { [seriesUID]: seriesFilterValue } = seriesFilter;
+  const dicomSeries = await Promise.all(
+    (await getSeries({ studyUID }))
+      .filter(
+        ({ seriesName }) => seriesName !== undefined && seriesName !== null
+      )
+      .map(async v => {
+        const { seriesUID } = v;
+        const { [seriesUID]: seriesFilterValue } = seriesFilter;
 
-      return { ...v, seriesFilter: seriesFilterValue };
-    });
+        const images = await getImages({
+          seriesUID
+        });
+
+        const imagesFiltered = images.filter(
+          ({ imageOrientation }) => imageOrientation
+        );
+
+        // TODO Grabbing middle image? probably a cleanner way. WG
+        const {
+          [parseInt(imagesFiltered.length / 2)]: {
+            imageOrientation: [oX, oY] = [
+              { x: 0, y: 0, z: 0 },
+              { x: 0, y: 0, z: 0 }
+            ]
+          } = {}
+        } = imagesFiltered;
+        const direction = new Vector3().crossVectors(oX, oY);
+
+        return { ...v, seriesFilter: seriesFilterValue, direction };
+      })
+  );
 
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 

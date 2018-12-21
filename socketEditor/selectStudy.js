@@ -35,7 +35,7 @@ export default async ({ socket, action }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = await Promise.all(
+  const series = await Promise.all(
     (await getSeries({ studyUID }))
       .filter(
         ({ seriesName }) => seriesName !== undefined && seriesName !== null
@@ -67,15 +67,17 @@ export default async ({ socket, action }) => {
       })
   );
 
-  const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
+  const { 0: { seriesUID: firstSeriesUID } = [] } = series;
 
   const { selectedSeries: projectSelectedSeries } = project;
 
-  const selectedSeries = dicomSeries.some(
+  const selectedSeries = series.some(
     ({ seriesUID }) => seriesUID === projectSelectedSeries
   )
     ? projectSelectedSeries
     : firstSeriesUID;
+
+    // const ;
 
   //   const { studyType } = (await getStudy({ studyUID })) || {};
 
@@ -88,7 +90,7 @@ export default async ({ socket, action }) => {
         project: {
           ...project,
           selectedSeries,
-          dicomSeries,
+          series,
           studyUID,
           studyType
         }
@@ -99,7 +101,7 @@ export default async ({ socket, action }) => {
 
   const { sliceLocation = 0 } = project;
 
-  if (dicomSeries.length > 0) {
+  if (series.length > 0) {
     selectSeries({
       socket,
       action: { seriesUID: selectedSeries, sliceLocation, loadImages }

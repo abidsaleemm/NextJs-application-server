@@ -35,7 +35,7 @@ export default async ({ socket, action }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const series = await Promise.all(
+  const dicomSeries = await Promise.all(
     (await getSeries({ studyUID }))
       .filter(
         ({ seriesName }) => seriesName !== undefined && seriesName !== null
@@ -67,19 +67,26 @@ export default async ({ socket, action }) => {
       })
   );
 
-  const { 0: { seriesUID: firstSeriesUID } = [] } = series;
+  const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
-  const { selectedSeries: projectSelectedSeries } = project;
+  const { selectedSeries: projectSelectedSeries, series = [] } = project;
 
-  const selectedSeries = series.some(
+  const selectedSeries = dicomSeries.some(
     ({ seriesUID }) => seriesUID === projectSelectedSeries
   )
     ? projectSelectedSeries
     : firstSeriesUID;
 
-    // const ;
+  // Merge series states with dicom database
+  const enhancedSeries = dicomSeries.map(v => {
+    const lookupSeries =
+      series.find(({ seriesUID }) => seriesUID === v.seriesUID) || {};
 
-  //   const { studyType } = (await getStudy({ studyUID })) || {};
+    return {
+      ...v,
+      ...lookupSeries
+    };
+  });
 
   // Send Payload first
   await new Promise((resolve, reject) => {
@@ -90,7 +97,7 @@ export default async ({ socket, action }) => {
         project: {
           ...project,
           selectedSeries,
-          series,
+          series: enhancedSeries,
           studyUID,
           studyType
         }
@@ -101,7 +108,7 @@ export default async ({ socket, action }) => {
 
   const { sliceLocation = 0 } = project;
 
-  if (series.length > 0) {
+  if (dicomSeries.length > 0) {
     selectSeries({
       socket,
       action: { seriesUID: selectedSeries, sliceLocation, loadImages }

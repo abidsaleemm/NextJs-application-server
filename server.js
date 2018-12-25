@@ -47,19 +47,31 @@ export default async () => {
   // TODO Use a better adapter style?
   const sessionStoreAzure = () => {
     console.log("Using azure-session");
-    return require("./auth/azure-session.js")(expressSession).create();
+    return require("connect-azuretables")(expressSession).create({
+      logger: console.log,
+      errorLogger: console.log,
+      sessionTimeOut: 86400000,
+      overrideCron: "0 0 */1 * * *",
+      storageAccount: process.env.STORAGE_ACCOUNT,
+      accessKey: process.env.STORAGE_ACCOUNT_KEY,
+      table: "azureSessionsStore"
+    });
   };
+
+  // Create random secret
+  const secret = process.env.LOCAL ? process.env.LOCAL_SECRET : process.env.AZURE_SECRET ;
 
   // TODO Add await here? WG
   app.prepare().then(() => {
     const server = express();
-    server.disable("x-powered-by"); //x-powered-by disable form headers
+
+    server.disable("x-powered-by");
+
     const sessionMiddleWare = expressSession({
       store: process.env.LOCAL
-        ? // TODO Use a better adapter style?
-          sessionStoreLocal() // Used for local testing
+        ? sessionStoreLocal() // Used for local testing
         : sessionStoreAzure(),
-      secret: "session_secret",
+      secret,
       key: "express.sid",
       resave: true,
       rolling: true,

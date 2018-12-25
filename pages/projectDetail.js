@@ -8,7 +8,7 @@ import * as actions from "../actions";
 import Wrapper from "../hoc/wrapper";
 import UploadButton from "../components/UploadButton";
 import ButtonConfirm from "../components/ButtonConfirm";
-import CreateProjectModal from "../components/CreateProjectModal";
+import DefaultProjectModal from "../components/DefaultProjectModal";
 import RichTextEditorModal from "../components/RichTextEditorModal";
 import RenderFilter from "../components/RenderFilter";
 import checkPlainTextNull from "../helpers/checkPlainTextNull";
@@ -74,35 +74,31 @@ const ProjectDetails = class extends Component {
         projectsListDefault = [],
         projectsListSortKey = "",
         projectsListSortDesc = false,
+        defaultName = "",
+        projectType,
         user: { role = "user" } = {},
         toggleSidebar = () => {},
         handleProjectImport = () => {},
         destroyProject = () => {},
         setProjectDetailSettings = () => {},
         setProjectProps = () => {},
-        setNotesEditor = () => {},
-        toggleProjectDefault = () => {}
+        setNotesEditor = () => {}
       },
       state: { modalProjectsList = false }
     } = this;
 
     const seriesEnhanced = series.map(v => {
       const { seriesUID } = v;
-      const { [seriesUID]: filterValue = "" } = seriesFilter;
+      const { [seriesUID]: filterValue } = seriesFilter;
 
-      return { ...v, seriesFilter: filterValue };
+      return {
+        ...v,
+        seriesFilter:
+          typeof filterValue === "string"
+            ? { filter: filterValue }
+            : filterValue
+      };
     });
-
-    const selectedDefaultProject =
-      projectsListDefault.find(
-        ({ studyUID: testStudyUID }) => defaultStudyUID === testStudyUID
-      ) || {};
-
-    const {
-      patientName: defaultPatientName,
-      patientSex: defaultPatientSex,
-      patientBirthDate: defaultPatientBirthDate
-    } = selectedDefaultProject;
 
     // TODO Calculate using current date for now
     const patientAge =
@@ -233,6 +229,25 @@ const ProjectDetails = class extends Component {
                       />
                     </td>
                   </tr>
+                  {projectType === "Default" && (
+                    <tr>
+                      <th>Default Name</th>
+                      <td>
+                        <input
+                          className="defaultName"
+                          type="text"
+                          name="defaultName"
+                          value={defaultName}
+                          onChange={e => {
+                            setProjectProps({
+                              studyUID,
+                              defaultName: e.target.value
+                            });
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </Table>
             </div>
@@ -325,7 +340,8 @@ const ProjectDetails = class extends Component {
           height="100%"
           style={{ margin: 0, border: 0, padding: 0 }}
         />
-        <CreateProjectModal
+        <DefaultProjectModal
+          base={!defaultStudyUID || defaultStudyUID === ""}
           studyType={studyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
@@ -334,14 +350,13 @@ const ProjectDetails = class extends Component {
           }}
           projects={projectsListDefault
             .filter(({ studyUID: testStudyUID }) => studyUID !== testStudyUID)
-            .map(
-              v =>
-                defaultStudyUID === v.studyUID
-                  ? {
-                      ...v,
-                      tableBackground: "lightgreen"
-                    }
-                  : v
+            .map(v =>
+              defaultStudyUID === v.studyUID
+                ? {
+                    ...v,
+                    tableBackground: "lightgreen"
+                  }
+                : v
             )}
           onToggle={() => {
             this.setState({

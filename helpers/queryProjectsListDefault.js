@@ -4,13 +4,8 @@ export default async (adapter) => {
     dicom: { getStudies = () => {} } = {}
   } = adapter;
 
-  // TODO Do query directly getProjectList instead of filtering with javascript
   const [projects = [], studies = []] = await Promise.all([
-    getProjectList({
-      filter: () => {
-        return true;
-      }
-    }),
+    getProjectList(),
     getStudies()
   ]);
 
@@ -21,21 +16,11 @@ export default async (adapter) => {
       study,
       projects.find(({ studyUID = "" }) => study.studyUID === studyUID)
     ])
-    // TODO Remove this?
-    .filter(
-      ([study, { status } = {}]) =>
-        status === "Delivered" || status === "Archived"
-    )
-    // TODO Can remove this after default gets cleaned up. WG
-    .filter(
-      ([study, { projectType } = {}]) =>
-        study !== undefined && projectType !== "Removed"
-    )
     .map(([study, project]) => ({
       ...project,
       ...study
     }))
-    .filter(({ hasProjectSnapshots = false }) => hasProjectSnapshots === true);
+    .filter(({ projectType }) => projectType === "Default");
 
   return projectsListDefault;
 };

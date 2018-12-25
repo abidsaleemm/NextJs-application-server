@@ -5,7 +5,7 @@ import * as actions from "../../actions";
 import Wrapper from "../../hoc/wrapper";
 import TableList from "../../components/TableList";
 import UploadFilePopup from "../../components/UploadFilePopup";
-import CreateProjectModal from "../../components/CreateProjectModal";
+import DefaultProjectModal from "../../components/DefaultProjectModal";
 import RichTextEditorModal from "../../components/RichTextEditorModal";
 
 import fieldEnhancer from "./fieldEnhancer";
@@ -178,7 +178,7 @@ class ProjectsListing extends Component {
           notes={notes}
         />
 
-        <CreateProjectModal
+        <DefaultProjectModal
           studyType={selectedStudyType}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}

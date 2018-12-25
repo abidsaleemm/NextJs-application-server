@@ -83,6 +83,8 @@ CONTAINER_NAME=dicom   # default 'dicom'
 PROJECT_TABLE=projects  # default 'projects'
 DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.
 RENDER=true             # This allows server to bypass security check on socket.io connection.
+AZURE_SECRET=azure_secret_session            # This is the express session secret for azure env.
+LOCAL_SECRET=local_secret_session            # This is the express session secret for local env.
 ```
 
 ## Project storage

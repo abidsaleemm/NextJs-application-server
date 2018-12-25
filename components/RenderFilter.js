@@ -40,19 +40,18 @@ export default ({ series = [], onChange = () => {} }) => {
               {/* <td>Time</td> */}
               <td>W</td>
               <td>B</td>
+              <td>Trim</td>
             </tr>
           </thead>
           <tbody>
             {series.map(
               (
                 {
-                  seriesUID,
-                  seriesDate,
+                  seriesUID, //   seriesDate,
                   seriesName = "",
-                  seriesNumber,
-                  seriesTime,
+                  seriesNumber, //   seriesTime,
                   // This are composed in projectDetail pages component
-                  seriesFilter = ""
+                  seriesFilter: { filter = "", trim = false } = {}
                 },
                 i
               ) => {
@@ -64,13 +63,13 @@ export default ({ series = [], onChange = () => {} }) => {
                     key={`render-filter-${seriesUID}-${i}`}
                     style={{
                       background:
-                        seriesFilter === "whitelisted"
+                        filter === "whitelisted"
                           ? "green"
-                          : seriesFilter === "blacklisted"
-                            ? "red"
-                            : shouldRender
-                              ? "#abebc6"
-                              : "#fadbd8"
+                          : filter === "blacklisted"
+                          ? "red"
+                          : shouldRender
+                          ? "#abebc6"
+                          : "#fadbd8"
                     }}
                   >
                     <td>
@@ -85,14 +84,11 @@ export default ({ series = [], onChange = () => {} }) => {
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={seriesFilter === "whitelisted"}
+                        checked={filter === "whitelisted"}
                         onChange={() => {
                           onChange({
                             seriesUID,
-                            value:
-                              seriesFilter !== "whitelisted"
-                                ? "whitelisted"
-                                : ""
+                            value: filter !== "whitelisted" ? "whitelisted" : ""
                           });
                         }}
                       />
@@ -101,14 +97,29 @@ export default ({ series = [], onChange = () => {} }) => {
                       <input
                         className="checkbox"
                         type="checkbox"
-                        checked={seriesFilter === "blacklisted"}
+                        checked={filter === "blacklisted"}
                         onChange={() => {
                           onChange({
                             seriesUID,
-                            value:
-                              seriesFilter !== "blacklisted"
-                                ? "blacklisted"
-                                : ""
+                            value: {
+                              filter:
+                                filter !== "blacklisted" ? "blacklisted" : ""
+                            }
+                          });
+                        }}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        className="checkbox"
+                        type="checkbox"
+                        checked={trim}
+                        onChange={() => {
+                          onChange({
+                            seriesUID,
+                            value: {
+                              trim: !trim
+                            }
                           });
                         }}
                       />

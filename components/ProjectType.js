@@ -16,6 +16,7 @@ export default ({ admin = true, type = "", onChange = () => {} }) => {
         <DropdownItem onClick={() => onChange("Training")}>
           Training
         </DropdownItem>
+        <DropdownItem onClick={() => onChange("Default")}>Default</DropdownItem>
         <DropdownItem onClick={() => onChange("Removed")}>Removed</DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>

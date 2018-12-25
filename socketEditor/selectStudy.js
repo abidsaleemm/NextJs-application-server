@@ -1,9 +1,14 @@
+import { Vector3 } from "three";
 import selectSeries from "./selectSeries";
 
 export default async ({ socket, action, adapter }) => {
   const {
     projects: { getProjectSnapshot = () => {}, getProject = () => {} } = {},
-    dicom: { getSeries = () => {}, getStudy = () => {} } = {}
+    dicom: {
+      getSeries = () => {},
+      getStudy = () => {},
+      getImages = () => {}
+    } = {}
   } = adapter;
   const { studyUID, loadImages } = action;
 
@@ -28,18 +33,41 @@ export default async ({ socket, action, adapter }) => {
     return; // TODO Handle bailout better? Error handle?
   }
 
-  const dicomSeries = (await getSeries({ studyUID }))
-    .filter(({ seriesName }) => seriesName !== undefined && seriesName !== null)
-    .map(v => {
-      const { seriesUID } = v;
-      const { [seriesUID]: seriesFilterValue } = seriesFilter;
+  const dicomSeries = await Promise.all(
+    (await getSeries({ studyUID }))
+      .filter(
+        ({ seriesName }) => seriesName !== undefined && seriesName !== null
+      )
+      .map(async v => {
+        const { seriesUID } = v;
+        const { [seriesUID]: seriesFilterValue } = seriesFilter;
 
-      return { ...v, seriesFilter: seriesFilterValue };
-    });
+        const images = await getImages({
+          seriesUID
+        });
+
+        const imagesFiltered = images.filter(
+          ({ imageOrientation }) => imageOrientation
+        );
+
+        // TODO Grabbing middle image? probably a cleanner way. WG
+        const {
+          [parseInt(imagesFiltered.length / 2)]: {
+            imageOrientation: [oX, oY] = [
+              { x: 0, y: 0, z: 0 },
+              { x: 0, y: 0, z: 0 }
+            ]
+          } = {}
+        } = imagesFiltered;
+        const direction = new Vector3().crossVectors(oX, oY);
+
+        return { ...v, seriesFilter: seriesFilterValue, direction };
+      })
+  );
 
   const { 0: { seriesUID: firstSeriesUID } = [] } = dicomSeries;
 
-  const { selectedSeries: projectSelectedSeries } = project;
+  const { selectedSeries: projectSelectedSeries, series = [] } = project;
 
   const selectedSeries = dicomSeries.some(
     ({ seriesUID }) => seriesUID === projectSelectedSeries
@@ -47,7 +75,16 @@ export default async ({ socket, action, adapter }) => {
     ? projectSelectedSeries
     : firstSeriesUID;
 
-  //   const { studyType } = (await getStudy({ studyUID })) || {};
+  // Merge series states with dicom database
+  const enhancedSeries = dicomSeries.map(v => {
+    const lookupSeries =
+      series.find(({ seriesUID }) => seriesUID === v.seriesUID) || {};
+
+    return {
+      ...v,
+      ...lookupSeries
+    };
+  });
 
   // Send Payload first
   await new Promise((resolve, reject) => {
@@ -58,7 +95,7 @@ export default async ({ socket, action, adapter }) => {
         project: {
           ...project,
           selectedSeries,
-          dicomSeries,
+          series: enhancedSeries,
           studyUID,
           studyType
         }

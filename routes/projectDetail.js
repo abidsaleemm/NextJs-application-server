@@ -16,7 +16,7 @@ export default ({ server, app, adapter }) => {
       (await getUserProps(id, ["projectDetailSettings"])) || {};
 
     const [projectDetail, projectsListDefault] = await Promise.all([
-      queryProjectDetail({ studyUID }),
+      queryProjectDetail({ studyUID, adapter }),
       queryProjectsListDefault(adapter)
     ]);
 

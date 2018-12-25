@@ -1,4 +1,3 @@
-import { adapter } from "../server";
 import { values, mergeWith, merge, indexBy, prop } from "ramda";
 
 const arrayMergeKey = ({ key, left, right }) =>
@@ -35,7 +34,7 @@ const stateProxy = ({ vertebra, segments, discs }) => ({
   };
 };
 
-export default async ({ socket, action }) => {
+export default async ({ socket, action, adapter }) => {
   const {
     projects: {
       setProjectSnapshot = () => {},

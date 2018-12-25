@@ -1,6 +1,4 @@
-import { adapter } from "../server";
-
-export default async ({ studyUID = 0 }) => {
+export default async ({ studyUID = 0, adapter }) => {
   const {
     file: { list: fileList = () => {} } = {},
     projects: { getProject = () => {} } = {},

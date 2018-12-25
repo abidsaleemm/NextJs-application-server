@@ -1,9 +1,8 @@
 import createProject from "../helpers/createProject";
 import { fetchAction } from "../actions";
 import selectStudy from "../socketEditor/selectStudy";
-import { adapter } from "../server";
 
-export default async ({ socket, io, action: { studyUID } = {} }) => {
+export default async ({ socket, io, action: { studyUID } = {}, adapter }) => {
   const {
     projects: {
       setProjectSnapshot = () => {},

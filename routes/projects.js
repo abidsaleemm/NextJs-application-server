@@ -2,9 +2,7 @@ import authMiddleware from "../auth/middleware";
 import queryProjectsList from "../helpers/queryProjectsList";
 import queryProjectsListDefault from "../helpers/queryProjectsListDefault";
 
-import { adapter } from "../server";
-
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const {
     users: { getUsers = () => {}, getUserProps = () => {} } = {},
     renders: { getRenderQueue = () => {} } = {}
@@ -40,10 +38,12 @@ export default ({ server, app }) => {
               ? "teamAdmin"
               : "user",
         userID: id,
-        userList: usersSelected
+        userList: usersSelected,
+        adapter
       }),
-      queryProjectsListDefault(),
-      getRenderQueue()
+      queryProjectsListDefault(adapter),
+      getRenderQueue(),
+      adapter
     ]);
 
     return app.render(req, res, "/projects", {

@@ -1,9 +1,8 @@
 import authMiddleware from "../auth/middleware";
 // import { getUsers } from "../authUsers/local";
 // import { getUserProps } from "../authUsers";
-import { adapter } from "../server";
 
-export default ({ server, app }) => {
+export default ({ server, app, adapter }) => {
   const { users: { getUsers = () => {}, getTeams = () => {}, getUserProps = () => {} } = {} } = adapter;
 
   server.get("/users", authMiddleware(), async (req, res) => {

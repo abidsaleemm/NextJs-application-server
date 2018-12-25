@@ -3,7 +3,6 @@ import fs from "fs";
 import zipFolder from "zip-folder";
 
 import { generateVideo, cleanup } from "../video";
-import { adapter } from "../server";
 import createVideoFileName from "../helpers/createVideoFileName";
 
 // TODO Move this someplace else?
@@ -152,7 +151,7 @@ const templateActions = {
   }
 };
 
-export default async ({ socket, action }) => {
+export default async ({ socket, action, adapter }) => {
   const {
     renders: { delRenderQueue = () => {} } = {},
     dicom: { getStudy = () => {} } = {}

@@ -1,10 +1,10 @@
 import pageProjects from "./pageProjects";
-import { adapter } from "../server";
 
 export default async ({
   socket,
   action: { name, studyUID } = {},
-  user
+  user,
+  adapter
 }) => {
   const {
     file: { del: uploadDel = () => {} }
@@ -14,5 +14,5 @@ export default async ({
 
   await uploadDel({ path });
 
-  pageProjects({ socket, user });
+  pageProjects({ socket, user, adapter });
 };

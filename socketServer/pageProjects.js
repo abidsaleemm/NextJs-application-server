@@ -8,12 +8,11 @@ import {
   payloadRenders
 } from "../actions";
 
-import { adapter } from "../server";
-
 export default async ({
   socket,
   user,
-  user: { role, id, teams = [] } = {}
+  user: { role, id, teams = [] } = {},
+  adapter
 }) => {
   const {
     users: { getUsers = () => {}, getUserProps = () => {} } = {},
@@ -47,9 +46,10 @@ export default async ({
             ? "teamAdmin"
             : "user",
       userID: id,
-      userList: usersSelected
+      userList: usersSelected,
+      adapter
     }),
-    queryProjectsListDefault(),
+    queryProjectsListDefault(adapter),
     getRenderQueue()
   ]);
 

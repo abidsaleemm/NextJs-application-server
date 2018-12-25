@@ -1,10 +1,9 @@
 import { SET_RENDER } from "../constants/actionTypes";
 
-import { adapter } from "../server";
-
 export default async ({
   socket,
-  action: { type, studyUID, template, anonymous, debug, ...props } = {}
+  action: { type, studyUID, template, anonymous, debug, ...props } = {},
+  adapter
 }) => {
   const { renders: { setRenderQueue = () => {} } = {} } = adapter;
 

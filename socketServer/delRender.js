@@ -1,10 +1,9 @@
 import { DEL_RENDER } from "../constants/actionTypes";
 
-import { adapter } from "../server";
-
 export default async ({
   socket,
-  action: { studyUID, template, anonymous, debug } = {}
+  action: { studyUID, template, anonymous, debug } = {},
+  adapter
 }) => {
   const { renders: { delRenderQueue = () => {} } = {} } = adapter;
 

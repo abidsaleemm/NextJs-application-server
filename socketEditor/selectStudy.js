@@ -1,9 +1,7 @@
 import { Vector3 } from "three";
 import selectSeries from "./selectSeries";
 
-import { adapter } from "../server";
-
-export default async ({ socket, action }) => {
+export default async ({ socket, action, adapter }) => {
   const {
     projects: { getProjectSnapshot = () => {}, getProject = () => {} } = {},
     dicom: {
@@ -111,7 +109,8 @@ export default async ({ socket, action }) => {
   if (dicomSeries.length > 0) {
     selectSeries({
       socket,
-      action: { seriesUID: selectedSeries, sliceLocation, loadImages }
+      action: { seriesUID: selectedSeries, sliceLocation, loadImages },
+      adapter
     });
   }
 };

@@ -1,10 +1,8 @@
 import { where } from "ramda";
-import { adapter } from "../server";
-
 import filterProjectsByUser from "./filterProjectsByUser";
 
 // TODO Add filter fuctions here for now. WG
-const statusCheck = ({ statusFilter = "", status = "" }) =>
+const statusCheck = ({ statusFilter = "", status = "", adapter }) =>
   [
     (statusFilter === "" || statusFilter === "None") &&
       (status === "None" || status === ""),
@@ -39,7 +37,8 @@ export default async ({
     } = {}
   } = {},
   userID,
-  userList = []
+  userList = [],
+  adapter
 }) => {
   const {
     file: { list: fileList = () => {} } = {},

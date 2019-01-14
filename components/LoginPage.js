@@ -15,6 +15,10 @@ export default ({ error = "", staging = false }) => (
       {`
         .root {
           background-color: ${staging ? "#e88834" : "#3079c6"};
+          display: flex;
+          flex-direction: column;
+          width: 100vw;
+          height: 100vh;
         }
 
         .loginImage {

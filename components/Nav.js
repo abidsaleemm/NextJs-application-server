@@ -43,7 +43,7 @@ const { STAGING: staging = false } =
 export default ({ user: { role = "user", name } = {}, ...props }) => {
   return (
     <div>
-      <style jsx global>
+      <style jsx>
         {`
           .buttonLink {
             margin: 10px;

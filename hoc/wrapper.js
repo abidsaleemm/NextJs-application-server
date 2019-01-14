@@ -8,16 +8,25 @@ import Loader from "../containers/Loader"; // TODO Requires a store. Should prob
 
 // TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
 // Embed in DOM
-const { STAGING } = ("undefined" !== typeof window ? window.env : process.env) || false;
+const { STAGING } =
+  ("undefined" !== typeof window ? window.env : process.env) || false;
 
-const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props => (
+const Wrapper = (
+  WrappedComponent,
+  { nav = true, loader = true } = {}
+) => props => (
   <div className="root">
     <style jsx global>
       {`
         @import url("https://fonts.googleapis.com/css?family=Muli");
+
         * {
           font-family: Muli;
         }
+      `}
+    </style>
+    <style jsx>
+      {`
         .root {
           display: flex;
           flex-direction: column;
@@ -33,7 +42,9 @@ const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props 
     <WrappedComponent {...props} />
     <script
       dangerouslySetInnerHTML={{
-        __html: `env = {}; ${STAGING ? "env.STAGING = true;" : "env.STAGING = false;"} `
+        __html: `env = {}; ${
+          STAGING ? "env.STAGING = true;" : "env.STAGING = false;"
+        } `
       }}
     />
   </div>
@@ -42,12 +53,18 @@ const Wrapper = (WrappedComponent, { nav = true, loader = true } = {}) => props 
 const WrapperEnhanced = (WrappedComponent, ...params) =>
   class extends Component {
     static getInitialProps = async props => {
-      const { req: { session: { passport: { user } = {} } = {} } = {}, isServer, store } = props;
+      const {
+        req: { session: { passport: { user } = {} } = {} } = {},
+        isServer,
+        store
+      } = props;
 
       const { setUser } = actions;
 
       if (isServer !== undefined) {
-        const { role = "user" } = isServer ? store.dispatch(setUser(user)) : store.dispatch({ type: "server/getUser" });
+        const { role = "user" } = isServer
+          ? store.dispatch(setUser(user))
+          : store.dispatch({ type: "server/getUser" });
       }
 
       return {

@@ -1,40 +1,5 @@
 import React from "react";
 import Router from "next/router";
-import { Nav } from "reactstrap";
-
-const RenderUser = () => (
-  <li>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/projects" })}
-    >
-      Projects
-    </div>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/users" })}
-    >
-      Users
-    </div>
-  </li>
-);
-
-const RenderAdmin = () => (
-  <li>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/projects" })}
-    >
-      Projects
-    </div>
-    <div
-      className="buttonLink"
-      onClick={() => Router.push({ pathname: "/users" })}
-    >
-      Users
-    </div>
-  </li>
-);
 
 // TODO Might be a hack but works well was not able to solve solution
 const { STAGING: staging = false } =
@@ -63,7 +28,7 @@ export default ({ user: { role = "user", name } = {}, ...props }) => {
           }
         `}
       </style>
-      <Nav className="nav">
+      <div className="nav">
         <li
           className="buttonLink"
           onClick={() =>
@@ -74,9 +39,22 @@ export default ({ user: { role = "user", name } = {}, ...props }) => {
         >
           Logout
         </li>
-        {role === "admin" ? <RenderAdmin /> : <RenderUser />}
+        <li>
+          <div
+            className="buttonLink"
+            onClick={() => Router.push({ pathname: "/projects" })}
+          >
+            Projects
+          </div>
+          <div
+            className="buttonLink"
+            onClick={() => Router.push({ pathname: "/users" })}
+          >
+            Users
+          </div>
+        </li>
         <div className="navName">{`Welcome ${name}`}</div>
-      </Nav>
+      </div>
     </div>
   );
 };

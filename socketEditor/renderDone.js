@@ -164,13 +164,8 @@ export default async ({ socket, action, adapter }) => {
   if (session) {
     console.log("Render done. Generating resources.", studyUID);
 
-    await new Promise((resolve, reject) => {
-      socket.emit("action", { type: "CAPTURE_CLOSE" }, () => {
-        resolve();
-      });
-    });
-
     const study = await getStudy({ studyUID });
+
     await templateFunction({
       ...study,
       ...action,
@@ -181,6 +176,9 @@ export default async ({ socket, action, adapter }) => {
     });
 
     console.log("All Done");
+
+    socket.emit("action", { type: "CAPTURE_CLOSE" });
+
     await delRenderQueue({
       studyUID,
       template: templateName,

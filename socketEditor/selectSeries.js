@@ -1,4 +1,21 @@
 import PromisePool from "es6-promise-pool";
+import compressjs from "compressjs";
+
+const compressData = data => {
+  const algorithm = compressjs.Lzp3;  
+  const { length } = data;
+  let unit_8_array = new Uint8Array(length*2);
+  for(let i = 0; i < length; i+=2) {
+    unit_8_array[i] = data[i] >> 8;
+    unit_8_array[i+1] = data[i] & 255;
+  }
+  console.log(typeof(data));
+  console.log("length:",data.length);
+  const compressedData = algorithm.compressFile(unit_8_array);
+  return compressedData;
+}
+
+
 
 export default async ({
   socket,
@@ -34,6 +51,8 @@ export default async ({
     socket.emit("action", { type: "VOLUME_LOADED" });
     return;
   }
+  
+  
 
   if (instanceUID) {
     const data = await getImageData({ instanceUID });
@@ -44,7 +63,7 @@ export default async ({
         {
           type: "VOLUME_SLICE_DATA",
           index: sliceLocation,
-          data
+          data: compressData(data)
         },
         err => (err ? reject() : resolve())
       );
@@ -79,7 +98,7 @@ export default async ({
         {
           type: "VOLUME_SLICE_DATA",
           index,
-          data
+          data: compressData(data)
         },
         err => (err ? reject() : resolve())
       );

@@ -5,12 +5,11 @@ const compressData = data => {
   const algorithm = compressjs.Lzp3;  
   const { length } = data;
   let unit_8_array = new Uint8Array(length*2);
-  for(let i = 0; i < length; i+=2) {
-    unit_8_array[i] = data[i] >> 8;
-    unit_8_array[i+1] = data[i] & 255;
+  for(let i = 0, j=0; i < length; i++, j=j+2) {    
+    unit_8_array[j+1] = data[i] & 255;
+    unit_8_array[j] = data[i] >> 8;
   }
-  console.log(typeof(data));
-  console.log("length:",data.length);
+  
   const compressedData = algorithm.compressFile(unit_8_array);
   return compressedData;
 }

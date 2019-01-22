@@ -147,6 +147,7 @@ export default ({
           Start
         </DropdownItem>
         <DropdownItem
+          style={{ background: "red" }}
           onClick={() =>
             setProjectsSettings({
               filter: { status: "Error" }
@@ -154,6 +155,26 @@ export default ({
           }
         >
           Error
+        </DropdownItem>
+        <DropdownItem
+          style={{ background: "red" }}
+          onClick={() =>
+            setProjectsSettings({
+              filter: { status: "Error - No Injury" }
+            })
+          }
+        >
+          Error - No Injury
+        </DropdownItem>
+        <DropdownItem
+          style={{ background: "red" }}
+          onClick={() =>
+            setProjectsSettings({
+              filter: { status: "Error - Alignment" }
+            })
+          }
+        >
+          Error - Alignment
         </DropdownItem>
         <DropdownItem
           onClick={() =>

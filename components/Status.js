@@ -39,6 +39,7 @@ export default ({
           Start
         </DropdownItem>
         <DropdownItem
+          style={{ background: "red" }}
           onClick={() =>
             setProjectProps({
               studyUID,
@@ -48,6 +49,31 @@ export default ({
         >
           Error
         </DropdownItem>
+
+        <DropdownItem
+          style={{ background: "red" }}
+          onClick={() =>
+            setProjectProps({
+              studyUID,
+              status: "Error - Alignment"
+            })
+          }
+        >
+          Error - Alignment
+        </DropdownItem>
+
+        <DropdownItem
+          style={{ background: "red" }}
+          onClick={() =>
+            setProjectProps({
+              studyUID,
+              status: "Error - No Injury"
+            })
+          }
+        >
+          Error - No Injury
+        </DropdownItem>
+
         <DropdownItem
           onClick={() =>
             setProjectProps({

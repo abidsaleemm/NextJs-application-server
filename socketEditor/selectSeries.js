@@ -66,7 +66,7 @@ export default async ({
     toggle: false
   });
 
-  const concurrency = 2;
+  const concurrency = 1;
 
   // Sort background loading from selected image.
   const [low = [], high = []] = partition(({ index }) => index < sliceLocation)(

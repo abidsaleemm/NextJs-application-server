@@ -50,7 +50,7 @@ export default async ({
           })
         )
       },
-      err => (err ? reject() : resolve())
+      () => resolve()
     );
   });
 
@@ -100,6 +100,7 @@ export default async ({
     }
 
     const { instanceUID, index } = imageListEnhanced.shift();
+
     return new Promise(async (resolve, reject) => {
       const data = await getImageData({ instanceUID });
       const dataCompressed = compressData(data);
@@ -111,7 +112,13 @@ export default async ({
           index,
           data: dataCompressed
         },
-        err => (err ? reject() : resolve())
+        ({ selectedSeries }) => {
+          if (selectedSeries !== seriesUID) {
+            reject({ message: "Series switched during load killing loading." });
+          }
+
+          resolve();
+        }
       );
     });
   }, concurrency);

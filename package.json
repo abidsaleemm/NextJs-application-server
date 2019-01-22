@@ -34,7 +34,7 @@
     "body-parser": "1.18.3",
     "bootstrap": "4.2.1",
     "classnames": "2.2.6",
-    "compressjs": "^1.0.3",
+    "compressjs": "1.0.3",
     "connect-azuretables": "1.0.19",
     "connect-flash": "0.1.1",
     "cookie-parser": "1.4.3",

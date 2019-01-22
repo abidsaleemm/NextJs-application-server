@@ -100,7 +100,7 @@ export default async ({ socket, action, adapter }) => {
           studyType
         }
       },
-      err => (err ? reject() : resolve())
+      () => resolve()
     );
   });
 

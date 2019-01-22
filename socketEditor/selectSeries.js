@@ -1,20 +1,20 @@
 import PromisePool from "es6-promise-pool";
 import compressjs from "compressjs";
+import { partition } from "ramda";
 
 const compressData = data => {
-  const algorithm = compressjs.Lzp3;  
+  const algorithm = compressjs.Lzp3;
   const { length } = data;
-  let unit_8_array = new Uint8Array(length*2);
-  for(let i = 0, j=0; i < length; i++, j=j+2) {    
-    unit_8_array[j+1] = data[i] & 255;
+  const unit_8_array = new Uint8Array(length * 2);
+
+  for (let i = 0, j = 0; i < length; i++, j = j + 2) {
+    unit_8_array[j + 1] = data[i] & 255;
     unit_8_array[j] = data[i] >> 8;
   }
-  
+
   const compressedData = algorithm.compressFile(unit_8_array);
   return compressedData;
-}
-
-
+};
 
 export default async ({
   socket,
@@ -29,20 +29,29 @@ export default async ({
     seriesUID
   });
 
-  // TODO If slice index then load first
-  await new Promise((resolve, reject) => {
+  // Send selected image first
+  const { [sliceLocation]: { instanceUID } = {} } = imageList;
+
+  await new Promise(async (resolve, reject) => {
     socket.emit(
       "action",
       {
         type: "VOLUME_SET",
-        volume: imageList
+        volume: await Promise.all(
+          imageList.map(async (v, i) => {
+            // pre-cache selected image
+            return sliceLocation === i
+              ? {
+                  ...v,
+                  pixelData: compressData(await getImageData({ instanceUID }))
+                }
+              : v;
+          })
+        )
       },
       err => (err ? reject() : resolve())
     );
   });
-
-  // Send selected image first
-  const { [sliceLocation]: { instanceUID } = {} } = imageList;
 
   if (!loadImages) {
     // Bailout
@@ -50,37 +59,38 @@ export default async ({
     socket.emit("action", { type: "VOLUME_LOADED" });
     return;
   }
-  
-  
-
-  if (instanceUID) {
-    const data = await getImageData({ instanceUID });
-
-    await new Promise((resolve, reject) => {
-      socket.emit(
-        "action",
-        {
-          type: "VOLUME_SLICE_DATA",
-          index: sliceLocation,
-          data: compressData(data)
-        },
-        err => (err ? reject() : resolve())
-      );
-    });
-  }
 
   socket.emit("action", {
     type: "SPINNER_TOGGLE",
     toggle: false
   });
 
-  const concurrency = 3;
-  const imageListEnhanced = imageList
-    .map((v, i) => ({
-      ...v,
-      index: i
-    }))
-    .filter(({ index }) => index !== sliceLocation);
+  const concurrency = 2;
+
+  // Sort background loading from selected image.
+  const [low = [], high = []] = partition(({ index }) => index < sliceLocation)(
+    imageList
+      .map((v, i) => ({
+        ...v,
+        index: i // Save orginal index
+      }))
+      .filter(({ index }) => index !== sliceLocation) // Don't reload pre-cached image
+  );
+
+  const { list: imageListEnhanced = [] } = imageList.reduce(
+    ({ list = [], low: [l, ...low] = [], high: [h, ...high] = [] }) => {
+      return {
+        list: [...list, ...(l ? [l] : []), ...(h ? [h] : [])],
+        low,
+        high
+      };
+    },
+    {
+      list: [],
+      low: low.sort(({ index: a }, { index: b }) => b - a),
+      high
+    }
+  );
 
   // TODO Sort images from sliceLocation outward
   const pool = new PromisePool(() => {
@@ -88,16 +98,17 @@ export default async ({
       return null;
     }
 
-    const { instanceUID, index } = imageListEnhanced.pop();
+    const { instanceUID, index } = imageListEnhanced.shift();
     return new Promise(async (resolve, reject) => {
       const data = await getImageData({ instanceUID });
+      const dataCompressed = compressData(data);
 
       socket.emit(
         "action",
         {
           type: "VOLUME_SLICE_DATA",
           index,
-          data: compressData(data)
+          data: dataCompressed
         },
         err => (err ? reject() : resolve())
       );

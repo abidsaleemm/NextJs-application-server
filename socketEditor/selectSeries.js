@@ -2,6 +2,7 @@ import PromisePool from "es6-promise-pool";
 import compressjs from "compressjs";
 import { partition } from "ramda";
 
+// TODO Should we just cache this in the DB? WG
 const compressData = data => {
   const algorithm = compressjs.Lzp3;
   const { length } = data;

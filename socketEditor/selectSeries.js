@@ -4,7 +4,8 @@ import { partition } from "ramda";
 
 // TODO Should we just cache this in the DB? WG
 const compressData = data => {
-  const algorithm = compressjs.Lzp3;
+  const algorithm = compressjs.BWTC;
+
   const { length } = data;
   const unit_8_array = new Uint8Array(length * 2);
 
@@ -67,7 +68,7 @@ export default async ({
     toggle: false
   });
 
-  const concurrency = 1;
+  const concurrency = 4;
 
   // Sort background loading from selected image.
   const [low = [], high = []] = partition(({ index }) => index < sliceLocation)(
@@ -93,6 +94,12 @@ export default async ({
       high
     }
   );
+  // TODO Testing compression of entire series.
+  const test = await Promise.all(
+    imageListEnhanced.map(async ({ instanceUID }) => {
+      return await getImageData({ instanceUID });
+    })
+  );
 
   // TODO Sort images from sliceLocation outward
   const pool = new PromisePool(() => {
@@ -103,8 +110,28 @@ export default async ({
     const { instanceUID, index } = imageListEnhanced.shift();
 
     return new Promise(async (resolve, reject) => {
-      const data = await getImageData({ instanceUID });
+      // TODO Images will already be precompression compressed? WG
+      const data = await getImageData({ instanceUID, compressed: true });
+
+      // TODO Benchmark client speed?
+      const compressStart = new Date();
+
+      // TODO Save as precompressed? WG
       const dataCompressed = compressData(data);
+      const compressEnd = new Date();
+
+      //   console.log(
+      //     `Blob Saved ${blobName} Duration ${(new Date() -
+      //       metricStartBlob) /
+      //       1000} sec`
+      //   );
+
+      console.log(
+        "Compression size",
+        data.length * 2,
+        dataCompressed.length,
+        (compressEnd - compressStart) / 1000
+      );
 
       socket.emit(
         "action",

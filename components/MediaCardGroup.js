@@ -5,7 +5,7 @@ const MediaCardGroup = props => {
         .MediaCardGroup {
           list-style: none;
           margin: 0;
-          overflow: auto;
+          overflow-y: auto;
           padding: 0;
         }
       `}</style>

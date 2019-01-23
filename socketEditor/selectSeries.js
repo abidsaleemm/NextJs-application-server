@@ -1,6 +1,6 @@
 import PromisePool from "es6-promise-pool";
 import compressjs from "compressjs";
-import { partition } from "ramda";
+import { partition, splitEvery } from "ramda";
 
 export default async ({
   socket,
@@ -52,7 +52,7 @@ export default async ({
     toggle: false
   });
 
-  const concurrency = 5;
+  const concurrency = 3;
 
   // Sort background loading from selected image.
   const [low = [], high = []] = partition(({ index }) => index < sliceLocation)(
@@ -64,7 +64,7 @@ export default async ({
       .filter(({ index }) => index !== sliceLocation) // Don't reload pre-cached image
   );
 
-  const { list: imageListEnhanced = [] } = imageList.reduce(
+  const { list: imageListSorted = [] } = imageList.reduce(
     ({ list = [], low: [l, ...low] = [], high: [h, ...high] = [] }) => {
       return {
         list: [...list, ...(l ? [l] : []), ...(h ? [h] : [])],
@@ -79,7 +79,7 @@ export default async ({
     }
   );
 
-  // TODO Partition into chunks. WG
+  const imageListEnhanced = splitEvery(4, imageListSorted);
 
   // TODO Sort images from sliceLocation outward
   const pool = new PromisePool(() => {
@@ -88,16 +88,22 @@ export default async ({
     }
 
     // TODO this should be ann array?
-    const { instanceUID, index } = imageListEnhanced.shift();
+    // const { instanceUID, index } = imageListEnhanced.shift();
+    const list = imageListEnhanced.shift();
 
     return new Promise(async (resolve, reject) => {
-      const data = await getImageData({ instanceUID, compressed: true });
+      const slices = (await Promise.all(
+        list.map(async ({ instanceUID, index }) => {
+          const data = await getImageData({ instanceUID, compressed: true });
+          return { index, data };
+        }, {})
+      )).reduce((a, { index, data }) => ({ ...a, [index]: data }), {});
 
       socket.emit(
         "action",
         {
           type: "VOLUME_SLICE_DATA",
-          slices: { [index]: data }
+          slices
         },
         ({ selectedSeries }) => {
           if (selectedSeries !== seriesUID) {

@@ -9,8 +9,16 @@ import middlewareSettings from "../middleware/middlewareSettings";
 import * as reducers from "../reducers";
 import route from "../middleware/route";
 
+const options = {
+  pingTimeout: 30000
+  //   pingInterval: 5000,
+  //   upgradeTimeout: 30000
+};
+
 const socketIoMiddleware = createSocketIoMiddleware(
-  "undefined" !== typeof window ? io() : io("http://localhost:3000"), // TODO This Still works but not clean
+  "undefined" !== typeof window
+    ? io(options)
+    : io("http://localhost:3000", options), // TODO This Still works but not clean
   "server/"
 );
 

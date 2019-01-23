@@ -38,6 +38,7 @@ export default async ({
       "action",
       {
         type: "VOLUME_SET",
+        seriesUID,
         volume: await Promise.all(
           imageList.map(async (v, i) => {
             // pre-cache selected image
@@ -129,7 +130,7 @@ export default async ({
   poolPromise.then(
     () => {
       console.log("All images loaded");
-      socket.emit("action", { type: "VOLUME_LOADED" });
+      socket.emit("action", { type: "VOLUME_LOADED", seriesUID });
     },
     ({ message }) => {
       console.log(`Error ${message}`);

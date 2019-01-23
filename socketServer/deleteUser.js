@@ -1,4 +1,4 @@
-export default async ({ action: { userId } }) => {
+export default async ({ action: { userId }, adapter}) => {
   const { users: { deleteUser = () => {} } = {} } = adapter;
 
   deleteUser(userId);

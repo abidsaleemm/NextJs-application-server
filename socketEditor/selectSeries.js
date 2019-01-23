@@ -52,7 +52,7 @@ export default async ({
     toggle: false
   });
 
-  const concurrency = 3;
+  const concurrency = 2;
 
   // Sort background loading from selected image.
   const [low = [], high = []] = partition(({ index }) => index < sliceLocation)(
@@ -79,7 +79,7 @@ export default async ({
     }
   );
 
-  const imageListEnhanced = splitEvery(4, imageListSorted);
+  const imageListEnhanced = splitEvery(2, imageListSorted);
 
   // TODO Sort images from sliceLocation outward
   const pool = new PromisePool(() => {

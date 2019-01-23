@@ -31,7 +31,6 @@ export class CreateUserModal extends Component {
       nameValid: "",
       emailValid: "",
       passwordValid: "",
-      teamValid: "",
       isExpanded: false
     };
   }
@@ -40,15 +39,10 @@ export class CreateUserModal extends Component {
     const { teamsWithStatus } = this.state;
     teamsWithStatus[index].isSelected = !teamsWithStatus[index].isSelected;
 
-    let tempTeamValid;
-    teamsWithStatus.filter(team => team.isSelected === true).length < 1
-      ? (tempTeamValid = "You need to select at least one team")
-      : (tempTeamValid = "");
 
     this.setState({
       ...this.state,
-      teamsWithStatus,
-      teamValid: tempTeamValid
+      teamsWithStatus
     });
   };
 
@@ -114,13 +108,7 @@ export class CreateUserModal extends Component {
         isTeamAdmin
       }));
 
-    let tempTeamValid;
-    teamsWithStatus.filter(team => team.isSelected === true).length < 1
-      ? (tempTeamValid = "You need to select at least one team")
-      : (tempTeamValid = "");
-    this.setState({ teamValid: tempTeamValid });
-
-    if (!!name && !!username && !!password && !tempTeamValid) {
+    if (!!name && !!username && !!password) {
       onSubmit({
         name,
         username,
@@ -190,9 +178,6 @@ export class CreateUserModal extends Component {
                   onChange={this.onFieldChange("confirmPassword")}
                   value={this.state.confirmPassword}
                 />
-                <Alert color="danger" isOpen={!!this.state.teamValid}>
-                  {this.state.teamValid}
-                </Alert>
               </FormGroup>
             )}
             {this.state.isExpanded && (
@@ -250,7 +235,7 @@ export class CreateUserModal extends Component {
             color="primary"
             onClick={this.onSubmit}
             disabled={
-              !!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid || !!this.state.teamValid
+              !!this.state.nameValid || !!this.state.emailValid || !!this.state.passwordValid
             }
           >
             Create User

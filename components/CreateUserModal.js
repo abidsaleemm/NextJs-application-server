@@ -66,10 +66,10 @@ export class CreateUserModal extends Component {
 
   onFieldChange = fieldName => e => {
     const name = e.target.name;
-    const value = e.target.value;
+    const value = name == "email" ? e.target.value.toLowerCase() : e.target.value;
     this.formValidate(name, value);
     this.setState({
-      [fieldName]: e.target.value
+      [fieldName]: value
     });
     if (name == "email") {
       if (this.props.userList.data.filter(user => user.username === value).length > 0)

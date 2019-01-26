@@ -30,7 +30,10 @@ export default async ({
             return sliceLocation === i
               ? {
                   ...v,
-                  pixelData: await getImageData({ instanceUID })
+                  pixelData: await getImageData({
+                    instanceUID,
+                    compressed: true
+                  })
                 }
               : v;
           })

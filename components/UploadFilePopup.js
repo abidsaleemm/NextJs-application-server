@@ -10,18 +10,39 @@ import {
 export default ({ fileList = [], studyUID = "", onFileDelete = () => {} }) => {
   return (
     <UncontrolledDropdown direction="left">
-      <DropdownToggle caret style={{ height: "100%", background: "green" }}>
+      <style jsx>
+        {`
+          .buttonContents {
+            min-width: 400px;
+            max-width: 800px;
+          }
+
+          .fileLink {
+            white-space: nowrap;
+          }
+        `}
+      </style>
+
+      <DropdownToggle
+        caret
+        style={{
+          height: "100%",
+          background: "green",
+          borderTopRightRadius: "0",
+          borderBottomRightRadius: "0"
+        }}
+      >
         {fileList.length}
       </DropdownToggle>
       <DropdownMenu>
-        <div style={{ minWidth: "400px", maxWidth: "800px" }}>
+        <div className="buttonContents">
           <Table hover>
             <tbody>
               {fileList.map((name, i) => (
                 <tr key={`file-upload-${studyUID}-${i}`}>
                   <td className="tableCell">
                     <a
-                      style={{ whiteSpace: "nowrap" }}
+                      className="fileLink"
                       href={`/uploadGet/?id=${studyUID}&name=${name}`}
                       target="_UploadPreview"
                     >

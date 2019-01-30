@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Tooltip } from "reactstrap";
 
 export default class extends Component {
   constructor(props) {
@@ -30,10 +29,8 @@ export default class extends Component {
       state: { confirmed = false, mouseOver = false }
     } = this;
 
-    const toolTipID = "tooltip-file-upload";
-
     return (
-      <div id={toolTipID}>
+      <div>
         <style jsx>
           {`
             .checkButton {
@@ -53,13 +50,6 @@ export default class extends Component {
             }
           `}
         </style>
-        <Tooltip
-          placement="top"
-          isOpen={confirmed}
-          target={toolTipID}
-        >
-          Click Again to Confirm
-        </Tooltip>
         <svg
           className="checkButton"
           fill="#000000"
@@ -81,8 +71,8 @@ export default class extends Component {
               confirmed
                 ? "checkBoxConfirmed"
                 : mouseOver
-                  ? "checkBoxHover"
-                  : "checkBox"
+                ? "checkBoxHover"
+                : "checkBox"
             }
             d="M0 0h24v24H0z"
             stroke="black"

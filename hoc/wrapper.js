@@ -6,11 +6,6 @@ import Nav from "../components/Nav";
 import Styles from "../components/Styles";
 import Loader from "../containers/Loader"; // TODO Requires a store. Should probably have a check for this.
 
-// TODO Getting ENV vars from server to stay on client requires a hack.  Might be better way in future.
-// Embed in DOM
-const { STAGING } =
-  ("undefined" !== typeof window ? window.env : process.env) || false;
-
 const Wrapper = (
   WrappedComponent,
   { nav = true, loader = true } = {}
@@ -39,13 +34,6 @@ const Wrapper = (
     {nav ? <Nav {...props} /> : null}
     <Loader />
     <WrappedComponent {...props} />
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `env = {}; ${
-          STAGING ? "env.STAGING = true;" : "env.STAGING = false;"
-        } `
-      }}
-    />
   </div>
 );
 
@@ -68,7 +56,7 @@ const WrapperEnhanced = (WrappedComponent, ...params) =>
 
       return {
         ...(await WrappedComponent.getInitialProps(props)),
-        staging: STAGING
+        staging: process.env.STAGING
       };
     };
 

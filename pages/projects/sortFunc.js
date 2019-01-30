@@ -17,13 +17,15 @@ const statusIndex = {
   None: 0,
   Start: 1,
   Error: 2,
-  Segmentation: 3,
-  QC: 4,
-  Review: 5,
-  Done: 6,
-  Rendered: 7,
-  Delivered: 8,
-  Archived: 9
+  "Error - Alignment": 3,
+  "Error - No Injury": 4,
+  Segmentation: 6,
+  QC: 7,
+  Review: 8,
+  Done: 9,
+  Rendered: 10,
+  Delivered: 11,
+  Archived: 12
 };
 
 export default () => ({

@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../actions";
 import Wrapper from "../../hoc/wrapper";
 import TableList from "../../components/TableList";
-import UploadFilePopup from "../../components/UploadFilePopup";
 import DefaultProjectModal from "../../components/DefaultProjectModal";
 import RichTextEditorModal from "../../components/RichTextEditorModal";
 
@@ -56,8 +55,8 @@ class ProjectsListing extends Component {
 
     // TODO Move to redux?
     this.state = {
-      popupTarget: null,
-      popupStudyUID: "",
+      //   popupTarget: null,
+      //   popupStudyUID: "",
 
       modalCreateProjects: false,
       selectedStudyUID: null,
@@ -66,19 +65,19 @@ class ProjectsListing extends Component {
   }
 
   // TODO Move to redux action?
-  popupOpen = ({ target, studyUID }) => {
-    this.setState({
-      popupTarget: target,
-      popupStudyUID: studyUID
-    });
-  };
+  //   popupOpen = ({ target, studyUID }) => {
+  //     this.setState({
+  //       popupTarget: target,
+  //       popupStudyUID: studyUID
+  //     });
+  //   };
 
-  // TODO Move to redux action?
-  popupToggle() {
-    this.setState({
-      popupTarget: null
-    });
-  }
+  //   // TODO Move to redux action?
+  //   popupToggle() {
+  //     this.setState({
+  //       popupTarget: null
+  //     });
+  //   }
 
   render() {
     const {
@@ -97,8 +96,6 @@ class ProjectsListing extends Component {
         richText = () => {}
       } = {},
       state: {
-        popupTarget,
-        popupStudyUID,
         modalRichText = false,
         modalCreateProjects = false,
         selectedStudyType = null,
@@ -110,8 +107,7 @@ class ProjectsListing extends Component {
     const projectsEnhanced = fieldEnhancer({
       ...props,
       onCreate: ({ studyUID, studyType }) => {
-        // TODO Don't like this.  Could cause side effects. WG
-
+        // TODO Don't like this.  Could cause side effects? WG
         this.setState({
           modalCreateProjects: true,
           selectedStudyUID: studyUID,
@@ -125,15 +121,10 @@ class ProjectsListing extends Component {
           notes
         });
       },
-      popupOpen: this.popupOpen
+      onFileDelete: props => {
+        uploadDel(props);
+      }
     });
-
-    // Query the study from tableData
-    const study = projects.find(
-      ({ studyUID = "" }) => studyUID === popupStudyUID
-    );
-
-    const { uploadedFiles = [] } = study || {};
 
     return (
       <div className="projects">
@@ -205,19 +196,6 @@ class ProjectsListing extends Component {
               studyUID: selectedStudyUID,
               defaultStudyUID
             });
-          }}
-        />
-        <UploadFilePopup
-          popupTarget={popupTarget}
-          fileList={uploadedFiles}
-          toggle={() => this.popupToggle()}
-          studyUID={popupStudyUID}
-          onDelete={props => {
-            uploadDel(props);
-
-            if (uploadedFiles.length <= 1) {
-              this.setState({ popupTarget: null });
-            }
           }}
         />
       </div>

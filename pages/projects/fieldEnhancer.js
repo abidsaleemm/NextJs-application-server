@@ -14,6 +14,7 @@ import Status from "../../components/Status";
 import DropDownRenderOptions from "../../components/DropDownRenderOptions";
 import checkPlainTextNull from "../../helpers/checkPlainTextNull";
 import ProjectType from "../../components/ProjectType";
+import UploadFilePopup from "../../components/UploadFilePopup";
 
 const renderTemplateMap = {
   spine: "Video",
@@ -49,10 +50,10 @@ export default props => {
     renders = [],
     handleUpload = () => {},
     setProjectProps = () => {},
-    popupOpen = () => {},
     onCreate = () => {},
     setNotesEditor = () => {},
-    delRender = () => {}
+    delRender = () => {},
+    onFileDelete = () => {}
   } = props;
 
   return projects.map(
@@ -258,18 +259,24 @@ export default props => {
         upload: (
           <ButtonGroup>
             {uploadedFiles.length > 0 ? (
-              <Button
-                id={`file-popover-${i}`}
-                color="success"
-                onClick={() =>
-                  popupOpen({
-                    studyUID,
-                    target: `file-popover-${i}`
-                  })
-                }
-              >
-                {uploadedFiles.length}
-              </Button>
+              //   <Button
+              //     id={`file-popover${studyUID.replace(/\./g, "-")}`}
+              //     color="success"
+              //     onClick={() =>
+              //       popupOpen({
+              //         studyUID,
+              //         target: `file-popover${studyUID.replace(/\./g, "-")}`
+              //       })
+              //     }
+              //   >
+              //     {uploadedFiles.length}
+              //   </Button>
+
+              <UploadFilePopup
+                fileList={uploadedFiles}
+                studyUID={studyUID}
+                onFileDelete={onFileDelete}
+              />
             ) : null}
             <UploadButton
               studyUID={studyUID}

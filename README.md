@@ -74,17 +74,19 @@ _Note: These do not apply if you are locally testing. This is required for Azure
 Below is an example env file.
 
 ```bash
-# Required
+# Required for Azure testing
 STORAGE_ACCOUNT=multus
-STORAGE_ACCOUNT_KEY=$KEY
+STORAGE_ACCOUNT_KEY=$STORAGE_KEY
+AZURE_SECRET=azure_secret_session            # This is the express session secret for azure env.
+
+# Required for local testing
+DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.
+PROJECT_TABLE=          # default 'projects'
+LOCAL_SECRET=local_secret_session            # This is the express session secret for local env.
 
 # Optional
-CONTAINER_NAME=dicom   # default 'dicom'
-PROJECT_TABLE=projects  # default 'projects'
-DICOM_PATH=             # Path to DICOM store in local directory.  Only used to local testing.
+CONTAINER_NAME=dicom    # default 'dicom'
 RENDER=true             # This allows server to bypass security check on socket.io connection.
-AZURE_SECRET=azure_secret_session            # This is the express session secret for azure env.
-LOCAL_SECRET=local_secret_session            # This is the express session secret for local env.
 ```
 
 ## Project storage

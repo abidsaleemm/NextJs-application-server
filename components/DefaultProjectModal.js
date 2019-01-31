@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-
+import checkPlainTextNull from "../helpers/checkPlainTextNull";
 import TableList from "./TableList";
 
 const header = () => ({
@@ -50,13 +50,15 @@ export default ({
   base,
   isOpen,
   projects = [],
+  notes = "",
   sortKey = "",
   sortDesc = false,
   studyType,
   onSort = () => {},
   onDefault = () => {},
   onToggle = () => {},
-  onRowClick = () => {}
+  onRowClick = () => {},
+  setNotesEditor = () => {}
 }) => {
   const projectsEnhanced = projects.map(
     ({ patientBirthDate = new Date(), patientName, defaultName, ...v }) => {
@@ -79,11 +81,24 @@ export default ({
             .modal-dialog {
               max-width: 80%;
             }
+            .defaultProjectNotes {
+              margin-left: 100px;
+            }
           }
         `}
       </style>
       <ModalHeader toggle={onToggle}>Create Project</ModalHeader>
       <ModalBody>
+        <Button
+          className="defaultProjectNotes"
+          color={checkPlainTextNull(notes) ? "primary" : "secondary"}
+          onClick={() => {
+            setNotesEditor();
+          }}
+          style={{ float: "right" }}
+        >
+          Notes
+        </Button>
         <TableList
           data={projectsEnhanced}
           header={header()}

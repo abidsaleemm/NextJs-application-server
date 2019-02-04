@@ -39,7 +39,7 @@ export default ({
           Start
         </DropdownItem>
         <DropdownItem
-          style={{ background: "red" , color: "white"}}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectProps({
               studyUID,
@@ -51,7 +51,7 @@ export default ({
         </DropdownItem>
 
         <DropdownItem
-          style={{ background: "red", color: "white" }}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectProps({
               studyUID,
@@ -63,7 +63,7 @@ export default ({
         </DropdownItem>
 
         <DropdownItem
-          style={{ background: "red", color: "white" }}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectProps({
               studyUID,

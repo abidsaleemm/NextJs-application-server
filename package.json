@@ -82,6 +82,7 @@
     "socket.io-client": "2.2.0",
     "styled-jsx": "3.1.2",
     "stylis-rule-sheet": "0.0.10",
+    "terser": "3.14.1",
     "three": "0.100.0",
     "underscore": "1.9.1",
     "uuid": "3.3.2",

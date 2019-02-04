@@ -7,7 +7,8 @@ const header = () => ({
   name: "Name",
   patientAge: "Age",
   patientSex: "Gender",
-  studyType: "Study Type"
+  studyType: "Study Type",
+  notesRender: "Notes"
 });
 
 const filterFunc = ({ studyType: studyTypeFilter }) => ({
@@ -50,20 +51,39 @@ export default ({
   base,
   isOpen,
   projects = [],
-  notes = "",
+  //   notes = "",
   sortKey = "",
   sortDesc = false,
   studyType,
   onSort = () => {},
   onDefault = () => {},
   onToggle = () => {},
-  onRowClick = () => {},
-  setNotesEditor = () => {}
+  onRowClick = () => {}
+  //   setNotesEditor = () => {}
 }) => {
   const projectsEnhanced = projects.map(
-    ({ patientBirthDate = new Date(), patientName, defaultName, ...v }) => {
+    ({
+      patientBirthDate = new Date(),
+      patientName,
+      notes = "",
+      defaultName,
+      ...v
+    }) => {
+      console.log("notes", notes);
       return {
         ...v,
+        notes,
+        notesRender: (
+          <Button
+            color={checkPlainTextNull(notes) ? "primary" : "secondary"}
+            onClick={() => {
+              //   setNotesEditor();
+            }}
+            disabled
+          >
+            Notes
+          </Button>
+        ),
         patientName,
         defaultName,
         patientAge:
@@ -89,7 +109,7 @@ export default ({
       </style>
       <ModalHeader toggle={onToggle}>Create Project</ModalHeader>
       <ModalBody>
-        <Button
+        {/* <Button
           className="defaultProjectNotes"
           color={checkPlainTextNull(notes) ? "primary" : "secondary"}
           onClick={() => {
@@ -98,7 +118,7 @@ export default ({
           style={{ float: "right" }}
         >
           Notes
-        </Button>
+        </Button> */}
         <TableList
           data={projectsEnhanced}
           header={header()}

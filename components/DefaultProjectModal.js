@@ -69,7 +69,6 @@ export default ({
       defaultName,
       ...v
     }) => {
-      console.log("notes", notes);
       return {
         ...v,
         notes,

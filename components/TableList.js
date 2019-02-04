@@ -1,13 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
-import {
-  sort,
-  compose,
-  reverse,
-  filter,
-  reduce,
-  toPairs
-} from "ramda";
+import { sort, compose, reverse, filter, reduce, toPairs } from "ramda";
 
 export default props => {
   const {
@@ -22,8 +15,7 @@ export default props => {
     onSort = () => {}
   } = props;
 
-  const filterByKey = (key, func = () => true) =>
-    filter(v => func(v));
+  const filterByKey = (key, func = () => true) => filter(v => func(v));
 
   const { [sortKey]: selectSortFunc = (a, b) => a - b } = sortFunc;
 
@@ -146,9 +138,7 @@ export default props => {
                     {title}
                     {id === sortKey && sort ? (
                       <div
-                        className={`arrow ${
-                          sortDesc ? "arrow--up" : null
-                        }`}
+                        className={`arrow ${sortDesc ? "arrow--up" : null}`}
                       />
                     ) : null}
                   </div>
@@ -161,10 +151,7 @@ export default props => {
               const { [key]: render = null } = filterRender;
 
               return (
-                <td
-                  className="fieldFilter"
-                  key={`tableList-${key}-filter`}
-                >
+                <td className="fieldFilter" key={`tableList-${key}-filter`}>
                   {render}
                 </td>
               );
@@ -173,7 +160,7 @@ export default props => {
         </thead>
         <tbody>
           {dataEnhanced.map(
-            ({ tableBackground, ...dataProps }, i) => (
+            ({ tableBackground, tableColor, ...dataProps }, i) => (
               <tr
                 key={`tableList-tableRow-${i}`}
                 onClick={() => {
@@ -182,9 +169,7 @@ export default props => {
                   }
                 }}
                 style={{
-                  ...(onRowClick !== undefined
-                    ? { cursor: "pointer" }
-                    : {})
+                  ...(onRowClick !== undefined ? { cursor: "pointer" } : {})
                 }}
               >
                 {Object.entries(header)
@@ -201,7 +186,8 @@ export default props => {
                         style={{
                           ...(tableBackground
                             ? { background: tableBackground }
-                            : {})
+                            : {}),
+                          ...(tableColor ? { color: tableColor } : {})
                         }}
                       >
                         {data !== undefined ? data : null}

@@ -22,7 +22,7 @@ const renderTemplateMap = {
   spineComparison: "Comparison"
 };
 
-const tableRowColor = status => {
+const tableRowBackgroundColor = status => {
   const options = {
     Start: "rgba(255, 0, 0, 0.1)",
     Segmentation: "rgba(255, 255, 0, 0.1)",
@@ -39,6 +39,16 @@ const tableRowColor = status => {
   };
 
   return options[status] || "rgba(0, 0, 0, 0.0)";
+};
+
+const tableRowColor = status => {
+  const options = {
+    Error: "white",
+    "Error - No Injury": "white",
+    "Error - Alignment": "white"
+  };
+
+  return options[status] || "black";
 };
 
 export default props => {
@@ -118,7 +128,8 @@ export default props => {
         patientName: `${patientName} (${patientID})`,
         status,
         statusRender: <Status {...{ ...props, status, studyUID, role }} />,
-        tableBackground: tableRowColor(status),
+        tableBackground: tableRowBackgroundColor(status),
+        tableColor: tableRowColor(status),
         notes: (
           <Button
             color={checkPlainTextNull(notes) ? "primary" : "secondary"}

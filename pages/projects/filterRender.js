@@ -147,7 +147,7 @@ export default ({
           Start
         </DropdownItem>
         <DropdownItem
-          style={{ background: "red" }}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectsSettings({
               filter: { status: "Error" }
@@ -157,7 +157,7 @@ export default ({
           Error
         </DropdownItem>
         <DropdownItem
-          style={{ background: "red" }}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectsSettings({
               filter: { status: "Error - No Injury" }
@@ -167,7 +167,7 @@ export default ({
           Error - No Injury
         </DropdownItem>
         <DropdownItem
-          style={{ background: "red" }}
+          style={{ background: "rgba(255, 0, 0, 0.65)", color: "white" }}
           onClick={() =>
             setProjectsSettings({
               filter: { status: "Error - Alignment" }

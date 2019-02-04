@@ -93,6 +93,7 @@ class ProjectsListing extends Component {
         setProjectsSettings = () => {},
         uploadDel = () => {},
         createProject = () => {},
+        setNotesEditor = () => {},
         richText = () => {}
       } = {},
       state: {
@@ -104,6 +105,13 @@ class ProjectsListing extends Component {
       }
     } = this;
 
+    const selectedProject =
+      projects.find(({ studyUID }) => selectedStudyUID === studyUID) || {};
+    const {
+      patientID = "",
+      patientName = "",
+      notes: selectedNotes = ""
+    } = selectedProject;
     const projectsEnhanced = fieldEnhancer({
       ...props,
       onCreate: ({ studyUID, studyType }) => {
@@ -171,8 +179,12 @@ class ProjectsListing extends Component {
 
         <DefaultProjectModal
           studyType={selectedStudyType}
+          studyUID={selectedStudyUID}
+          patientID={patientID}
+          patientName={patientName}
           sortKey={projectsListSortKey}
           sortDesc={projectsListSortDesc}
+          notes={selectedNotes}
           onSort={k => setProjectsSettings({ projectsListSortKey: k })}
           projects={projectsListDefault}
           onToggle={() => {
@@ -191,6 +203,14 @@ class ProjectsListing extends Component {
             });
           }}
           isOpen={modalCreateProjects}
+          setNotesEditor={() => {
+            setNotesEditor({
+              studyUID: selectedStudyUID,
+              notes: selectedNotes,
+              isOpen: true,
+              header: `${patientName} (${patientID})`
+            });
+          }}
           onRowClick={({ studyUID: defaultStudyUID }) => {
             createProject({
               studyUID: selectedStudyUID,

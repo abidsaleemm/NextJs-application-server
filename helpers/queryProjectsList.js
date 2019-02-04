@@ -1,7 +1,7 @@
 import { where } from "ramda";
 import filterProjectsByUser from "./filterProjectsByUser";
 
-// TODO Add filter fuctions here for now. WG
+// TODO Add filter fuctions here for now. Can probably clean this up. WG
 const statusCheck = ({ statusFilter = "", status = "", adapter }) =>
   [
     (statusFilter === "" || statusFilter === "None") &&
@@ -12,6 +12,8 @@ const statusCheck = ({ statusFilter = "", status = "", adapter }) =>
       status !== "Archived",
     statusFilter === "Start" && status === "Start",
     statusFilter === "Error" && status === "Error",
+    statusFilter === "Error - Alignment" && status === "Error - Alignment",
+    statusFilter === "Error - No Injury" && status === "Error - No Injury",
     statusFilter === "Segmentation" && status === "Segmentation",
     statusFilter === "QC" && status === "QC",
     statusFilter === "Review" && status === "Review",

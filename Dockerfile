@@ -17,4 +17,4 @@ COPY . /usr/src/
 EXPOSE 3000
 EXPOSE 3001
 
-CMD pm2-docker --public gz4rkzmirzdlp2r --secret 9761q3vfr9xyfih process.json --machine-name $MACHINENAME
+CMD pm2-docker process.json

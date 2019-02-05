@@ -1,6 +1,7 @@
 import createProject from "../helpers/createProject";
 import { fetchAction } from "../actions";
 import selectStudy from "../socketEditor/selectStudy";
+let debug = require('debug')('debug');
 
 export default async ({ socket, io, action: { studyUID } = {}, adapter }) => {
   const {
@@ -31,7 +32,7 @@ export default async ({ socket, io, action: { studyUID } = {}, adapter }) => {
     ? projectSnapShot
     : createProject({ studyUID });
 
-  console.log("Resetting project to default", studyUID);
+  debug("Resetting project to default", studyUID);
 
   await setProjectSnapshot({
     studyUID,

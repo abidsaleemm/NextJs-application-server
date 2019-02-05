@@ -2,6 +2,7 @@ import dataUriToBuffer from "data-uri-to-buffer";
 import { Readable } from "stream";
 import pageProjects from "./pageProjects";
 import { fetchAction } from "../actions";
+let debug = require('debug')('debug');
 
 export default async ({
   socket,
@@ -23,7 +24,7 @@ export default async ({
 
   await uploadPut({ path, stream });
 
-  console.log("Upload done", name);
+  debug("Upload done", name);
 
   socket.emit("action", fetchAction(false)); // TODO Do we stll use this?
   pageProjects({ socket, user, adapter });

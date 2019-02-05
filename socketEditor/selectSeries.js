@@ -1,6 +1,7 @@
 import PromisePool from "es6-promise-pool";
 import compressjs from "compressjs";
 import { partition, splitEvery } from "ramda";
+let debug = require('debug')('debug');
 
 export default async ({
   socket,
@@ -124,11 +125,11 @@ export default async ({
   // Wait for the pool to settle.
   poolPromise.then(
     () => {
-      console.log("All images loaded");
+      debug("All images loaded");
       socket.emit("action", { type: "VOLUME_LOADED", seriesUID });
     },
     ({ message }) => {
-      console.log(`Error ${message}`);
+      debug(`Error ${message}`);
     }
   );
 };

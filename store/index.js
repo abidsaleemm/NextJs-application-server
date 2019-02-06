@@ -10,9 +10,12 @@ import * as reducers from "../reducers";
 import route from "../middleware/route";
 
 const options = {
-  pingTimeout: 30000
-  //   pingInterval: 5000,
-  //   upgradeTimeout: 30000
+  pingTimeout: 60000,
+  // pingInterval: 	25000,
+  upgradeTimeout: 30000,
+  transports: ["websocket"],
+  updgrade: false,
+  rememberUpgrade: true
 };
 
 const socketIoMiddleware = createSocketIoMiddleware(

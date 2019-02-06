@@ -14,7 +14,7 @@ const options = {
   // pingInterval: 	25000,
   upgradeTimeout: 30000,
   transports: ["websocket"],
-  updgrade: false,
+  allowUpgrades: false,
   rememberUpgrade: true
 };
 

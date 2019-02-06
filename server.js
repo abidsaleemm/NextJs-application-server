@@ -12,6 +12,7 @@ import routes from "./routes";
 import socketManager from "./socketManager";
 import authMiddleware from "./auth/middleware";
 import storageAdapter from "adapters";
+let debug = require('debug')('debug');
 
 export default async () => {
   let adapter = await storageAdapter({
@@ -38,7 +39,7 @@ export default async () => {
 
   // TODO Use a better adapter style?
   const sessionStoreLocal = () => {
-    console.log("Using session-file-store");
+    debug("Using session-file-store");
 
     const FileStore = require("session-file-store")(expressSession);
     return new FileStore({ path: "./sessiondb" });
@@ -46,10 +47,8 @@ export default async () => {
 
   // TODO Use a better adapter style?
   const sessionStoreAzure = () => {
-    console.log("Using azure-session");
+    debug("Using azure-session");
     return require("connect-azuretables")(expressSession).create({
-      logger: console.log,
-      errorLogger: console.log,
       sessionTimeOut: 86400000,
       overrideCron: "0 0 */1 * * *",
       storageAccount: process.env.STORAGE_ACCOUNT,
@@ -143,7 +142,7 @@ export default async () => {
           res.end();
         })
         .listen(3001, () => {
-          console.log(`Redirect HTTP server running`);
+          debug(`Redirect HTTP server running`);
         });
 
       // If not dev we assume we are on Azure
@@ -155,7 +154,7 @@ export default async () => {
       const serverHttp = https
         .createServer(options, server)
         .listen(port, () => {
-          console.log(`SSL listening on *:${port}`);
+          debug(`SSL listening on *:${port}`);
           const io = socketManager({
             server: serverHttp,
             passport,
@@ -166,7 +165,7 @@ export default async () => {
     } else {
       // Used for local development
       const serverHttp = server.listen(port, () => {
-        console.log(`Listening on *:${port}`);
+        debug(`Listening on *:${port}`);
         const io = socketManager({
           server: serverHttp,
           passport,

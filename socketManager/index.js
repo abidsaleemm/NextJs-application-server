@@ -6,6 +6,7 @@ import * as editor from "../socketEditor";
 
 import { rendersWatcher, projectsWatcher } from "./watchers";
 import { setSessions } from "../actions";
+let debug = require('debug')('debug');
 
 const actionHandlers = {
   ...server,
@@ -35,7 +36,7 @@ export default ({ server, passport, sessionMiddleWare = () => {}, adapter }) => 
 
   // Handle socket connections
   io.on("connection", socket => {
-    console.log("Connection " + socket.id);
+    debug("Connection " + socket.id);
 
     const {
       request: { session: { passport: { user } = {} } = {} } = {}
@@ -44,7 +45,7 @@ export default ({ server, passport, sessionMiddleWare = () => {}, adapter }) => 
     // This validates user session
     // TODO Might be a more clean way to handle this.  Can use middleware? WG
     if (user === undefined && !process.env.RENDER) {
-      console.log("Connection blocked. No matching passport session.");
+      debug("Connection blocked. No matching passport session.");
       return;
     }
 
@@ -77,7 +78,7 @@ export default ({ server, passport, sessionMiddleWare = () => {}, adapter }) => 
             const { socketId, userName } = session;
 
             if (socketId !== socket.id) {
-              console.log("Session Already in use", socket.id);
+              debug("Session Already in use", socket.id);
 
               socket.emit("action", {
                 type: "ERROR",
@@ -106,7 +107,7 @@ export default ({ server, passport, sessionMiddleWare = () => {}, adapter }) => 
     });
 
     socket.on("disconnect", error => {
-      console.log("Disconnect " + socket.id, error);
+      debug("Disconnect " + socket.id, error);
 
       sessions = Object.entries(sessions).reduce(
         (a, [k, v = {}]) => (v.socketId === socket.id ? a : { ...a, [k]: v }),

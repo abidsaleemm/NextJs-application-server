@@ -1,5 +1,6 @@
 import createProject from "../helpers/createProject";
 import { route, fetchAction } from "../actions";
+let debug = require('debug')('debug');
 const defaultStatus = "Segmentation";
 
 export default async ({
@@ -20,7 +21,7 @@ export default async ({
   }
 
   // TODO check if the project already exists if so just load
-  console.log("Creating new project", studyUID, defaultStudyUID);
+  debug("Creating new project", studyUID, defaultStudyUID);
 
   await socket.emit("action", fetchAction(true));
 

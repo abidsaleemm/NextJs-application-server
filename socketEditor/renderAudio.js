@@ -3,6 +3,7 @@ import xmlbuilder from "xmlbuilder";
 import wav from "wav";
 import { Readable } from "stream";
 import saveAudio from "../video/saveAudio";
+let debug = require('debug')('debug');
 
 // TODO Handle this as ENV var? WG
 const apiKey = "dbe1e8e3c5384d5b9015f951b0e40b8b";
@@ -39,7 +40,7 @@ const azureAudio = ({ text }) =>
       (err, resp = {}, accessToken) => {
         if (err || resp.statusCode != 200) {
           // TODO handle using reject?
-          console.log(err, resp.body);
+          debug(err, resp.body);
           reject(err);
           return;
         } else {
@@ -60,7 +61,7 @@ const azureAudio = ({ text }) =>
               },
               (err, resp, speakData) => {
                 if (err || resp.statusCode != 200) {
-                  console.log(err, resp.body);
+                  debug(err, resp.body);
                   reject(err);
                   return;
                 } else {
@@ -78,7 +79,7 @@ const azureAudio = ({ text }) =>
                     s.push(null);
                     s.pipe(reader);
                   } catch (e) {
-                    console.log(e.message);
+                    debug(e.message);
                     reject(e);
                     return;
                   }
@@ -86,7 +87,7 @@ const azureAudio = ({ text }) =>
               }
             );
           } catch (e) {
-            console.log(e.message);
+            debug(e.message);
             reject(e);
             return;
           }
@@ -99,7 +100,7 @@ export default async ({ socket, action }) => {
   const { session, text = "", index = 0 } = action;
 
   if (session) {
-    console.log("Audio at frame", index);
+    debug("Audio at frame", index);
 
     const { data, format } = await azureAudio({ text });
     await saveAudio({

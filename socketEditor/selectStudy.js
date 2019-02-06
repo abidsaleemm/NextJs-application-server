@@ -1,5 +1,6 @@
 import { Vector3 } from "three";
 import selectSeries from "./selectSeries";
+let debug = require('debug')('debug');
 
 export default async ({ socket, action, adapter }) => {
   const {
@@ -12,7 +13,7 @@ export default async ({ socket, action, adapter }) => {
   } = adapter;
   const { studyUID, loadImages } = action;
 
-  console.log("studyUID", studyUID); // TODO Used for debugging / logging
+  debug("studyUID", studyUID); // TODO Used for debugging / logging
 
   if (!studyUID) {
     return; // TODO Handle bailout better? Error handle?
@@ -29,7 +30,7 @@ export default async ({ socket, action, adapter }) => {
   ]);
 
   if (project === undefined) {
-    console.log("Socket API Project not found");
+    debug("Socket API Project not found");
     return; // TODO Handle bailout better? Error handle?
   }
 

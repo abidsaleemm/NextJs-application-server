@@ -1,4 +1,5 @@
 import { route } from "../actions";
+let debug = require('debug')('debug');
 
 export default async ({ socket, action: { studyUID } = {}, adapter }) => {
   const {
@@ -12,7 +13,7 @@ export default async ({ socket, action: { studyUID } = {}, adapter }) => {
     return;
   }
 
-  console.log("Destroying project", studyUID);
+  debug("Destroying project", studyUID);
 
   await destroyProject({ studyUID });
   await setProject({ studyUID, props: { status: "Start" } });

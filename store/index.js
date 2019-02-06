@@ -15,7 +15,6 @@ const options = {
   upgradeTimeout: 30000,
   transports: ["websocket"],
   allowUpgrades: false,
-  rememberUpgrade: true
 };
 
 const socketIoMiddleware = createSocketIoMiddleware(

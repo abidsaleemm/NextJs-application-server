@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions";
 import Wrapper from "../../hoc/wrapper";
-import TableList from "../../components/TableList";
+import ProjectTableList from "../../components/ProjectTableList";
 import DefaultProjectModal from "../../components/DefaultProjectModal";
 import RichTextEditorModal from "../../components/RichTextEditorModal";
 
@@ -134,19 +134,21 @@ class ProjectsListing extends Component {
       }
     });
 
+    //   overflow: auto;
+
     return (
       <div className="projects">
         <style jsx>
           {`
             .projects {
-              display: grid;
+              display: flex;
               width: 100%;
               height: 100%;
-              overflow: auto;
+              overflow: hidden;
             }
           `}
         </style>
-        <TableList
+        <ProjectTableList
           data={projectsEnhanced}
           sortFunc={sortFunc()}
           sortKey={sortKey}

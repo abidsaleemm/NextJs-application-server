@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import checkPlainTextNull from "../helpers/checkPlainTextNull";
-import TableList from "./TableList";
+import ProjectTableList from "./ProjectTableList";
 
 const header = () => ({
   name: "Name",
@@ -51,7 +51,6 @@ export default ({
   base,
   isOpen,
   projects = [],
-  //   notes = "",
   sortKey = "",
   sortDesc = false,
   studyType,
@@ -59,7 +58,6 @@ export default ({
   onDefault = () => {},
   onToggle = () => {},
   onRowClick = () => {}
-  //   setNotesEditor = () => {}
 }) => {
   const projectsEnhanced = projects.map(
     ({
@@ -118,7 +116,7 @@ export default ({
         >
           Notes
         </Button> */}
-        <TableList
+        <ProjectTableList
           data={projectsEnhanced}
           header={header()}
           sortFunc={sortFunc()}

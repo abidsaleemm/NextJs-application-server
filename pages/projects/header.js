@@ -13,6 +13,7 @@ export default ({ admin = false } = {}) => ({
   studyType: "Study Type",
   studyDate: "Study Date",
   location: "Facility",
+  institutionName: "Location",
   uploadDateTime: "Date Uploaded",
   upload: "Attach Records",
   notes: "Notes"

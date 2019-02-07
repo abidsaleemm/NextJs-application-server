@@ -29,6 +29,8 @@ const statusIndex = {
 };
 
 export default () => ({
+  institutionName: ({ institutionName: a = "" }, { institutionName: b = "" }) =>
+    strSort(a, b),
   priorityRender: ({ priority: a = "" }, { priority: b = "" }) => a - b,
   userRender: ({ userName: a = "" }, { userName: b = "" }) => strSort(a, b),
   statusRender: ({ status: a = "" }, { status: b = "" }) => {

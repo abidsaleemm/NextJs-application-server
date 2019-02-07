@@ -50,7 +50,9 @@ export default ({
   ),
   projectTypeRender: (
     <UncontrolledDropdown>
-      <DropdownToggle caret>{projectType}</DropdownToggle>
+      <DropdownToggle caret style={{ width: "150px" }}>
+        {projectType}
+      </DropdownToggle>
       <DropdownMenu>
         <DropdownItem
           onClick={() =>
@@ -114,7 +116,9 @@ export default ({
   ),
   statusRender: (
     <UncontrolledDropdown>
-      <DropdownToggle caret>{status}</DropdownToggle>
+      <DropdownToggle caret style={{ width: "200px" }}>
+        {status}
+      </DropdownToggle>
       <DropdownMenu>
         <DropdownItem
           onClick={() => setProjectsSettings({ filter: { status: "All" } })}
@@ -230,6 +234,7 @@ export default ({
   ),
   patientName: (
     <SearchInput
+      style={{ width: "200px" }}
       type="text"
       name={`filter-patientName`}
       value={patientName}

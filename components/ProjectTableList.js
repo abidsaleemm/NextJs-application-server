@@ -10,6 +10,7 @@ export default props => {
     sortFunc = {},
     filterRender = {},
     filterFunc = {},
+    onRowClick,
     onSort = () => {}
   } = props;
 
@@ -89,8 +90,15 @@ export default props => {
           }
 
           .dataCell {
+            height: 100%;
+          }
+
+          .dataCell:hover {
+            background: rgba(0, 0, 0, ${onRowClick ? 0.2 : 0});
+          }
+
+          .dataCellContent {
             padding: 3px;
-            align-self: center;
             height: 100%;
           }
 
@@ -147,12 +155,24 @@ export default props => {
               <div
                 className="dataCell"
                 key={`tableCell-${id}-${title}`}
+                onClick={() => {
+                  if (onRowClick !== undefined) {
+                    onRowClick(dataProps);
+                  }
+                }}
                 style={{
-                  ...(tableBackground ? { background: tableBackground } : {}),
-                  ...(tableColor ? { color: tableColor } : {})
+                  ...(onRowClick ? { cursor: "pointer" } : {})
                 }}
               >
-                {data !== undefined ? data : null}
+                <div
+                  className={`dataCellContent`}
+                  style={{
+                    ...(tableBackground ? { background: tableBackground } : {}),
+                    ...(tableColor ? { color: tableColor } : {})
+                  }}
+                >
+                  {data !== undefined ? data : null}
+                </div>
               </div>
             );
           })

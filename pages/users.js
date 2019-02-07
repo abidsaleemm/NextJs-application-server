@@ -138,8 +138,9 @@ class Users extends Component {
         <style jsx>{`
           .root {
             background: #eceeef;
-            display: grid;
-            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
           }
         `}</style>
         <MediaCardHeader>

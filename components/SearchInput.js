@@ -11,7 +11,8 @@ export default props => {
           .root {
             display: flex;
             position: relative;
-            width: 100%;
+            min-width: 150px;
+            max-width: 200px;
             height: 100%;
             flex-direction: row;
           }

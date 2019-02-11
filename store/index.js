@@ -12,7 +12,7 @@ import route from "../middleware/route";
 const options = {
   pingTimeout: 60000,
   // pingInterval: 	25000,
-  upgradeTimeout: 30000,
+//   upgradeTimeout: 30000,
   transports: ["websocket"],
   allowUpgrades: false,
 };

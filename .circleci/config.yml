@@ -52,13 +52,15 @@ jobs:
             docker push multus/application-server:staging
 workflows:
   version: 2
-  build-workflow:
+  workflow-production:
     jobs:
       - deploy-production:
           type: approval
           filters:
             branches:
               only: master
+   workflow-staging:
+    jobs:
       - deploy-staging:
           filters:
             branches:

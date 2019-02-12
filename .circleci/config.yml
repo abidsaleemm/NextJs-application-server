@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-deploy-production:
+  production:
     docker:
       - image: circleci/node
     working_directory: ~/repo
@@ -25,7 +25,7 @@ jobs:
             docker build -t multus/application-server --build-arg MACHINENAME=application-server .
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker push multus/application-server
-  build-deploy-staging:
+  staging:
     docker:
       - image: circleci/node
     working_directory: ~/repo
@@ -54,12 +54,12 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - build-deploy-staging
+      - staging
       - hold:
           type: approval
           requires:
-            - build-deploy-staging
-      - build-deploy-production:
+            - staging
+      - production:
           requires:
             - hold
           filters:

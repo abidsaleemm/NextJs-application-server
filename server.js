@@ -12,7 +12,9 @@ import routes from "./routes";
 import socketManager from "./socketManager";
 import authMiddleware from "./auth/middleware";
 import storageAdapter from "adapters";
-let debug = require("debug")("debug");
+import sessionFileStore from "session-file-store";
+
+const debug = require("debug")("debug");
 
 // issue-150
 // TODO Use a better adapter style?
@@ -30,8 +32,7 @@ let debug = require("debug")("debug");
 const sessionStoreLocal = ({ session, path = "./sessiondb" }) => {
   debug("Using session-file-store");
 
-  const FileStore = require("session-file-store")(session);
-  return new FileStore({ path });
+  return new sessionFileStore(session)({ path, logFn: debug });
 };
 
 export default async () => {
@@ -59,9 +60,9 @@ export default async () => {
   const handle = app.getRequestHandler();
 
   // Create random secret
-  const secret = process.env.LOCAL
-    ? process.env.LOCAL_SECRET
-    : process.env.AZURE_SECRET;
+  //   const secret = process.env.LOCAL
+  //     ? process.env.LOCAL_SECRET
+  //     : process.env.AZURE_SECRET;
 
   // TODO Add await here? WG
   app.prepare().then(() => {
@@ -75,7 +76,7 @@ export default async () => {
       //   process.env.LOCAL
       //     ? sessionStoreLocal() // Used for local testing
       //     : sessionStoreAzure(),
-      secret,
+      //   secret,
       key: "express.sid",
       resave: true,
       rolling: true,

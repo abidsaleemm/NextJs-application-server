@@ -1,6 +1,7 @@
 version: 2
 jobs:
   deploy-production:
+    type: approval
     docker:
       - image: circleci/node
     working_directory: ~/repo
@@ -56,10 +57,8 @@ workflows:
     jobs:
       - deploy-production:
           filters:
-            tags:
-              only: /.*/
             branches:
-              ignore: /.*/
+              only: master
       - deploy-staging:
           filters:
             branches:

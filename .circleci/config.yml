@@ -44,21 +44,17 @@ jobs:
             docker push multus/application-server:staging
 workflows:
   version: 2
-  workflow-production:
+  workflow:
     jobs:
       - build
+      - deploy-staging
       - hold:
           type: approval
+          requires:
+            - build
       - deploy-production:
           requires:
             - hold
-          filters:
-            branches:
-              only: master
-  workflow-staging:
-    jobs:
-      - build
-      - deploy-staging:
           filters:
             branches:
               only: master

@@ -55,7 +55,7 @@ workflows:
   build-workflow:
     jobs:
       - deploy-production:
-        type: approval
+          type: approval
           filters:
             branches:
               only: master

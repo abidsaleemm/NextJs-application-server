@@ -59,7 +59,7 @@ workflows:
           filters:
             branches:
               only: master
-   workflow-staging:
+  workflow-staging:
     jobs:
       - deploy-staging:
           filters:

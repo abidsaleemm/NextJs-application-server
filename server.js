@@ -12,9 +12,30 @@ import routes from "./routes";
 import socketManager from "./socketManager";
 import authMiddleware from "./auth/middleware";
 import storageAdapter from "adapters";
-let debug = require('debug')('debug');
+let debug = require("debug")("debug");
+
+// issue-150
+// TODO Use a better adapter style?
+// const sessionStoreAzure = () => {
+//     debug("Using azure-session");
+//     return require("connect-azuretables")(expressSession).create({
+//       sessionTimeOut: 86400000,
+//       overrideCron: "0 0 */1 * * *",
+//       storageAccount: process.env.STORAGE_ACCOUNT,
+//       accessKey: process.env.STORAGE_ACCOUNT_KEY,
+//       table: "azureSessionsStore"
+//     });
+//   };
+
+const sessionStoreLocal = ({ session, path = "./sessiondb" }) => {
+  debug("Using session-file-store");
+
+  const FileStore = require("session-file-store")(session);
+  return new FileStore({ path });
+};
 
 export default async () => {
+  // TODO Adapter creation function should be deconsturted as separate parts using decostruction.
   let adapter = await storageAdapter({
     adapter: process.env.LOCAL ? "local" : "azure",
     ...(process.env.PROJECTS_PATH
@@ -37,28 +58,10 @@ export default async () => {
   const app = next({ dev });
   const handle = app.getRequestHandler();
 
-  // TODO Use a better adapter style?
-  const sessionStoreLocal = () => {
-    debug("Using session-file-store");
-
-    const FileStore = require("session-file-store")(expressSession);
-    return new FileStore({ path: "./sessiondb" });
-  };
-
-  // TODO Use a better adapter style?
-  const sessionStoreAzure = () => {
-    debug("Using azure-session");
-    return require("connect-azuretables")(expressSession).create({
-      sessionTimeOut: 86400000,
-      overrideCron: "0 0 */1 * * *",
-      storageAccount: process.env.STORAGE_ACCOUNT,
-      accessKey: process.env.STORAGE_ACCOUNT_KEY,
-      table: "azureSessionsStore"
-    });
-  };
-
   // Create random secret
-  const secret = process.env.LOCAL ? process.env.LOCAL_SECRET : process.env.AZURE_SECRET ;
+  const secret = process.env.LOCAL
+    ? process.env.LOCAL_SECRET
+    : process.env.AZURE_SECRET;
 
   // TODO Add await here? WG
   app.prepare().then(() => {
@@ -67,9 +70,11 @@ export default async () => {
     server.disable("x-powered-by");
 
     const sessionMiddleWare = expressSession({
-      store: process.env.LOCAL
-        ? sessionStoreLocal() // Used for local testing
-        : sessionStoreAzure(),
+      store: sessionStoreLocal({ session: expressSession }),
+      //    issue-150
+      //   process.env.LOCAL
+      //     ? sessionStoreLocal() // Used for local testing
+      //     : sessionStoreAzure(),
       secret,
       key: "express.sid",
       resave: true,

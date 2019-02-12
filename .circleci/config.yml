@@ -5,7 +5,6 @@ jobs:
       - image: circleci/node
     working_directory: ~/repo
     steps:
-      - checkout
       - run:
           name: Downloading Artifacts
           command: |
@@ -30,7 +29,6 @@ jobs:
       - image: circleci/node
     working_directory: ~/repo
     steps:
-      - checkout
       - run:
           name: Downloading Artifacts
           command: |
@@ -54,6 +52,7 @@ workflows:
   version: 2
   workflow-production:
     jobs:
+      - checkout
       - hold:
           type: approval
       - deploy-production:
@@ -64,6 +63,7 @@ workflows:
               only: master
   workflow-staging:
     jobs:
+      - checkout
       - deploy-staging:
           filters:
             branches:

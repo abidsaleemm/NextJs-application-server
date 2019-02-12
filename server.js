@@ -59,11 +59,6 @@ export default async () => {
   const app = next({ dev });
   const handle = app.getRequestHandler();
 
-  // Create random secret
-  //   const secret = process.env.LOCAL
-  //     ? process.env.LOCAL_SECRET
-  //     : process.env.AZURE_SECRET;
-
   // TODO Add await here? WG
   app.prepare().then(() => {
     const server = express();

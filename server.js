@@ -32,7 +32,9 @@ const debug = require("debug")("debug");
 const sessionStoreLocal = ({ session, path = "./sessiondb" }) => {
   debug("Using session-file-store");
 
-  return new sessionFileStore(session)({ path, logFn: debug });
+  const FileStore = sessionFileStore(session);
+
+  return new FileStore({ path, logFn: debug });
 };
 
 export default async () => {

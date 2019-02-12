@@ -59,6 +59,8 @@ export default async () => {
   const app = next({ dev });
   const handle = app.getRequestHandler();
 
+  const secret = "Ib5nSKAsYcbNld15i3dwCT4earZzQp";
+
   // TODO Add await here? WG
   app.prepare().then(() => {
     const server = express();
@@ -71,7 +73,7 @@ export default async () => {
       //   process.env.LOCAL
       //     ? sessionStoreLocal() // Used for local testing
       //     : sessionStoreAzure(),
-      //   secret,
+      secret,
       key: "express.sid",
       resave: true,
       rolling: true,

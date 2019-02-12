@@ -54,8 +54,11 @@ workflows:
   version: 2
   workflow-production:
     jobs:
-      - deploy-production:
+      - hold:
           type: approval
+      - deploy-production:
+          requires:
+            - hold
           filters:
             branches:
               only: master

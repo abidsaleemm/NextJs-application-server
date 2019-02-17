@@ -46,7 +46,7 @@ export default async ({
     file: { list: fileList = () => {} } = {},
     projects: {
       getProjectList = () => {},
-      hasProjectSnapshots = () => {}
+      hasProjectPayload = () => {}
     } = {},
     dicom: { getStudies = () => {} } = {}
   } = adapter;
@@ -82,9 +82,9 @@ export default async ({
           ...study,
           ...(project !== undefined ? project : {}),
           studyUID,
-          hasProjectSnapshots:
+          hasProjectPayload:
             project !== undefined
-              ? await hasProjectSnapshots({ studyUID })
+              ? await hasProjectPayload({ studyUID })
               : false,
           uploadedFiles: await fileList({ path: studyUID })
         };

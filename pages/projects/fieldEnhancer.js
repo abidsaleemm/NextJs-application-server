@@ -72,7 +72,7 @@ export default props => {
         studyUID,
         status,
         priority = false,
-        hasProjectSnapshots,
+        hasProjectPayload,
         patientID,
         patientName,
         patientBirthDate,
@@ -147,7 +147,7 @@ export default props => {
         ),
         action: (
           <div>
-            {!hasProjectSnapshots ? (
+            {!hasProjectPayload ? (
               <Button onClick={() => onCreate({ studyUID, studyType })}>
                 Create
               </Button>
@@ -170,7 +170,7 @@ export default props => {
         patientAge: patientBirthDate
           ? new Date().getFullYear() - new Date(patientBirthDate).getFullYear()
           : "",
-        videoOptions: hasProjectSnapshots ? (
+        videoOptions: hasProjectPayload ? (
           <div style={{ display: "inline-flex" }}>
             <style jsx>
               {`

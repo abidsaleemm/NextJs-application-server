@@ -6,4 +6,3 @@ export { default as renderSaveFile } from "./renderSaveFile";
 export { default as selectSeries } from "./selectSeries";
 export { default as selectStudy } from "./selectStudy";
 export { default as getDefaultProp } from "./getDefaultProp";
-export { default as toolSelect } from "./toolSelect";
